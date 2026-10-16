@@ -7420,4 +7420,31 @@ body #ttl #tpress #tconf p b{font-weight:900;color:#c0281c}
 body #ttl #tpress #tconf .ti.big{padding:0 10px}
 body #ttl #tpress #tconf .ti.big .tl{font-size:14.5px;letter-spacing:-.2px}
 </style>
+<style id="title-menu-compact">
+/* Menu inicial mais compacto: ações e atalhos com alturas proporcionais */
+body #ttl #tpress{width:min(360px,calc(100vw - 32px));right:16px;max-height:calc(100% - 28px);overflow-y:auto;overscroll-behavior:contain}
+body #ttl #tmain::before{height:44px;margin-bottom:10px;font-size:14px}
+body #ttl #tpress .trow{margin-bottom:10px}
+body #ttl #tpress .r1{gap:9px}
+body #ttl #tpress .ti.big{min-height:62px;padding:0 16px}
+body #ttl #tpress .ti.big .tl{font-size:19px;line-height:21px}
+body #ttl #tpress .ti.big::after{font-size:11px;line-height:14px}
+body #ttl #tiCont:not(.hide)+#tiNew{min-height:46px}
+body #ttl #tiCont:not(.hide)+#tiNew .tl{font-size:15px}
+body #ttl #tmain .r2{gap:7px;padding-bottom:12px;margin-bottom:11px}
+body #ttl #tmain .r2 .ti{min-height:62px;gap:4px;padding:7px 2px 6px}
+body #ttl #tmain .r2 .ti::before{width:25px;height:25px}
+body #ttl #tmain .r2 .ti .tl{font-size:11.5px;line-height:13px}
+body #ttl #tpress .r3{margin-bottom:8px}
+body #ttl #tpress .tdl{margin-bottom:6px;font-size:12px}
+body #ttl #tdiff{gap:8px}
+body #ttl #tdiff .ti{min-height:78px;gap:2px;padding:7px 3px 6px}
+body #ttl #tdiff .ti img{width:25px;height:25px;margin-bottom:1px}
+body #ttl #tdiff .ti .tl{font-size:14px;line-height:16px}
+body #ttl #tdiff .ti .dd{font-size:10px;line-height:12px;padding:0 2px}
+body #ttl #tpress #tdd{margin:0 14px;padding:8px 12px;min-height:48px;font-size:13px;line-height:17px}
+body #ttl #tpress small.hint{margin:8px 12px 10px;font-size:11px;line-height:17px}
+@media(max-width:520px){body #ttl #tpress{right:10px;width:min(360px,calc(100vw - 20px));padding-bottom:10px}}
+@media(max-height:700px){body #ttl #tpress{top:12px;max-height:calc(100% - 24px)}body #ttl #tmain::before{height:38px;margin-bottom:7px}body #ttl #tpress .ti.big{min-height:54px}body #ttl #tmain .r2 .ti{min-height:54px}body #ttl #tdiff .ti{min-height:68px}body #ttl #tpress #tdd{min-height:40px}body #ttl #tpress small.hint{margin-top:6px}}
+</style>
 </body></html>
