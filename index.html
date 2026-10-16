@@ -2646,7 +2646,7 @@ function moveText(L,star,mv){
 /* =====================================================================
    ÁUDIO — efeitos sintetizados (WebAudio), gritos da PokeAPI, música simples
    ===================================================================== */
-const CFG0={sfx:.7,cry:.6,music:true,musvol:.5,timer:true,speed:1,pmd:true,mute:false,shake:true,reduceFx:false,diff:'normal',remSpeed:false,txt:'normal',skipDlg:true,dmgnum:'all',manabar:true};
+const CFG0={sfx:.7,cry:.6,music:true,musvol:.5,timer:true,speed:1,pmd:true,mute:false,shake:true,reduceFx:true,diff:'normal',remSpeed:false,txt:'normal',skipDlg:true,dmgnum:'all',manabar:true};
 const CFG=Object.assign({},CFG0);
 try{Object.assign(CFG,JSON.parse(localStorage.getItem('pktft')||'{}'));if(!CFG.remSpeed)CFG.speed=1}catch(e){}
 const saveCfg=()=>{try{localStorage.setItem('pktft',JSON.stringify(CFG))}catch(e){}};
@@ -6272,7 +6272,7 @@ $('#vmus').checked=CFG.music;syncMusRow();
 $('#vmus').onchange=e=>{CFG.music=e.target.checked;SND.set();syncMusRow();saveCfg();e.target.blur()};
 $('#vtim').checked=CFG.timer;
 $('#vtim').onchange=e=>{CFG.timer=e.target.checked;saveCfg();e.target.blur()};
-const SWT=[['vmute','mute',false],['vfx','reduceFx',false],['vrem','remSpeed',false],['vskip','skipDlg',true],['vmana','manabar',true],['vshk','shake',true]];
+const SWT=[['vmute','mute',false],['vfx','reduceFx',true],['vrem','remSpeed',false],['vskip','skipDlg',true],['vmana','manabar',true],['vshk','shake',true]];
 SWT.forEach(([id,k,dt])=>{$('#'+id).onchange=e=>{CFG[k]=e.target.checked;saveCfg();syncMenuUI();e.target.blur()}});
 document.querySelectorAll('#menu .seg').forEach(sg=>sg.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{CFG[sg.dataset.key]=b.dataset.v;saveCfg();SND.click();syncMenuUI();b.blur()})));
 function syncMenuUI(){
