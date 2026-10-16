@@ -2156,9 +2156,9 @@ body.idrag .unit:has(.its.has){z-index:4000!important}
      </div>
      <div class="trow r3"><span class="tdl">DIFICULDADE</span>
       <div id="tdiff" role="radiogroup" aria-label="Dificuldade">
-       <div class="ti" role="radio" tabindex="-1" data-act="diff" data-v="easy"><img src="assets/pokeapi/sprites/items/poke-ball.png" alt=""><span class="tl">FÁCIL</span><em class="dd">Inimigos 20% mais fracos</em></div>
-       <div class="ti" role="radio" tabindex="-1" data-act="diff" data-v="normal"><img src="assets/pokeapi/sprites/items/great-ball.png" alt=""><span class="tl">NORMAL</span><em class="dd">Experiência padrão</em></div>
-       <div class="ti" role="radio" tabindex="-1" data-act="diff" data-v="hard"><img src="assets/pokeapi/sprites/items/ultra-ball.png" alt=""><span class="tl">DIFÍCIL</span><em class="dd">Inimigos 25% mais fortes</em></div>
+       <div class="ti" role="radio" tabindex="-1" data-act="diff" data-v="easy"><img src="assets/pokeapi/sprites/items/poke-ball.png" alt=""><span class="tl">FÁCIL</span><em class="dd">−20% vida e dano</em></div>
+       <div class="ti" role="radio" tabindex="-1" data-act="diff" data-v="normal"><img src="assets/pokeapi/sprites/items/great-ball.png" alt=""><span class="tl">NORMAL</span><em class="dd">Sem ajustes</em></div>
+       <div class="ti" role="radio" tabindex="-1" data-act="diff" data-v="hard"><img src="assets/pokeapi/sprites/items/ultra-ball.png" alt=""><span class="tl">DIFÍCIL</span><em class="dd">+25% vida · +20% dano</em></div>
       </div>
      </div>
     </div>
@@ -5790,7 +5790,7 @@ function buildTitleArt(){
     $('#ttl .tgrp.r').innerHTML=grp([ids[2],ids[3]],false);
     $('#tbadges').innerHTML=LEADERS.filter(l=>l.b>=1&&l.b<=8).map(l=>`<img src="${BADGE(l.b)}" alt="" title="${l.bn}" onerror="this.style.display='none'">`).join('');
   }catch(e){}}
-const DIFF_TXT={easy:'Para jogar sem pressa: os inimigos têm 20% menos vida e dano.',normal:'A experiência pensada para o jogo: equilibrada e justa.',hard:'Para veteranos: os inimigos têm 25% mais vida e 20% mais dano.'};
+const DIFF_TXT={easy:'Para jogar sem pressa: os inimigos têm 20% menos vida e dano.',normal:'A experiência equilibrada do jogo, sem modificadores nos inimigos.',hard:'Para veteranos: os inimigos têm 25% mais vida e 20% mais dano.'};
 const T_DESC={new:'Comece uma nova jornada com o Prof. Carvalho: monte o seu time e enfrente os Líderes de Ginásio.',options:'Ajuste o áudio, a jogabilidade e o visual do jogo.',help:'Veja os atalhos do teclado, as regras e os créditos.',sound:'Liga ou desliga todo o som do jogo (tecla M).',confirmyes:'O progresso salvo será apagado para começar uma nova aventura.',confirmno:'Voltar ao menu principal sem apagar nada.'};
 const TM={r:0,c:0,view:'main',sv:null,optWas:false};
 const tmRows=()=>TM.view==='confirm'?[[...document.querySelectorAll('#tconf .ti')]]:['#tmain .r1','#tmain .r2','#tdiff'].map(q=>[...document.querySelectorAll(q+' .ti')].filter(e=>!e.classList.contains('hide')));
@@ -7438,13 +7438,14 @@ body #ttl #tmain .r2 .ti .tl{font-size:11.5px;line-height:13px}
 body #ttl #tpress .r3{margin-bottom:8px}
 body #ttl #tpress .tdl{margin-bottom:6px;font-size:12px}
 body #ttl #tdiff{gap:8px}
-body #ttl #tdiff .ti{min-height:78px;gap:2px;padding:7px 3px 6px}
-body #ttl #tdiff .ti img{width:25px;height:25px;margin-bottom:1px}
-body #ttl #tdiff .ti .tl{font-size:14px;line-height:16px}
-body #ttl #tdiff .ti .dd{font-size:10px;line-height:12px;padding:0 2px}
+body #ttl #tdiff .ti{height:auto;min-height:86px;gap:2px;padding:7px 3px 7px;overflow:visible}
+body #ttl #tdiff .ti img{width:23px;height:23px;margin-bottom:1px;flex:none}
+body #ttl #tdiff .ti .tl{font-size:13.5px;line-height:15px}
+body #ttl #tdiff .ti .dd{font-size:9.5px;line-height:11px;padding:0 1px;white-space:normal;overflow-wrap:anywhere;flex:none}
+body #ttl #tdiff .ti.sel:not(.on){background:#fff;border-color:var(--ink);color:var(--ink);transform:translateY(-2px);box-shadow:0 4px 0 var(--ink),0 0 0 3px var(--gold)}
 body #ttl #tpress #tdd{margin:0 14px;padding:8px 12px;min-height:48px;font-size:13px;line-height:17px}
 body #ttl #tpress small.hint{margin:8px 12px 10px;font-size:11px;line-height:17px}
 @media(max-width:520px){body #ttl #tpress{right:10px;width:min(360px,calc(100vw - 20px));padding-bottom:10px}}
-@media(max-height:700px){body #ttl #tpress{top:12px;max-height:calc(100% - 24px)}body #ttl #tmain::before{height:38px;margin-bottom:7px}body #ttl #tpress .ti.big{min-height:54px}body #ttl #tmain .r2 .ti{min-height:54px}body #ttl #tdiff .ti{min-height:68px}body #ttl #tpress #tdd{min-height:40px}body #ttl #tpress small.hint{margin-top:6px}}
+@media(max-height:700px){body #ttl #tpress{top:12px;max-height:calc(100% - 24px)}body #ttl #tmain::before{height:38px;margin-bottom:7px}body #ttl #tpress .ti.big{min-height:54px}body #ttl #tmain .r2 .ti{min-height:54px}body #ttl #tdiff .ti{min-height:80px}body #ttl #tpress #tdd{min-height:40px}body #ttl #tpress small.hint{margin-top:6px}}
 </style>
 </body></html>
