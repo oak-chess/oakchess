@@ -4755,7 +4755,7 @@ function renderInv(){renderBagBtn();renderBag()}
 /* ---------- tooltips ---------- */
 let HOV=null;
 let TIPU=null,TIPLAST='',TIPT=0;
-function hideTip(){tipEl.style.display='none';TIPU=null}
+function hideTip(){tipEl.style.display='none';tipEl.classList.remove('item-tip-open');TIPU=null}
 /* atualiza o painel de status do Pokémon sob o mouse em tempo real (PS, mana, buffs, itens, evolução) */
 function tipTick(ts){if(!TIPU||tipEl.style.display==='none'||ts-TIPT<110)return;TIPT=ts;try{const h=unitTip(TIPU);if(h!==TIPLAST){TIPLAST=h;dockTip(h)}}catch(e){}}
 /* dica de Pokémon: fixa à direita, abaixo do painel de insígnias, onde não tampa o tabuleiro nem a loja */
@@ -4766,6 +4766,7 @@ function dockTip(html){tipEl.innerHTML=html;tipEl.style.display='block';
   tipEl.style.left=Math.max(8,STW-w-10)+'px';tipEl.style.top=y+'px'}
 function showTip(html,e){tipEl.innerHTML=html;tipEl.style.display='block';const p=toStage(e);let x=p.x+18,y=p.y+14;
   const w=tipEl.offsetWidth,h=tipEl.offsetHeight;if(x+w>STW-8)x=p.x-w-18;x=Math.max(8,Math.min(STW-w-8,x));if(y+h>H-8)y=H-h-8;y=Math.max(8,y);tipEl.style.left=x+'px';tipEl.style.top=y+'px'}
+function showItemTip(item,e,inMarket){tipEl.classList.add('item-tip-open');showTip(`<div class="iti-head"><img src="${itemUrl(item.s)}" alt=""><div><b>${item.n}</b><small>${RARE.includes(item.k)?'ITEM RARO':'ITEM'}</small></div></div><p>${item.d}</p><div class="iti-foot">${inMarket?'Clique no item para escolher uma ação.':'Arraste para um Pokémon na arena para equipar.'}</div>`,e)}
 function unitTip(x){
   const L=x.L||LINES[x.line],star=x.star,live=x.maxHp!=null,bs=baseStats(L,star),tys=typesOf(L,star),moveCount=star>=3?4:star>=2?3:2;
   /* fora do combate, simula a unidade com itens e bênçãos (cartas) para mostrar os status já com os bônus */
@@ -4815,7 +4816,7 @@ stage.addEventListener('mousemove',e=>{
   if(false)return showTip(`<h4><span class="coin"></span> Economia</h4><div style="margin:3px 0"><b>Base:</b> ouro fixo no fim de cada rodada.</div><div style="margin:3px 0"><b>Juros:</b> +1 a cada 10 de ouro guardado (máx. +5).</div><div style="margin:3px 0"><b>Sequência:</b> 2-3 vitórias ou derrotas seguidas: +1; 4: +2; 5+: +3.</div><div style="margin:3px 0"><b>Vitória em PvP:</b> +1 de ouro extra. Líderes dão +2.</div><div style="margin:3px 0;color:#9fb4e8">Vender: custo do Pokémon (1★), x3 para ★★ e x9 para ★★★ (−1 se custo maior que 1).</div>`,e);
   if(bo){const b=(G.boons||[])[+bo.dataset.i];if(b)return showTip(boonTip(b),e)}
   if(tr)return showTip(traitTip(tr.dataset.trait,+tr.dataset.n),e);
-  if(it){const m=ITEMBY[it.dataset.item];if(m)return showTip(`<h4>${m.n}</h4>${m.d}`,e)}
+  if(it){const m=ITEMBY[it.dataset.item];if(m)return showItemTip(m,e,!!it.closest('.mkgrid'))}
   hideTip()});
 stage.addEventListener('mouseleave',()=>{hideTip();setHoverEl(null);HVU=null});
 
@@ -6408,10 +6409,10 @@ function wireCraft(pane){
 const COINSVG='<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12.5" fill="#ffd84a" stroke="#7a4e00" stroke-width="2.4"/><circle cx="16" cy="16" r="8" fill="none" stroke="#b87a0a" stroke-width="2"/><path d="M16 11v10M13.2 13.6h4.4a2 2 0 0 1 0 4h-3.2" fill="none" stroke="#7a4e00" stroke-width="2" stroke-linecap="round"/></svg>';
 const itemSellPrice=k=>RARE.includes(k)?4:2;
 const MK_OFFERS=[
- {id:'xp',n:'Pacote de XP',d:'+10 de XP (mais barato que comprar aos poucos).',cost:7,lim:1,ic:'rare-candy',buy(){addXp(10);toast('+10 XP')}},
+ {id:'xp',n:'Pacote de XP',d:'+10 XP para subir de nível.',cost:7,lim:1,ic:'rare-candy',buy(){addXp(10);toast('+10 XP')}},
  {id:'vial',n:'Frasco misterioso',d:'1 frasco aleatório para criar itens.',cost:3,lim:2,ic:'hp-up',buy(){const k=pick(VIALS).k;G.vials[k]++;toast(`<img src="${vialUrl(k)}" style="height:24px;vertical-align:middle" alt=""> +1 ${VBY[k].n}`)}},
  {id:'rare',n:'Item raro',d:'Um item raro aleatório.',cost:14,lim:1,ic:'choice-scarf',buy(){dropRare(1)}},
- {id:'strip',n:'Removedor',d:'Usado em um Pokémon, devolve todos os itens dele à Mochila.',cost:3,lim:99,ic:'eject-button',buy(){G.items.push('strip');SND.loot();toast('Removedor comprado! Arraste-o para um Pokémon.')}}
+ {id:'strip',n:'Removedor',d:'Devolve à Mochila os itens equipados em um Pokémon.',cost:3,lim:99,ic:'eject-button',buy(){G.items.push('strip');SND.loot();toast('Removedor comprado! Arraste-o para um Pokémon.')}}
 ];
 function mkState(){if(!G.mk||G.mk.ri!==G.ri)G.mk={ri:G.ri,b:{}};return G.mk}
 function mkBuy(id){const o=MK_OFFERS.find(x=>x.id===id),st=mkState();if(!o)return;
@@ -6424,14 +6425,15 @@ function mkRecycle(i){const k=G.items[i];if(!k)return;const v=pick(VIALS).k;G.it
   toast(`${ITEMBY[k].n} reciclado: <img src="${vialUrl(v)}" style="height:24px;vertical-align:middle" alt=""> +1 ${VBY[v].n}`);renderInv()}
 function marketHTML(){
   const st=mkState();if(BAG.sel!=null&&!G.items[BAG.sel])BAG.sel=null;
-  let h=`<div class="mkgold"><span class="coin"></span><b>${G.gold}</b><span>ouro</span></div><div class="mkh">OFERTAS</div><div class="mkoffers">`;
+  let h=`<div class="mkgold"><span class="coin"></span><b>${G.gold}</b><span>ouro disponível</span></div><div class="mkh">OFERTAS DA RODADA</div><div class="mkoffers">`;
   h+=MK_OFFERS.map(o=>{const left=o.lim-(st.b[o.id]||0),can=G.gold>=o.cost&&left>0&&!(o.id==='xp'&&G.lvl>=9);
-    return`<div class="mko${can?'':' off'}" data-o="${o.id}"><img src="${itemUrl(o.ic)}" onerror="this.onerror=null;this.src='${itemUrl('poke-ball')}'" alt=""><div class="mkt"><b>${o.n}</b><span>${o.d}</span></div><div class="mkp">${left>0?`<span><i class="coin"></i> ${o.cost}</span>`:'<span>esgotado</span>'}${o.lim<99?`<small>${Math.max(0,left)}/${o.lim} nesta rodada</small>`:''}</div></div>`}).join('')+'</div>';
-  const total=Math.max(10,Math.ceil(G.items.length/5)*5);let sl='';
-  for(let i=0;i<total;i++){const k=G.items[i];sl+=k?`<div class="islot bs${BAG.sel===i?' sel':''}" data-mi="${i}" data-item="${k}"><img src="${itemUrl(ITEMBY[k].s)}" alt="${ITEMBY[k].n}"></div>`:'<div class="bs empty"></div>'}
-  h+=`<div class="mkh">SEUS ITENS (clique para vender ou reciclar)</div><div class="bgrid mkgrid">${sl}</div>`;
+    return`<div class="mko${can?'':' off'}" data-o="${o.id}"><img src="${itemUrl(o.ic)}" onerror="this.onerror=null;this.src='${itemUrl('poke-ball')}'" alt=""><div class="mkt"><b>${o.n}</b><span>${o.d}</span></div><div class="mkp">${left>0?`<span><i class="coin"></i> ${o.cost}</span>`:'<span>esgotado</span>'}${o.lim<99?`<small>resta ${Math.max(0,left)}</small>`:''}</div></div>`}).join('')+'</div>';
+  const sorted=G.items.map((k,i)=>({k,i})).sort((a,b)=>(RARE.includes(a.k)-RARE.includes(b.k))||ITEMBY[a.k].n.localeCompare(ITEMBY[b.k].n,'pt-BR'));
+  const total=Math.max(10,Math.ceil(sorted.length/5)*5);let sl='';
+  for(let i=0;i<total;i++){const item=sorted[i],k=item&&item.k;sl+=k?`<div class="islot bs${BAG.sel===item.i?' sel':''}" data-mi="${item.i}" data-item="${k}"><img src="${itemUrl(ITEMBY[k].s)}" alt="${ITEMBY[k].n}"></div>`:'<div class="bs empty"></div>'}
+  h+=`<div class="mkh mk-items-head">SEUS ITENS <span>Selecione para vender ou reciclar</span></div><div class="bgrid mkgrid">${sl}</div>`;
   if(BAG.sel!=null){const k=G.items[BAG.sel],it=ITEMBY[k];
-    h+=`<div class="mkact"><img src="${itemUrl(it.s)}" alt=""><div><b>${it.n}</b>${it.d}</div><button data-a="sell">Vender +${itemSellPrice(k)}</button><button class="alt" data-a="rec">Reciclar</button></div><div class="bhint">Reciclar troca o item por 1 frasco aleatório.</div>`}
+    h+=`<div class="mkact"><img src="${itemUrl(it.s)}" alt=""><div><b>${it.n}</b><span>Venda: +${itemSellPrice(k)} ouro</span></div><button data-a="sell">Vender</button><button class="alt" data-a="rec">Reciclar</button></div><div class="bhint">Reciclar rende 1 frasco aleatório.</div>`}
   else h+=`<div class="bhint">${G.items.length?'Selecione um item para vender ou reciclar.':'Você não tem itens sobrando.'}</div>`;
   return h}
 function wireMarket(pane){
@@ -6440,6 +6442,7 @@ function wireMarket(pane){
   pane.querySelectorAll('.mkact button').forEach(b=>b.addEventListener('click',()=>{if(BAG.sel==null)return;if(b.dataset.a==='sell')mkSell(BAG.sel);else mkRecycle(BAG.sel)}))}
 function renderBag(){
   if(!BAG.open)return;const ov=$('#bagov'),pane=$('#bagpane');
+  pane.classList.toggle('market-view',BAG.tab==='market');
   ov.querySelectorAll('.bagtabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===BAG.tab));
   if(BAG.tab==='craft'){pane.innerHTML=craftHTML();wireCraft(pane)}else if(BAG.tab==='market'){pane.innerHTML=marketHTML();wireMarket(pane)}else{pane.innerHTML=bagHTML();wireBag(pane)}}
 function craftItem(i,j){
@@ -7447,5 +7450,45 @@ body #ttl #tpress #tdd{margin:0 14px;padding:8px 12px;min-height:48px;font-size:
 body #ttl #tpress small.hint{margin:8px 12px 10px;font-size:11px;line-height:17px}
 @media(max-width:520px){body #ttl #tpress{right:10px;width:min(360px,calc(100vw - 20px));padding-bottom:10px}}
 @media(max-height:700px){body #ttl #tpress{top:12px;max-height:calc(100% - 24px)}body #ttl #tmain::before{height:38px;margin-bottom:7px}body #ttl #tpress .ti.big{min-height:54px}body #ttl #tmain .r2 .ti{min-height:54px}body #ttl #tdiff .ti{min-height:80px}body #ttl #tpress #tdd{min-height:40px}body #ttl #tpress small.hint{margin-top:6px}}
+</style>
+<style id="bag-center-market-tooltip">
+/* Mochila centralizada, com conteúdo rolável e abas sempre acessíveis */
+#bagov.show{display:grid!important;place-items:center!important;padding:24px 12px;box-sizing:border-box}
+#bagov .bagp{position:relative!important;left:auto!important;bottom:auto!important;width:min(408px,calc(100vw - 36px));max-height:calc(100% - 48px);padding:32px 14px 14px;overflow:visible;transform-origin:center}
+#bagov .bagp::after{display:none}
+#bagpane{width:100%;max-height:min(70vh,560px);overflow:auto;overscroll-behavior:contain;padding:2px 2px 6px;scrollbar-width:thin;scrollbar-color:#607fd0 #101a36}
+#bagov .bagtabs{gap:6px}
+#bagov .bagtabs button{height:34px;padding:0 11px 0 9px;font-size:12px}
+.mkgold{width:max-content;max-width:100%;margin:0 auto 5px;padding:4px 12px;border:1px solid #4c68b4;border-radius:999px;background:#0a1230}
+.mkgold span:last-child{font-size:10px}
+.mkh{display:flex;align-items:center;gap:8px;margin:9px 2px 5px;font-size:8px}
+.mk-items-head span{font:700 9px "Trebuchet MS",sans-serif;letter-spacing:0;text-transform:none;color:#aebde8}
+.mkoffers{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.mko{display:grid;grid-template-columns:28px minmax(0,1fr) auto;grid-template-rows:auto auto;align-items:start;gap:2px 6px;min-width:0;min-height:68px;padding:7px;border-width:2px;border-radius:12px}
+.mko img{grid-column:1;grid-row:1 / span 2;width:27px;height:27px}
+.mkt{display:contents}
+.mkt b{grid-column:2;grid-row:1;align-self:center;font-size:11px;line-height:13px}
+.mkt span{grid-column:2;grid-row:2;font-size:9px;line-height:11px;overflow-wrap:anywhere}
+.mkp{grid-column:3;grid-row:1 / span 2;gap:3px;max-width:58px;font-size:12px}
+.mkp small{font-size:8px;line-height:10px;text-align:right}
+.mkgrid{gap:6px}
+.mkgrid .bs{max-width:58px;border-radius:11px}
+.mkgrid .bs img{width:34px;height:34px}
+.mkact{margin-top:7px;gap:6px;padding:7px;border-width:2px;border-radius:12px}
+.mkact img{width:27px;height:27px}
+.mkact div{font-size:10px;line-height:12px}
+.mkact b{font-size:11px}
+.mkact div span{display:block;color:#9fb4e8;font-size:9px}
+.mkact button{padding:5px 7px;border-width:2px;border-radius:9px;font-size:10px}
+.bhint{margin-top:7px;font-size:10px;line-height:13px}
+#tip.item-tip-open{box-sizing:border-box;width:min(270px,calc(100vw - 20px))!important;max-height:min(180px,55vh)!important;overflow:auto!important;padding:11px!important;border:2px solid #cdd5ea!important;border-radius:14px!important;background:linear-gradient(155deg,#203979,#0a1230)!important;box-shadow:0 0 0 2px #1b2440,0 10px 25px #000b!important;font-size:12px!important;line-height:16px!important}
+#tip .iti-head{display:flex;align-items:center;gap:9px;padding-bottom:7px;border-bottom:1px solid #8fa6dc44}
+#tip .iti-head img{width:36px;height:36px;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 2px 3px #0008)}
+#tip .iti-head div{display:flex;flex-direction:column;gap:3px;min-width:0}
+#tip .iti-head b{color:#fff;font-size:15px;line-height:18px}
+#tip .iti-head small{color:#ffd84a;font-size:8px;font-weight:900;letter-spacing:1px}
+#tip.item-tip-open p{margin:8px 0;color:#e1eaff;overflow-wrap:anywhere}
+#tip .iti-foot{padding-top:6px;border-top:1px solid #8fa6dc44;color:#9fb4e8;font-size:10px;line-height:13px}
+@media(max-width:480px){#bagov .bagp{width:calc(100vw - 28px);padding:30px 10px 12px}#bagov .bagtabs{gap:4px;max-width:calc(100vw - 52px)}#bagov .bagtabs button{gap:4px;height:32px;padding:0 8px;font-size:10.5px}#bagov .bagtabs button svg{width:17px;height:17px}.mkoffers{gap:5px}.mko{grid-template-columns:24px minmax(0,1fr) auto;gap:2px 4px;padding:6px}.mko img{width:24px;height:24px}.mkt b{font-size:10px}.mkt span{font-size:8.5px}.mkp{font-size:11px;max-width:48px}.mkact{flex-wrap:wrap}.mkact div{flex:1 1 100%}}
 </style>
 </body></html>
