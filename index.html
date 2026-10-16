@@ -5525,11 +5525,11 @@ function beginBattle(){
   applyBoons(mine);applyTraits(mine,foes);const ea=applyTraits(foes,mine);diffApply(foes);
   $('#oppinfo').innerHTML=Object.keys(ea).map(t=>`<span class="oc" style="border-color:${TYPES[t].c}">${tyIcon(t)} ${ea[t]}</span>`).join('');
   B.units.forEach(u=>{u.hp=Math.min(u.maxHp,Math.max(u.hp,u.maxHp));if(u.shield)u.shield=u.shield});
-  B.t=0;B.on=true;B.over=false;B.done=false;B.sudden=0;B.fields=[];B.ev=[];B.zero=0;B.hold=false;B.mew=info.kind==='secret'?mewSpec(LEAGUE[info.lg]):null;
+  B.t=0;B.on=true;B.over=false;B.done=false;B.sudden=0;B.fields=[];B.ev=[];B.zero=0;B.hold=false;B.winner=null;B.mew=info.kind==='secret'?mewSpec(LEAGUE[info.lg]):null;
   [mine,foes].forEach(l=>shuffle(l).slice(0,2).forEach((u,i)=>setTimeout(()=>SND.cry(u.id,.7),120+i*220)));
   banner('Combate!',G.oppName,'#fff');SND.round();renderHUD()}
 function finishBattle(){if(DEMO.on){demoNext();return}
-  const win=B.winner===0,surv=B.units.filter(u=>u.alive&&u.side===B.winner).length;
+  const winner=B.winner,win=winner===0,surv=B.units.filter(u=>u.alive&&u.side===winner).length;
   try{window.CR&&CR.capture(win)}catch(e){}
   const _hp0=G.hp,_g0=G.gold;
   clearCombatUnits();B.on=false;B.over=false;
