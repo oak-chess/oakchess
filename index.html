@@ -3741,7 +3741,7 @@ function typeEventText(html){clearInterval(EVTEXT.tm);EVTEXT.html=html;EVTEXT.po
     t.innerHTML=html.slice(0,EVTEXT.pos);if(EVTEXT.pos%3===0)SND.hover();if(EVTEXT.pos>=html.length)finishEventText()},34);
   if(CFG.txt==='instant')setTimeout(()=>{if(EVTEXT.typing&&EVTEXT.html===html)finishEventText()},0)}
 function closeEvent(){clearInterval(EVTEXT.tm);EVTEXT.typing=false;EVTEXT.items=[];const e=$('#eventov');if(e)e.remove();G.eventModal=false;G._evDone=true;EVTEXT.onSel=null;EVTEXT.after=null;BOON.onKey=null;renderHUD();setTimeout(processEvoQueue,450)}
-function eventScreen(title,body,kind=''){closeEvent();G.eventModal=true;
+function eventScreen(title,body,kind=''){closeEvent();G.eventModal=true;hideTip();HOV=null;
   const tmp=mk('div',null,body),btns=[...tmp.querySelectorAll('button')];
   btns.forEach(b=>b.remove());tmp.querySelectorAll('.event-options').forEach(o=>o.remove());
   const text=tmp.innerHTML.trim(),e=mk('div','event-screen');e.id='eventov';
@@ -4551,7 +4551,7 @@ function mergeCheck(){
         else{playEvolve(keep,keep.star-1);if(keep.line===EEVEE&&keep.star>=2&&!G.evoQueue.includes(keep))G.evoQueue.push(keep)}
         changed=true;break}}
       if(changed)break}}
-  updateTraitsUI();renderInv();
+  updateTraitsUI();renderInv();if(window.ACH)ACH.boardProgress();
 }
 
 /* ---------- loja ---------- */
@@ -4614,7 +4614,7 @@ function buyCard(i){
   const slot=freeBenchSlot(),canMerge=countLine(s.line,1)>=2;
   if(slot<0&&!canMerge){toast('Banco cheio! Venda ou mova um Pokémon.');SND.err();return}
   const cardEl=$('#cards').children[i],from=cardEl?stagePosOf(cardEl):{x:640,y:740};
-  G.gold-=L.c;G.shop[i]=null;const u=newUnit(s.line,1);u.shiny=!!s.shiny;let to;
+  G.gold-=L.c;G.shop[i]=null;const u=newUnit(s.line,1);u.shiny=!!s.shiny;if(window.ACH)ACH.purchase(u);let to;
   if(slot>=0){place(u,{z:'n',i:slot});attachEl(u,false);u.el.style.visibility='hidden';const p=unitXY(u);to={x:p.x+OFF,y:p.y-26}}
   else{G.pending.push(u);const o=allUnits().find(x=>x.line===s.line&&x.star===1);const p=o?unitXY(o):{x:640,y:400};to={x:p.x+OFF,y:p.y-26}}
   SND.buy();G.hintOn=false;renderShop();renderHUD();
@@ -4803,6 +4803,7 @@ $('#traits').addEventListener('pointerover',e=>{const tr=e.target.closest('.tr[d
 $('#traits').addEventListener('pointerout',e=>{const next=e.relatedTarget&&e.relatedTarget.closest&&e.relatedTarget.closest('#traits .tr[data-trait]');if(next){if(next.dataset.trait!==hoveredTrait)highlightTrait(next.dataset.trait)}else highlightTrait(null)});
 $('#traits').addEventListener('pointerleave',()=>highlightTrait(null));
 function updateTraitsUI(){
+  if(window.ACH)ACH.boardProgress();
   const board=boardUnits(),cnt=typeCounts(board),box=$('#traits');box.innerHTML='';const prev=G._tt,oldCount=G._traitCounts,oldBoard=G._traitBoard,cur={};let fl=false;
   const entered=oldBoard?board.filter(u=>!oldBoard.includes(u.uid+':'+u.star)):[];
   G._traitBoard=board.map(u=>u.uid+':'+u.star);
@@ -4882,9 +4883,9 @@ let HOV=null;
 let TIPU=null,TIPLAST='',TIPT=0;
 function hideTip(){tipEl.style.display='none';tipEl.classList.remove('item-tip-open','boon-tip-open');TIPU=null}
 /* atualiza o painel de status do Pokémon sob o mouse em tempo real (PS, mana, buffs, itens, evolução) */
-function tipTick(ts){if(!TIPU||tipEl.style.display==='none'||ts-TIPT<110)return;TIPT=ts;try{const h=unitTip(TIPU);if(h!==TIPLAST){TIPLAST=h;dockTip(h)}}catch(e){}}
+function tipTick(ts){if(G.eventModal||document.getElementById('eventov')){hideTip();return}if(!TIPU||tipEl.style.display==='none'||ts-TIPT<110)return;TIPT=ts;try{const h=unitTip(TIPU);if(h!==TIPLAST){TIPLAST=h;dockTip(h)}}catch(e){}}
 /* dica de Pokémon: fixa à direita, abaixo do painel de insígnias, onde não tampa o tabuleiro nem a loja */
-function dockTip(html){tipEl.classList.remove('boon-tip-open');tipEl.innerHTML=html;tipEl.style.display='block';
+function dockTip(html){if(G.eventModal||document.getElementById('eventov')){hideTip();return}tipEl.classList.remove('boon-tip-open');tipEl.innerHTML=html;tipEl.style.display='block';
   const w=tipEl.offsetWidth,h=tipEl.offsetHeight,rc=document.querySelector('#rightcol'),sr=stage.getBoundingClientRect();
   let y=62;if(rc){const r=rc.getBoundingClientRect();y=(r.bottom-sr.top)/SC+8}
   if(y+h>H-8)y=H-8-h;y=Math.max(8,y);
@@ -5599,12 +5600,15 @@ function startPlan(){closeBag();
   G.timerMax=G.timer=G.ri===0?60:G.ri<3?40:50;
   {const ld=foeOf(info),bs=isBoss(info.kind)||info.kind==='secret';banner(info.kind==='secret'?'???':info.gym>=8?'Liga Pokémon · '+info.rn+'/5':info.extra?'Evento · Etapa '+info.st:'Rodada '+info.lbl,G.retry?'Revanche contra '+G.oppName+'!':bs?G.oppName:info.rn===1&&!info.extra?'Rumo ao Ginásio de '+ld.city+' · '+ld.route:info.kind==='pve'?'Pokémon selvagens':info.kind==='rival'?'Seu rival: Gary':G.oppName,info.kind==='secret'?'#c070ff':bs?'#ffb400':'#fff')}
   showNpc(G.oppSlug,G.oppQuote);SND.round();SND.music('plan');document.body.classList.remove('combat');
-  renderShop();renderInv();renderHUD();updateTraitsUI();layoutAll();ckpt(info);setTimeout(processEvoQueue,900);setTimeout(()=>{try{window.tutorialMaybeStart&&window.tutorialMaybeStart()}catch(e){}},1500);
+  renderShop();renderInv();renderHUD();updateTraitsUI();layoutAll();setTimeout(processEvoQueue,900);setTimeout(()=>{try{window.tutorialMaybeStart&&window.tutorialMaybeStart()}catch(e){}},1500);
+  let intro=null;
   if(info.kind==='secret'&&G.retry&&G.mewHelp&&!G.over){setTimeout(()=>banner('Mew está com você!','Revanche contra Mewtwo','#ff8ad8'),700);
     if(!allUnits().some(u=>u.line===MEWLINE)){const slot=G.bench.findIndex(x=>!x);if(slot>=0){const m=newUnit(MEWLINE,3);place(m,{z:'n',i:slot});attachEl(m,true);layoutAll();toast('✨ Mew entrou no seu time! Ele não ocupa vaga no campo.')}}}
-  if(info.kind==='champ'&&!G.over){G.said=G.said||{};if(G.retry)setTimeout(()=>storyScene(BLUE_RETRY),800);else if(!G.said.champ){G.said.champ=1;setTimeout(()=>storyScene(BLUE_INTRO),800)}}
-  if(info.kind==='boss'&&info.gym<8&&!G.over&&!G.retry){G.said=G.said||{};const gk='gym'+info.gym;if(!G.said[gk]){G.said[gk]=1;setTimeout(()=>storyScene(gymLines(info.gym,'intro')),800)}}
-  if(info.kind==='e4'&&!G.over&&!G.retry){G.said=G.said||{};const ek='e4_'+info.lg;if(!G.said[ek]){G.said[ek]=1;let EL=e4Lines(info.lg,'intro');if(info.lg===0)EL=LIGA_INTRO.concat(EL);setTimeout(()=>storyScene(EL),800)}}}
+  if(info.kind==='champ'&&!G.over){G.said=G.said||{};if(G.retry)intro=BLUE_RETRY;else if(!G.said.champ){G.said.champ=1;intro=BLUE_INTRO}}
+  if(info.kind==='boss'&&info.gym<8&&!G.over&&!G.retry){G.said=G.said||{};const gk='gym'+info.gym;if(!G.said[gk]){G.said[gk]=1;intro=gymLines(info.gym,'intro')}}
+  if(info.kind==='e4'&&!G.over&&!G.retry){G.said=G.said||{};const ek='e4_'+info.lg;if(!G.said[ek]){G.said[ek]=1;intro=e4Lines(info.lg,'intro');if(info.lg===0)intro=LIGA_INTRO.concat(intro)}}
+  const next=()=>{if(G.round===info&&G.phase==='plan'&&!G.over)ckpt(info)};
+  if(intro){G.eventModal=true;hideTip();setTimeout(()=>{if(G.round===info&&G.phase==='plan'&&!G.over)storyScene(intro,next)},800)}else next()}
 function autoFill(){
   const free=[];for(const r of[4,5,6,7])for(const c of[3,2,4,1,5,0,6])if(!G.board.has(r+','+c))free.push([r,c]);
   const bench=G.bench.filter(Boolean).sort((a,b)=>(LINES[b.line].c*b.star)-(LINES[a.line].c*a.star));let moved=0;
@@ -5634,7 +5638,7 @@ function showVS(done){
   $('#vs').classList.add('show');$('#vs').onclick=go;SND.vs();SND.music('battle');
   VSTO=setTimeout(go,wild?2000:2800)}
 function startCombat(){
-  if(G.phase!=='plan')return;closeBag();autoFill();hideTip();
+  if(G.phase!=='plan'||G.eventModal)return;closeBag();autoFill();hideTip();
   G.phase='vs';document.body.classList.add('combat');document.body.classList.remove('dragging');$('#hint').style.display='none';
   try{showVS(beginBattle)}catch(e){reportErr(e);beginBattle()}}
 function beginBattle(){
@@ -5656,7 +5660,7 @@ function beginBattle(){
   banner('Combate!',G.oppName,'#fff');SND.round();renderHUD()}
 function finishBattle(){if(DEMO.on){demoNext();return}
   const winner=B.winner,win=winner===0,surv=B.units.filter(u=>u.alive&&u.side===winner).length;
-  try{window.CR&&CR.capture(win)}catch(e){}
+  try{window.ACH&&ACH.battleEnd(win);window.CR&&CR.capture(win)}catch(e){}
   const _hp0=G.hp,_g0=G.gold;
   clearCombatUnits();B.on=false;B.over=false;
   for(const u of boardUnits())u.el.style.display='';
@@ -5971,6 +5975,7 @@ function tmAct(el){
   else if(a==='new'){if(TM.sv){SND.msel();tmSetView('confirm')}else leaveTitle('new')}
   else if(a==='backMain'){TM.mode='hub';TM.view='main';syncModePreview();TM.r=0;TM.c=0;tmPaint(true)}
   else if(a==='scores'||a==='scoresTower'){document.dispatchEvent(new CustomEvent('oakchess:open-scores',{detail:{mode:a==='scoresTower'?'tower':'campaign'}}));SND.msel()}
+  else if(a==='achievements'&&window.ACH){ACH.open();SND.msel()}
   else if(a==='confirmyes')leaveTitle('new');
   else if(a==='confirmno'){SND.mback();tmSetView('campaign')}
   else if(a==='options')openTitleOptions('audio');
@@ -6302,6 +6307,9 @@ function runReveal(ev,el,info,odds,extra){
   at(2500,()=>{renderBoons();toast(`✨ ${bTierName(tier)} · ${p.n}: ${bDesc(b).join(' · ')}`);
     typeEventText(extra?'<p>Mais uma <b>bênção</b> para o seu time. Boa sorte!</p>':ev.out);SND.cry(ev.mon,.7)});
   at(3000,()=>{BOON.phase='done';
+    const card=el.querySelector('.bcard');
+    const turn=()=>{if(BOON.phase!=='done')return;const back=card.classList.toggle('viewing-back');card.setAttribute('aria-pressed',String(back));card.setAttribute('aria-label',back?'Verso da carta. Virar para ver os bônus.':'Frente da carta. Virar para ver o verso.');card.querySelector('.bcard-front').setAttribute('aria-hidden',String(back));card.querySelector('.bcard-back').setAttribute('aria-hidden',String(!back));SND.click()};
+    card.tabIndex=0;card.setAttribute('role','button');card.setAttribute('aria-pressed','false');card.setAttribute('aria-label','Frente da carta. Virar para ver o verso.');card.querySelector('.bcard-back').setAttribute('aria-hidden','true');card.addEventListener('click',e=>{e.stopPropagation();turn()});card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();turn()}});
     const go=$('#boonGo'),more=$('#boonMore');if(go){go.classList.add('show');go.onclick=finishBlessing}
     if(more&&!extra&&G.gold>=MORE_COST){more.innerHTML='<span>Outro pacote</span><span class="boon-cost"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 1h8v2h2v2h1v6h-1v2h-2v2H4v-2H2v-2H1V5h1V3h2z" fill="#f7c64b" stroke="#6d491d"/><path d="M5 4h6v8H5z" fill="#c98c24"/><path d="M6 4h2v8H6z" fill="#fff1a2"/></svg>'+MORE_COST+'</span>';more.setAttribute('aria-label','Abrir outro pacote por '+MORE_COST+' de ouro');more.classList.add('show');more.onclick=()=>buyMore(ev,info)}})}
 
@@ -6612,6 +6620,7 @@ function renderBag(){
 function craftItem(i,j){
   if(!canCraft(i,j)){SND.err();return}
   G.vials[VIALS[i].k]--;G.vials[VIALS[j].k]--;const k=recItem(i,j),it=ITEMBY[k];G.items.push(k);
+  if(window.ACH)ACH.craft();
   SND.equip();SND.star();toast(`<img src="${itemUrl(it.s)}" style="height:26px;vertical-align:middle" alt=""> ${it.n} criado!`);
   renderInv();
   craftAnim(i,j,k)}
@@ -7061,19 +7070,21 @@ body.reduce-fx .sh-rays,body.reduce-fx .sh-sp,body.reduce-fx .sh-flash{display:n
 </style>
 <script id="shiny-alert-js">
 /* Aviso de Pokémon shiny na loja: revela o shiny ao lado da forma normal */
-const SHQ=[];let shBusy=false;
+const SHQ=[];let shBusy=false,shRetry=null;
+function shinyAlertBlocked(){return G.paused||G.eventModal||G.over||DEMO.on||!!document.querySelector('#eventov,#menu.show,#achievements.show,#hist.show,#scores.show,#battleVideoViewer.show')}
 function shFit(img){const w=img.naturalWidth,h=img.naturalHeight;if(!w||!h)return;const T=240,m=Math.max(w,h);let k=Math.max(1,Math.round(T/m));while(k>1&&k*m>T*1.12)k--;img.style.width=w*k+"px";img.style.height=h*k+"px"}
 function shinyAlert(line){SHQ.push(line);if(!shBusy)nextShiny()}
-function nextShiny(){const line=SHQ.shift();if(line==null){shBusy=false;return}shBusy=true;
+function nextShiny(){if(shBusy)return;clearTimeout(shRetry);shRetry=null;if(!SHQ.length)return;if(shinyAlertBlocked()){shRetry=setTimeout(nextShiny,250);return}const line=SHQ.shift();if(line==null){shBusy=false;return}shBusy=true;
   const L=LINES[line],id=L.ids[0],ov=mk('div','shalert');
   ov.innerHTML=`<div class="sh-rays"></div><div class="sh-glow"></div><div class="sh-tag">✨ SHINY! ✨</div>
   <div class="sh-stage"><div class="sh-slot n"><img class="sh-norm" src="${sprFront(id)}" onload="shFit(this)" onerror="this.onerror=null;this.src='${sprStatic(id)}'" alt=""></div><span class="sh-arrow">➜</span>
   <div class="sh-slot"><img class="sh-shiny" src="${shinyUrl(sprFront(id))}" onload="shFit(this)" onerror="this.onerror=null;this.src='${shinyUrl(sprStatic(id))}'" alt=""></div></div>
   <div class="sh-cap"><div class="sh-name">${L.names[0]} shiny</div><div class="sh-sub">Uma versão rara apareceu na loja! Custo: ${L.c}</div><div class="sh-hint">Clique para continuar</div></div><div class="sh-flash"></div>`;
   for(let i=0;i<26;i++){const e=document.createElement('i');e.className='sh-sp';e.textContent=pick(['✦','✧','✨']);e.style.cssText=`--x:${rnd(4,96).toFixed(1)}%;--y:${rnd(15,92).toFixed(1)}%;--s:${ri(10,26)}px;--d:${rnd(1.4,2.8).toFixed(2)}s;animation-delay:${rnd(0,2).toFixed(2)}s`;ov.appendChild(e)}
-  stage.appendChild(ov);try{SND.star();setTimeout(()=>SND.badge(),260)}catch(e){}
-  const close=()=>{if(ov._c)return;ov._c=1;ov.classList.add('out');setTimeout(()=>{ov.remove();nextShiny()},380)};
-  ov.addEventListener('click',close);setTimeout(close,3800)}
+  stage.appendChild(ov);try{SND.star();setTimeout(()=>{if(!ov._c&&!shinyAlertBlocked())SND.badge()},260)}catch(e){}
+  let autoClose=null;const watch=setInterval(()=>{if(!shinyAlertBlocked()||ov._c)return;ov._c=1;clearInterval(watch);clearTimeout(autoClose);ov.remove();SHQ.unshift(line);shBusy=false;nextShiny()},150);
+  const close=()=>{if(ov._c)return;ov._c=1;clearInterval(watch);clearTimeout(autoClose);ov.classList.add('out');setTimeout(()=>{ov.remove();shBusy=false;nextShiny()},380)};
+  ov.addEventListener('click',close);autoClose=setTimeout(close,3800)}
 </script>
 
 
@@ -7396,6 +7407,7 @@ function showRunSummary(d){
  const team=d.last.us||[];
  summary.innerHTML='<div class="run-score"><small>PONTUAÇÃO FINAL · '+esc(DF[d.diff]||'Normal')+'</small><strong>0</strong><span>'+(d.score>best?'NOVO RECORDE':'CAMPANHA CONCLUÍDA')+'</span><div class="run-score-track"><i></i></div></div><div class="run-stats"><span><b>'+d.badges+'/8</b> Insígnias</span><span><b>'+d.wins+'</b> Vitórias</span><span><b>'+d.battles+'</b> Combates</span><span><b>'+d.e4+'/4</b> Elite 4</span></div><h3>COMPOSIÇÃO FINAL</h3><div class="run-team">'+team.map(u=>'<div class="run-mon"><img src="'+sprFront(u.id)+'" alt="" loading="eager"><b>'+esc(u.name)+'</b><small>'+'★'.repeat(u.star||1)+'</small><div class="run-items">'+(u.items||[]).map(it=>'<img src="'+itemUrl(it.s)+'" alt="'+esc(it.n)+'" title="'+esc(it.n)+'">').join('')+'</div></div>').join('')+'</div><details class="run-breakdown"><summary>Como a pontuação foi calculada</summary><p>Insígnias: '+d.badges+' × 100 · Elite 4: '+d.e4+' × 150 · Nível: '+d.level+' × 10 · Vitórias: '+d.wins+' × 25 · Ouro: '+d.gold+' · Vida: '+d.hp+'</p></details>';
  const number=summary.querySelector('.run-score strong'),bar=summary.querySelector('.run-score-track i');
+ if(window.ACH)ACH.decorate(summary,d);
  summary.querySelectorAll('img').forEach(im=>im.onerror=function(){this.style.visibility='hidden'});
  const start=performance.now();function count(now){if(!q('#over').classList.contains('show'))return;const t=Math.min(1,(now-start)/1800),v=Math.round(d.score*(1-Math.pow(1-t,3)));number.textContent=v.toLocaleString('pt-BR');bar.style.width=(t*100)+'%';if(t<1)runScoreRaf=requestAnimationFrame(count);else{number.textContent=d.score.toLocaleString('pt-BR');summary.querySelector('.run-score').classList.add('counted')}}runScoreRaf=requestAnimationFrame(count);
 }
@@ -7411,7 +7423,7 @@ function snap(win){const r=G.round||{};
  const us=B.units.filter(u=>u.side===0).map(u=>({id:u.id,name:u.name,star:u.star,alive:!!u.alive,dealt:Math.round(u._dealt||0),taken:Math.round(u._taken||0),heal:Math.round(u._healed||0),kills:u._kills||0,items:(u.items||[]).map(it=>typeof it==='string'?{n:it,s:it}:{n:it.n,s:it.s})}));
  return{ts:Date.now(),win:!!win,t:Math.round(B.t||0),title:(typeof stageTxt==='function'&&r.st!=null?stageTxt(r):'Rodada'),foe:G.oppName||'Adversário',diff:G.runDiff||CFG.diff||'normal',us,foeDealt:B.units.filter(u=>u.side===1).reduce((a,u)=>a+Math.round(u._dealt||0),0),hp:0,gold:0}}
 if(window.CR){const oc=CR.capture,oa=CR.after,os=CR.onStart;
- CR.onStart=function(){if(!DEMO.on)startFrames();return os.apply(CR,arguments)};
+ CR.onStart=function(){if(!DEMO.on){startFrames();if(window.ACH)ACH.battleStart()}return os.apply(CR,arguments)};
  CR.capture=function(w){try{cur=snap(w);cur.videoId=window.BATTLE_VIDEO?BATTLE_VIDEO.stop():null;cur.frames=stopFrames();cur.arena=recordedArena;if(G.round&&G.round.kind==='secret'){cur.title='Caverna Cerúlea';cur.foe='Mewtwo'}}catch(e){cur=null}return oc.apply(CR,arguments)};
  CR.after=function(h,g){const r=oa.apply(CR,arguments);if(cur){try{cur.hp=Math.round(G.hp-h);cur.gold=G.gold-g;run.battles++;if(cur.win)run.wins++;else run.losses++;run.last=cur;saveRun()}catch(e){}cur=null}return r}}
 const oldGameOver=gameOver;gameOver=function(win){const res=oldGameOver.apply(this,arguments);setTimeout(()=>finishRun(win),0);return res};
@@ -7430,6 +7442,7 @@ function detail(){
  const rows=us.slice().sort((a,b)=>b.dealt-a.dealt).map(u=>'<div class="ur '+(u.alive?'':'dead')+' '+(u===top&&u.dealt>0?'mvp':'')+'"><div class="av"><img alt="" src="'+sprFront(u.id)+'"></div><div><div class="nm">'+(u===top&&u.dealt>0?'👑 ':'')+esc(u.name)+'<u>'+'★'.repeat(u.star)+'</u>'+(u.kills?' ⚔'+u.kills:'')+(u.alive?'':' ✕')+'</div><div class="it">'+(u.items&&u.items.length?u.items.map(it=>'<img title="'+esc(it.n)+'" alt="" src="'+itemUrl(it.s)+'">').join(''):'<span>sem itens</span>')+'</div><div class="bar"><i style="width:'+Math.round((u.dealt||0)/mx*100)+'%"></i></div></div><div class="st">'+fmt(u.dealt||0)+'<small>DANO</small></div><div class="st">'+fmt(u.taken||0)+'<small>SOFRIDO</small></div><div class="st">'+(u.heal?fmt(u.heal):'–')+'<small>CURA</small></div></div>').join('');
  const replay=b.videoId?'<button type="button" class="hvideo hreplay">▶ Vídeo da batalha final</button>':(b.frames&&b.frames.length>1?(validReplay(b.frames)?'<button type="button" class="hreplay">▶ Reconstrução antiga</button><small class="video-history-note">Esta batalha não tem vídeo. Ative a gravação em Configurações → Jogo para registrar as próximas.</small>':'<div class="replay-unavailable">REPLAY INDISPONÍVEL<small>Esta gravação antiga perdeu as posições dos Pokémon. As próximas batalhas serão gravadas com a correção.</small></div>'):'');
  D.innerHTML='<div class="dh"><span class="badge '+(d.win?'w':'')+'">'+(d.win?'VITÓRIA':'DERROTA')+'</span><div><h3>'+esc(d.title)+'</h3><small>'+when(d.ts)+' · '+d.battles+' combates · '+d.wins+' vitórias / '+d.losses+' derrotas</small></div></div><div class="kp"><div><b>'+d.battles+'</b><span>Combates</span></div><div><b>'+d.badges+'/8</b><span>Insígnias</span></div><div><b>'+d.e4+'/4</b><span>Elite 4</span></div><div><b>'+d.level+'</b><span>Nível</span></div><div><b>'+fmt(d.gold)+'</b><span>Ouro final</span></div></div>'+replay+'<h4>BATALHA FINAL · '+esc(b.title||'')+' VS '+esc(b.foe||'')+' · '+(b.t||0)+'S</h4><div class="kp"><div><b>'+fmt(sum(us,'dealt'))+'</b><span>Dano causado</span></div><div><b>'+fmt(sum(us,'taken'))+'</b><span>Dano sofrido</span></div><div><b>'+fmt(sum(us,'heal'))+'</b><span>Cura</span></div><div><b>'+d.hp+'</b><span>Vida final</span></div><div><b>'+esc(DF[b.diff]||'Normal')+'</b><span>Dificuldade</span></div></div><h4>COMPOSIÇÃO · '+us.filter(u=>u.alive).length+'/'+us.length+' DE PÉ</h4>'+rows;
+ if(d.trainerTitle){const title=document.createElement('div');title.className='ach-equipped-title';title.textContent=d.trainerTitle;D.querySelector('.dh').after(title)}
  if(b.videoId){const share=document.createElement('button');share.type='button';share.className='hshare';share.textContent='↗ Compartilhar vídeo';D.querySelector('.hvideo').after(share)}
  D.querySelectorAll('.ur .av img').forEach(im=>{im.onerror=function(){this.style.visibility='hidden'}});
  D.querySelectorAll('.ur .it img').forEach(im=>{im.onerror=function(){this.style.visibility='hidden'}});
@@ -8645,4 +8658,47 @@ body.game-paused:has(#menu.show) #pausedOverlay .pause-card{visibility:hidden;po
 .video-share-actions small{margin-left:auto;font:11px/17px 'Trebuchet MS',sans-serif;color:#b9cce5}
 .video-share-actions button:disabled{opacity:.5;cursor:wait}
 </style>
+<style id="interactive-card-flip">
+.bpk.shown .bcard{pointer-events:auto;cursor:pointer}
+.bpk.shown .bcard .bcard-face{transition:transform .5s cubic-bezier(.25,.7,.25,1)}
+.bpk.shown .bcard.viewing-back .bcard-front{transform:rotateY(360deg)}
+.bpk.shown .bcard.viewing-back .bcard-back{transform:rotateY(180deg)}
+.bpk.shown .bcard:focus-visible{outline:2px solid #ffe298;outline-offset:5px;border-radius:18px}
+body.reduce-fx .bpk.shown .bcard .bcard-face{transition:none}
+@media(prefers-reduced-motion:reduce){.bpk.shown .bcard .bcard-face{transition:none}}
+</style>
+<style id="compact-pokemon-tooltip">
+body #tip:has(.ut){width:310px!important;max-width:calc(100vw - 28px)!important;padding:8px!important}
+body #tip .ut{gap:5px}
+body #tip .ut .uh{gap:9px}
+body #tip .ut .um{width:42px;height:42px;border-width:2px}
+body #tip .ut .um img{max-width:35px;max-height:35px}
+body #tip .ut .uhc h4{font-size:9px;line-height:15px;margin-bottom:3px;gap:4px}
+body #tip .ut .ustars{font-size:10px;letter-spacing:0}
+body #tip .ut .tys{gap:3px}
+body #tip .ut .tys .rl{font-size:9px}
+body #tip .ut .tys .ty{font-size:9px;padding:0 5px;gap:2px}
+body #tip .ut .uc{font-size:9px;padding:0 4px;right:-6px;bottom:-4px}
+body #tip .ut .bars{gap:5px}
+body #tip .ut .bar{height:15px;padding:0 5px}
+body #tip .ut .bar span{font-size:7px}
+body #tip .ut .bar b{font-size:10px}
+body #tip .ut .sts{gap:3px}
+body #tip .ut .sts div{padding:2px 0 3px}
+body #tip .ut .sts i{font-size:7px}
+body #tip .ut .sts b{font-size:12px}
+body #tip .ut .usec{gap:3px}
+body #tip .ut .ab{padding:4px 6px;gap:6px}
+body #tip .ut .abi{width:20px;height:20px;font-size:9px;border-width:1px}
+body #tip .ut .abi img{width:12px;height:12px}
+body #tip .ut .abh{gap:4px}
+body #tip .ut .abh b{font-size:11px;line-height:15px}
+body #tip .ut .ab p{font-size:10px;line-height:13px;margin-top:1px}
+body #tip .ut .tag{font-size:7px;padding:0 4px}
+body #tip .ut .unl{padding:3px 6px;font-size:9px;gap:2px 6px}
+body #tip .ut .itc{padding:3px 6px;font-size:10px}
+body #tip .ut .usec.its{padding-top:4px}
+</style>
+<link rel="stylesheet" href="assets/achievements.css">
+<script src="assets/achievements.js"></script>
 </body></html>
