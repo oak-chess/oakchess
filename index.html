@@ -7430,6 +7430,7 @@ function detail(){
  const rows=us.slice().sort((a,b)=>b.dealt-a.dealt).map(u=>'<div class="ur '+(u.alive?'':'dead')+' '+(u===top&&u.dealt>0?'mvp':'')+'"><div class="av"><img alt="" src="'+sprFront(u.id)+'"></div><div><div class="nm">'+(u===top&&u.dealt>0?'👑 ':'')+esc(u.name)+'<u>'+'★'.repeat(u.star)+'</u>'+(u.kills?' ⚔'+u.kills:'')+(u.alive?'':' ✕')+'</div><div class="it">'+(u.items&&u.items.length?u.items.map(it=>'<img title="'+esc(it.n)+'" alt="" src="'+itemUrl(it.s)+'">').join(''):'<span>sem itens</span>')+'</div><div class="bar"><i style="width:'+Math.round((u.dealt||0)/mx*100)+'%"></i></div></div><div class="st">'+fmt(u.dealt||0)+'<small>DANO</small></div><div class="st">'+fmt(u.taken||0)+'<small>SOFRIDO</small></div><div class="st">'+(u.heal?fmt(u.heal):'–')+'<small>CURA</small></div></div>').join('');
  const replay=b.videoId?'<button type="button" class="hvideo hreplay">▶ Vídeo da batalha final</button>':(b.frames&&b.frames.length>1?(validReplay(b.frames)?'<button type="button" class="hreplay">▶ Reconstrução antiga</button><small class="video-history-note">Esta batalha não tem vídeo. Ative a gravação em Configurações → Jogo para registrar as próximas.</small>':'<div class="replay-unavailable">REPLAY INDISPONÍVEL<small>Esta gravação antiga perdeu as posições dos Pokémon. As próximas batalhas serão gravadas com a correção.</small></div>'):'');
  D.innerHTML='<div class="dh"><span class="badge '+(d.win?'w':'')+'">'+(d.win?'VITÓRIA':'DERROTA')+'</span><div><h3>'+esc(d.title)+'</h3><small>'+when(d.ts)+' · '+d.battles+' combates · '+d.wins+' vitórias / '+d.losses+' derrotas</small></div></div><div class="kp"><div><b>'+d.battles+'</b><span>Combates</span></div><div><b>'+d.badges+'/8</b><span>Insígnias</span></div><div><b>'+d.e4+'/4</b><span>Elite 4</span></div><div><b>'+d.level+'</b><span>Nível</span></div><div><b>'+fmt(d.gold)+'</b><span>Ouro final</span></div></div>'+replay+'<h4>BATALHA FINAL · '+esc(b.title||'')+' VS '+esc(b.foe||'')+' · '+(b.t||0)+'S</h4><div class="kp"><div><b>'+fmt(sum(us,'dealt'))+'</b><span>Dano causado</span></div><div><b>'+fmt(sum(us,'taken'))+'</b><span>Dano sofrido</span></div><div><b>'+fmt(sum(us,'heal'))+'</b><span>Cura</span></div><div><b>'+d.hp+'</b><span>Vida final</span></div><div><b>'+esc(DF[b.diff]||'Normal')+'</b><span>Dificuldade</span></div></div><h4>COMPOSIÇÃO · '+us.filter(u=>u.alive).length+'/'+us.length+' DE PÉ</h4>'+rows;
+ if(b.videoId){const share=document.createElement('button');share.type='button';share.className='hshare';share.textContent='↗ Compartilhar vídeo';D.querySelector('.hvideo').after(share)}
  D.querySelectorAll('.ur .av img').forEach(im=>{im.onerror=function(){this.style.visibility='hidden'}});
  D.querySelectorAll('.ur .it img').forEach(im=>{im.onerror=function(){this.style.visibility='hidden'}});
 }
@@ -7475,6 +7476,7 @@ function openScores(mode){scoreMode=mode==='tower'?'tower':'campaign';scoreDiff=
 document.addEventListener('oakchess:open-scores',e=>openScores(e.detail&&e.detail.mode));
 SCO.addEventListener('click',e=>{const d=e.target.closest('[data-score-diff]'),m=e.target.closest('[data-score-mode]');if(d){scoreDiff=d.dataset.scoreDiff;SCO.querySelectorAll('[data-score-diff]').forEach(b=>b.classList.toggle('on',b===d));paintScores()}else if(m&&!m.disabled){scoreMode=m.dataset.scoreMode;paintScores()}else if(e.target.closest('.sx')||e.target===SCO)SCO.classList.remove('show')});
 H.addEventListener('click',e=>{
+ if(e.target.closest('.hshare')){const d=data[idx];if(d&&d.last&&window.BATTLE_VIDEO)BATTLE_VIDEO.share(d.last.videoId,d.last.foe);return}
  if(e.target.closest('.hvideo')){const d=data[idx];if(d&&d.last&&window.BATTLE_VIDEO)BATTLE_VIDEO.watch(d.last.videoId,d.last.foe);return}
  if(e.target.closest('.hreplay')){const d=data[idx];if(d&&d.last&&validReplay(d.last.frames)){closeReplay();openReplay();toggleReplay()}return}
  if(e.target.closest('.rpplay')){toggleReplay();return}
@@ -8603,12 +8605,18 @@ body.game-paused:has(#menu.show) #pausedOverlay .pause-card{visibility:hidden;po
  document.getElementById('menu').addEventListener('change',e=>{if(e.target.dataset.comfortSwitch==='recordReplays'&&!e.target.checked)disarm()});
  const overlay=document.createElement('div');overlay.id='battleVideoViewer';overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label','Vídeo da batalha final');overlay.innerHTML='<div class="battle-video-box"><header><b>VÍDEO DA BATALHA FINAL</b><button type="button" aria-label="Fechar vídeo">✕</button></header><p role="status"></p><video controls playsinline preload="metadata"></video></div>';stage.appendChild(overlay);
  const video=overlay.querySelector('video'),info=overlay.querySelector('p');
- function close(){watchToken++;video.pause();video.removeAttribute('src');video.load();if(playerUrl){URL.revokeObjectURL(playerUrl);playerUrl=null}overlay.classList.remove('show')}
- async function watch(id,foe){close();const token=watchToken;overlay.classList.add('show');info.textContent='Carregando vídeo…';overlay.querySelector('button').focus();try{const record=await readVideo(id);if(token!==watchToken)return;if(!record||!record.blob)throw new Error('missing');playerUrl=URL.createObjectURL(record.blob);video.src=playerUrl;info.textContent=foe&&foe!=='???'?'Batalha final · '+foe:'Batalha final';video.play().catch(()=>{})}catch(e){if(token===watchToken)info.textContent='Vídeo indisponível. Ele pode ter sido removido dos dados deste navegador.'}}
+ const actions=document.createElement('div');actions.className='video-share-actions';actions.innerHTML='<button type="button" class="video-share-native">Compartilhar</button><a class="video-download">Baixar vídeo</a><small class="video-file-info"></small>';overlay.querySelector('.battle-video-box').appendChild(actions);
+ const nativeShare=actions.querySelector('button'),download=actions.querySelector('a'),fileInfo=actions.querySelector('small');let shareFile=null;
+ function close(){watchToken++;video.pause();video.removeAttribute('src');video.load();shareFile=null;download.removeAttribute('href');actions.hidden=true;if(playerUrl){URL.revokeObjectURL(playerUrl);playerUrl=null}overlay.classList.remove('show')}
+ nativeShare.onclick=async()=>{if(!shareFile)return;nativeShare.disabled=true;try{await navigator.share({files:[shareFile],title:'Oakchess · Batalha final'});info.textContent='Vídeo compartilhado.'}catch(e){info.textContent=e.name==='AbortError'?'Compartilhamento cancelado.':'Não foi possível compartilhar diretamente. Use Baixar vídeo para enviar pelo aplicativo de sua escolha.'}finally{nativeShare.disabled=false}};
+ async function watch(id,foe,sharing=false){close();const token=watchToken;overlay.classList.add('show');info.textContent='Carregando vídeo…';overlay.querySelector('button').focus();try{const record=await readVideo(id);if(token!==watchToken)return;if(!record||!record.blob)throw new Error('missing');playerUrl=URL.createObjectURL(record.blob);video.src=playerUrl;
+ const ext=record.blob.type.includes('mp4')?'mp4':'webm',date=new Date(record.ts||Date.now()).toISOString().slice(0,10),opponent=(foe&&foe!=='???'?foe:'batalha-final').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/gi,'-').replace(/^-|-$/g,'').slice(0,60)||'batalha-final';
+ shareFile=new File([record.blob],'oakchess-'+opponent+'-'+date+'.'+ext,{type:record.blob.type.split(';')[0]||'video/webm'});download.href=playerUrl;download.download=shareFile.name;fileInfo.textContent=ext.toUpperCase()+' · '+(record.blob.size/1048576).toLocaleString('pt-BR',{maximumFractionDigits:1})+' MB';let supported=false;try{supported=!!(navigator.share&&navigator.canShare&&navigator.canShare({files:[shareFile]}))}catch(e){}nativeShare.hidden=!supported;actions.hidden=false;info.textContent=sharing?(supported?'Escolha Compartilhar ou Baixar vídeo.':'Compartilhamento direto indisponível neste navegador. Baixe o vídeo para enviá-lo.'):(foe&&foe!=='???'?'Batalha final · '+foe:'Batalha final');if(!sharing)video.play().catch(()=>{});
+ }catch(e){if(token===watchToken)info.textContent='Vídeo indisponível. Ele pode ter sido removido dos dados deste navegador.'}}
  overlay.querySelector('button').onclick=close;overlay.addEventListener('click',e=>{if(e.target===overlay)close()});
  window.addEventListener('keydown',e=>{if(!overlay.classList.contains('show'))return;e.stopImmediatePropagation();if(e.key==='Escape'){e.preventDefault();close()}},true);
  window.addEventListener('pagehide',()=>{if(stream)stream.getTracks().forEach(t=>t.stop())});
- window.BATTLE_VIDEO={start,stop,watch,prune};prune();
+ window.BATTLE_VIDEO={start,stop,watch,share:(id,foe)=>watch(id,foe,true),prune};prune();
 })();
 </script>
 <style id="actual-video-player-style">
@@ -8626,5 +8634,15 @@ body.game-paused:has(#menu.show) #pausedOverlay .pause-card{visibility:hidden;po
 .battle-video-box p{font:12px/18px 'Trebuchet MS',sans-serif;color:#c2d4eb;margin:9px 0}
 .battle-video-box video{display:block;width:100%;max-height:65vh;background:#080f1e}
 .video-history-note{font:11px/17px 'Trebuchet MS',sans-serif;color:#b5c9e4}
+</style>
+<style id="share-recorded-video">
+#hist .hshare{align-self:flex-start;margin-top:-4px;padding:10px 13px;border:2px solid #8ca9ce;background:#293f60;color:#edf4ff;font:8px/16px 'Press Start 2P',monospace;box-shadow:inset 2px 2px #ffffff12,0 3px #080f20}
+#hist .hshare:hover{background:#3b567a}
+.video-share-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px}
+.video-share-actions[hidden],.video-share-actions button[hidden]{display:none}
+.battle-video-box .video-share-actions button,.battle-video-box .video-share-actions a{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;width:auto;height:auto;min-height:36px;padding:8px 12px;border:2px solid #8ca9ce;background:#293f60;color:#edf4ff;box-shadow:inset 2px 2px #ffffff12,0 3px #080f20;font:8px/16px 'Press Start 2P',monospace;text-decoration:none;cursor:pointer}
+.battle-video-box .video-share-actions a{background:#e7c36b;color:#272b3e;border-color:#ffe298}
+.video-share-actions small{margin-left:auto;font:11px/17px 'Trebuchet MS',sans-serif;color:#b9cce5}
+.video-share-actions button:disabled{opacity:.5;cursor:wait}
 </style>
 </body></html>
