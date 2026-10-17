@@ -1,0 +1,17 @@
+body #ttl #tpress.tools-layout{width:110px;max-width:calc(100% - 24px)}
+#titleMenuToggle{display:none}
+body #ttl #tpress.tools-layout #titleMenuToggle{position:relative;display:flex;align-items:center;justify-content:center;gap:9px;width:106px;height:44px;box-sizing:border-box;border:2px solid #17243b;border-radius:0;background:#ece7d2;color:#1d2c48;box-shadow:inset 2px 2px #fff9e5,inset -2px -2px #aaa58e,3px 4px #10182d;font:8px/15px 'Press Start 2P',monospace;cursor:pointer}
+#titleMenuToggle:hover{background:#fff0ba}#titleMenuToggle:focus-visible{outline:2px solid #ffe298;outline-offset:4px}
+.hamburger-lines{display:flex;flex-direction:column;gap:3px;width:17px}.hamburger-lines i{display:block;height:3px;background:#23334f;box-shadow:1px 1px #fff8;transition:transform .15s,opacity .15s}
+.tools-open .hamburger-lines i:first-child{transform:translateY(6px) rotate(45deg)}.tools-open .hamburger-lines i:nth-child(2){opacity:0}.tools-open .hamburger-lines i:last-child{transform:translateY(-6px) rotate(-45deg)}
+body #ttl #tpress.tools-layout #tmain{display:none!important}
+body #ttl #tpress.tools-layout.tools-open #tmain{display:block!important;position:absolute;top:56px;right:0;width:235px;padding:9px;border:2px solid #8499b9;background:#14253e;box-shadow:0 0 0 3px #091428,5px 6px #0006;box-sizing:border-box}
+body #ttl #tpress.tools-layout #tmain .r2{grid-template-columns:1fr;gap:7px}
+body #ttl #tpress.tools-layout #tmain .r2 .ti{display:flex;flex-direction:row;justify-content:flex-start;align-items:center;gap:12px;width:100%;height:42px;min-height:42px;box-sizing:border-box;padding:8px 13px;background:#253b58;box-shadow:inset 2px 2px #ffffff0e,inset -2px -2px #0003;border:1px solid #4d6688;transform:none}
+body #ttl #tpress.tools-layout #tmain .r2 .ti::before{flex:none;width:22px;height:22px;filter:brightness(0) invert(1)}
+body #ttl #tpress.tools-layout #tmain .r2 .ti .tl{font:8px/16px 'Press Start 2P',monospace;color:#edf4ff}
+body #ttl #tpress.tools-layout #tmain .r2 .ti:hover,body #ttl #tpress.tools-layout #tmain .r2 .ti:focus-visible{background:#3a5272;outline:1px solid #e9ca7c;outline-offset:0;transform:none}
+body #ttl #tpress.tools-layout #tmain .r2 [data-act=achievements]::before{color:#ffe298}
+body #ttl #tpress.tools-layout #tmain .r2 [data-act=achievements].has-rewards::after{top:10px;right:8px}
+.hamburger-reward{display:none!important}.has-rewards>.hamburger-reward{display:grid!important;place-items:center;position:absolute;top:-9px;right:-8px;min-width:17px;height:17px;padding:0 2px;background:#e7c36b;border:2px solid #17243b;color:#26324a;font:7px/13px 'Press Start 2P',monospace}
+@media(prefers-reduced-motion:reduce){.hamburger-lines i{transition:none}}
