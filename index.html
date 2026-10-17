@@ -2663,7 +2663,7 @@ function moveText(L,star,mv){
 /* =====================================================================
    ÁUDIO — efeitos sintetizados (WebAudio), gritos da PokeAPI, música simples
    ===================================================================== */
-const CFG0={sfx:.7,cry:.6,music:true,musvol:.5,timer:true,speed:1,pmd:true,mute:false,shake:true,reduceFx:true,diff:'normal',remSpeed:false,txt:'normal',skipDlg:true,dmgnum:'all',manabar:true,confirmSell:true,autoPause:true,uiSize:'normal',fxLevel:'normal',teamMarkers:false,noticeVol:.5,recordReplays:true,keys:{roll:'d',xp:'f',sell:'e',bag:'b',fight:' ',pause:'p',view:'v',mute:'m'}};
+const CFG0={sfx:.7,cry:.6,music:true,musvol:.5,timer:true,speed:1,pmd:true,mute:false,shake:true,reduceFx:true,diff:'normal',remSpeed:false,txt:'normal',skipDlg:true,dmgnum:'all',manabar:true,confirmSell:false,autoPause:false,uiSize:'normal',fxLevel:'normal',teamMarkers:false,noticeVol:.5,recordReplays:true,keys:{roll:'d',xp:'f',sell:'e',bag:'b',fight:' ',pause:'p',view:'v',mute:'m'}};
 const CFG=Object.assign({},CFG0);
 try{Object.assign(CFG,JSON.parse(localStorage.getItem('pktft')||'{}'));if(!CFG.remSpeed)CFG.speed=1}catch(e){}
 const saveCfg=()=>{try{localStorage.setItem('pktft',JSON.stringify(CFG))}catch(e){}};
@@ -4566,6 +4566,8 @@ function rollShop(free){
     G.pool[L.i]--;const shn=Math.random()<Math.min(.08,SHINY_RATE+.001*(G.shPity||0));G.shPity=shn?0:(G.shPity||0)+1;G.shop.push({line:L.i,shiny:shn});preload([shn?shinyUrl(sprFront(L.ids[0])):sprFront(L.ids[0])])}
   if(!free)SND.roll();renderShop(true);renderHUD();G.shop.forEach(x=>{if(x&&x.shiny&&typeof shinyAlert==='function')shinyAlert(x.line)})}
 const BALLS=['poke-ball','great-ball','ultra-ball','luxury-ball','master-ball'],BALLC=['#ff5a5a','#5aa0ff','#ffd84a','#c9a050','#c070ff'];
+preload(BALLS.map(ITI));
+function ballSprite(cost){const img=new Image();img.className='tball';img.alt='';return new Promise(resolve=>{let fallback=false;img.onload=()=>resolve(img);img.onerror=()=>{if(fallback){resolve(null);return}fallback=true;img.src=ITI('poke-ball')};img.src=ITI(BALLS[clamp(Math.round(cost||1),1,5)-1])})}
 const fxl=$('#fxl');
 function stagePosOf(el){const r=el.getBoundingClientRect(),s=stage.getBoundingClientRect();return{x:(r.left+r.width/2-s.left)/SC,y:(r.top+r.height/2-s.top)/SC}}
 function arcAnim(el,a,b,dur,peak,spins,s0,s1,easing){
@@ -4573,8 +4575,9 @@ function arcAnim(el,a,b,dur,peak,spins,s0,s1,easing){
     kf.push({transform:`translate(${x}px,${y}px) translate(-50%,-50%) rotate(${spins*t}deg) scale(${lerp(s0,s1,t)})`})}
   return anim(el,kf,{duration:dur,easing:easing||'linear',fill:'forwards'})}
 /* lança a Pokébola (sprite da PokeAPI conforme a raridade) do ponto A até B e abre */
-function throwBall(cost,from,to,onOpen){
-  const img=new Image();img.src=ITI(BALLS[cost-1]);img.className='tball';img.alt='';fxl.appendChild(img);
+function throwBall(cost,from,to,onOpen,loadedSprite){
+  if(!loadedSprite){ballSprite(cost).then(img=>{if(img)throwBall(cost,from,to,onOpen,img);else if(onOpen)onOpen()});return}
+  const img=loadedSprite;fxl.appendChild(img);
   SND.throw_();const wx=to.x-OFF,wy=to.y;
   const a=arcAnim(img,from,to,560,-170-Math.abs(to.x-from.x)*.06,900,1.7,1);
   const open=()=>{
@@ -4595,7 +4598,7 @@ function recallBall(cost,from,price){
   const c=BALLC[cost-1],wx=from.x-OFF,wy=from.y;SND.recall();
   for(let i=0;i<20;i++){const an=rnd(0,6.28),d=rnd(40,90);FX.P({x:wx+Math.cos(an)*d,y:wy+Math.sin(an)*d*.8,vx:-Math.cos(an)*d*3.4,vy:-Math.sin(an)*d*2.7,life:.3,s:rnd(3,7),s2:1,c:['#ffffff','#ff6a6a','#ff2a2a'],sh:'glow'})}
   FX.ring(wx,wy,'#ff5a5a',60,8,.35,4);
-  const img=new Image();img.src=ITI(BALLS[cost-1]);img.className='tball';img.alt='';fxl.appendChild(img);
+  const img=new Image();img.onerror=()=>{img.onerror=null;img.src=ITI('poke-ball')};img.src=ITI(BALLS[clamp(Math.round(cost||1),1,5)-1]);img.className='tball';img.alt='';fxl.appendChild(img);
   anim(img,[{transform:`translate(${from.x}px,${from.y}px) translate(-50%,-50%) scale(0)`,opacity:0},{transform:`translate(${from.x}px,${from.y}px) translate(-50%,-50%) scale(1.6) rotate(200deg)`,opacity:1,offset:.35},{transform:`translate(${from.x}px,${from.y-10}px) translate(-50%,-50%) scale(1.1) rotate(360deg)`,opacity:1,offset:.7},{transform:`translate(${from.x}px,${from.y-90}px) translate(-50%,-50%) scale(.2) rotate(540deg)`,opacity:0}],{duration:620,fill:'forwards'});
   setTimeout(()=>img.remove(),680);
   const gt=$('#goldtop'),to=stagePosOf(gt);
@@ -7397,7 +7400,9 @@ function showRunSummary(d){
  const start=performance.now();function count(now){if(!q('#over').classList.contains('show'))return;const t=Math.min(1,(now-start)/1800),v=Math.round(d.score*(1-Math.pow(1-t,3)));number.textContent=v.toLocaleString('pt-BR');bar.style.width=(t*100)+'%';if(t<1)runScoreRaf=requestAnimationFrame(count);else{number.textContent=d.score.toLocaleString('pt-BR');summary.querySelector('.run-score').classList.add('counted')}}runScoreRaf=requestAnimationFrame(count);
 }
 function takeFrame(){if(CFG.recordReplays===false||G.paused||!B||!Array.isArray(B.units))return;/* H neste escopo é o diálogo, não a altura do jogo (800). */const units=B.units.map(u=>[u.id,u.side,Math.round((u.x/W)*1000),Math.round((u.y/800)*1000),Math.round(100*Math.max(0,u.hp||0)/Math.max(1,u.maxHp||1)),!!u.alive,u.star||1]);frames.push([Math.round((B.t||0)*10)/10,units]);if(frames.length>220)frames.shift()}
-function startFrames(){frames=[];clearInterval(frameTimer);frameTimer=null;if(CFG.recordReplays===false)return;takeFrame();frameTimer=setInterval(takeFrame,250)}
+let recordedArena=null;
+function captureReplayArena(){try{const c=document.createElement('canvas');c.width=960;c.height=600;const g=c.getContext('2d');g.scale(.75,.75);for(const id of ['scene','arenabase','grid']){const source=document.getElementById(id);if(source&&source.width){const factor=source.width/2560;g.drawImage(source,640*factor,0,1280*factor,800*factor,0,0,1280,800)}}return c.toDataURL('image/webp',.72)}catch(e){return null}}
+function startFrames(){frames=[];recordedArena=null;clearInterval(frameTimer);frameTimer=null;if(CFG.recordReplays===false)return;if(window.BATTLE_VIDEO)BATTLE_VIDEO.start();recordedArena=captureReplayArena();takeFrame();frameTimer=setInterval(takeFrame,250)}
 function stopFrames(){clearInterval(frameTimer);frameTimer=null;if(CFG.recordReplays===false){frames=[];return []}takeFrame();return frames.slice()}
 try{T_DESC.history='Veja o resultado final de cada run e reveja a batalha decisiva.'}catch(e){}
 setInterval(()=>{try{document.body.classList.toggle('in-title',LAB.st==='title')}catch(e){}},250);
@@ -7407,7 +7412,7 @@ function snap(win){const r=G.round||{};
  return{ts:Date.now(),win:!!win,t:Math.round(B.t||0),title:(typeof stageTxt==='function'&&r.st!=null?stageTxt(r):'Rodada'),foe:G.oppName||'Adversário',diff:G.runDiff||CFG.diff||'normal',us,foeDealt:B.units.filter(u=>u.side===1).reduce((a,u)=>a+Math.round(u._dealt||0),0),hp:0,gold:0}}
 if(window.CR){const oc=CR.capture,oa=CR.after,os=CR.onStart;
  CR.onStart=function(){if(!DEMO.on)startFrames();return os.apply(CR,arguments)};
- CR.capture=function(w){try{cur=snap(w);cur.frames=stopFrames()}catch(e){cur=null}return oc.apply(CR,arguments)};
+ CR.capture=function(w){try{cur=snap(w);cur.videoId=window.BATTLE_VIDEO?BATTLE_VIDEO.stop():null;cur.frames=stopFrames();cur.arena=recordedArena;if(G.round&&G.round.kind==='secret'){cur.title='Caverna Cerúlea';cur.foe='Mewtwo'}}catch(e){cur=null}return oc.apply(CR,arguments)};
  CR.after=function(h,g){const r=oa.apply(CR,arguments);if(cur){try{cur.hp=Math.round(G.hp-h);cur.gold=G.gold-g;run.battles++;if(cur.win)run.wins++;else run.losses++;run.last=cur;saveRun()}catch(e){}cur=null}return r}}
 const oldGameOver=gameOver;gameOver=function(win){const res=oldGameOver.apply(this,arguments);setTimeout(()=>finishRun(win),0);return res};
 const oldRestart=restart;restart=function(){resetRun();return oldRestart.apply(this,arguments)};
@@ -7423,7 +7428,7 @@ function detail(){
  if(!d){D.innerHTML='<div class="hempty">Nenhuma run concluída neste formato ainda.<br>As próximas entram aqui quando a aventura terminar; os registros antigos por etapa foram preservados.</div>';return}
  const b=d.last||{},us=b.us||[],mx=Math.max(1,...us.map(u=>u.dealt||0)),top=us.slice().sort((a,b)=>b.dealt-a.dealt)[0];
  const rows=us.slice().sort((a,b)=>b.dealt-a.dealt).map(u=>'<div class="ur '+(u.alive?'':'dead')+' '+(u===top&&u.dealt>0?'mvp':'')+'"><div class="av"><img alt="" src="'+sprFront(u.id)+'"></div><div><div class="nm">'+(u===top&&u.dealt>0?'👑 ':'')+esc(u.name)+'<u>'+'★'.repeat(u.star)+'</u>'+(u.kills?' ⚔'+u.kills:'')+(u.alive?'':' ✕')+'</div><div class="it">'+(u.items&&u.items.length?u.items.map(it=>'<img title="'+esc(it.n)+'" alt="" src="'+itemUrl(it.s)+'">').join(''):'<span>sem itens</span>')+'</div><div class="bar"><i style="width:'+Math.round((u.dealt||0)/mx*100)+'%"></i></div></div><div class="st">'+fmt(u.dealt||0)+'<small>DANO</small></div><div class="st">'+fmt(u.taken||0)+'<small>SOFRIDO</small></div><div class="st">'+(u.heal?fmt(u.heal):'–')+'<small>CURA</small></div></div>').join('');
- const replay=b.frames&&b.frames.length>1?(validReplay(b.frames)?'<button type="button" class="hreplay">▶ Assistir à batalha final</button>':'<div class="replay-unavailable">REPLAY INDISPONÍVEL<small>Esta gravação antiga perdeu as posições dos Pokémon. As próximas batalhas serão gravadas com a correção.</small></div>'):'';
+ const replay=b.videoId?'<button type="button" class="hvideo hreplay">▶ Vídeo da batalha final</button>':(b.frames&&b.frames.length>1?(validReplay(b.frames)?'<button type="button" class="hreplay">▶ Reconstrução antiga</button><small class="video-history-note">Esta batalha não tem vídeo. Ative a gravação em Configurações → Jogo para registrar as próximas.</small>':'<div class="replay-unavailable">REPLAY INDISPONÍVEL<small>Esta gravação antiga perdeu as posições dos Pokémon. As próximas batalhas serão gravadas com a correção.</small></div>'):'');
  D.innerHTML='<div class="dh"><span class="badge '+(d.win?'w':'')+'">'+(d.win?'VITÓRIA':'DERROTA')+'</span><div><h3>'+esc(d.title)+'</h3><small>'+when(d.ts)+' · '+d.battles+' combates · '+d.wins+' vitórias / '+d.losses+' derrotas</small></div></div><div class="kp"><div><b>'+d.battles+'</b><span>Combates</span></div><div><b>'+d.badges+'/8</b><span>Insígnias</span></div><div><b>'+d.e4+'/4</b><span>Elite 4</span></div><div><b>'+d.level+'</b><span>Nível</span></div><div><b>'+fmt(d.gold)+'</b><span>Ouro final</span></div></div>'+replay+'<h4>BATALHA FINAL · '+esc(b.title||'')+' VS '+esc(b.foe||'')+' · '+(b.t||0)+'S</h4><div class="kp"><div><b>'+fmt(sum(us,'dealt'))+'</b><span>Dano causado</span></div><div><b>'+fmt(sum(us,'taken'))+'</b><span>Dano sofrido</span></div><div><b>'+fmt(sum(us,'heal'))+'</b><span>Cura</span></div><div><b>'+d.hp+'</b><span>Vida final</span></div><div><b>'+esc(DF[b.diff]||'Normal')+'</b><span>Dificuldade</span></div></div><h4>COMPOSIÇÃO · '+us.filter(u=>u.alive).length+'/'+us.length+' DE PÉ</h4>'+rows;
  D.querySelectorAll('.ur .av img').forEach(im=>{im.onerror=function(){this.style.visibility='hidden'}});
  D.querySelectorAll('.ur .it img').forEach(im=>{im.onerror=function(){this.style.visibility='hidden'}});
@@ -7432,8 +7437,19 @@ const replayStyle=document.createElement('style');
 replayStyle.textContent='#hist .hreplay{align-self:flex-start;padding:10px 14px;border:1px solid #ffd84a;border-radius:10px;background:linear-gradient(180deg,#ffe789,#e7a91e);color:#1b2440;font-weight:900;font-size:13px;box-shadow:0 3px 0 #855d13}#hist .rp{position:absolute;inset:0;z-index:30;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(3,7,18,.94);font-family:Trebuchet MS,Arial,sans-serif}#hist .rp.show{display:flex}#hist .rpbox{width:min(1020px,96vw);padding:14px;border:1px solid #ffd84a88;border-radius:17px;background:linear-gradient(155deg,#1a2a58,#0b1228);box-shadow:0 18px 60px #000b}#hist .rphead{display:flex;align-items:center;gap:12px;margin-bottom:10px;color:#fff}#hist .rphead b{flex:1;color:#ffd84a;font-size:15px}#hist .rp-arena{position:relative;width:min(920px,90vw);height:min(490px,58vh);margin:auto;overflow:hidden;border:3px solid #8291b4;border-radius:20px;background:radial-gradient(ellipse at 50% 45%,#8494ae 0,#455672 56%,#202c46 100%);box-shadow:inset 0 0 45px #070d20aa}#hist .rp-arena:before{content:\"\";position:absolute;inset:6% 13%;clip-path:polygon(7% 0,93% 0,100% 13%,100% 87%,93% 100%,7% 100%,0 87%,0 13%);background-color:#535f76;background-image:linear-gradient(30deg,#ffffff08 12%,transparent 12.5%,transparent 87%,#ffffff08 87.5%,#ffffff08),linear-gradient(150deg,#ffffff08 12%,transparent 12.5%,transparent 87%,#ffffff08 87.5%,#ffffff08),linear-gradient(60deg,#111a2b55 25%,transparent 25.5%,transparent 75%,#111a2b55 75%,#111a2b55);background-size:80px 140px;box-shadow:0 0 0 8px #202a40}#hist .rp-units{position:absolute;inset:0}#hist .rp-unit{position:absolute;width:58px;height:68px;transform:translate(-50%,-50%);z-index:2;transition:left .23s linear,top .23s linear,opacity .2s;filter:drop-shadow(0 5px 3px #0008)}#hist .rp-unit img{position:absolute;left:50%;top:0;width:54px;height:54px;object-fit:contain;transform:translateX(-50%);image-rendering:pixelated}#hist .rp-unit.foe:after{content:\"\";position:absolute;inset:3px 5px 15px;border:1px solid #ff757588;border-radius:50%;pointer-events:none}#hist .rp-unit i{position:absolute;left:5px;right:5px;bottom:4px;height:5px;border:1px solid #101726;border-radius:5px;background:#18203a;overflow:hidden}#hist .rp-unit i b{display:block;height:100%;background:linear-gradient(90deg,#39d276,#a5f16b)}#hist .rp-unit i b.low{background:linear-gradient(90deg,#ff5268,#ffb054)}#hist .rp-unit small{position:absolute;right:2px;top:-3px;color:#ffe372;font:bold 10px Arial;text-shadow:1px 1px #18203a}#hist .rp-controls{display:flex;align-items:center;gap:12px;margin:12px auto 2px;max-width:920px}#hist .rp-controls input{flex:1;accent-color:#ffd84a}#hist .rp-controls span{min-width:65px;text-align:right;color:#aab9df;font-size:12px}#hist .rphead button{padding:7px 10px}';
 document.head.appendChild(replayStyle);
 const rp=document.createElement('div');rp.className='rp';rp.innerHTML='<div class="rpbox" role="dialog" aria-label="Replay da batalha final"><div class="rphead"><b class="rp-title"></b><button type="button" class="rpplay">▶</button><button type="button" class="rpx" aria-label="Fechar replay">✕</button></div><div class="rp-arena"><div class="rp-units"></div></div><div class="rp-controls"><input class="rp-range" type="range" min="0" value="0"><span class="rp-time">0,0 s</span></div></div>';H.appendChild(rp);
-function drawReplay(i){if(!rpFrames.length)return;rpIndex=Math.max(0,Math.min(rpFrames.length-1,i));const f=rpFrames[rpIndex],units=f[1]||[];rpNodes.forEach((n,j)=>{const u=units[j];if(!u){n.el.style.display='none';return}n.el.style.display='block';n.el.style.left=(u[2]/10)+'%';n.el.style.top=(u[3]/10)+'%';n.el.style.opacity=u[5]?'1':'.18';n.bar.style.width=Math.max(0,Math.min(100,u[4]))+'%';n.bar.classList.toggle('low',u[4]<30)});const range=rp.querySelector('.rp-range');range.max=Math.max(0,rpFrames.length-1);range.value=rpIndex;rp.querySelector('.rp-time').textContent=(f[0]||0).toFixed(1).replace('.',',')+' s'}
-function openReplay(){const d=data[idx],b=d&&d.last;if(!b||!Array.isArray(b.frames)||b.frames.length<2)return;rpFrames=b.frames;rpNodes=[];rp.querySelector('.rp-title').textContent='Batalha final · '+b.title+' vs '+b.foe;const layer=rp.querySelector('.rp-units');layer.innerHTML='';(rpFrames[0][1]||[]).forEach(u=>{const el=document.createElement('div');el.className='rp-unit'+(u[1]?' foe':'');const img=document.createElement('img');img.alt='';img.src=sprFront(u[0]);img.onerror=function(){this.onerror=null;this.src=sprStatic(u[0])};const star=document.createElement('small');star.textContent=(u[6]||1)>1?'★'.repeat(u[6]):'';const track=document.createElement('i'),bar=document.createElement('b');track.appendChild(bar);el.append(img,star,track);layer.appendChild(el);rpNodes.push({el,bar})});rp.querySelector('.rpplay').textContent='▶';rpPlaying=false;drawReplay(0);rp.classList.add('show')}
+function drawReplay(i){if(!rpFrames.length)return;rpIndex=Math.max(0,Math.min(rpFrames.length-1,i));const f=rpFrames[rpIndex],units=f[1]||[];rpNodes.forEach((n,j)=>{const u=units[j];if(!u){n.el.style.display='none';return}n.el.style.display=u[5]?'block':'none';n.el.style.transform='translate('+(u[2]*1.28)+'px,'+(u[3]*.8+16)+'px)';n.el.style.zIndex=Math.round(u[3]);n.bar.style.width=Math.max(0,Math.min(100,u[4]))+'%'});const range=rp.querySelector('.rp-range');range.max=Math.max(0,rpFrames.length-1);range.value=rpIndex;rp.querySelector('.rp-time').textContent=(f[0]||0).toFixed(1).replace('.',',')+' s'}
+function openReplay(){
+ const d=data[idx],b=d&&d.last;if(!b||!Array.isArray(b.frames)||b.frames.length<2)return;
+ rpFrames=b.frames;rpNodes=[];const arena=rp.querySelector('.rp-arena');arena.classList.toggle('recorded-arena',!!b.arena);arena.style.backgroundImage=b.arena?'url("'+b.arena+'")':'';
+ const title=b.title==='???'?'Batalha decisiva':(b.title||'Batalha decisiva'),foe=b.foe==='???'?'Adversário secreto':(b.foe||'Adversário');
+ rp.querySelector('.rp-title').textContent=title+' · '+foe+(b.arena?'':' · gravação antiga sem cenário');
+ const layer=rp.querySelector('.rp-units');layer.innerHTML='';
+ (rpFrames[0][1]||[]).forEach((u,j)=>{const line=LINES.findIndex(l=>l.ids.includes(u[0]));if(line<0)return;const star=u[6]||1,el=buildEl('replay-'+j,u[1]);el.classList.add('replay-mon');el.dataset.star=star;setSprite(el,line,star,u[1]);el.querySelector('.stars').textContent='★'.repeat(star);el.querySelector('.mnb').style.display='none';if(u[1]===0){const saved=(b.us||[]).find(x=>x.id===u[0]);if(saved)setItems(el,(saved.items||[]).map(x=>Object.keys(ITEMBY).find(k=>ITEMBY[k].s===x.s)).filter(Boolean))}layer.appendChild(el);rpNodes[j]={el,bar:el.querySelector('.hpb i')};
+ });
+ rp.querySelector('.rpplay').textContent='▶';rpPlaying=false;drawReplay(0);rp.classList.add('show');fitReplayArena();
+}
+function fitReplayArena(){const a=rp.querySelector('.rp-arena');rp.querySelector('.rp-units').style.transform='scale('+(a.clientWidth/1280)+')'}
+new ResizeObserver(()=>{if(rp.classList.contains('show'))fitReplayArena()}).observe(rp.querySelector('.rp-arena'));
 function closeReplay(){rp.classList.remove('show');rpPlaying=false;if(rpRaf)cancelAnimationFrame(rpRaf);rpRaf=0}
 function validReplay(a){return Array.isArray(a)&&a.length>1&&a.every(f=>Array.isArray(f[1])&&f[1].every(u=>Number.isFinite(u[2])&&Number.isFinite(u[3])))}
 function replayTick(now){if(!rpPlaying)return;if(!rpStamp)rpStamp=now;while(rpIndex<rpFrames.length-1){const dt=Math.max(16,((rpFrames[rpIndex+1][0]||0)-(rpFrames[rpIndex][0]||0))*1000);if(now-rpStamp<dt)break;rpStamp+=dt;drawReplay(rpIndex+1)}if(rpIndex>=rpFrames.length-1){rpPlaying=false;rp.querySelector('.rpplay').textContent='▶';rpRaf=0;return}rpRaf=requestAnimationFrame(replayTick)}
@@ -7459,14 +7475,16 @@ function openScores(mode){scoreMode=mode==='tower'?'tower':'campaign';scoreDiff=
 document.addEventListener('oakchess:open-scores',e=>openScores(e.detail&&e.detail.mode));
 SCO.addEventListener('click',e=>{const d=e.target.closest('[data-score-diff]'),m=e.target.closest('[data-score-mode]');if(d){scoreDiff=d.dataset.scoreDiff;SCO.querySelectorAll('[data-score-diff]').forEach(b=>b.classList.toggle('on',b===d));paintScores()}else if(m&&!m.disabled){scoreMode=m.dataset.scoreMode;paintScores()}else if(e.target.closest('.sx')||e.target===SCO)SCO.classList.remove('show')});
 H.addEventListener('click',e=>{
+ if(e.target.closest('.hvideo')){const d=data[idx];if(d&&d.last&&window.BATTLE_VIDEO)BATTLE_VIDEO.watch(d.last.videoId,d.last.foe);return}
  if(e.target.closest('.hreplay')){const d=data[idx];if(d&&d.last&&validReplay(d.last.frames)){closeReplay();openReplay();toggleReplay()}return}
  if(e.target.closest('.rpplay')){toggleReplay();return}
  if(e.target.closest('.rpx')||e.target===rp){closeReplay();return}
  const r=e.target.closest('.hr');if(r){idx=+r.dataset.i;paint();return}
  if(e.target.closest('.hx')||e.target===H){close();return}
- if(e.target.closest('.hclr')&&data.length&&confirm('Apagar todo o histórico de runs?')){save([]);data=[];idx=0;paint()}
+ if(e.target.closest('.hclr')&&data.length&&confirm('Apagar todo o histórico de runs?')){save([]);data=[];idx=0;paint();if(window.BATTLE_VIDEO)BATTLE_VIDEO.prune()}
 });
 addEventListener('keydown',e=>{
+ if(document.querySelector('#battleVideoViewer.show'))return;
  if(SCO.classList.contains('show')){if(e.key==='Escape')SCO.classList.remove('show');e.stopPropagation();e.preventDefault();return}
  if(H.classList.contains('show')){
   if(rp.classList.contains('show')){
@@ -8505,5 +8523,108 @@ body.game-paused:has(#menu.show) #pausedOverlay .pause-card{visibility:hidden;po
 #eventdlg .storyskip:active{margin-top:2px;box-shadow:inset 2px 2px #0003,0 1px #0a1427}
 #eventdlg:has(.storyskip) .nm{max-width:calc(100% - 210px)}
 @media(max-width:640px){#eventdlg .storyskip{font-size:7px;padding:0 8px}#eventdlg:has(.storyskip) .nm{max-width:calc(100% - 170px)}}
+</style>
+<style id="compact-run-summary">
+#over .panel.run-result{width:min(600px,calc(100% - 48px));max-height:calc(100% - 48px);padding:16px 18px}
+#over .run-result h2{font-size:12px;line-height:21px;margin-bottom:6px}
+#over .run-result .big{font-size:12px;line-height:17px;margin-bottom:11px}
+#over .run-result .big>span{font-size:11px!important}
+#runSummary .run-score{padding:10px 12px 8px;gap:5px}
+#runSummary .run-score>small{font-size:7px;line-height:13px}
+#runSummary .run-score>strong{font-size:25px;line-height:34px}
+#runSummary .run-score>span{font-size:7px;line-height:13px}
+#runSummary .run-score-track{height:3px;margin-top:2px}
+#runSummary .run-stats{margin:8px 0 12px;gap:5px}
+#runSummary .run-stats>span{padding:5px 3px;font-size:10px;line-height:15px}
+#runSummary .run-stats b{font-size:14px;line-height:18px}
+#runSummary h3{font-size:8px;line-height:16px;margin-bottom:6px}
+#runSummary .run-team{grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
+#runSummary .run-mon{padding:5px 2px;gap:0}
+#runSummary .run-mon>img{width:48px;height:36px}
+#runSummary .run-mon>b{font-size:10px;line-height:15px}
+#runSummary .run-mon>small{font-size:10px;line-height:13px}
+#runSummary .run-items{min-height:0;margin-top:2px;gap:2px}
+#runSummary .run-items:empty{display:none}
+#runSummary .run-items img{width:14px;height:14px}
+#runSummary .run-breakdown{margin:9px 0 12px;font-size:10px;line-height:16px}
+#over .run-result #again{height:36px;font-size:9px}
+@media(max-width:540px){#over .panel.run-result{padding:13px}#runSummary .run-team{grid-template-columns:repeat(3,minmax(0,1fr))}#runSummary .run-stats{grid-template-columns:repeat(4,1fr)}}
+</style>
+<style id="replay-real-arena">
+#hist .rp-arena{width:min(100%,calc(62vh * 1.6));height:auto;max-height:none;aspect-ratio:1280/800;background-color:#101c2d;background-size:100% 100%;background-position:center;background-repeat:no-repeat;box-shadow:none;isolation:isolate}
+#hist .rp-arena::before{display:none}
+#hist .rp-units{position:absolute;inset:auto;left:0;top:0;width:1280px;height:800px;transform-origin:0 0;pointer-events:none}
+#hist .rp-units .replay-mon{transition:transform .23s linear;pointer-events:none}
+#hist .rp-units .replay-mon .in{pointer-events:none}
+#hist .rp-units .replay-mon .hpb{border-radius:2px}
+#hist .rp-units .replay-mon .its img{image-rendering:pixelated}
+@media(prefers-reduced-motion:reduce){#hist .rp-units .replay-mon{transition:none}}
+</style>
+<script id="actual-battle-video">
+(function(){
+ let stream=null,active=null,dbPromise=null,playerUrl=null,watchToken=0;
+ const pending=new Map();
+ function database(){if(!dbPromise)dbPromise=new Promise((resolve,reject)=>{const req=indexedDB.open('oakchess-battle-videos',1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('videos'))req.result.createObjectStore('videos',{keyPath:'id'})};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)}).catch(e=>{dbPromise=null;throw e});return dbPromise}
+ async function storeVideo(record){const db=await database();return new Promise((resolve,reject)=>{const tx=db.transaction('videos','readwrite');tx.objectStore('videos').put(record);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error)})}
+ async function readVideo(id){if(pending.has(id))await pending.get(id);const db=await database();return new Promise((resolve,reject)=>{const req=db.transaction('videos').objectStore('videos').get(id);req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})}
+ async function prune(){try{const keep=new Set(pending.keys());for(const run of JSON.parse(localStorage.getItem('ptft_runs_v2')||'[]'))if(run.last&&run.last.videoId)keep.add(run.last.videoId);const current=JSON.parse(localStorage.getItem('ptft_current_run_v2')||'null');if(current&&current.last&&current.last.videoId)keep.add(current.last.videoId);const db=await database(),tx=db.transaction('videos','readwrite'),req=tx.objectStore('videos').openCursor();req.onsuccess=()=>{const c=req.result;if(c){if(!keep.has(c.key))c.delete();c.continue()}}}catch(e){}}
+ const row=document.createElement('div');row.className='mrow video-setup';row.innerHTML='<b>Vídeo real da batalha</b><p>Grava a arena com golpes, efeitos e animações. O vídeo fica neste navegador; apenas a batalha final de cada run é mantida.</p><button type="button" id="enableBattleVideo">Ativar gravação de vídeo</button><small id="battleVideoStatus" role="status">Selecione a aba deste jogo quando o navegador pedir.</small>';
+ document.querySelector('#menu [data-pane="jogo"] .mgroup').appendChild(row);
+ const button=document.getElementById('enableBattleVideo'),status=document.getElementById('battleVideoStatus');
+ function message(t){status.textContent=t}
+ function sync(){button.textContent=stream?'Desativar gravação de vídeo':'Ativar gravação de vídeo';button.disabled=false;if(stream)message(active?'Gravando a batalha.':'Gravação pronta para a próxima batalha.')}
+ function stop(){const session=active;if(!session)return null;active=null;if(session.rec.state!=='inactive')session.rec.stop();sync();return session.id}
+ function disarm(){stop();if(stream){const old=stream;stream=null;old.getTracks().forEach(t=>t.stop())}sync();message('Gravação desligada. Os vídeos salvos foram mantidos.')}
+ function start(){
+  if(!stream||active||CFG.recordReplays===false||DEMO.on)return;
+  try{
+   const type=['video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm','video/mp4'].find(t=>MediaRecorder.isTypeSupported(t));
+   const rec=new MediaRecorder(stream,Object.assign({videoBitsPerSecond:3000000},type?{mimeType:type}:{}));
+   const id='battle-'+Date.now()+'-'+Math.random().toString(36).slice(2,9),chunks=[];let bytes=0,resolveDone;const done=new Promise(resolve=>resolveDone=resolve);pending.set(id,done);
+   const session={id,rec};active=session;
+   rec.ondataavailable=e=>{if(e.data.size){chunks.push(e.data);bytes+=e.data.size;if(bytes>100*1024*1024&&rec.state!=='inactive'){rec.stop();if(active===session)active=null;message('Limite de gravação atingido. Vídeo parcial salvo.')}}};
+   rec.onstop=async()=>{try{if(chunks.length){await storeVideo({id,blob:new Blob(chunks,{type:rec.mimeType||'video/webm'}),ts:Date.now()})}else message('O navegador não produziu vídeo nesta batalha.')}catch(e){message('Não foi possível salvar o vídeo. Confira o espaço disponível no navegador.');toast('O vídeo não pôde ser salvo neste navegador.')}finally{resolveDone();pending.delete(id);setTimeout(prune,1500)}};
+   rec.onerror=()=>{message('A gravação foi interrompida pelo navegador.');if(rec.state!=='inactive')rec.stop()};rec.start(1000);if(G.paused)rec.pause();sync();
+  }catch(e){message('Não foi possível iniciar a gravação neste navegador.')}
+ }
+ button.onclick=async()=>{
+  if(stream){disarm();return}
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getDisplayMedia||!window.MediaRecorder||!window.CropTarget){message('A captura da arena não está disponível neste navegador. Abra o jogo no Chrome ou Edge para computador.');return}
+  let selected=null;button.disabled=true;
+  try{
+   selected=await navigator.mediaDevices.getDisplayMedia({video:{displaySurface:'browser',frameRate:{ideal:30,max:30}},audio:true,preferCurrentTab:true,selfBrowserSurface:'include',surfaceSwitching:'exclude',systemAudio:'exclude'});
+   const track=selected.getVideoTracks()[0];if(!track||typeof track.cropTo!=='function')throw new Error('crop');
+   const target=await CropTarget.fromElement(document.getElementById('arenaView'));await track.cropTo(target);
+   await database();stream=selected;CFG.recordReplays=true;saveCfg();syncExtraSettings();
+   track.addEventListener('ended',()=>{if(stream===selected)disarm()});sync();if(G.phase==='combat'&&!B.over)start();
+  }catch(e){if(selected)selected.getTracks().forEach(t=>t.stop());message(e.name==='NotAllowedError'?'Captura cancelada. Nenhum vídeo será gravado.':'Escolha a aba deste jogo. A gravação exige captura da própria aba e recorte da arena.');button.disabled=false}
+ };
+ new MutationObserver(()=>{if(!active)return;const r=active.rec;if(G.paused&&r.state==='recording')r.pause();else if(!G.paused&&r.state==='paused')r.resume()}).observe(document.body,{attributes:true,attributeFilter:['class']});
+ document.getElementById('menu').addEventListener('change',e=>{if(e.target.dataset.comfortSwitch==='recordReplays'&&!e.target.checked)disarm()});
+ const overlay=document.createElement('div');overlay.id='battleVideoViewer';overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label','Vídeo da batalha final');overlay.innerHTML='<div class="battle-video-box"><header><b>VÍDEO DA BATALHA FINAL</b><button type="button" aria-label="Fechar vídeo">✕</button></header><p role="status"></p><video controls playsinline preload="metadata"></video></div>';stage.appendChild(overlay);
+ const video=overlay.querySelector('video'),info=overlay.querySelector('p');
+ function close(){watchToken++;video.pause();video.removeAttribute('src');video.load();if(playerUrl){URL.revokeObjectURL(playerUrl);playerUrl=null}overlay.classList.remove('show')}
+ async function watch(id,foe){close();const token=watchToken;overlay.classList.add('show');info.textContent='Carregando vídeo…';overlay.querySelector('button').focus();try{const record=await readVideo(id);if(token!==watchToken)return;if(!record||!record.blob)throw new Error('missing');playerUrl=URL.createObjectURL(record.blob);video.src=playerUrl;info.textContent=foe&&foe!=='???'?'Batalha final · '+foe:'Batalha final';video.play().catch(()=>{})}catch(e){if(token===watchToken)info.textContent='Vídeo indisponível. Ele pode ter sido removido dos dados deste navegador.'}}
+ overlay.querySelector('button').onclick=close;overlay.addEventListener('click',e=>{if(e.target===overlay)close()});
+ window.addEventListener('keydown',e=>{if(!overlay.classList.contains('show'))return;e.stopImmediatePropagation();if(e.key==='Escape'){e.preventDefault();close()}},true);
+ window.addEventListener('pagehide',()=>{if(stream)stream.getTracks().forEach(t=>t.stop())});
+ window.BATTLE_VIDEO={start,stop,watch,prune};prune();
+})();
+</script>
+<style id="actual-video-player-style">
+#menu .video-setup>b{font:700 13px/20px 'Trebuchet MS',sans-serif;color:#ffe298}
+#menu .video-setup p{font:11px/17px 'Trebuchet MS',sans-serif;color:#b9cbe4;margin:6px 0 10px}
+#enableBattleVideo{width:100%;padding:9px;border:2px solid #ffe298;background:#293f60;color:#ffe298;font:8px/16px 'Press Start 2P',monospace;cursor:pointer}
+#enableBattleVideo:disabled{opacity:.5;cursor:wait}
+#battleVideoStatus{display:block;margin-top:8px;font:11px/17px 'Trebuchet MS',sans-serif;color:#c6d6ec}
+#battleVideoViewer{position:absolute;inset:0;z-index:2400;display:none;align-items:center;justify-content:center;background:#050b18ed;padding:24px;box-sizing:border-box}
+#battleVideoViewer.show{display:flex}
+.battle-video-box{width:min(1000px,94%);padding:14px;border:3px solid #91a5c5;background:#14233d;box-shadow:0 0 0 4px #080f20;color:#edf4ff}
+.battle-video-box header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:10px;border-bottom:2px solid #3c5272}
+.battle-video-box header b{font:10px/20px 'Press Start 2P',monospace;color:#ffe298}
+.battle-video-box button{width:32px;height:30px;border:2px solid #7188a6;background:#293f60;color:#edf4ff;cursor:pointer}
+.battle-video-box p{font:12px/18px 'Trebuchet MS',sans-serif;color:#c2d4eb;margin:9px 0}
+.battle-video-box video{display:block;width:100%;max-height:65vh;background:#080f1e}
+.video-history-note{font:11px/17px 'Trebuchet MS',sans-serif;color:#b5c9e4}
 </style>
 </body></html>
