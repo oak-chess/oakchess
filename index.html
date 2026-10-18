@@ -29,6 +29,9 @@ img{-webkit-user-drag:none}
 .unit .stars{font-size:11px;color:#ffd84a;text-shadow:0 1px 2px #000,0 0 4px #000;line-height:11px;height:11px;letter-spacing:-1px}
 .unit .bars{width:56px;margin-bottom:2px}
 .unit.pmd .brow,.unit.pmd .its{transform:translateY(var(--pmd-hud-shift,0px))}
+/* O banco já posiciona os pés dentro da vaga; não recebe o deslocamento da arena. */
+#world .unit.onbench .spr canvas.pmdc{position:static!important;top:auto!important}
+#world .unit.onbench.pmd .brow,#world .unit.onbench.pmd .its{transform:none}
 .unit .hpb{height:7px;background:#0a0f1c;border:1px solid #000;border-radius:3px;position:relative;overflow:hidden}
 .unit .hpb i{position:absolute;left:0;top:0;height:100%;width:100%;background:linear-gradient(#7dff7d,#2fb84a)}
 .unit.e .hpb i{background:linear-gradient(#ff8a8a,#d63a3a)}
@@ -2204,6 +2207,7 @@ body.idrag .unit:has(.its.has){z-index:4000!important}
  </div>
 </div></div>
 <script src="assets/pmd/anim-data.js"></script>
+<script src="assets/pmd/bounds-data.js"></script>
 <script src="assets/viridian-arena.js"></script>
 <script src="assets/brock-arena.js"></script>
 <script src="assets/misty-arena.js"></script>
@@ -4424,7 +4428,8 @@ function preload(urls){urls.forEach(u=>{const i=new Image();i.src=u})}
 /* ---------- Sprites PMD (PMDCollab/SpriteCollab, CC BY-NC 4.0) — opcional; se algo falhar, ficam os GIFs ---------- */
 const PMD={base:'assets/pmd/sprite/',cache:new Map(),live:new Set(),raf:0,
  /* área ocupada (pixels não transparentes) de uma folha, relativa a cada quadro; assim o tamanho segue o Pokémon e não o espaço vazio do quadro */
- bounds(im,fw,fh){let mnx=fw,mny=fh,mxx=-1,mxy=-1;const nr=Math.max(1,Math.round(im.height/fh)),rb=Array(nr).fill(-1),rt=Array(nr).fill(fh),fb=Array.from({length:nr},()=>Array(Math.max(1,Math.round(im.width/fw))).fill(-1));
+ bounds(im,fw,fh){const spritePath=decodeURIComponent(new URL(im.src,document.baseURI).pathname).split('/assets/pmd/sprite/')[1],saved=window.PMD_BOUNDS_DATA?.[spritePath];if(saved&&saved.fw===fw&&saved.fh===fh)return saved;
+  let mnx=fw,mny=fh,mxx=-1,mxy=-1;const nr=Math.max(1,Math.round(im.height/fh)),rb=Array(nr).fill(-1),rt=Array(nr).fill(fh),fb=Array.from({length:nr},()=>Array(Math.max(1,Math.round(im.width/fw))).fill(-1));
   try{const c=document.createElement('canvas');c.width=im.width;c.height=im.height;const x=c.getContext('2d',{willReadFrequently:true});x.drawImage(im,0,0);
    const px=x.getImageData(0,0,im.width,im.height).data,W=im.width,H=im.height;
    for(let y=0;y<H;y++){const cy=y%fh,ri=Math.min(nr-1,(y/fh)|0);for(let xx=0;xx<W;xx++){if(px[(y*W+xx)*4+3]>8){const cx=xx%fw;if(cx<mnx)mnx=cx;if(cx>mxx)mxx=cx;if(cy<mny)mny=cy;if(cy>mxy)mxy=cy;if(cy>rb[ri])rb[ri]=cy;if(cy<rt[ri])rt[ri]=cy;const fi=Math.floor(xx/fw);if(cy>fb[ri][fi])fb[ri][fi]=cy}}}
@@ -4485,10 +4490,10 @@ const PMD={base:'assets/pmd/sprite/',cache:new Map(),live:new Set(),raf:0,
    if(!cv){cv=document.createElement('canvas');cv.className='pmdc';cv.draggable=false;sp.appendChild(cv)}
    const fin=root.classList.contains('final'),bm=root.classList.contains('bossmon'),sf=star===3?1.15:star===2?1.06:1,
     tgt=fin?Math.min(d.ih*5.4*sf,330):Math.max(50,Math.min(d.ih*3*sf,138))*UNIT_K,sc=tgt/d.ih;
-     const groundShift=Math.round(d.ih*.32*sc);root.style.setProperty('--pmd-hud-shift',Math.round(groundShift*.55)+'px');
-     /* A unidade fica no centro da casa; o sprite conserva sua compensação
-        local de apoio. Removê-la separa visualmente os pés da sombra. */
-     cv.style.position='relative';cv.style.top=groundShift+'px';cv.style.pointerEvents='none';cv.style.transform='';
+     root.style.setProperty('--pmd-hud-shift','0px');
+     /* O desenho já alinha o último pixel opaco à base do canvas em tick().
+        Aplicar outro deslocamento aqui coloca os pés abaixo da casa. */
+     cv.style.position='static';cv.style.top='auto';cv.style.pointerEvents='none';cv.style.transform='';
    root._pmd={d,cv,sc,ctx:cv.getContext('2d'),name:'Idle',stamp:0,t0:performance.now(),key:'',restAt:0};
    this.fit(root._pmd);root.classList.add('pmd');this.live.add(root);
    if(root._pmdWant){const k=root._pmdWant;root._pmdWant=null;this.play(root,k)}
@@ -4562,7 +4567,7 @@ function setItems(root,items){const its=root.querySelector('.its');its.innerHTML
     its.appendChild(d)}}
 function refreshUnit(u){const r=u.el;r.classList.toggle('shiny',!!u.shiny);setSprite(r,u.line,u.star,0);r.querySelector('.stars').textContent='★'.repeat(u.star);r.dataset.star=u.star;r.classList.toggle('s2',u.star===2);r.classList.toggle('s3',u.star===3);setItems(r,u.items)}
 function unitXY(u){if(u.pos.z==='b'){const h=hexXY(u.pos.r,u.pos.c);return{x:h.x,y:h.y}}const b=benchXY(u.pos.i);return{x:b.x,y:b.y+14}}
-function layoutUnit(u){if(!u.el||!u.pos)return;const p=unitXY(u);u.el.classList.toggle('onboard',u.pos.z==='b');u.el.classList.toggle('grounded-combat',u.pos.z==='b'&&!airborneAttacker(u));u.el.style.setProperty('--unit-depth',u.pos.z==='b'?perspectiveScale(u.pos.r):1);u.el.style.transform='translate('+p.x+'px,'+p.y+'px)';u.el.style.zIndex=Math.floor(p.y)}
+function layoutUnit(u){if(!u.el||!u.pos)return;const p=unitXY(u);u.el.classList.toggle('onboard',u.pos.z==='b');u.el.classList.toggle('onbench',u.pos.z!=='b');u.el.classList.toggle('grounded-combat',u.pos.z==='b'&&!airborneAttacker(u));u.el.style.setProperty('--unit-depth',u.pos.z==='b'?perspectiveScale(u.pos.r):1);u.el.style.transform='translate('+p.x+'px,'+p.y+'px)';u.el.style.zIndex=Math.floor(p.y)}
 function newUnit(line,star){const u={uid:G.uid++,line,star:star||1,items:[],pos:null,el:null};UB['u'+u.uid]=u;if(window.PDEX)PDEX.owned(u);return u}
 function attachEl(u,spawn){u.el=buildEl('u'+u.uid,0);u.el.classList.add('own');if(spawn)u.el.classList.add('spawn');refreshUnit(u);if(spawn)PMD.play(u.el,'enter');layoutUnit(u);unitsL.appendChild(u.el);if(spawn)setTimeout(()=>u.el&&u.el.classList.remove('spawn'),500)}
 function removeUnit(u){if(u.pos){if(u.pos.z==='n')G.bench[u.pos.i]=null;else G.board.delete(rk(u.pos))}const i=G.pending.indexOf(u);if(i>=0)G.pending.splice(i,1);if(u.el)u.el.remove();delete UB['u'+u.uid]}
