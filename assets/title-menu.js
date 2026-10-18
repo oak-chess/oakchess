@@ -9,6 +9,7 @@ toggle.onclick=e=>{e.stopPropagation();SND.init();SND.click();setOpen(!root.clas
 items().forEach(el=>el.addEventListener('click',()=>setOpen(false)));
 document.addEventListener('pointerdown',e=>{if(!root.contains(e.target))setOpen(false)});
 window.addEventListener('keydown',e=>{
+ if(document.querySelector('#pokedex.show,#battleReports.show'))return;
  if(LAB.st!=='title'||!root.classList.contains('tools-layout')||document.querySelector('#menu.show,#hist.show,#scores.show,#achievements.show'))return;
  const opened=root.classList.contains('tools-open'),inside=root.contains(e.target),launcher=e.target===toggle;
  if(!opened&&!launcher&&!(TM.view==='main'||TM.view==='tower'))return;
