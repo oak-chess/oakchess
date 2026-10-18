@@ -3,19 +3,30 @@
  'use strict';
  const marks=[];
  const halos=new Map();
+ const neonStrength=()=>{const n=Number(CFG.hexNeon);return Number.isFinite(n)?Math.max(0,Math.min(2,n)):.5};
  function neon(g,cell,size,color,alpha,soft){
-  const key=color+':'+size+':'+soft;let bitmap=halos.get(key);
+  const strength=neonStrength();if(!strength)return;
+  const key=color+':'+size+':'+soft+':'+strength;let bitmap=halos.get(key);
   const extent=72;
   if(!bitmap){
    bitmap=document.createElement('canvas');bitmap.width=bitmap.height=extent*4;
    const ctx=bitmap.getContext('2d');ctx.setTransform(2,0,0,2,0,0);
    ctx.strokeStyle=color;ctx.shadowColor=color;ctx.lineJoin='round';
-   ctx.globalAlpha=.55;ctx.shadowBlur=soft?12:23;ctx.lineWidth=7;hexPath(ctx,extent,extent,size,.9);ctx.stroke();
-   ctx.globalAlpha=.85;ctx.shadowBlur=soft?5:11;ctx.lineWidth=3;ctx.stroke();
+   ctx.globalAlpha=.55;ctx.shadowBlur=(soft?12:23)*strength;ctx.lineWidth=7;hexPath(ctx,extent,extent,size,.9);ctx.stroke();
+   ctx.globalAlpha=.85;ctx.shadowBlur=(soft?5:11)*strength;ctx.lineWidth=3;ctx.stroke();
    if(halos.size>96)halos.clear();halos.set(key,bitmap);
   }
-  g.save();g.globalCompositeOperation='lighter';g.globalAlpha=alpha;
+  g.save();g.globalCompositeOperation='lighter';g.globalAlpha=Math.min(1,alpha*strength);
   g.drawImage(bitmap,cell.x-extent,cell.y-extent,extent*2,extent*2);g.restore();
+ }
+ function previewNeon(canvas){
+  const g=canvas.getContext('2d');g.clearRect(0,0,canvas.width,canvas.height);g.fillStyle='#102739';g.fillRect(0,0,canvas.width,canvas.height);
+  ['#ffd84a','#63cfff','#ff8560'].forEach((c,i)=>{const cell={x:68+i*112,y:54},size=36;
+   g.fillStyle=c;g.globalAlpha=.2;hexPath(g,cell.x,cell.y,size,.91);g.fill();g.globalAlpha=1;
+   neon(g,cell,size,c,.9,!!CFG.reduceFx||CFG.fxLevel==='low');
+   g.strokeStyle=c;g.lineWidth=3;hexPath(g,cell.x,cell.y,size,.9);g.stroke();
+   g.strokeStyle='#f2fcff';g.lineWidth=1;g.globalAlpha=Math.min(1,.72*neonStrength());g.stroke();g.globalAlpha=1;
+  });
  }
  const color=m=>(PAL[m.t]||PAL.normal)[1];
  const all=()=>{const cells=[];for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++)cells.push({r,c,...hexXY(r,c)});return cells};
@@ -130,7 +141,7 @@
     neon(g,cell,size,m.color,fade*pulse*(isHead?1:lit?.9:.58+fill*.22),low||reduced);
     g.fillStyle=m.color;g.globalAlpha=fade*pulse*(isHead?.48:lit?.28+sweep*.17:.14+fill*.14);hexPath(g,cell.x,cell.y,size,.91);g.fill();
     g.strokeStyle=m.color;g.lineWidth=low||m.small?3:4;g.globalAlpha=fade*.96;g.setLineDash(loaded?[]:[8,4]);g.lineDashOffset=reduced?0:-age*22;hexPath(g,cell.x,cell.y,size,.9);g.stroke();
-    g.save();g.globalCompositeOperation='lighter';g.setLineDash([]);g.lineWidth=1.8;g.strokeStyle=m.color;g.globalAlpha=fade*(isHead?1:lit?.9:.6+fill*.3);hexPath(g,cell.x,cell.y,size,.9);g.stroke();g.strokeStyle='#f2fcff';g.lineWidth=1;g.globalAlpha=fade*(isHead?.95:lit?.72:.38+fill*.25);g.stroke();g.restore();
+    g.save();g.globalCompositeOperation='lighter';g.setLineDash([]);g.lineWidth=1.8;g.strokeStyle=m.color;g.globalAlpha=Math.min(1,neonStrength()*fade*(isHead?1:lit?.9:.6+fill*.3));hexPath(g,cell.x,cell.y,size,.9);g.stroke();g.strokeStyle='#f2fcff';g.lineWidth=1;g.globalAlpha=Math.min(1,neonStrength()*fade*(isHead?.95:lit?.72:.38+fill*.25));g.stroke();g.restore();
     if(!loaded){g.save();hexPath(g,cell.x,cell.y,size,.86);g.clip();g.fillStyle=m.color;g.globalAlpha=fade*.24;g.fillRect(cell.x-HW/2,cell.y+size-size*2*fill,HW,size*2*fill);g.globalAlpha=fade*.8;g.fillStyle='#fff4cf';g.fillRect(cell.x-HW/2,cell.y+size-size*2*fill,HW,2);g.restore()}
     if(!low)signature(g,cell,m,age,fill,fade,reduced);
     const count=Math.min(particleBudget,m.small?2:low?2:reduced?3:isHead?8:5);
@@ -139,7 +150,7 @@
    g.restore();
   }
  }
- window.HEX_ATTACKS={prepare,beam,projectile,arrive,draw,
+ window.HEX_ATTACKS={prepare,beam,projectile,arrive,draw,previewNeon,
   reaction(t,type='steel',life=.45){if(!t||!B.on||B.over)return;return add({mode:'target',t,mv:{t:type},small:true,color:color({t:type}),charge:0,life})},
   retaliation(u,t,type){if(!u||!t||!B.on||B.over)return;add({mode:'link',u,t,mv:{t:type},small:true,color:color({t:type}),charge:0,life:.3})},
   target(t,mv,delay=.15,small=false){return add({mode:'target',t,mv,small,color:color(mv),charge:delay,life:delay+.3})},

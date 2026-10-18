@@ -2685,6 +2685,7 @@ function moveText(L,star,mv){
    ÁUDIO — efeitos sintetizados (WebAudio), gritos da PokeAPI, música simples
    ===================================================================== */
 const CFG0={sfx:.7,cry:.6,music:true,musvol:.5,timer:true,speed:1,pmd:true,mute:false,shake:true,reduceFx:true,diff:'normal',remSpeed:false,txt:'normal',skipDlg:true,dmgnum:'all',manabar:true,confirmSell:false,autoPause:false,uiSize:'normal',fxLevel:'normal',teamMarkers:false,noticeVol:.5,recordReplays:true,keys:{roll:'d',xp:'f',sell:'e',bag:'b',fight:' ',pause:'p',view:'v',mute:'m'}};
+CFG0.hexNeon=.5;
 const CFG=Object.assign({},CFG0);
 try{Object.assign(CFG,JSON.parse(localStorage.getItem('pktft')||'{}'));if(!CFG.remSpeed)CFG.speed=1}catch(e){}
 const saveCfg=()=>{try{localStorage.setItem('pktft',JSON.stringify(CFG))}catch(e){}};
@@ -8538,6 +8539,7 @@ function playNoticeTone(){
  try{const ctx=playNoticeTone.ctx||(playNoticeTone.ctx=new (window.AudioContext||window.webkitAudioContext)());if(ctx.state!=='running'){ctx.resume().catch(()=>{});return}const o=ctx.createOscillator(),g=ctx.createGain(),t=ctx.currentTime;o.type='sine';o.frequency.setValueAtTime(660,t);o.frequency.setValueAtTime(880,t+.055);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(CFG.noticeVol*.1,t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+.14);o.connect(g);g.connect(ctx.destination);o.start(t);o.stop(t+.15)}catch(e){}
 }
 function syncExtraSettings(){
+ if(window.syncHexNeonSetting)window.syncHexNeonSetting();
  document.body.dataset.uiSize=CFG.uiSize||'normal';document.body.dataset.fxLevel=CFG.fxLevel||'normal';
  document.body.classList.toggle('reduce-fx',!!CFG.reduceFx||CFG.fxLevel==='low');
  document.querySelectorAll('[data-comfort-switch]').forEach(el=>el.checked=!!CFG[el.dataset.comfortSwitch]);
@@ -8841,6 +8843,8 @@ body #tip .ut .usec.its{padding-top:4px}
 <script src="assets/skill-rhythm.js"></script>
 <script src="assets/arena-fields.js"></script>
 <script src="assets/hex-attacks.js"></script>
+<link rel="stylesheet" href="assets/hex-preview-settings.css">
+<script src="assets/hex-preview-settings.js"></script>
 <script src="assets/reactive-previews.js"></script>
 <link rel="stylesheet" href="assets/live-battle.css">
 <script src="assets/live-battle.js"></script>
