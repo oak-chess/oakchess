@@ -12,6 +12,7 @@ foreach ($m in [regex]::Matches($html, "(?m)^ln\([^,]+,\[([0-9,]+)\]")) {
 # Pokémon mostrados diretamente em eventos, sem fazer parte das cartas da loja.
 foreach ($m in [regex]::Matches($html, "(?m)^\s*BEV\('[^']+',([0-9]+),")) { [void]$ids.Add([int]$m.Groups[1].Value) }
 foreach ($id in 242,440,531) { [void]$ids.Add($id) } # Blissey, Happiny e Audino no Centro Pokémon.
+foreach ($id in 186,38,145) { [void]$ids.Add($id) } # Politoed, Ninetales e Zapdos nos eventos de clima.
 foreach ($id in 1,52,150,151,249,250,251) { [void]$ids.Add($id) }
 $base = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/'
 foreach ($id in $ids) {
