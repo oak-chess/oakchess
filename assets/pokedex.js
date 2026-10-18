@@ -53,6 +53,19 @@ function drawDetail(){
  const L=LINES[e.line],star=Math.max(e.star,Math.min(3,r.star||1)),stats=baseStats(L,star),types=typesOf(L,star),moves=(L.moves||[L.mv]).slice(0,star>=3?4:star>=2?3:2);
  box.innerHTML='<div class="dex-hero">'+sprite(e.id)+'<div><small>#'+String(e.id).padStart(3,'0')+' · '+esc(roleNames[L.role]||'')+'</small><h3>'+esc(e.name)+'</h3><div class="dex-types">'+types.map(t=>'<span style="--type:'+TYPES[t].c+'">'+esc(TYPES[t].n)+'</span>').join('')+'</div><p>'+esc(r.owned?'Obtido na sua equipe':'Encontrado · ainda não obtido')+(r.evolved?' · Evolução alcançada':'')+'</p></div></div><h4>FORMAS DA LINHA</h4><div class="dex-forms">'+L.ids.map((id,i)=>'<button data-id="'+id+'" title="'+esc(state.entries[id]?L.names[i]:'Forma desconhecida')+'">'+sprite(id,!!state.entries[id])+'<span>'+esc(state.entries[id]?L.names[i]:'???')+'</span><small>'+'★'.repeat(i+1)+'</small></button>').join('')+'</div><div class="dex-stats"><span><b>'+Math.round(stats.hp)+'</b> PS</span><span><b>'+Math.round(stats.atk)+'</b> Ataque</span><span><b>'+Math.round(stats.sp)+'</b> Poder</span><span><b>'+L.c+'</b> Custo</span></div><small class="dex-note">Valores base, sem itens ou bônus. Forma de '+star+' estrela(s).</small><h4>PASSIVA</h4><div class="dex-ability"><b>'+esc(L.passive?.n||'—')+'</b><p>'+esc(L.passive?.d||'')+'</p></div><h4>GOLPES DESCOBERTOS</h4>'+moves.map(m=>'<div class="dex-ability"><b>'+esc(m.n)+'</b><small>'+esc(TYPES[m.t]?.n||'')+' · '+(r.skills?.[m.n]?'Uso registrado':'Disponível nesta forma')+'</small><p>'+esc(moveText(L,star,m))+'</p></div>').join('')+'<h4>SINERGIAS</h4>'+types.map(t=>'<div class="dex-ability"><b>'+esc(TYPES[t].n)+'</b><p>'+esc(traitDescription(t))+'</p><small>'+(state.traits[t]?'Você já ativou: '+state.traits[t]+' espécies':'Ainda não ativada pela sua equipe')+'</small></div>').join('');
 }
+function addMovePreviews(box,e,star,moves){
+ let node=[...box.querySelectorAll('h4')].find(h=>h.textContent==='GOLPES DESCOBERTOS')?.nextElementSibling,index=0;
+ while(node&&node.tagName!=='H4'){
+  const move=moves[index++];if(!move)break;
+  node.classList.add('dex-preview-card');node.setAttribute('role','button');node.tabIndex=0;node.setAttribute('aria-label','Ver animação de '+move.n);
+  const hint=document.createElement('small');hint.className='dex-preview-hint';hint.textContent='▶ Ver animação';node.append(hint);
+  node.onclick=()=>window.DEX_MOVE_PREVIEW?.open({line:e.line,star,id:e.id,name:e.name,move});
+  node.onkeydown=event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();event.currentTarget.click()}};
+  node=node.nextElementSibling;
+ }
+}
+const originalDrawDetail=drawDetail;
+drawDetail=function(){originalDrawDetail();const e=catalog.get(selected),r=e&&state.entries[e.id];if(!e||!r)return;const star=Math.max(e.star,Math.min(3,r.star||1)),L=LINES[e.line];addMovePreviews(panel.querySelector('.dex-detail'),e,star,(L.moves||[L.mv]).slice(0,star>=3?4:star>=2?3:2))};
 function drawTraitDetail(t){
  const rule=TRAITS[t],members=entries.filter(e=>typesOf(LINES[e.line],e.star).includes(t)),known=members.filter(e=>state.entries[e.id]).length;
  panel.querySelector('.dex-detail').innerHTML='<div class="dex-trait-heading"><div class="dex-trait-emblem" style="--trait-color:'+TYPES[t].c+'">'+tyIcon(t)+'</div><div><small>SINERGIA DE TIPO</small><h3>'+esc(TYPES[t].n)+'</h3><span>'+known+'/'+members.length+' Pokémon encontrados</span></div></div><div class="dex-ability"><p>'+esc(traitDescription(t))+'</p><small>Patamares: '+rule.tiers.join(' / ')+' espécies · '+(state.traits[t]?'Maior ativado: '+state.traits[t]:'Ainda não ativada')+'</small></div><h4>POKÉMON DESTA SINERGIA</h4><div class="dex-trait-members">'+members.map(e=>'<button data-id="'+e.id+'" class="'+(!state.entries[e.id]?'unknown':'')+'">'+sprite(e.id,!!state.entries[e.id])+'<small>#'+String(e.id).padStart(3,'0')+'</small><b>'+esc(state.entries[e.id]?e.name:'???')+'</b></button>').join('')+'</div>';
@@ -68,7 +81,7 @@ function open(){
  returnFocus=document.activeElement;pausedHere=!G.paused&&['plan','combat'].includes(G.phase)&&!DEMO.on;if(pausedHere)togglePause(true);
  detailOpen=false;panel.classList.add('show');render();panel.querySelector('[data-close]').focus();
 }
-function close(){panel.classList.remove('show');flush();if(pausedHere&&G.paused)togglePause(false);pausedHere=false;if(returnFocus?.isConnected)returnFocus.focus()}
+function close(){window.DEX_MOVE_PREVIEW?.close();panel.classList.remove('show');flush();if(pausedHere&&G.paused)togglePause(false);pausedHere=false;if(returnFocus?.isConnected)returnFocus.focus()}
 panel.addEventListener('click',e=>{
  if(e.target===panel||e.target.closest('[data-close]')){close();return}const b=e.target.closest('button');if(!b)return;
  if(b.hasAttribute('data-back')){if(tab==='traits'&&traitPokemon){traitPokemon=false;drawTraitDetail(selectedTrait)}else detailOpen=false;syncView();if(!detailOpen)panel.querySelector(tab==='traits'?'.dex-list [data-trait="'+selectedTrait+'"]':'.dex-list [data-id="'+selected+'"]')?.focus();else b.focus();return}

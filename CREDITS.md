@@ -1,5 +1,9 @@
 # Créditos e fontes dos recursos
 
+- **Apresentação adicional dos golpes:** sequências MIDI e cinco fundos reconstruídos dos tiles/mapas de [pret/pokeemerald](https://github.com/pret/pokeemerald). Os sons são sintetizados com timbres adaptados no navegador. Transformações e variações usam referências dos scripts originais, adaptadas ao OakChess; detalhes em `MOVE-PRESENTATION.md`. Música, gráficos e personagens continuam pertencendo aos respectivos titulares.
+
+- **Efeitos de golpes do Emerald:** gráficos e referências de animação de [pret/pokeemerald](https://github.com/pret/pokeemerald), em `assets/move-fx/`. O catálogo contém os 354 golpes da fonte; folhas transparentes preservam paletas e sequências de quadros. A associação às habilidades e os limites da adaptação estão em `assets/move-fx/README.md` e `MAPPING.md`. Trajetórias, tarefas e duração foram adaptadas ao combate do OakChess; não reproduzem integralmente os scripts originais. Os gráficos Pokémon pertencem aos respectivos titulares.
+
 O jogo reúne conteúdo de fãs e recursos de terceiros. Os créditos abaixo identificam as fontes dos arquivos locais; Pokémon e personagens relacionados são propriedade de seus respectivos titulares.
 
 - **Sprites e animações PMD:** [PMDCollab SpriteCollab](https://github.com/PMDCollab/SpriteCollab). Os autores por espécie estão em [assets/pmd/CREDITS.md](assets/pmd/CREDITS.md). Redistribuição apenas para uso não comercial com atribuição, conforme [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/); a licença foi incluída em `assets/pmd/LICENSE.md`.
