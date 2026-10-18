@@ -4486,6 +4486,8 @@ const PMD={base:'assets/pmd/sprite/',cache:new Map(),live:new Set(),raf:0,
    const fin=root.classList.contains('final'),bm=root.classList.contains('bossmon'),sf=star===3?1.15:star===2?1.06:1,
     tgt=fin?Math.min(d.ih*5.4*sf,330):Math.max(50,Math.min(d.ih*3*sf,138))*UNIT_K,sc=tgt/d.ih;
      const groundShift=Math.round(d.ih*.32*sc);root.style.setProperty('--pmd-hud-shift',Math.round(groundShift*.55)+'px');
+     /* A unidade fica no centro da casa; o sprite conserva sua compensação
+        local de apoio. Removê-la separa visualmente os pés da sombra. */
      cv.style.position='relative';cv.style.top=groundShift+'px';cv.style.pointerEvents='none';cv.style.transform='';
    root._pmd={d,cv,sc,ctx:cv.getContext('2d'),name:'Idle',stamp:0,t0:performance.now(),key:'',restAt:0};
    this.fit(root._pmd);root.classList.add('pmd');this.live.add(root);
@@ -4559,8 +4561,8 @@ function setItems(root,items){const its=root.querySelector('.its');its.innerHTML
       if(m.comps)d.classList.add('fused')}
     its.appendChild(d)}}
 function refreshUnit(u){const r=u.el;r.classList.toggle('shiny',!!u.shiny);setSprite(r,u.line,u.star,0);r.querySelector('.stars').textContent='★'.repeat(u.star);r.dataset.star=u.star;r.classList.toggle('s2',u.star===2);r.classList.toggle('s3',u.star===3);setItems(r,u.items)}
-function unitXY(u){if(u.pos.z==='b'){const h=hexXY(u.pos.r,u.pos.c);return{x:h.x,y:h.y+16}}const b=benchXY(u.pos.i);return{x:b.x,y:b.y+14}}
-function layoutUnit(u){if(!u.el||!u.pos)return;const p=unitXY(u);u.el.classList.toggle('onboard',u.pos.z==='b');u.el.style.setProperty('--unit-depth',u.pos.z==='b'?perspectiveScale(u.pos.r):1);u.el.style.transform='translate('+p.x+'px,'+p.y+'px)';u.el.style.zIndex=Math.floor(p.y)}
+function unitXY(u){if(u.pos.z==='b'){const h=hexXY(u.pos.r,u.pos.c);return{x:h.x,y:h.y}}const b=benchXY(u.pos.i);return{x:b.x,y:b.y+14}}
+function layoutUnit(u){if(!u.el||!u.pos)return;const p=unitXY(u);u.el.classList.toggle('onboard',u.pos.z==='b');u.el.classList.toggle('grounded-combat',u.pos.z==='b'&&!airborneAttacker(u));u.el.style.setProperty('--unit-depth',u.pos.z==='b'?perspectiveScale(u.pos.r):1);u.el.style.transform='translate('+p.x+'px,'+p.y+'px)';u.el.style.zIndex=Math.floor(p.y)}
 function newUnit(line,star){const u={uid:G.uid++,line,star:star||1,items:[],pos:null,el:null};UB['u'+u.uid]=u;if(window.PDEX)PDEX.owned(u);return u}
 function attachEl(u,spawn){u.el=buildEl('u'+u.uid,0);u.el.classList.add('own');if(spawn)u.el.classList.add('spawn');refreshUnit(u);if(spawn)PMD.play(u.el,'enter');layoutUnit(u);unitsL.appendChild(u.el);if(spawn)setTimeout(()=>u.el&&u.el.classList.remove('spawn'),500)}
 function removeUnit(u){if(u.pos){if(u.pos.z==='n')G.bench[u.pos.i]=null;else G.board.delete(rk(u.pos))}const i=G.pending.indexOf(u);if(i>=0)G.pending.splice(i,1);if(u.el)u.el.remove();delete UB['u'+u.uid]}
@@ -4954,14 +4956,15 @@ function unitTip(x){
   /* fora do combate, simula a unidade com itens e bênçãos (cartas) para mostrar os status já com os bônus */
   let E=live?x:null;if(!live){const sq=B.seq;try{E=mkCU({line:LINES.indexOf(L),star,items:x.items||[],r:0,c:0,scale:1,shiny:!!x.shiny,hpx:x.shiny?SHB:1,dx:x.shiny?SHB:1},0);applyBoons([E])}catch(e){E=null}B.seq=sq}
   const hpNow=live?Math.max(0,Math.round(x.hp)):Math.round(E?E.maxHp:bs.hp),hpMax=Math.round(E?E.maxHp:bs.hp),hpPct=Math.max(0,Math.min(100,hpNow/hpMax*100));
-  const mNow=live?Math.round(x.mana):Math.round(E?E.mana:bs.mana0),mMax=E?E.maxMana:bs.maxMana,mPct=Math.max(0,Math.min(100,mNow/mMax*100));
+  const mNow=live?Math.round(x.mana):Math.round(E?E.mana:bs.mana0),mMax=E?manaCapacity(E):bs.maxMana*2,mPct=Math.max(0,Math.min(100,mNow/mMax*100));
   const lv=live?1:0,sh_=lv&&E.shred?1-E.shred:1,atk=Math.round(E?E.atk*(1+E.dmgAmp)*(lv?1+(E.buffAtk||0):1):bs.atk),sp=Math.round(E?E.spell*(1+E.ap)*(1+E.dmgAmp):bs.sp),as=(E?E.as*(lv?(1+(E.buffAS||0))*(E.slow>0?.7:1):1):bs.as).toFixed(2),ar=Math.round(E?E.armor*sh_:bs.armor),mr=Math.round(E?E.mr*sh_:bs.mr);
   const ROLEN={tank:'Tanque',bruiser:'Lutador',melee:'Combatente',skirm:'Escaramuçador',range:'Atirador',mage:'Mago',support:'Suporte'},role=ROLEN[L.role]||'';
   const hl=t=>String(t).replace(/(\d+(?:,\d+)?%?)/g,'<em>$1</em>');
-  const ab=(ic,name,tag,cls,desc,c)=>`<div class="ab ${cls}" style="--c:${c}"><span class="abi">${ic}</span><div class="abt"><div class="abh"><b>${name}</b><span class="tag">${tag}</span></div><p>${hl(desc)}</p></div></div>`;
+  const ab=(ic,name,tag,cls,desc,c,clock='')=>`<div class="ab ${cls}" style="--c:${c}"><span class="abi">${ic}</span><div class="abt"><div class="abh"><b>${name}</b><span class="tag">${tag}</span></div><p>${hl(desc)}</p>${clock}</div></div>`;
   const tc=TYPES[tys[0]].c;
-  let abil=ab('✦',L.passive.n,'Passiva','pas',L.passive.d,'#ffd84a');
-  const lk=[];L.moves.slice(0,4).forEach((m,i)=>{if(i<moveCount)abil+=ab(tyIcon(m.t),m.n,'Golpe '+(i+1),'',moveText(L,star,m),TYPES[m.t].c);else lk.push(`<span><b>${'★'.repeat(i===2?2:3)}</b> ${m.n}</span>`)});
+  const passiveClock=live&&L.passive.passiveMove?'<div class="skill-live-clock '+(x.passiveMoveCd>0?'cooldown':'idle')+'">'+(x.passiveMoveCd>0?'Recarga passiva · '+x.passiveMoveCd.toFixed(1).replace('.',',')+'s':'Passiva disponível · aguarda seu gatilho')+'</div>':'';
+  let abil=ab('✦',L.passive.n,'Passiva','pas',L.passive.d,'#ffd84a',passiveClock);
+  const lk=[];L.moves.slice(0,4).forEach((m,i)=>{if(i<moveCount)abil+=ab(tyIcon(m.t),m.n,'Golpe '+(i+1),'',moveText(L,star,m),TYPES[m.t].c,window.SKILL_RHYTHM?.tooltip(x,m,i,live)||'');else lk.push(`<span><b>${'★'.repeat(i===2?2:3)}</b> ${m.n}</span>`)});
   if(lk.length)abil+=`<div class="unl"><i>🔒</i>${lk.join('')}</div>`;
   
   return`<div class="ut"><div class="uh"><div class="um" style="--tc:${tc}"><img src="${x.shiny?shinyUrl(sprFront(L.ids[star-1])):sprFront(L.ids[star-1])}" onerror="this.onerror=null;this.src='${x.shiny?shinyUrl(sprStatic(L.ids[star-1])):sprStatic(L.ids[star-1])}'" alt=""><b class="uc"><i class="coin" style="width:11px;height:11px"></i>${L.c}</b></div>
@@ -5028,7 +5031,7 @@ function addCUEl(u){
   setTimeout(()=>u.el&&u.el.classList.remove('spawn'),500);updateCUEl(u)}
 function updateCUEl(u){
   if(u.el){u.el.classList.toggle('team-marked',!!CFG.teamMarkers);u.el.dataset.team=u.side===0?'ally':'foe'}
-  const e=u.el;if(!e)return;e.style.setProperty('--unit-depth',perspectiveScale(u.r));e.style.transform='translate('+u.x+'px,'+(u.y+16)+'px)';e.style.zIndex=Math.floor(u.y);
+  const e=u.el;if(!e)return;e.style.setProperty('--unit-depth',perspectiveScale(u.r));e.style.transform='translate('+u.x+'px,'+u.y+'px)';e.style.zIndex=Math.floor(u.y);
   const hb=e.querySelector('.hpb');hb.firstChild.style.width=clamp(u.hp/u.maxHp*100,0,100)+'%';hb.lastChild.style.width=clamp(u.shield/u.maxHp*100,0,100)+'%';
   e.querySelector('.mnb i').style.width=clamp(u.mana/manaCapacity(u)*100,0,100)+'%';
   if(window.SKILL_RHYTHM){const state=SKILL_RHYTHM.status(u);e.classList.toggle('skill-wait',state.waiting);e.classList.toggle('skill-casting',state.casting);e.querySelector('.mnb').title=state.charges+'/2 cargas'+(state.remaining>0?' · intervalo '+state.remaining.toFixed(1)+'s':'')}
@@ -6503,7 +6506,7 @@ function frame_(ts){
   else if(G.phase==='combat')$('#ttxt').textContent=B.over?'':'Combate '+Math.floor(B.t)+'s';
   FX.update(sdt);
   for(const u of B.units)updateCUEl(u);
-  FX.draw();tipTick(ts)}
+  FX.draw();tipTick(ts);window.LIVE_BATTLE_STATS?.update(ts)}
 
 /* ---------- pausa ---------- */
 function togglePause(force){if(!['plan','combat'].includes(G.phase))return;const next=typeof force==='boolean'?force:!G.paused;if(next===G.paused)return;G.paused=next;document.body.classList.toggle('game-paused',next);$('#pausedOverlay').classList.toggle('show',next);$('#pauseBtn').textContent=next?'▶':'⏸';$('#pauseBtn').setAttribute('aria-label',next?'Continuar jogo':'Pausar jogo');$('#pauseBtn').title=next?'Continuar (P)':'Pausar (P)';if(next)$('#resumeBtn').focus();else $('#pauseBtn').focus();SND.click()}
@@ -8832,6 +8835,8 @@ body #tip .ut .usec.its{padding-top:4px}
 <script src="assets/arena-fields.js"></script>
 <script src="assets/hex-attacks.js"></script>
 <script src="assets/reactive-previews.js"></script>
+<link rel="stylesheet" href="assets/live-battle.css">
+<script src="assets/live-battle.js"></script>
 <script src="assets/dex-move-preview.js"></script>
 <script src="assets/passive-roster.js"></script>
 <script src="assets/passive-moves.js"></script>
