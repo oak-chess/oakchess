@@ -1,0 +1,1 @@
+window.BIRD_THEME={kind:'moltres',sky:['#201725','#583137','#9b5739'],rocks:['#3c3541','#55434b','#70504c'],edge:'#5a4c52',side:'#383544',dark:'#222735',trim:'#b47748',floor:['#655659','#715f5e'],accent:'#ffc16e',soundText:'Ressonância grave da cratera vulcânica.'};

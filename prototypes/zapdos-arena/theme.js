@@ -1,0 +1,1 @@
+window.BIRD_THEME={kind:'zapdos',sky:['#111e32','#33495e','#6c7c85'],rocks:['#364957','#495d64','#637574'],edge:'#7c8988',side:'#455e67',dark:'#233c4b',trim:'#d4bc67',floor:['#778a88','#8b9b93'],accent:'#f4d779',soundText:'Vento forte na usina da tempestade.'};

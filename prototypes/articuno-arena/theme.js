@@ -1,0 +1,1 @@
+window.BIRD_THEME={kind:'articuno',sky:['#132a48','#345e7e','#9bc5d3'],rocks:['#507997','#75a6bc','#98c9d6'],edge:'#99bfcd',side:'#527f9b',dark:'#244a66',trim:'#cce8e9',floor:['#86bbc9','#a1d3db'],accent:'#d3f5ff',soundText:'Vento frio da gruta glacial.'};

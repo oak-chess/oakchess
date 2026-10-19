@@ -2212,6 +2212,11 @@ body.idrag .unit:has(.its.has){z-index:4000!important}
 <script src="assets/brock-arena.js"></script>
 <script src="assets/misty-arena.js"></script>
 <script src="assets/mewtwo-arena.js"></script>
+<script src="assets/articuno-arena.js"></script>
+<script src="assets/moltres-arena.js"></script>
+<script src="assets/zapdos-arena.js"></script>
+<style>body.legendary-preparation #world .unit.e{visibility:hidden}#world[data-arena="articuno"] #amb,#world[data-arena="moltres"] #amb,#world[data-arena="zapdos"] #amb{display:none}</style>
+<script>window.__legendaryAudioUnlocked=false;document.addEventListener('pointerdown',()=>window.__legendaryAudioUnlocked=true,{once:true});document.addEventListener('keydown',()=>window.__legendaryAudioUnlocked=true,{once:true});</script>
 <script>
 window.reportErr=function(e){try{console.error(e);var d=document.getElementById('errbox');if(!d){d=document.createElement('div');d.id='errbox';d.style.cssText='position:fixed;left:8px;bottom:8px;z-index:99999;max-width:70vw;background:#7a1020;color:#fff;font:12px/1.4 monospace;padding:8px 12px;border:2px solid #ffb0b8;border-radius:6px;white-space:pre-wrap;cursor:pointer';d.title='clique para fechar';d.onclick=function(){d.remove()};document.documentElement.appendChild(d)}d.textContent='Erro no jogo (clique para fechar):\n'+(e&&e.message||e)+'\n'+String(e&&e.stack||'').split('\n').slice(1,4).join('\n')}catch(_){}};
 addEventListener('error',function(ev){if(ev.error||ev.message)reportErr(ev.error||ev.message)});
@@ -2225,7 +2230,9 @@ addEventListener('unhandledrejection',function(ev){reportErr(ev.reason)});
    Golpes, partículas e sons de golpes: gerados em tempo real (Canvas + WebAudio)
    ===================================================================== */
 const W=1280,H=800;
-const ARENA_PREVIEW=new URLSearchParams(location.search).get('arenaPreview')==='mewtwo';
+const ARENA_PREVIEW_ID=new URLSearchParams(location.search).get('arenaPreview');
+const ARENA_PREVIEW=['mewtwo','articuno','moltres','zapdos'].includes(ARENA_PREVIEW_ID);
+let ARENA_PREVIEW_COMBAT=false;
 const $=(s,r=document)=>r.querySelector(s);
 const mk=(tag,cls,html)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e};
 const rnd=(a,b)=>a+Math.random()*(b-a), ri=(a,b)=>Math.floor(rnd(a,b+1)), pick=a=>a[Math.floor(Math.random()*a.length)];
@@ -3196,13 +3203,15 @@ let LEGACY_HEX_SOFTNESS=0,LEGACY_HEX_STEP=0;
 const APPROVED_ARENAS={};
 function viridianArena(){return VIRIDIAN_ARENA||(VIRIDIAN_ARENA=window.createViridianArena())}
 function approvedArena(){
- const key=ARENA_TID===0?'brock':ARENA_TID===1?'misty':ARENA_T&&ARENA_T.id==='mewtwo'?'mewtwo':null;
+ const legendary=ARENA_T&&['articuno','moltres','zapdos'].includes(ARENA_T.id)?ARENA_T.id:null;
+ const key=legendary||(ARENA_TID===0?'brock':ARENA_TID===1?'misty':ARENA_T&&ARENA_T.id==='mewtwo'?'mewtwo':null);
  if(!key)return null;
- if(!APPROVED_ARENAS[key]){const factory=key==='brock'?window.createBrockArena:key==='misty'?window.createMistyArena:window.createMewtwoArena;if(!factory)return null;APPROVED_ARENAS[key]=factory()}
+ if(!APPROVED_ARENAS[key]){const factory={brock:window.createBrockArena,misty:window.createMistyArena,mewtwo:window.createMewtwoArena,articuno:window.createArticunoArena,moltres:window.createMoltresArena,zapdos:window.createZapdosArena}[key];if(!factory)return null;APPROVED_ARENAS[key]=factory()}
  return APPROVED_ARENAS[key];
 }
 function tickApprovedArenas(dt){
- const active=approvedArena(),base={angled:ARENA_PERSPECTIVE,paused:G.paused,combat:G.phase==='combat'||G.phase==='result',mute:CFG.mute||DEMO.mute,sfx:CFG.sfx,quality:CFG.fxLevel==='low'?'low':'high',reduceFx:CFG.reduceFx};let dirty=false;
+ const active=approvedArena(),base={birdPerched:!!G.birdArrival&&G.birdArrival!=='flight',birdObserver:G.round?.event==='bird'&&G.birdStage==='guards',birdArrival:!!G.birdArrival,preview:ARENA_PREVIEW,angled:ARENA_PERSPECTIVE,paused:ARENA_PREVIEW?false:G.paused,combat:ARENA_PREVIEW?ARENA_PREVIEW_COMBAT:G.phase==='combat'||G.phase==='result',preparation:ARENA_PREVIEW?!ARENA_PREVIEW_COMBAT:G.phase==='plan',mute:CFG.mute||DEMO.mute,sfx:CFG.sfx,quality:CFG.fxLevel==='low'?'low':'high',reduceFx:CFG.reduceFx};let dirty=false;
+ document.body.classList.toggle('legendary-preparation',!!active&&base.preparation&&!base.birdObserver&&!!ARENA_T&&['articuno','moltres','zapdos'].includes(ARENA_T.id));
  if(VIRIDIAN_ARENA)dirty=VIRIDIAN_ARENA.tick(dt,Object.assign({},base,{active:ARENA_TID===-1}))||dirty;
  for(const item of Object.values(APPROVED_ARENAS))dirty=item.tick(dt,Object.assign({},base,{active:item===active}))||dirty;
  if(!active&&ARENA_TID!==-1){
@@ -3210,7 +3219,7 @@ function tickApprovedArenas(dt){
   const step=Math.round(LEGACY_HEX_SOFTNESS*10);
   if(step!==LEGACY_HEX_STEP){LEGACY_HEX_STEP=step;dirty=true}
  }
- if(dirty){ARENA=null;drawGrid()}
+ if(dirty){SCENERY=null;ARENA=null;drawGrid()}
 }
 function paintArena(g,layer='all'){
   const custom=approvedArena();if(custom)return custom.paint(g,layer,ARENA_PERSPECTIVE);
@@ -3972,14 +3981,15 @@ function birdPick(){
 function pickBird(i,els){
   if(BOON.phase!=='pick'||performance.now()<(BOON.readyAt||0))return;
   BOON.phase='chosen';BOON.onKey=null;SND.click();
-  const b=BIRDS[i];G.bird=i;G.birdPicked=true;
+  const b=BIRDS[i];G.bird=i;G.birdPicked=true;G.birdStage='guards';
   els.forEach((el,j)=>{el.classList.remove('kb');el.classList.add(j===i?'sel':'gone')});
   setTimeout(()=>{SND.cry(b.id,.9);psyFlash(b.fl);FX.shake&&FX.shake(8)},350);
   setTimeout(()=>{
-    const info=G.round;
-    if(info){const th=BIRD_THEME0+i;if(th!==ARENA_TID)setArenaTheme(th);else repaintArena();setupEnemy(info)}
-    closeEvent();renderHUD();
-    setTimeout(()=>{G.eventModal=true;storyScene(birdLines(b,b.intro.slice(1),false),()=>{G.eventModal=false;renderHUD()})},250)},1500)}
+    const info=G.round;closeEvent();G.eventModal=true;
+    if(info){setArenaTheme(BIRD_THEME0+i);clearCombatUnits()}
+    renderHUD();legendaryArrival(info);
+  },900)}
+
 function birdWin(done){const b=BIRDS[G.bird];storyScene(birdLines(b,[b.win]),()=>showBirdReward(done))}
 function showBirdReward(done){const b=BIRDS[G.bird];G.birdDone=done;
   eventScreen(b.n,b.pick+`<div class="event-options"><button onclick="claimBird('item')">🎁 Itens raros<small>2 itens raros</small></button><button onclick="claimBird('gold')">🪙 12 de ouro<small>Receba na hora</small></button><button onclick="claimBird('catch')">🦅 Levar ${b.n}<small>Entra no seu banco</small></button></div>`,'story');
@@ -4381,7 +4391,7 @@ function newGame(){
   G.mysteryEvents={lastAt:-99,records:{}};
   Object.assign(G,{phase:'starter',runDiff:CFG.diff||'normal',npcSeed:Math.floor(Math.random()*4294967296),vials:mkVials(),vialHint:false,ri:0,gold:4,lvl:2,xp:0,hp:100,streak:0,shop:[],locked:false,bench:Array(9).fill(null),board:new Map(),pending:[],
     items:[],pool:LINES.map(L=>L.boss?0:POOL[L.c-1]),uid:1,paused:false,timer:0,timerMax:0,opp:null,enemy:[],round:null,over:false,placeCount:0,hintOn:true,_tt:null,_lg:null,_lh:null,retry:false,ldIdx:0,oppQuote:null,lastResult:null,egg:null,weather:null,eventModal:false,tradeOffers:[],rocketDone:null,evoQueue:[],evoUnit:null,boons:[],boonQ:[]});
-  G.casinoAt=pickCasinoRounds(0);G.badges=[];G.said={};G.mewHelp=false;G.bird=Math.floor(Math.random()*3);G.birdPicked=false;G.bless=null;G.fenix=false;G.birdBeaten=false;STORY.on=false;G.oppSlug=null;G.foe=null;G.e4=0;G.champion=false;G.legend=false;
+  G.casinoAt=pickCasinoRounds(0);G.badges=[];G.said={};G.mewHelp=false;G.bird=Math.floor(Math.random()*3);G.birdPicked=false;G.birdStage=null;G.birdArrival=null;G.bless=null;G.fenix=false;G.birdBeaten=false;STORY.on=false;G.oppSlug=null;G.foe=null;G.e4=0;G.champion=false;G.legend=false;
 }
 const rk=p=>p.r+','+p.c;
 const boardUnits=()=>[...G.board.values()];
@@ -5688,16 +5698,18 @@ function setupEnemy(info){
   if(info.event==='adapt'){const own=dominantPlayerType(),target=G.lastResult===false?(TYPE_COUNTER[own]||'fighting'):own;G.eventTarget=target;const extra=genTeam(2,g+2,info.rn,[target],{scale:1.25,favP:1,starBonus:.12});G.enemy=placeEnemies(G.enemy.concat(extra));G.oppName='Gary — rival adaptativo';G.oppQuote=G.lastResult===false?'Desta vez preparei uma equipe com vantagem contra você!':'Usei a sua estratégia como inspiração. Vamos ver quem domina esse tipo!'}
   if(info.event==='rematch'){G.enemy=placeEnemies(G.enemy.map(e=>Object.assign({},e,{scale:(e.scale||1)*1.3,star:Math.min(3,e.star+1)})));const extra=genTeam(1,g+3,info.rn,['dragon','psychic'],{scale:1.3,favP:1,starBonus:.2});G.enemy=placeEnemies(G.enemy.concat(extra));G.oppName='Gary — revanche';G.oppQuote='Agora é para valer! Trouxe reforços para a revanche.'}
   if(info.event==='bird'&&!birdChosen()){G.oppName='Ave lendária';G.oppSlug=null;G.oppQuote='';G.enemy=[]}
+  else if(info.event==='bird'&&G.birdStage==='guards'){const b=BIRDS[G.bird];G.oppName='Guardiões de '+b.n;G.oppSlug=null;G.oppQuote='Os guardiões defendem este santuário.';G.enemy=legendaryGuardTeam(b);spawnEnemies(G.enemy)}
   else if(info.event==='bird'){const b=BIRDS[G.bird],it=[];for(let i=0;i<3;i++)it.push(pick(ITEMS).k);G.oppName=b.n;G.oppSlug=null;G.oppQuote=b.q;G.enemy=bossToRow(placeEnemies([{line:b.line,star:3,items:it,scale:2.0,hpx:2.4,dx:.5,cap:.4}]));spawnEnemies(G.enemy)}
   if(info.event==='rocket'){G.enemy=genTeam(4,g+3,info.drn||info.rn,['dark','poison','ground'],{scale:1.45,favP:1,starBonus:.15,items:2});{const rt=rocketTrainer();G.oppName=rt[1];G.oppSlug=rt[0]}G.oppQuote='A Equipe Rocket vai tomar esses Pokémon! Prepare-se!'}
 }
 function startPlan(){closeBag();
+  const keepLegendaryShop=!!G._birdContinue;G._birdContinue=false;
   const info=getRound(G.ri);G.round=info;
   {G.routeMod=null;const th=info.event==='bird'&&birdChosen()?BIRD_THEME0+G.bird:(info.kind==='boss'&&info.gym<8)?info.gym:info.kind==='e4'?E4_THEME0+info.lg:info.kind==='champ'?E4_THEME0+4:info.kind==='secret'?E4_THEME0+5:routeThemeFor(info);if(!G._arenaPainted||th!==ARENA_TID){G._arenaPainted=true;if(th!==ARENA_TID)setArenaTheme(th);else repaintArena()}}
   if(info.kind==='carousel'){G.phase='carousel';G.oppSlug=null;showNpc(null);G.opp=null;G.oppName=null;clearCombatUnits();$('#oppinfo').innerHTML='';renderHUD();if(G._resume)G._resume=null;else saveNow();showCarousel();return}
   G.phase='plan';G.weather=null;setWeatherFx();G.eventModal=false;setupEnemy(info);
   if(G.egg&&G.ri>=G.egg.hatchAt){const egg=G.egg,slot=egg.slot,reserve=$('#eggReserve');if(reserve)reserve.remove();G.egg=null;const u=newUnit(egg.line,1);place(u,{z:'n',i:slot});attachEl(u,true);G.pool[egg.line]=Math.max(0,G.pool[egg.line]-1);mergeCheck();toast('✨ O ovo chocou no espaço reservado: '+LINES[egg.line].names[0]+'!')}
-  if(!G.locked||!G.shop.some(Boolean))rollShop(true);
+  if(!keepLegendaryShop&&(!G.locked||!G.shop.some(Boolean)))rollShop(true);
   G.timerMax=G.timer=G.ri===0?60:G.ri<3?40:50;
   {const ld=foeOf(info),bs=isBoss(info.kind)||info.kind==='secret';banner(info.kind==='secret'?'???':info.gym>=8?'Liga Pokémon · '+info.rn+'/5':info.extra?'Evento · Etapa '+info.st:'Rodada '+info.lbl,G.retry?'Revanche contra '+G.oppName+'!':bs?G.oppName:info.rn===1&&!info.extra?'Rumo ao Ginásio de '+ld.city+' · '+ld.route:info.kind==='pve'?'Pokémon selvagens':info.kind==='rival'?'Seu rival: Gary':G.oppName,info.kind==='secret'?'#c070ff':bs?'#ffb400':'#fff')}
   showNpc(G.oppSlug,G.oppQuote);SND.round();SND.music('plan');document.body.classList.remove('combat');
@@ -5708,7 +5720,7 @@ function startPlan(){closeBag();
   if(info.kind==='champ'&&!G.over){G.said=G.said||{};if(G.retry)intro=BLUE_RETRY;else if(!G.said.champ){G.said.champ=1;intro=BLUE_INTRO}}
   if(info.kind==='boss'&&info.gym<8&&!G.over&&!G.retry){G.said=G.said||{};const gk='gym'+info.gym;if(!G.said[gk]){G.said[gk]=1;intro=gymLines(info.gym,'intro')}}
   if(info.kind==='e4'&&!G.over&&!G.retry){G.said=G.said||{};const ek='e4_'+info.lg;if(!G.said[ek]){G.said[ek]=1;intro=e4Lines(info.lg,'intro');if(info.lg===0)intro=LIGA_INTRO.concat(intro)}}
-  const next=()=>{if(G.round===info&&G.phase==='plan'&&!G.over)ckpt(info)};
+  const next=()=>{if(G.round!==info||G.phase!=='plan'||G.over)return;if(info.event==='bird'&&birdChosen()&&G.birdStage){legendaryPreparation(info);return}ckpt(info)};
   if(intro){G.eventModal=true;hideTip();setTimeout(()=>{if(G.round===info&&G.phase==='plan'&&!G.over)storyScene(intro,next)},800)}else next()}
 function autoFill(){
   const free=[];for(const r of[4,5,6,7])for(const c of[3,2,4,1,5,0,6])if(!G.board.has(r+','+c))free.push([r,c]);
@@ -5719,6 +5731,7 @@ function autoFill(){
   if(moved){toast('Pokémon do banco foram para o campo');layoutAll()}}
 let VSTO=null;
 function showVS(done){
+  if(G.round?.event==='bird'){SND.music('battle');done();return}
   const info=G.round,mine=boardUnits(),boss=isBoss(info.kind),secret=info.kind==='secret',wild=info.kind==='pve';let fin=false;
   const go=()=>{if(fin)return;fin=true;clearTimeout(VSTO);$('#vs').classList.remove('show');done()};
   const cnt=typeCounts(mine),act=Object.keys(cnt).filter(t=>tierOf(t,cnt[t])>=0);
@@ -5773,6 +5786,7 @@ function finishBattle(){if(DEMO.on){demoNext();return}
   resolveRound(win,surv);try{window.CR&&CR.after(_hp0,_g0)}catch(e){}}
 function resolveRound(win,surv){
   const info=G.round,db=dmgBase(info.st),hp0=G.hp;G.retry=false;G.lastResult=win;
+  if(info.event==='bird'&&G.birdStage==='guards'){resolveLegendaryGuards(win,surv,db);return}
   if(G.bless&&G.bless.left>0){G.bless.left--;if(!G.bless.left){G.bless=null;setTimeout(()=>toast('A bênção de Ho-Oh chegou ao fim'),1200)}}
   const drop=n=>{const got=[];for(let i=0;i<n;i++){const k=pick(ITEMS).k;G.items.push(k);got.push(ITEMBY[k].n)}SND.loot();toast('Recompensa: '+got.join(', '));renderInv()};
   if(info.event==='bird'){
@@ -5929,7 +5943,7 @@ const TITLE_WXO={rain:{id:'rain',n:'Chuva',icon:'🌧️',d:''},sun:{id:'sun',n:
 const TITLE_LOC={'-1':'Floresta de Viridian',0:'Ginásio de Pewter',1:'Ginásio de Cerulean',2:'Ginásio de Vermilion',3:'Ginásio de Celadon',4:'Ginásio de Fuchsia',5:'Ginásio de Saffron',6:'Ginásio de Cinnabar',7:'Ginásio de Viridian',8:'Ilhas Seafoam',9:'Usina Abandonada',10:'Monte Ígneo',11:'Elite 4 · Lorelei',12:'Elite 4 · Bruno',13:'Elite 4 · Agatha',14:'Elite 4 · Lance',15:'Salão da Fama'};
 let TITLE_Q=[],TITLE_TM=0;
 function titleArena(th){
-  if(ARENA_PREVIEW)th=E4_THEME0+5;
+  if(ARENA_PREVIEW)th=ARENA_THEMES.findIndex(t=>t.id===ARENA_PREVIEW_ID);
   clearTimeout(TITLE_TM);TITLE_TM=setTimeout(titleArenaTick,13000);
   if(th!==ARENA_TID)setArenaTheme(th);
   G.weather=null;setWeatherFx();{const tt=$('#ttl');if(tt){tt.classList.remove('skyswap');void tt.offsetWidth;tt.classList.add('skyswap')}}
@@ -5939,6 +5953,7 @@ function titleArenaTick(){
   if(!TITLE_Q.length)TITLE_Q=shuffle(TITLE_SEQ.filter(x=>x!==ARENA_TID));
   titleArena(TITLE_Q.shift())}
 function demoNext(){
+  if(ARENA_PREVIEW&&window.ARENA_PREVIEW_ROUND)return window.ARENA_PREVIEW_ROUND();
   clearCombatUnits();
   if(DEMO.skipTick)DEMO.skipTick=false;else titleArenaTick();
   for(const side of[1,0])for(const sp of demoTeam(side)){const cu=mkCU(sp,side);B.units.push(cu);addCUEl(cu);FX.poof(cu.x,cyOf(cu))}
@@ -6164,7 +6179,7 @@ function restart(){closeBag();clearSave();
 
 /* ---------- salvamento automático + Prof. Carvalho oferece continuar a aventura ---------- */
 var SAVE_KEY='pktft_save_v1',SAVE_TM=null;
-var SAVE_KEYS=['ri','gold','lvl','xp','hp','streak','locked','vialHint','retry','lastResult','uid','ldIdx','bird','birdPicked','birdBeaten','fenix','mewHelp','e4','champion','legend','hintOn','casinoAt','npcSeed','runDiff'];
+var SAVE_KEYS=['ri','gold','lvl','xp','hp','streak','locked','vialHint','retry','lastResult','uid','ldIdx','bird','birdPicked','birdStage','birdBeaten','fenix','mewHelp','e4','champion','legend','hintOn','casinoAt','npcSeed','runDiff'];
 function saveCan(){return !G.over&&!G.eventModal&&!STORY.on&&!DEMO.on&&!!G.round&&(G.phase==='plan'||G.phase==='carousel')}
 function snapshot(){
   const g={};SAVE_KEYS.forEach(k=>{g[k]=G[k]===undefined?null:G[k]});
@@ -8855,5 +8870,6 @@ body #tip .ut .usec.its{padding-top:4px}
 <link rel="stylesheet" href="assets/ui-sprites.css">
 <link rel="stylesheet" href="assets/badge-case.css">
 <script src="assets/badge-case.js"></script>
+<script src="assets/legendary-encounter.js"></script>
 <script src="assets/arena-preview.js"></script>
 </body></html>
