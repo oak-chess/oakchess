@@ -57,12 +57,14 @@
  }
  function visualMetrics(name){
   if(sharedMetrics.has(name))return sharedMetrics.get(name);
+  const saved=window.EMERALD_VISIBLE_BOUNDS?.[name];if(saved){sharedMetrics.set(name,saved);return saved;}
   const template=catalog.templates[name],offsets=new Set([0,...template.animations.flatMap(a=>a.frames.map(f=>f[0]))]);
   let left=template.w,top=template.h,right=-1,bottom=-1;
   // One union for the entire template: no size pumping between animation frames.
-  for(const offset of offsets){const canvas=spriteFrame(name,offset),pixels=canvas.getContext('2d',{willReadFrequently:true}).getImageData(0,0,template.w,template.h).data;
+  try{for(const offset of offsets){const canvas=spriteFrame(name,offset),pixels=canvas.getContext('2d',{willReadFrequently:true}).getImageData(0,0,template.w,template.h).data;
    for(let y=0;y<template.h;y++)for(let x=0;x<template.w;x++)if(pixels[(y*template.w+x)*4+3]>16){left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y)}
   }
+  }catch{const safe={correction:1,cx:template.w/2,cy:template.h/2};sharedMetrics.set(name,safe);return safe}
   const span=right<0?Math.max(template.w,template.h):Math.max(right-left+1,bottom-top+1),particle=/Sparkle|Spark|Powder|Spore|Dust|Snow|Smoke|Particle/i.test(name+' '+template.callback);
   const correction=Math.min(particle?1.5:4,Math.max(1,Math.max(template.w,template.h)/Math.max(1,span)));
   const result={correction,cx:right<0?template.w/2:(left+right+1)/2,cy:bottom<0?template.h/2:(top+bottom+1)/2};sharedMetrics.set(name,result);return result;

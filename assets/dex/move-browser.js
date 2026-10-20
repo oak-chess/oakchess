@@ -17,10 +17,11 @@
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  // Use visible pixels as the ground anchor, never the transparent frame padding.
  function groundedFrames(image,data){
+  const saved=window.DEX_FRAME_BOUNDS?.[data.sheet];if(saved)return saved;
   const row=image.naturalHeight>=data.h*8?2:0,frames=Math.floor(image.naturalWidth/data.w),sample=document.createElement('canvas');
   sample.width=image.naturalWidth;sample.height=data.h;const g=sample.getContext('2d',{willReadFrequently:true});
   g.drawImage(image,0,row*data.h,image.naturalWidth,data.h,0,0,image.naturalWidth,data.h);
-  const pixels=g.getImageData(0,0,sample.width,sample.height).data,rects=[];
+  let pixels;try{pixels=g.getImageData(0,0,sample.width,sample.height).data}catch{return {row,rects:Array.from({length:frames},()=>({x:0,y:0,w:data.w,h:data.h}))}}const rects=[];
   for(let frame=0;frame<frames;frame++){let left=data.w,top=data.h,right=-1,bottom=-1;
    for(let y=0;y<data.h;y++)for(let x=0;x<data.w;x++)if(pixels[(y*sample.width+frame*data.w+x)*4+3]>16){left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y)}
    rects.push(right<0?null:{x:left,y:top,w:right-left+1,h:bottom-top+1});
