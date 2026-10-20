@@ -17,20 +17,20 @@
  function profile(u){
   const original=species[u.L.ids[0]]||profiles[u.L.passive.id],old=original?.forms?.[u.id]||original;
   const legal=window.PLAYABLE_MOVES?.[u.id];if(!legal)return old;
-  const selected=old&&legal.find(m=>m.emerald===old.move);
-  if(selected)return {...old,type:selected.t,kind:selected.damageClass,...(old.action==='heal'?{self:selected.targetId===7}:{})};
-  const m=legal.find(m=>!['buff','barrier','heal','splash','teleport','transform','debuff'].includes(m.k))||legal.find(m=>['barrier','heal'].includes(m.k));
+  if(old?.action==='splash'&&legal.some(m=>m.emerald===old.move))return old;
+  const m=legal.find(m=>!['buff','splash','teleport','transform','debuff'].includes(m.k));
+  if(m&&old?.move===m.emerald)return {...old,name:m.n,type:m.t,kind:m.damageClass,...(old.action==='heal'?{self:m.targetId===7}:{})};
   if(!m)return null;
   return {move:m.emerald,name:m.n,type:m.t,every:4,power:.30,kind:m.damageClass,
    ...(m.k==='heal'?{action:'heal',stat:'spell',self:m.targetId===7}:m.k==='barrier'?{action:'shield',stat:'spell',delivery:'self'}:{}),
    ...(m.k==='drain'?{drain:.6}:{})};
  }
  function description(p){
-  let text=p.chance?'Ataques básicos têm 18% de chance de lançar '+p.name:'A cada '+p.every+' acertos básicos, lança '+p.name;
+  let text=p.chance?'Ataques básicos têm '+Math.round(p.chance*100)+'% de chance de lançar '+p.name:'A cada '+p.every+' acertos básicos, lança '+p.name;
   if(p.action==='heal')text+=(p.self?' em si mesmo, curando ':' no aliado com menor proporção de PS, curando ')+Math.round(p.power*100)+'% do Poder';
   else if(p.action==='shield')text+=' e ganha escudo de '+Math.round(p.power*100)+'% do Poder, limitado a 6% dos PS máximos, por 3s';
-  else if(p.action==='splash')text+=' (apenas animação; ao evoluir, recebe Mordida)';
-  else text+=' ('+Math.round(p.power*100)+'% do Ataque como dano '+(p.kind==='phys'?'físico':'especial')+')';
+  else if(p.action==='splash')text+=' (apenas animação, sem dano)';
+  else text+=' ('+Math.round(p.power*100)+'% do '+(p.stat==='spell'?'Poder':'Ataque')+' como dano '+(p.kind==='phys'?'físico':'especial')+')';
   if(p.secondary)text+=' em outro rival a até 2 casas do alvo; sem outro rival, atinge o próprio alvo';
   if(p.status==='burn')text+=', causando queimadura por '+String(p.duration).replace('.',',')+'s';
   if(p.status==='poison')text+=', envenenando por '+String(p.duration).replace('.',',')+'s';
@@ -39,13 +39,17 @@
   if(p.drain)text+=' e recupera '+Math.round(p.drain*100)+'% do dano causado como PS';
   return text+'. Intervalo mínimo de 2s entre ativações.';
  }
- // Clone per line: several lines share their original passive object.
- for(const line of LINES){const p=profile({L:line,id:line.ids[0]});if(!p)continue;
-  const old=line.passive,base=['kindling','foxflame','venomfang','voltage','thunderpulse','static'].includes(old.id)?(old.mobility?old.d+' ':''):old.d+' ';
-  const forms=[...new Set(line.ids)].slice(1).map(id=>{const form=profile({L:line,id});return (line.names[line.ids.indexOf(id)]||'#'+id)+': '+(form?description(form):'Sem golpe passivo adicional.')}).join(' ');
-  line.passive={...old,d:base+description(p)+(forms?' '+forms:''),passiveMove:p.move};
+ // Keep only the permanent trait on the line. Active procs belong to the
+ // current species and are described from the same profile used by combat.
+ for(const line of LINES){const old=line.passive,legacy=['kindling','foxflame','venomfang','voltage','thunderpulse','static'].includes(old.id);
+  const base=legacy?old.d.split(/(?<=\.)\s+/).filter(sentence=>!(/^(A cada|Ataques? básicos?)/i.test(sentence))).join(' '):old.d;
+  line.passive={...old,baseDescription:base.trim(),d:base.trim()};
+ }
+ function describe(unit){const L=unit.L||LINES[unit.line],id=unit.id??L.ids[Math.max(0,Math.min(2,(unit.star||1)-1))],p=profile({L,id});
+  return {n:L.passive.n,d:[L.passive.baseDescription||'',p?description(p):''].filter(Boolean).join(' '),move:p?.move,active:!!p};
  }
  window.PASSIVE_MOVES={
+  describe,
   handles(u){return !!profile(u)},
   onBasic(u,target,damage){
    const p=profile(u);if(!p||damage<=0||!u.alive||B.over||!B.on||B.t<(u.castingUntil||0))return;
