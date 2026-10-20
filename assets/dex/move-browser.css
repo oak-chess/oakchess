@@ -35,3 +35,8 @@
 #pokedex [data-move-detail] canvas{display:block;position:relative;inset:auto;flex:0 0 auto;width:100%;height:auto;aspect-ratio:2/1;min-height:130px;max-height:240px;object-fit:contain;background:#0d232e;border:1px solid #63808a;margin:8px 0}
 #pokedex .dex-move-library-pages{flex:none;margin:0}
 @media(max-width:600px){#pokedex .dex-move-library-grid{grid-template-columns:minmax(105px,.7fr) minmax(0,1.3fr);gap:7px}#pokedex [data-move-list]{max-height:none}#pokedex [data-move-detail]{padding:8px}#pokedex [data-move-detail] canvas{min-height:90px}#pokedex .dex-move-library-tools{gap:4px}#pokedex .dex-move-library-tools input{min-width:0;width:100%}}
+
+/* Keep the attack scene and replay control visible before the long metadata. */
+#pokedex [data-move-detail] canvas{order:-3;margin:0 0 6px;min-height:140px;max-height:200px}
+#pokedex [data-move-detail]>[data-play-effect]{order:-2;min-height:32px;margin-bottom:5px}
+#pokedex [data-move-detail]>[data-effect-status]{order:-1;min-height:30px;margin:0 0 10px;font-size:11px;line-height:1.4}
