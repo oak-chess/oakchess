@@ -180,14 +180,20 @@ const unlocked=()=>{try{return localStorage.getItem('oakchess_tower_hard_unlocke
 // Canonical lines only: Mew also has a separate story line that stays excluded.
 const LEGEND_LINES=[LINES.findIndex(L=>L.ids[0]===150),MEWLINE,...BIRDLINES];
 const legendaryUnlocked=()=>{try{return unlocked()||localStorage.getItem('oakchess_tower_legendaries_unlocked')==='1'}catch{return false}};
-const canShop=L=>active()&&legendaryUnlocked()&&G.lvl>=7&&LEGEND_LINES.includes(L.i);
+const CAMPAIGN_LEGEND_LINES=LEGEND_LINES.map(i=>i===MEWLINE?LINES.findIndex(L=>L.ids[0]===151):i);
+const canShop=L=>G.lvl>=7&&(active()?legendaryUnlocked()&&LEGEND_LINES.includes(L.i):unlocked()&&CAMPAIGN_LEGEND_LINES.includes(L.i));
+function seedCampaignLegendaryPool(){
+ if(active()||!unlocked()||G.said?.campaignLegendaryPoolVersion===1)return;
+ for(const i of CAMPAIGN_LEGEND_LINES){const owned=allPlus().filter(u=>u.line===i).reduce((n,u)=>n+3**(u.star-1),0),offered=G.shop.filter(u=>u?.line===i).length;G.pool[i]=Math.max(0,POOL[4]-owned-offered)}
+ G.said=G.said||{};G.said.campaignLegendaryPoolVersion=1;
+}
 function seedLegendaryPool(){
  const t=current();if(!t||t.legendaryPoolVersion===1||!legendaryUnlocked())return;
  for(const i of LEGEND_LINES){const owned=allUnits().filter(u=>u.line===i).reduce((n,u)=>n+3**(u.star-1),0),offered=G.shop.filter(u=>u?.line===i).length;G.pool[i]=Math.max(0,POOL[4]-owned-offered)}
  t.legendaryPoolVersion=1;
 }
 function legendaryStats(L,stats){
- if(!active()||!LEGEND_LINES.includes(L.i))return stats;
+ if(!(active()?LEGEND_LINES:CAMPAIGN_LEGEND_LINES).includes(L.i))return stats;
  const tuning={144:{hp:1.04,sp:.78,mana:95},145:{hp:.86,sp:.86,mana:90},146:{hp:.94,sp:.88,mana:105},150:{hp:.84,sp:.92,mana:110},151:{hp:1.02,sp:.76,mana:90}}[L.ids[0]];
  return {...stats,hp:stats.hp*tuning.hp,atk:stats.atk*.9,sp:stats.sp*tuning.sp,maxMana:tuning.mana,mana0:Math.min(stats.mana0,15)};
 }
@@ -830,7 +836,7 @@ function exit(){if(!active())return;if(!['combat','vs'].includes(G.phase)&&!save
 function restart(){const t=current();if(!t)return;const modalBefore=G.eventModal,pausedBefore=G.paused;G.eventModal=true;if(G.phase==='combat'&&!G.paused)togglePause(true);panel('Recomeçar a torre?','A equipe e as relíquias desta tentativa serão substituídas. Sua campanha permanece salva.','',[{label:'Recomeçar subida',run:()=>launch(t.preview,null,t.startFloor||0)},{label:'Voltar à tentativa',secondary:true,run:()=>{close();G.eventModal=modalBefore;if(G.phase==='combat'&&!pausedBefore)togglePause(false);if(['path','rest','reward','map','starter'].includes(t.status))plan(true)}}])}
 function records(){const rows=read(RECORDS)||[];panel('Recordes da Torre','Doze setores · tentativas oficiais neste navegador',rows.length?'<ol class="tower-records">'+rows.map(r=>'<li><b>'+r.score+' pontos</b><span>'+r.floors+'/'+(r.total||5)+' andares · '+(r.won?'Setor concluído':'Fim da subida')+'</span><small>'+new Date(r.at).toLocaleDateString('pt-BR')+'</small></li>').join('')+'</ol>':'<p class="tower-note">Nenhuma tentativa oficial registrada. A prévia não entra na classificação.</p>',[{label:'Voltar',run:menu}])}
 function previewStats(u,original=null){if(!active()||!u)return;if(original?.pos?.z==='b'){u.r=original.pos.r;u.c=original.pos.c}else if(original){u.r=-1;u.c=-1}applyRelics([u],new Set(boardUnits().flatMap(x=>typesOf(LINES[x.line],x.star))))}
-window.TOWER={get active(){return active()},canShop,legendaryStats,round,plan,begin,finish,tick,save,clear,restart,menu,records,previewStats};
+window.TOWER={get active(){return active()},canShop,legendaryStats,seedCampaignLegendaryPool,round,plan,begin,finish,tick,save,clear,restart,menu,records,previewStats};
 const oldHUD=renderHUD;renderHUD=function(){const result=oldHUD.apply(this,arguments);decorate();return result};
 const oldSync=syncModePreview;syncModePreview=function(){const result=oldSync.apply(this,arguments),can=unlocked(),saved=read(can?KEY:PREVIEW_KEY),hasSave=valid(saved);const hint=document.getElementById('towerPreviewHint');if(hint)hint.textContent=hasSave?'Andar '+Math.min(FLOORS.length,saved.tower.floor+1)+' de 60 · Continuar'+(can?'':' prévia'):'60 andares · 12 setores · 12 chefes';const state=document.getElementById('towerPreviewState');if(state)state.textContent=can?'I–XII':'PRÉVIA';const card=document.getElementById('towerPreview');if(card){card.setAttribute('aria-label','Torre dos Desafios · '+(can?'Primeiro setor':'Prévia disponível; oficial após Mewtwo no Difícil'));card.title=can?'Entrar na Torre':'Jogue a prévia. Modo oficial após Mewtwo no Difícil.'}const notice=document.getElementById('towerNotice');if(notice&&TM.view==='tower')notice.textContent='Doze setores disponíveis: sessenta andares, relíquias e salvamento próprio.';return result};
 document.getElementById('towerPreview').addEventListener('click',()=>{if(LAB.st==='title')menu()});

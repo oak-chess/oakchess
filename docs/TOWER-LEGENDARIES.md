@@ -19,3 +19,7 @@ Ataque básico de todos: 0,90 do valor padrão de custo 5. Mantém golpes e pass
 ## Banco inicial
 
 Dois sorteios sem reposição entre linhas comuns de custo 1. Exclui os cinco iniciais oferecidos para evitar repetir o escolhido. Os nomes aparecem antes da escolha e o resultado é salvo na tentativa, sem novo sorteio ao recarregar. Mantém as regras anteriores de estrelas das prévias de setores.
+
+## Loja da campanha
+
+Após derrotar Mewtwo no Difícil (registro persistente oakchess_tower_hard_unlocked), as cinco espécies aparecem também na loja da campanha, custo 5 e nível mínimo 7. Usa as mesmas probabilidades, estoque de dez cópias e atributos jogáveis da Torre. O Mew da loja usa a linha comum já existente; a linha MEWLINE continua exclusiva da ajuda na história e da Torre, evitando vagas gratuitas e atributos especiais da história no Mew comprado. Estoque de campanhas salvas migra uma vez, descontando ofertas, banco, campo e unidades pendentes; a marca é persistida em G.said. Chefes continuam usando os atributos anteriores.
