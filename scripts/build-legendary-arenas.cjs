@@ -47,7 +47,7 @@ return {
  },
  tick(dt,state){active=!!state.active;ensureAudio(state);weatherFX.style.display=active?'block':'none';floorFX.style.display=active?'block':'none';
   if(!active){if(wasActive){time=0;gridSoftness=0;sceneKey=''}wasActive=false;return false}
-  const viewportWidth=realDocument.getElementById('stage').offsetWidth;if(viewportWidth!==lastViewportWidth){lastViewportWidth=viewportWidth;sceneKey=''}wasActive=true;angled=state.angled;paused=state.paused;reducedMotion=systemReduced;config.quality=state.reduceFx?'low':state.quality;battle=state.combat;showScenicBird=state.preparation||!!state.preview||!!state.birdObserver||!!state.birdArrival;scenicPerched=!!state.birdPerched||state.combat;
+  const viewportWidth=realDocument.getElementById('stage').offsetWidth;if(viewportWidth!==lastViewportWidth){lastViewportWidth=viewportWidth;sceneKey=''}wasActive=true;angled=state.angled;paused=state.paused;reducedMotion=systemReduced;config.quality=state.reduceFx?'low':state.quality;battle=state.combat;showScenicBird=state.preparation||!!state.preview||!!state.birdObserver||!!state.towerObserver||!!state.birdArrival;scenicPerched=!!state.birdPerched||state.combat;
   if(!paused&&!realDocument.hidden)time+=dt;
   gridSoftness+=((battle?1:0)-gridSoftness)*(1-Math.exp(-(paused?0:dt)*5));const grid=Math.round(gridSoftness*10),dirty=sceneKey===''||grid!==lastGrid;lastGrid=grid;
   c=floorFX.getContext('2d');c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,1280,800);mode='field';window.ARENA_EMBLEM_TRANSITION?.draw();

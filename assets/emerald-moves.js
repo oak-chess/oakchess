@@ -99,7 +99,7 @@
     return true;
    }
   }
-  if((api.sequence||(!isolated&&window.EMERALD_SEQUENCES))?.impact(mv,x,y,scale))return true;
+  if((api.sequence||(!isolated?window.EMERALD_SEQUENCES:null))?.impact?.(mv,x,y,scale))return true;
   const move=resolve(mv);if(!move)return false;const names=candidates(move);if(!names.length)return taskEffect(move,x,y,scale,mv.t);
   const primary=choose(move,'hit');
   // Preserve successive splats and directional cuts from the source script.
@@ -114,7 +114,7 @@
   // Psywave's rings are travelling sprites in Emerald; OakChess resolves this move as a burst.
   // Emit its expanding rings at the actual impact phase instead of dropping them at preparation.
   if(resolve(mv)?.id===149)return false;
-  if((api.sequence||(!isolated&&window.EMERALD_SEQUENCES))?.start(mv,x,y))return true;
+  if((api.sequence||(!isolated?window.EMERALD_SEQUENCES:null))?.start?.(mv,x,y))return true;
   const move=resolve(mv);if(!move)return false;
   if(!['buff','barrier','heal','field','burst'].includes(mv.k))return false;
   const events=move.events.filter(e=>available(e.sprite)&&!travelRE.test(e.sprite+' '+catalog.templates[e.sprite].callback));

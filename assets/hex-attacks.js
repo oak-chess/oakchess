@@ -150,7 +150,32 @@
    g.restore();
   }
  }
- window.HEX_ATTACKS={prepare,beam,projectile,arrive,draw,previewNeon,
+ function bonusHex(g,cell,tint,alpha=1,riseTime=null){
+  const soft=!!CFG.reduceFx||CFG.fxLevel==='low';
+  g.save();g.setLineDash([]);
+  // Light only: do not cover the floor texture with a dark rim or flat tint.
+  g.globalCompositeOperation='lighter';
+  neon(g,cell,S_,tint,alpha*1.2,soft);
+  g.globalAlpha=alpha*.95;g.strokeStyle=tint;g.lineWidth=3;hexPath(g,cell.x,cell.y,S_,.9);g.stroke();
+  g.strokeStyle='#ffffff';g.lineWidth=1.4;g.globalAlpha=alpha*Math.min(1,.9*neonStrength());g.stroke();g.restore();
+  if(riseTime==null||soft||neonStrength()<=0)return;
+  g.save();g.setLineDash([]);g.globalCompositeOperation='lighter';
+  const power=Math.min(1.6,Math.sqrt(neonStrength())*1.8),offset=(cell.x*.003+cell.y*.002)%1;
+  neon(g,cell,S_,tint,alpha*1.5,false);
+  // Continuous, overlapping tongues rooted in the hex edges, not rising copies.
+  for(let i=0;i<12;i++){
+   const edge=i/2,a=(Math.floor(edge)*60-30)*Math.PI/180,b=a+Math.PI/3,k=edge%1;
+   const x=cell.x+S_*.89*(Math.cos(a)*(1-k)+Math.cos(b)*k),y=cell.y+S_*.89*(Math.sin(a)*(1-k)+Math.sin(b)*k);
+   const beat=riseTime*4.4+i*1.7+offset*6.28,height=24+13*Math.sin(beat)**2+8*Math.sin(beat*.63)**2,width=6+3*Math.sin(beat+1)**2,sway=5*Math.sin(beat*.8);
+   const plume=g.createLinearGradient(x,y+4,x,y-height);plume.addColorStop(0,tint+'ee');plume.addColorStop(.35,tint+'bb');plume.addColorStop(.72,tint+'66');plume.addColorStop(1,tint+'00');
+   g.globalAlpha=alpha*Math.min(.85,power*.66);g.fillStyle=plume;g.shadowColor=tint;g.shadowBlur=8*power;
+   g.beginPath();g.moveTo(x-width,y+3);g.bezierCurveTo(x-width*1.2,y-height*.3,x+sway-width*.4,y-height*.55,x+sway,y-height);g.bezierCurveTo(x+sway+width*.6,y-height*.5,x+width,y-height*.2,x+width,y+3);g.closePath();g.fill();
+   g.globalAlpha=alpha*.45*Math.min(1,power);g.fillStyle='#fff0ff';g.shadowBlur=3;g.beginPath();g.moveTo(x-2,y);g.quadraticCurveTo(x+sway*.5,y-height*.25,x+sway*.65,y-height*.55);g.quadraticCurveTo(x+3,y-height*.2,x+2,y);g.fill();
+  }
+  for(let i=0;i<4;i++){const p=(riseTime*.65+i*.25+offset)%1,a=i*Math.PI/2+offset*6.28,x=cell.x+Math.cos(a)*29,y=cell.y+Math.sin(a)*20-p*42;g.globalAlpha=alpha*Math.sin(p*Math.PI)*.85*Math.min(1,power);g.fillStyle='#f9e9ff';g.shadowBlur=6;g.fillRect(x,y,2.5,4)}
+  g.restore();
+ }
+ window.HEX_ATTACKS={prepare,beam,projectile,arrive,draw,previewNeon,bonusHex,
   reaction(t,type='steel',life=.45){if(!t||!B.on||B.over)return;return add({mode:'target',t,mv:{t:type},small:true,color:color({t:type}),charge:0,life})},
   retaliation(u,t,type){if(!u||!t||!B.on||B.over)return;add({mode:'link',u,t,mv:{t:type},small:true,color:color({t:type}),charge:0,life:.3})},
   target(t,mv,delay=.15,small=false){return add({mode:'target',t,mv,small,color:color(mv),charge:delay,life:delay+.3})},

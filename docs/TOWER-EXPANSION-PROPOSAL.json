@@ -1,0 +1,625 @@
+{
+  "status": "proposal-not-enabled",
+  "targetFloors": 100,
+  "sectors": [
+    {
+      "name": "Ecos de Johto",
+      "floors": [
+        61,
+        65
+      ],
+      "boss": {
+        "id": 249,
+        "name": "Lugia",
+        "readyMoves": 62
+      },
+      "mechanic": "Rajadas em faixas alternadas; abrigos anunciados protegem do impacto.",
+      "lines": [
+        {
+          "species": [
+            {
+              "id": 155,
+              "name": "Cyndaquil",
+              "readyMoves": 45
+            },
+            {
+              "id": 156,
+              "name": "Quilava",
+              "readyMoves": 47
+            },
+            {
+              "id": 157,
+              "name": "Typhlosion",
+              "readyMoves": 48
+            }
+          ],
+          "proposedCost": 1,
+          "role": "Mago"
+        },
+        {
+          "species": [
+            {
+              "id": 179,
+              "name": "Mareep",
+              "readyMoves": 39
+            },
+            {
+              "id": 180,
+              "name": "Flaaffy",
+              "readyMoves": 45
+            },
+            {
+              "id": 181,
+              "name": "Ampharos",
+              "readyMoves": 45
+            }
+          ],
+          "proposedCost": 2,
+          "role": "Suporte"
+        },
+        {
+          "species": [
+            {
+              "id": 246,
+              "name": "Larvitar",
+              "readyMoves": 53
+            },
+            {
+              "id": 247,
+              "name": "Pupitar",
+              "readyMoves": 48
+            },
+            {
+              "id": 248,
+              "name": "Tyranitar",
+              "readyMoves": 69
+            }
+          ],
+          "proposedCost": 4,
+          "role": "Tanque"
+        }
+      ]
+    },
+    {
+      "name": "Céus de Hoenn",
+      "floors": [
+        66,
+        70
+      ],
+      "boss": {
+        "id": 384,
+        "name": "Rayquaza",
+        "readyMoves": 61
+      },
+      "mechanic": "Correntes e meteoros em padrões alternados, exigindo distribuir o time.",
+      "lines": [
+        {
+          "species": [
+            {
+              "id": 252,
+              "name": "Treecko",
+              "readyMoves": 45
+            },
+            {
+              "id": 253,
+              "name": "Grovyle",
+              "readyMoves": 53
+            },
+            {
+              "id": 254,
+              "name": "Sceptile",
+              "readyMoves": 52
+            }
+          ],
+          "proposedCost": 1,
+          "role": "Duelista"
+        },
+        {
+          "species": [
+            {
+              "id": 280,
+              "name": "Ralts",
+              "readyMoves": 66
+            },
+            {
+              "id": 281,
+              "name": "Kirlia",
+              "readyMoves": 60
+            },
+            {
+              "id": 282,
+              "name": "Gardevoir",
+              "readyMoves": 61
+            }
+          ],
+          "proposedCost": 3,
+          "role": "Mago / suporte"
+        },
+        {
+          "species": [
+            {
+              "id": 304,
+              "name": "Aron",
+              "readyMoves": 47
+            },
+            {
+              "id": 305,
+              "name": "Lairon",
+              "readyMoves": 38
+            },
+            {
+              "id": 306,
+              "name": "Aggron",
+              "readyMoves": 61
+            }
+          ],
+          "proposedCost": 3,
+          "role": "Tanque"
+        }
+      ]
+    },
+    {
+      "name": "Forja de Sinnoh",
+      "floors": [
+        71,
+        75
+      ],
+      "boss": {
+        "id": 483,
+        "name": "Dialga",
+        "readyMoves": 45
+      },
+      "mechanic": "Anéis temporais retardam uma área; o chefe alterna proteção e vulnerabilidade.",
+      "lines": [
+        {
+          "species": [
+            {
+              "id": 403,
+              "name": "Shinx",
+              "readyMoves": 47
+            },
+            {
+              "id": 404,
+              "name": "Luxio",
+              "readyMoves": 41
+            },
+            {
+              "id": 405,
+              "name": "Luxray",
+              "readyMoves": 40
+            }
+          ],
+          "proposedCost": 2,
+          "role": "Atirador"
+        },
+        {
+          "species": [
+            {
+              "id": 443,
+              "name": "Gible",
+              "readyMoves": 45
+            },
+            {
+              "id": 444,
+              "name": "Gabite",
+              "readyMoves": 43
+            },
+            {
+              "id": 445,
+              "name": "Garchomp",
+              "readyMoves": 39
+            }
+          ],
+          "proposedCost": 4,
+          "role": "Lutador"
+        },
+        {
+          "species": [
+            {
+              "id": 447,
+              "name": "Riolu",
+              "readyMoves": 51
+            },
+            {
+              "id": 448,
+              "name": "Lucario",
+              "readyMoves": 60
+            }
+          ],
+          "proposedCost": 3,
+          "role": "Duelista"
+        }
+      ]
+    },
+    {
+      "name": "Torres de Unova",
+      "floors": [
+        76,
+        80
+      ],
+      "boss": {
+        "id": 644,
+        "name": "Zekrom",
+        "readyMoves": 55
+      },
+      "mechanic": "Condutores acumulam energia; agrupar aliados perto deles aumenta o risco.",
+      "lines": [
+        {
+          "species": [
+            {
+              "id": 524,
+              "name": "Roggenrola",
+              "readyMoves": 29
+            },
+            {
+              "id": 525,
+              "name": "Boldore",
+              "readyMoves": 27
+            },
+            {
+              "id": 526,
+              "name": "Gigalith",
+              "readyMoves": 32
+            }
+          ],
+          "proposedCost": 2,
+          "role": "Tanque"
+        },
+        {
+          "species": [
+            {
+              "id": 607,
+              "name": "Litwick",
+              "readyMoves": 50
+            },
+            {
+              "id": 608,
+              "name": "Lampent",
+              "readyMoves": 50
+            },
+            {
+              "id": 609,
+              "name": "Chandelure",
+              "readyMoves": 42
+            }
+          ],
+          "proposedCost": 3,
+          "role": "Mago"
+        },
+        {
+          "species": [
+            {
+              "id": 610,
+              "name": "Axew",
+              "readyMoves": 48
+            },
+            {
+              "id": 611,
+              "name": "Fraxure",
+              "readyMoves": 46
+            },
+            {
+              "id": 612,
+              "name": "Haxorus",
+              "readyMoves": 52
+            }
+          ],
+          "proposedCost": 4,
+          "role": "Lutador"
+        }
+      ]
+    },
+    {
+      "name": "Coroa de Kalos",
+      "floors": [
+        81,
+        85
+      ],
+      "boss": {
+        "id": 716,
+        "name": "Xerneas",
+        "readyMoves": 44
+      },
+      "mechanic": "Flores de energia curam acompanhantes; destruir os acompanhantes reduz a cura do chefe.",
+      "lines": [
+        {
+          "species": [
+            {
+              "id": 656,
+              "name": "Froakie",
+              "readyMoves": 47
+            },
+            {
+              "id": 657,
+              "name": "Frogadier",
+              "readyMoves": 50
+            },
+            {
+              "id": 658,
+              "name": "Greninja",
+              "readyMoves": 44
+            }
+          ],
+          "proposedCost": 1,
+          "role": "Assassino"
+        },
+        {
+          "species": [
+            {
+              "id": 661,
+              "name": "Fletchling",
+              "readyMoves": 35
+            },
+            {
+              "id": 662,
+              "name": "Fletchinder",
+              "readyMoves": 39
+            },
+            {
+              "id": 663,
+              "name": "Talonflame",
+              "readyMoves": 39
+            }
+          ],
+          "proposedCost": 2,
+          "role": "Atirador"
+        },
+        {
+          "species": [
+            {
+              "id": 679,
+              "name": "Honedge",
+              "readyMoves": 30
+            },
+            {
+              "id": 680,
+              "name": "Doublade",
+              "readyMoves": 28
+            },
+            {
+              "id": 681,
+              "name": "Aegislash",
+              "readyMoves": 28
+            }
+          ],
+          "proposedCost": 3,
+          "role": "Tanque / duelista"
+        }
+      ]
+    },
+    {
+      "name": "Eclipse de Alola",
+      "floors": [
+        86,
+        90
+      ],
+      "boss": {
+        "id": 792,
+        "name": "Lunala",
+        "readyMoves": 50
+      },
+      "mechanic": "O eclipse alterna proteção frontal e retaguarda exposta.",
+      "lines": [
+        {
+          "species": [
+            {
+              "id": 722,
+              "name": "Rowlet",
+              "readyMoves": 41
+            },
+            {
+              "id": 723,
+              "name": "Dartrix",
+              "readyMoves": 43
+            },
+            {
+              "id": 724,
+              "name": "Decidueye",
+              "readyMoves": 44
+            }
+          ],
+          "proposedCost": 1,
+          "role": "Atirador"
+        },
+        {
+          "species": [
+            {
+              "id": 736,
+              "name": "Grubbin",
+              "readyMoves": 33
+            },
+            {
+              "id": 737,
+              "name": "Charjabug",
+              "readyMoves": 38
+            },
+            {
+              "id": 738,
+              "name": "Vikavolt",
+              "readyMoves": 50
+            }
+          ],
+          "proposedCost": 2,
+          "role": "Mago"
+        },
+        {
+          "species": [
+            {
+              "id": 782,
+              "name": "Jangmo o",
+              "readyMoves": 44
+            },
+            {
+              "id": 783,
+              "name": "Hakamo o",
+              "readyMoves": 53
+            },
+            {
+              "id": 784,
+              "name": "Kommo o",
+              "readyMoves": 55
+            }
+          ],
+          "proposedCost": 4,
+          "role": "Lutador"
+        }
+      ]
+    },
+    {
+      "name": "Bastião de Galar",
+      "floors": [
+        91,
+        95
+      ],
+      "boss": {
+        "id": 888,
+        "name": "Zacian",
+        "readyMoves": 41
+      },
+      "mechanic": "Investidas por corredor e abertura entre golpes para atacar o chefe.",
+      "lines": [
+        {
+          "species": [
+            {
+              "id": 821,
+              "name": "Rookidee",
+              "readyMoves": 34
+            },
+            {
+              "id": 822,
+              "name": "Corvisquire",
+              "readyMoves": 29
+            },
+            {
+              "id": 823,
+              "name": "Corviknight",
+              "readyMoves": 41
+            }
+          ],
+          "proposedCost": 2,
+          "role": "Tanque"
+        },
+        {
+          "species": [
+            {
+              "id": 856,
+              "name": "Hatenna",
+              "readyMoves": 41
+            },
+            {
+              "id": 857,
+              "name": "Hattrem",
+              "readyMoves": 39
+            },
+            {
+              "id": 858,
+              "name": "Hatterene",
+              "readyMoves": 39
+            }
+          ],
+          "proposedCost": 3,
+          "role": "Suporte"
+        },
+        {
+          "species": [
+            {
+              "id": 885,
+              "name": "Dreepy",
+              "readyMoves": 19
+            },
+            {
+              "id": 886,
+              "name": "Drakloak",
+              "readyMoves": 40
+            },
+            {
+              "id": 887,
+              "name": "Dragapult",
+              "readyMoves": 47
+            }
+          ],
+          "proposedCost": 4,
+          "role": "Atirador"
+        }
+      ]
+    },
+    {
+      "name": "Horizonte de Paldea",
+      "floors": [
+        96,
+        100
+      ],
+      "boss": {
+        "id": 1008,
+        "name": "Miraidon",
+        "readyMoves": 44
+      },
+      "mechanic": "Circuitos conectam hexágonos e explodem em sequência anunciada.",
+      "lines": [
+        {
+          "species": [
+            {
+              "id": 906,
+              "name": "Sprigatito",
+              "readyMoves": 32
+            },
+            {
+              "id": 907,
+              "name": "Floragato",
+              "readyMoves": 34
+            },
+            {
+              "id": 908,
+              "name": "Meowscarada",
+              "readyMoves": 38
+            }
+          ],
+          "proposedCost": 1,
+          "role": "Assassino"
+        },
+        {
+          "species": [
+            {
+              "id": 932,
+              "name": "Nacli",
+              "readyMoves": 32
+            },
+            {
+              "id": 933,
+              "name": "Naclstack",
+              "readyMoves": 31
+            },
+            {
+              "id": 934,
+              "name": "Garganacl",
+              "readyMoves": 34
+            }
+          ],
+          "proposedCost": 2,
+          "role": "Tanque"
+        },
+        {
+          "species": [
+            {
+              "id": 996,
+              "name": "Frigibax",
+              "readyMoves": 33
+            },
+            {
+              "id": 997,
+              "name": "Arctibax",
+              "readyMoves": 33
+            },
+            {
+              "id": 998,
+              "name": "Baxcalibur",
+              "readyMoves": 41
+            }
+          ],
+          "proposedCost": 4,
+          "role": "Lutador"
+        }
+      ]
+    }
+  ]
+}
