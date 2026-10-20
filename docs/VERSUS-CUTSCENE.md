@@ -18,3 +18,5 @@ Verificação realizada: compilação de sintaxe e revisão de integração. Sem
 ## Cartão horizontal
 
 Apresentação centralizada em um cartão de 92% da largura e 58% da altura do palco. A arena real continua visível ao redor, sob escurecimento leve. Tipografia e personagens ajustados para a altura menor; sons, seleção do destaque e opção de pular preservados.
+
+Cartão compacto: 78% da largura e 36% da altura do palco, centralizado por posição absoluta. Geometria também definida na montagem da cena, evitando retorno à tela inteira com CSS antigo em cache. Fontes e VS reduzidos proporcionalmente.

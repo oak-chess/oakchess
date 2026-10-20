@@ -139,18 +139,18 @@
 /* Horizontal versus card; the live arena remains visible around it. */
 #vs.oak-cutscene{background:rgba(5,9,17,.48);backdrop-filter:blur(2px)}
 #vs.oak-cutscene.show{display:flex!important;align-items:center;justify-content:center}
-#vs.oak-cutscene .screen{flex:none;width:92%;height:58%;border:2px solid #c6a969;box-shadow:0 0 0 5px #09111fe6,0 18px 65px #030710a6;overflow:hidden}
+#vs.oak-cutscene .screen{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);flex:none;width:78%;height:36%;border:2px solid #c6a969;box-shadow:0 0 0 5px #09111fe6,0 18px 65px #030710a6;overflow:hidden}
 #vs.oak-cutscene .fighter{top:16%;height:59%;width:44%}
 #vs.oak-cutscene .nameplate{padding:8px 13px;bottom:-8%}
-#vs.oak-cutscene .nameplate b{font-size:32px;letter-spacing:2px}
-#vs.oak-cutscene .foe .nameplate b{font-size:29px}
-#vs.oak-cutscene .nameplate small{font-size:13px;margin-bottom:3px}
-#vs.oak-cutscene .nameplate span{font-size:14px;margin-top:3px}
-#vs.oak-cutscene .vs{font-size:80px;top:39%}
-#vs.oak-cutscene .quote{font-size:20px;bottom:13%;padding:6px 12px}
-#vs.oak-cutscene .chapter{font-size:13px;top:4%}
-#vs.oak-cutscene .edition{font-size:12px;bottom:4%}
-#vs.oak-cutscene .cutscene-skip{top:2%;right:2%;font-size:15px;padding:6px 14px;min-height:36px}
+#vs.oak-cutscene .nameplate b{font-size:23px;letter-spacing:1px}
+#vs.oak-cutscene .foe .nameplate b{font-size:22px}
+#vs.oak-cutscene .nameplate small{font-size:11px;margin-bottom:2px}
+#vs.oak-cutscene .nameplate span{font-size:12px;margin-top:2px}
+#vs.oak-cutscene .vs{font-size:56px;top:39%}
+#vs.oak-cutscene .quote{font-size:16px;bottom:12%;padding:4px 12px}
+#vs.oak-cutscene .chapter{font-size:11px;top:4%}
+#vs.oak-cutscene .edition{font-size:10px;bottom:3%}
+#vs.oak-cutscene .cutscene-skip{top:2%;right:2%;font-size:12px;padding:4px 12px;min-height:28px}
 #vs.oak-cutscene .trainer{height:94%}
 #vs.oak-cutscene .partner{height:95%;width:79%;bottom:6%}
 #vs.oak-cutscene .foe .partner{width:79%}
