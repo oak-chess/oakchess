@@ -1,0 +1,3 @@
+const fs=require('fs'),path=require('path');
+let sharp;try{sharp=require('sharp')}catch{sharp=require('C:/Users/os_ap/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/sharp')}
+(async()=>{let before=0,after=0,count=0;for(const folder of ['event-cards','route-cards','companion-cards']){const dir=path.join('assets/tower-art',folder);for(const file of fs.readdirSync(dir).filter(f=>/\.(png|jpg)$/.test(f))){const src=path.join(dir,file),out=src.replace(/\.(png|jpg)$/,'.webp');await sharp(src).webp({quality:88,alphaQuality:95,effort:5}).toFile(out);before+=fs.statSync(src).size;after+=fs.statSync(out).size;count++}}console.log(JSON.stringify({count,before,after,reduction:Math.round((1-after/before)*100)+'%'}))})();

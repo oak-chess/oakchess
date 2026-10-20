@@ -29,7 +29,7 @@
  async function replay(){
   const token=++session;cancelAnimationFrame(raf);renderer.clear();time=0;last=0;events=[];projectiles=[];
   status('Carregando animação…');
-  await renderer.ready();if(!overlay||token!==session)return;
+  await renderer.ready(info.move);if(!overlay||token!==session)return;
   const root=actor,mv=info.move,rc=recipe(mv),pose=rc.pose||PMD.SP[mv.k]||['Charge','Shoot'];
   const data=await PMD.get(info.id).catch(()=>null);if(!overlay||token!==session)return;
   if(data)await Promise.all(pose.filter(name=>data._res(name)).map(name=>PMD.ensure(data,name)));

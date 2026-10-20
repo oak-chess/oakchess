@@ -17,10 +17,16 @@
  const reduced=()=>typeof CFG!=='undefined'&&CFG.reduceFx;
  const nine=window.CREATE_NINE_MOVE_EFFECTS?.(drawSprite,reduced),psychic=window.CREATE_PSYCHIC_EFFECTS?.(reduced);
  const maxEffects=()=>quality()==='low'?40:quality()==='high'?140:90;
- for(const t of Object.values(catalog.templates))if(!images.has(t.sheet)){
-  const image=new Image(),entry={image,ready:false};images.set(t.sheet,entry);
-  image.onload=()=>entry.ready=true;image.src='assets/move-fx/sheets/'+t.sheet+'.png';
+ for(const t of Object.values(catalog.templates))if(!images.has(t.sheet))images.set(t.sheet,{image:null,ready:false,pending:null,failedAt:0});
+ function loadSheet(sheet){const entry=images.get(sheet);if(!entry)return Promise.resolve();if(entry.ready)return Promise.resolve();if(entry.pending)return entry.pending;if(Date.now()-entry.failedAt<30000)return Promise.resolve();
+  const url='assets/move-fx/sheets/'+sheet+'.png';
+  const load=window.OAK_ASSETS?window.OAK_ASSETS.image(url,true):new Promise(resolve=>{const image=new Image();image.onload=()=>resolve(image);image.onerror=()=>resolve(null);image.src=url});
+  entry.pending=load.then(image=>{entry.image=image;entry.ready=!!image;if(!image)entry.failedAt=Date.now();entry.pending=null});return entry.pending;
  }
+ function warmMoves(moves){const sheets=new Set();for(const mv of moves){const move=resolve(mv),key=typeof mv==='string'?mv:mv?.emerald||window.EMERALD_ALIASES?.[mv?.n]||mv?.n;
+  const names=[...(move?.events||[]).map(e=>e.sprite),...(move?.resources||[]),...Object.values(window.OAK_NINE_MOVES?.[key]||{}).filter(value=>typeof value==='string'&&catalog.templates[value])];
+  for(const name of names){const template=catalog.templates[name];if(template)sheets.add(template.sheet)}
+ }return Promise.all([...sheets].map(loadSheet))}
  function resolve(move){
   if(!move)return null;const name=typeof move==='string'?move:move.n;
   const key=typeof move==='object'&&move.emerald||(name==='Redemoinho'&&move.t==='water'?'WHIRLPOOL':window.EMERALD_ALIASES?.[name])||name;
@@ -34,7 +40,7 @@
   }
   return base;
  }
- function available(name){const t=catalog.templates[name];return t&&images.get(t.sheet)?.ready}
+ function available(name){const t=catalog.templates[name];if(!t)return false;const entry=images.get(t.sheet);if(!entry?.ready)loadSheet(t.sheet);return !!entry?.ready}
  function candidates(move){return [...new Set([...move.events.map(e=>e.sprite),...move.resources])].filter(available)}
  function choose(move,kind){
   const all=candidates(move),match=re=>all.find(n=>re.test(n+' '+catalog.templates[n].callback));
@@ -189,7 +195,8 @@
   specialKind(mv){return psychic?.kind(mv)||nine?.kind(mv)},
   preview(mv,x,y,x2,y2){return psychic?.preview(mv,x,y,x2,y2)||nine?.preview(mv,x,y,x2,y2)||false},
   pose(mv,node){nine?.pose(mv,node)},
-  ready(){return Promise.all([...images.values()].map(s=>s.image.complete?Promise.resolve():new Promise(resolve=>{s.image.addEventListener('load',resolve,{once:true});s.image.addEventListener('error',resolve,{once:true})})))},
+  warmMoves,
+  ready(move){return warmMoves(move?[move]:Object.keys(catalog.moves))},
   emitTemplate(name,x,y,scale,delay,variant,extra={}){if(!available(name))return false;return emit(null,name,x,y,scale,motion(name),delay,variant,extra)},
   availableTemplate:available,
   drawResource(g,tag,x,y,scale,time,variant=0,alpha=1){

@@ -81,6 +81,12 @@ hud.addEventListener('click',e=>{
  SND.init();if(target.tagName==='SUMMARY'&&target.parentElement.open)SND.mback();else SND.click();
 },true);
 const art=id=>'assets/tower-art/illustrated/'+id+'.webp';
+function warmTowerCards(){
+ const loader=window.OAK_ASSETS;if(!loader)return;
+ const urls=['guardas','elite','tesouro'].map(id=>'assets/tower-art/route-cards/'+id+'-v1.webp');
+ for(const id of ['heal','item','shop','relic','upgrade','gold','supplies','cleanse','protect','offense','defense','disable','risk','cursed-chest'])urls.push('assets/tower-art/event-cards/'+id+'-v1.webp');
+ loader.warm(urls);
+}
 const itemImage=id=>'assets/pokeapi/sprites/items/'+id+'.png';
 const esc=s=>String(s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 const current=()=>G.tower;
@@ -243,7 +249,7 @@ function illustratedArt(id,alt=''){
 function artCard({id,title,text,tag='ESCOLHA',image,color='#d9bd76',extra=''}){
  const isRelic=tag.startsWith('RELÍQUIA'),key=isRelic?(tag.includes('APRIMORADA')?'upgrade':'relic'):id==='relic'?'upgrade':id;
  const particles=Array.from({length:5},(_,i)=>'<i style="--px:'+(15+i*17)+'%;--wait:'+(-i*.85)+'s"></i>').join('');
- return '<article class="tower-collectible tower-painted-companion"><button type="button" class="tower-painted-card tower-event-painted" data-art="'+key+'" data-choice="'+esc(id)+'" style="--card-glow:'+color+';--event-copy-size:'+(text.length>130?11:text.length>85?12:14)+'px" aria-label="'+esc(title+'. '+text)+'"><span class="tower-card-surface"><img src="assets/tower-art/event-cards/'+key+'-v1.png" alt="" width="1024" height="1536"><span class="tower-event-title"><small>'+esc(tag)+'</small><b>'+esc(title)+'</b></span>'+(isRelic?'<span class="tower-event-relic-art" aria-hidden="true">'+image+'</span>':'')+'<span class="tower-card-particles" aria-hidden="true">'+particles+'</span><span class="tower-painted-foil" aria-hidden="true"></span><span class="tower-event-description">'+esc(text)+extra+'</span></span><span class="tower-painted-action">Escolher <i aria-hidden="true">▸</i></span></button></article>';
+ return '<article class="tower-collectible tower-painted-companion"><button type="button" class="tower-painted-card tower-event-painted" data-art="'+key+'" data-choice="'+esc(id)+'" style="--card-glow:'+color+';--event-copy-size:'+(text.length>130?11:text.length>85?12:14)+'px" aria-label="'+esc(title+'. '+text)+'"><span class="tower-card-surface"><img src="assets/tower-art/event-cards/'+key+'-v1.webp" alt="" width="1024" height="1536"><span class="tower-event-title"><small>'+esc(tag)+'</small><b>'+esc(title)+'</b></span>'+(isRelic?'<span class="tower-event-relic-art" aria-hidden="true">'+image+'</span>':'')+'<span class="tower-card-particles" aria-hidden="true">'+particles+'</span><span class="tower-painted-foil" aria-hidden="true"></span><span class="tower-event-description">'+esc(text)+extra+'</span></span><span class="tower-painted-action">Escolher <i aria-hidden="true">▸</i></span></button></article>';
 }
 function menu(){
  const s=read(KEY),p=read(PREVIEW_KEY),can=unlocked(),actions=[];
@@ -295,7 +301,7 @@ function starter(){
   {id:133,name:'Eevee',role:'VERSÁTIL',text:'Ataca rapidamente e pode evoluir para Água, Fogo ou Elétrico.',scene:'relic-root'}
  ];
  const cards=companions.map(d=>{const L=LINES.find(l=>l.ids.includes(d.id)),star=d.id===25?2:1,types=typesOf(L,star);
-  {const asset={1:'bulbasaur',4:'charmander',7:'squirtle',25:'pikachu',133:'eevee'}[d.id],extension=d.id===4||d.id===25?'jpg':'png',effect={1:'leaf',4:'ember',7:'bubble',25:'spark',133:'mote'}[d.id],particles=Array.from({length:7},(_,i)=>'<i style="--p:'+i+';--px:'+(10+(i*29)%80)+'%;--wait:'+(-i*.73)+'s"></i>').join('');return '<article class="tower-collectible tower-painted-companion"><button type="button" class="tower-painted-card" data-element="'+effect+'" style="--card-glow:'+TYPES[types[0]].c+'" data-choice="'+d.id+'" aria-label="Escolher '+d.name+'. '+d.role+'. '+d.text+'"><span class="tower-card-surface"><img src="assets/tower-art/companion-cards/'+asset+'-v1.'+extension+'" alt="'+d.name+' · '+types.map(t=>esc(TYPES[t].n)).join(' · ')+'. '+esc(d.text)+'" width="1024" height="1536"><span class="tower-card-particles" aria-hidden="true">'+particles+'</span><span class="tower-painted-foil" aria-hidden="true"></span></span><span class="tower-painted-action">Escolher '+d.name+' <i aria-hidden="true">▸</i></span></button></article>'}
+  {const asset={1:'bulbasaur',4:'charmander',7:'squirtle',25:'pikachu',133:'eevee'}[d.id],extension='webp',effect={1:'leaf',4:'ember',7:'bubble',25:'spark',133:'mote'}[d.id],particles=Array.from({length:7},(_,i)=>'<i style="--p:'+i+';--px:'+(10+(i*29)%80)+'%;--wait:'+(-i*.73)+'s"></i>').join('');return '<article class="tower-collectible tower-painted-companion"><button type="button" class="tower-painted-card" data-element="'+effect+'" style="--card-glow:'+TYPES[types[0]].c+'" data-choice="'+d.id+'" aria-label="Escolher '+d.name+'. '+d.role+'. '+d.text+'"><span class="tower-card-surface"><img src="assets/tower-art/companion-cards/'+asset+'-v1.'+extension+'" alt="'+d.name+' · '+types.map(t=>esc(TYPES[t].n)).join(' · ')+'. '+esc(d.text)+'" width="1024" height="1536"><span class="tower-card-particles" aria-hidden="true">'+particles+'</span><span class="tower-painted-foil" aria-hidden="true"></span></span><span class="tower-painted-action">Escolher '+d.name+' <i aria-hidden="true">▸</i></span></button></article>'}
  }).join('');
  const root=panel('Escolha seu companheiro',G.lvl+' vagas · '+G.gold+' ouro · Pidgey e Geodude no banco','<div class="tower-card-grid tower-starter-grid">'+cards+'</div>');
  root.querySelector('.tower-dialog').classList.add('tower-starter-dialog');
@@ -348,7 +354,7 @@ function plan(resuming=false){
  t.status='plan';G.enemy=enemy();spawnEnemies(G.enemy);
  showTowerWatcher();
  if(!resuming){if(t.shopBonus){rollShop(true);t.shopBonus=false;G.gold+=3;toast('Chansey reforçou a loja: novas ofertas e +3 de ouro.')}else if(!G.locked||!G.shop.some(Boolean))rollShop(true)}
- G.timerMax=G.timer=90;G.eventModal=false;SND.music('plan');renderShop();renderInv();renderHUD();layoutAll();paintMechanic();save(true);
+ G.timerMax=G.timer=90;G.eventModal=false;SND.music('plan');renderShop();renderInv();renderHUD();layoutAll();paintMechanic();warmPlanAssets();warmTowerCards();save(true);
  banner('Torre · Andar '+(t.floor+1),f.name+(t.enemy?.some(u=>u.shiny)?' · Adversário shiny!':''),'#e9ce88');setTimeout(()=>{if(active()&&G.phase==='plan'&&!G.eventModal)processEvoQueue()},900);
 }
 const ROUTES={
@@ -365,7 +371,7 @@ function path(){
  G.eventModal=true;const t=current();
  const cards=Object.entries(ROUTES).map(([id,r])=>{
   const file={normal:'guardas',elite:'elite',treasure:'tesouro'}[id],risk=id==='elite'?'+30% PS · +15% dano':id==='treasure'?'+15% PS · +25% dano':'Dificuldade normal',particles=Array.from({length:5},(_,i)=>'<i style="--px:'+(18+i*16)+'%;--wait:'+(-i*.9)+'s"></i>').join('');
-  return '<article class="tower-collectible tower-painted-companion"><button type="button" class="tower-painted-card tower-route-painted" data-choice="'+id+'" style="--card-glow:'+r.color+'" aria-label="'+esc(r.name+'. '+routeDescription(id,t.floor))+'"><span class="tower-card-surface"><img src="assets/tower-art/route-cards/'+file+'-v1.png" alt="'+esc(r.name)+'" width="1024" height="1536"><span class="tower-card-particles" aria-hidden="true">'+particles+'</span><span class="tower-painted-foil" aria-hidden="true"></span><span class="tower-route-description"><strong>'+risk+'</strong><span><b>'+(FLOORS[t.floor].reward+r.gold)+' ouro</b> · 2 XP · '+r.potions+' '+(r.potions===1?'poção':'poções')+'</span><small>'+(id==='elite'?'Aprimore uma relíquia, se o limite permitir.':id==='treasure'?'Vença os guardiões e leve o ouro extra.':'Enfrente os guardas e siga sua subida.')+'</small></span></span><span class="tower-painted-action">Escolher '+esc(r.name)+' <i aria-hidden="true">▸</i></span></button></article>';
+  return '<article class="tower-collectible tower-painted-companion"><button type="button" class="tower-painted-card tower-route-painted" data-choice="'+id+'" style="--card-glow:'+r.color+'" aria-label="'+esc(r.name+'. '+routeDescription(id,t.floor))+'"><span class="tower-card-surface"><img src="assets/tower-art/route-cards/'+file+'-v1.webp" alt="'+esc(r.name)+'" width="1024" height="1536"><span class="tower-card-particles" aria-hidden="true">'+particles+'</span><span class="tower-painted-foil" aria-hidden="true"></span><span class="tower-route-description"><strong>'+risk+'</strong><span><b>'+(FLOORS[t.floor].reward+r.gold)+' ouro</b> · 2 XP · '+r.potions+' '+(r.potions===1?'poção':'poções')+'</span><small>'+(id==='elite'?'Aprimore uma relíquia, se o limite permitir.':id==='treasure'?'Vença os guardiões e leve o ouro extra.':'Enfrente os guardas e siga sua subida.')+'</small></span></span><span class="tower-painted-action">Escolher '+esc(r.name)+' <i aria-hidden="true">▸</i></span></button></article>';
  }).join('');
  const root=panel('Escolha sua rota','Andar '+(t.floor+1)+' · A escolha vale até vencer este desafio.','<div class="tower-card-grid tower-route-grid">'+cards+'</div><p class="tower-note">Compare os riscos e escolha a recompensa que sua equipe precisa.</p>');
  root.querySelectorAll('[data-choice]').forEach(button=>button.onclick=()=>{

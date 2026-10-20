@@ -48,7 +48,7 @@
    const species=actorSpecies||+(Object.entries(window.DEX_LEARNSETS||{}).find(([,entry])=>entry.moves.some(row=>row[0]===move.id))?.[0]||25);
    const meta=(window.DEX_EXPANSION||[]).find(e=>e.id===species),form=meta?.forms.find(f=>!f.shiny)||meta?.forms[0],local=window.DEX_PMD_LOCAL?.[form?.path];
    const actor=new Image(),target=new Image(),attackImage=local?.attack?new Image():null;if(attackImage)attackImage.src=local.attack.sheet;actor.src=local?.sheet||'assets/pokeapi/sprites/pokemon/'+species+'.png';target.src='assets/pokeapi/sprites/pokemon/35.png';
-   await Promise.race([Promise.all([actor.decode(),target.decode(),renderer.ready(),attackImage?attackImage.decode().catch(()=>null):Promise.resolve()]),new Promise((_,reject)=>setTimeout(()=>reject(Error('Os arquivos demoraram a carregar. Tente repetir.')),12000))]);
+   await Promise.race([Promise.all([actor.decode(),target.decode(),renderer.ready({emerald:move.localKey||move.key}),attackImage?attackImage.decode().catch(()=>null):Promise.resolve()]),new Promise((_,reject)=>setTimeout(()=>reject(Error('Os arquivos demoraram a carregar. Tente repetir.')),12000))]);
    if(token!==session)return;
    const base=move.localKey?window.EMERALD_CATALOG?.moves[move.localKey]:null,sequence=move.expansionSequence||base;
    const reference=move.localKey||move.key;
