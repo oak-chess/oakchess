@@ -1,6 +1,6 @@
 (()=>{
  const el=document.createElement('section');el.id='startupLoader';el.setAttribute('aria-label','Carregamento do jogo');
- el.innerHTML='<div class="startup-card"><div class="startup-ball" aria-hidden="true"></div><h1>POKÉMON TFT</h1><p data-status role="status" aria-live="polite">Preparando o jogo…</p><progress max="100" value="0" aria-label="Arquivos carregados"></progress><div class="startup-count"><span data-count>Iniciando</span><b data-percent>0%</b></div><div class="startup-files" data-files aria-label="Arquivos em carregamento"></div><p class="startup-note" data-note>Na primeira visita, o carregamento pode demorar mais. Os arquivos reutilizam o cache do navegador.</p><button data-retry hidden>Tentar novamente</button></div>';
+ el.innerHTML='<div class="startup-card"><div class="startup-ball" aria-hidden="true"></div><h1>POKÉMON TFT</h1><p data-status role="status" aria-live="polite">Preparando o jogo…</p><progress max="100" value="0" aria-label="Arquivos carregados"></progress><div class="startup-count"><span data-count>Iniciando</span><b data-percent>0%</b></div><div class="startup-files" data-files aria-label="Arquivos em carregamento"></div><p class="startup-note" data-note>Na primeira visita, o carregamento pode demorar mais. Os arquivos reutilizam o cache do navegador.</p><button data-retry hidden>Tentar novamente</button><button data-continue hidden>Entrar no jogo</button></div>';
  document.body.appendChild(el);
  const status=el.querySelector('[data-status]'),bar=el.querySelector('progress'),count=el.querySelector('[data-count]'),percent=el.querySelector('[data-percent]'),retry=el.querySelector('button');
  let files=[],failed=[],done=0,running=false;
@@ -16,15 +16,21 @@
  const loaded=new Promise(resolve=>document.readyState==='complete'?resolve():window.addEventListener('load',resolve,{once:true}));
  const label=url=>/\/pmd\/|\/showdown\/|\/pokeapi\//.test(url)?'Preparando os Pokémon':/music|audio|\.(ogg|mp3|wav|m4a)$/.test(url)?'Carregando músicas e sons':/art|wallpaper|arena/.test(url)?'Carregando cenários e ilustrações':'Carregando interface e recursos';
  function update(url){const value=files.length?Math.floor(done/files.length*100):0;bar.value=value;percent.textContent=value+'%';count.textContent=done.toLocaleString('pt-BR')+' / '+files.length.toLocaleString('pt-BR')+' arquivos';if(url)status.textContent=label(url)+'…'}
- async function get(url){if(location.protocol==='file:')return localAsset(url);const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),30000);try{const response=await fetch(url,{cache:'force-cache',signal:controller.signal});if(!response.ok)throw Error(response.status);await response.arrayBuffer()}finally{clearTimeout(timer)}}
+ async function get(url,attempt=0){if(location.protocol==='file:')return localAsset(url);const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),30000);try{const response=await fetch(url,{cache:attempt?'reload':'force-cache',signal:controller.signal});if(!response.ok)throw Error(response.status);await response.arrayBuffer()}finally{clearTimeout(timer)}}
  async function finish(){status.textContent='Finalizando a preparação…';await loaded;if(document.fonts)await document.fonts.ready;
   await Promise.all([...document.querySelectorAll('#stage img')].filter(i=>i.currentSrc||i.getAttribute('src')).map(async i=>{try{await i.decode()}catch{}}));
   if(!window.OAK_GAME_INITIALIZED){status.textContent='Não foi possível iniciar o jogo. Recarregue a página.';retry.hidden=false;retry.textContent='Recarregar página';retry.onclick=()=>location.reload();return}
   status.textContent='Tudo pronto!';document.documentElement.classList.add('ready');window.dispatchEvent(new Event('oak-startup-ready'));requestAnimationFrame(()=>requestAnimationFrame(()=>{el.classList.add('finished');setTimeout(()=>el.remove(),450)}));
  }
- async function run(queue){if(running)return;running=true;retry.hidden=true;failed=[];let next=0;
-  await Promise.all(Array.from({length:8},async()=>{while(next<queue.length){const [url]=queue[next++];active.add(url);update(url);renderFiles();try{await get(url);done++;recent.push(url);if(recent.length>3)recent.shift();update(url)}catch{failed.push([url,0])}finally{active.delete(url);renderFiles()}}}));
-  running=false;if(failed.length){status.textContent=failed.length.toLocaleString('pt-BR')+' arquivos não carregaram.';el.querySelector('[data-note]').textContent='Verifique sua conexão e tente novamente para concluir o carregamento.';retry.hidden=false;retry.onclick=()=>run(failed.slice());return}await finish();
+ async function run(queue){if(running)return;running=true;retry.hidden=true;el.querySelector('[data-continue]').hidden=true;failed=[];let next=0;
+  await Promise.all(Array.from({length:8},async()=>{while(next<queue.length){const [url]=queue[next++];active.add(url);update(url);renderFiles();try{let success=false,lastError;for(let attempt=0;attempt<3&&!success;attempt++){try{await get(url,attempt);success=true}catch(error){lastError=error}}if(!success)throw lastError;done++;recent.push(url);if(recent.length>3)recent.shift();update(url)}catch{failed.push([url,0])}finally{active.delete(url);renderFiles()}}}));
+  running=false;if(failed.length){status.textContent=failed.length===1?'1 arquivo não carregou.':failed.length.toLocaleString('pt-BR')+' arquivos não carregaram.';
+ const list=el.querySelector('[data-files]');list.replaceChildren(...failed.map(([url])=>{const row=document.createElement('div');row.textContent='Falhou: '+url;row.title=url;return row}));
+ el.querySelector('[data-note]').textContent='Os arquivos acima falharam após três tentativas. Você pode tentar novamente.';
+ retry.hidden=false;retry.onclick=()=>run(failed.slice());
+ const optional=failed.every(([url])=>!/\.(js|css|json|woff2?|ttf)$/i.test(url));
+ if(optional&&window.OAK_GAME_INITIALIZED){const enter=el.querySelector('[data-continue]');enter.hidden=false;enter.onclick=finish;el.querySelector('[data-note]').textContent='O jogo iniciou, mas estes recursos visuais ou de áudio não carregaram. Tente novamente ou entre; eles poderão ser solicitados novamente durante o uso.'}
+ return}await finish();
  }
  dom.then(async()=>{try{
  files=window.OAK_STARTUP_FILES;
