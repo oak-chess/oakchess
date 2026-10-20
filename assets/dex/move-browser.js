@@ -27,22 +27,25 @@
    await Promise.race([Promise.all([actor.decode(),target.decode(),renderer.ready(),attackImage?attackImage.decode().catch(()=>null):Promise.resolve()]),new Promise((_,reject)=>setTimeout(()=>reject(Error('Os arquivos demoraram a carregar. Tente repetir.')),12000))]);
    if(token!==session)return;
    const base=move.localKey?window.EMERALD_CATALOG?.moves[move.localKey]:null,sequence=move.expansionSequence||base;
-   const raw=sequence?.events||[],first=raw[0]?.t||0;
+   const reference=move.localKey||move.key;
+   const beamMove=!!move.localKey&&/^(FLAMETHROWER|ICE_BEAM|HYPER_BEAM|SOLAR_BEAM|AURORA_BEAM|PSYBEAM|BUBBLE_BEAM|SIGNAL_BEAM|DRAGON_BREATH)$/.test(reference);
+   const support=move.category==='Status';
+   const raw=beamMove?[]:sequence?.events||[],first=raw[0]?.t||0;
    const events=raw.filter(e=>renderer.availableTemplate(e.sprite)).map(e=>({...e,at:.55+Math.max(0,e.t-first)}));
    let taskPending=!events.length,elapsed=0,last=performance.now(),shown=false;
    const end=Math.max(3,Math.min(12,(events.at(-1)?.at||1)+1.8));
    const durations=local?.durations||[8],total=durations.reduce((a,b)=>a+b,0);
    const drawActor=()=>{const phase=elapsed%end,lunge=phase>.22&&phase<.75?Math.sin((phase-.22)/.53*Math.PI)*35:0;ctx.save();ctx.imageSmoothingEnabled=false;
-    if(local){const attacking=elapsed>.2&&elapsed<1.3&&attackImage?.naturalWidth,frameData=attacking?local.attack:local,sheet=attacking?attackImage:actor,ds=frameData.durations.length?frameData.durations:[8],sum=ds.reduce((a,b)=>a+b,0);let t=attacking?Math.min(sum-1,Math.floor((elapsed-.2)*60)):Math.floor(elapsed*60)%sum,index=0;while(index<ds.length-1&&t>=ds[index])t-=ds[index++];index=Math.min(index,Math.floor(sheet.naturalWidth/frameData.w)-1);const size=Math.min(108/local.w,108/local.h),row=sheet.naturalHeight>=frameData.h*8?2:0;ctx.drawImage(sheet,index*frameData.w,row*frameData.h,frameData.w,frameData.h,70+lunge-frameData.w*size/2,151-frameData.h*size,frameData.w*size,frameData.h*size)}
-    else ctx.drawImage(actor,16+lunge,50,108,108);
-    ctx.drawImage(target,275,66,96,96);ctx.restore();
+    if(local){const attacking=elapsed>.2&&elapsed<1.3&&attackImage?.naturalWidth,frameData=attacking?local.attack:local,sheet=attacking?attackImage:actor,ds=frameData.durations.length?frameData.durations:[8],sum=ds.reduce((a,b)=>a+b,0);let t=attacking?Math.min(sum-1,Math.floor((elapsed-.2)*60)):Math.floor(elapsed*60)%sum,index=0;while(index<ds.length-1&&t>=ds[index])t-=ds[index++];index=Math.min(index,Math.floor(sheet.naturalWidth/frameData.w)-1);const size=Math.min(108/local.w,108/local.h),row=sheet.naturalHeight>=frameData.h*8?2:0;ctx.drawImage(sheet,index*frameData.w,row*frameData.h,frameData.w,frameData.h,70+lunge-frameData.w*size/2,192-frameData.h*size,frameData.w*size,frameData.h*size)}
+    else ctx.drawImage(actor,16+lunge,87,108,108);
+    ctx.drawImage(target,275,100,96,96);ctx.restore();
    };
    box.textContent=(meta?.name||'Pokémon')+' · preparação → execução → efeito'+(move.expansionSequence?' · adaptação visual':'');
    view.querySelector('[data-play-effect]').textContent='↻ Repetir ataque';
    function frame(now){if(token!==session||view.hidden||!dex.classList.contains('show'))return;
-    try{const dt=Math.min(.05,(now-last)/1000);last=now;elapsed+=dt;ctx.clearRect(0,0,440,220);ctx.fillStyle='#0d232e';ctx.fillRect(0,0,440,220);ctx.fillStyle='#29474e';for(const x of [70,320]){ctx.beginPath();ctx.ellipse(x,155,48,12,0,0,Math.PI*2);ctx.fill()}drawActor();
-     while(events.length&&events[0].at<=elapsed){const e=events.shift(),origin=/ATTACKER/.test(e.anchor),x=origin?90:320,y=115;shown=renderer.emitTemplate(e.sprite,x,y,1.8,0,0)||shown}
-     if(taskPending&&elapsed>.55){taskPending=false;shown=renderer.hit({n:move.localKey,emerald:move.localKey,t:move.type,k:move.category==='Status'?'buff':'burst'},move.category==='Status'?90:320,115,1.6)||shown}
+    try{const dt=Math.min(.05,(now-last)/1000);last=now;elapsed+=dt;ctx.clearRect(0,0,440,220);ctx.fillStyle='#0d232e';ctx.fillRect(0,0,440,220);ctx.fillStyle='#29474e';for(const x of [70,320]){ctx.beginPath();ctx.ellipse(x,185,48,12,0,0,Math.PI*2);ctx.fill()}drawActor();
+     while(events.length&&events[0].at<=elapsed){const e=events.shift(),origin=support||/ATTACKER/.test(e.anchor),x=origin?90:320,y=150;shown=renderer.emitTemplate(e.sprite,x,y,1.8,0,0)||shown}
+     if(taskPending&&elapsed>.55){taskPending=false;const mv={n:move.localKey,emerald:move.localKey,t:move.type,k:support?'buff':beamMove?'beam':'burst'};shown=(beamMove?renderer.beam(mv,110,140,320,150,28):support?renderer.start(mv,90,150):renderer.hit(mv,320,150,1.6))||shown}
      renderer.update(dt);renderer.draw(ctx);
      if(elapsed<end)raf=requestAnimationFrame(frame);else box.textContent=shown?'Ataque concluído. Clique em Repetir ataque para ver novamente.':'Este golpe ainda precisa de adaptação visual. A animação do Pokémon foi demonstrada.';
     }catch(error){box.textContent='Não foi possível reproduzir este efeito: '+error.message}
