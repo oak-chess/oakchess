@@ -64,3 +64,7 @@ Proposta concreta em docs/TOWER-EXPANSION-PROPOSAL.md e catálogo de candidatos 
 ## Nove animações pendentes do elenco
 
 Surf, Harden, Aura Sphere, Dark Pulse, Night Slash, Air Slash, Dragon Pulse, Flash Cannon e Iron Head receberam execução específica. Catálogo: 489 adaptados e 430 pendentes; 104/104 golpes dos conjuntos atuais possuem efeito disponível. Ver assets/move-fx/README.md e nine-sources.json para origem e limites. Verificação de execução: 489 efeitos, zero exceções, zero efeitos sem emissão e zero folhas ausentes. Isso não substitui avaliação visual de cada efeito.
+
+## Efeitos psíquicos do Mewtwo
+
+PSYCHIC e CONFUSION deixam de usar o anel genérico de tarefas sem sprites. mewtwo-moves.js adapta carga, campo local, bandas de distorção e impacto; PSYBEAM usa faixa prismática e rastro contínuo no projétil/passiva. Aura Sphere mantém seu adaptador com sprites de origem. Não altera dano, alvo ou tempo de chegada dos projéteis. O catálogo permite selecionar o Pokémon da prévia sem registrar descobertas. Verificação de execução: 489 efeitos, zero exceções e folhas ausentes; a aprovação visual é separada.

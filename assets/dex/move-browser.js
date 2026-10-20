@@ -13,6 +13,9 @@
   if(/Charge|Gather|Warm|Focus|Prepare|Meditat|SwordsDance/i.test(callback+' '+(event?.sprite||'')))return 'user';
   return [4,5,7,13].includes(move.targetId)?'user':'target';
  }
+ const actorSelect=document.createElement('select');actorSelect.setAttribute('aria-label','Pokémon da prévia');
+ actorSelect.innerHTML='<option value="">Pokémon automático</option>'+(window.DEX_EXPANSION||[]).filter(e=>window.PLAYABLE_MOVES?.[e.id]).map(e=>'<option value="'+e.id+'">'+e.name+'</option>').join('');view.querySelector('.dex-move-library-tools').append(actorSelect);
+ actorSelect.onchange=()=>{actorSpecies=+actorSelect.value||null;if(selected?.status==='adapted')play()};
  const catalog=window.DEX_MOVE_CATALOG||[];let page=0,selected=null,renderer=null,raf=0,session=0,actorSpecies=null;
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  // Use visible pixels as the ground anchor, never the transparent frame padding.
@@ -30,7 +33,7 @@
  }
  function stop(){session++;cancelAnimationFrame(raf);renderer?.clear()}
  function detail(move){stop();selected=move;const type=typeof TYPES!=='undefined'?TYPES[move.type]:null;
-  view.querySelector('[data-move-detail]').innerHTML='<small>#'+move.id+' · Geração '+move.generation+'</small><h3>'+esc(move.name)+'</h3><p>'+esc(type?.n||move.type)+' · '+move.category+'</p><div class="dex-stats"><span><b>'+(move.power??'—')+'</b> Poder</span><span><b>'+(move.accuracy==null?'—':move.accuracy+'%')+'</b> Precisão</span></div><p><b>'+(move.status==='adapted'?'Efeito adaptado':'Pendente de importação')+'</b></p><p class="dex-note">'+(move.status==='adapted'?(move.animationRenderer==='nine'?'Animação específica adaptada com sprites originais. Onda de Surf e brilho metálico têm execução própria no navegador.':move.expansionSequence?'Sequência da expansão adaptada com sprites locais. Movimentos de câmera, tarefas C e sons originais não são reproduzidos nesta prévia.':'Recursos locais do Emerald com execução adaptada ao OakChess.'):'O registro do golpe foi catalogado. A animação completa ainda não foi importada.')+'</p>'+(move.status==='adapted'?'<canvas width="440" height="220" aria-label="Prévia do efeito"></canvas><button data-play-effect>▶ Ver efeito</button><p data-effect-status class="dex-note"></p>':'')+'<p class="dex-note">Fonte de dados: PokéAPI. Fonte visual: '+(move.localKey?'pret/pokeemerald':'rh-hideout/pokeemerald-expansion')+'. Nenhuma alteração nos golpes do elenco.</p>';
+  view.querySelector('[data-move-detail]').innerHTML='<small>#'+move.id+' · Geração '+move.generation+'</small><h3>'+esc(move.name)+'</h3><p>'+esc(type?.n||move.type)+' · '+move.category+'</p><div class="dex-stats"><span><b>'+(move.power??'—')+'</b> Poder</span><span><b>'+(move.accuracy==null?'—':move.accuracy+'%')+'</b> Precisão</span></div><p><b>'+(move.status==='adapted'?'Efeito adaptado':'Pendente de importação')+'</b></p><p class="dex-note">'+(move.status==='adapted'?(move.animationRenderer==='psychic'?'Efeito psíquico com preparação, campo no alvo ou faixa prismática. Execução adaptada ao navegador.':move.animationRenderer==='nine'?'Animação específica adaptada com sprites originais. Onda de Surf e brilho metálico têm execução própria no navegador.':move.expansionSequence?'Sequência da expansão adaptada com sprites locais. Movimentos de câmera, tarefas C e sons originais não são reproduzidos nesta prévia.':'Recursos locais do Emerald com execução adaptada ao OakChess.'):'O registro do golpe foi catalogado. A animação completa ainda não foi importada.')+'</p>'+(move.status==='adapted'?'<canvas width="440" height="220" aria-label="Prévia do efeito"></canvas><button data-play-effect>▶ Ver efeito</button><p data-effect-status class="dex-note"></p>':'')+'<p class="dex-note">Fonte de dados: PokéAPI. Fonte visual: '+(move.localKey?'pret/pokeemerald':'rh-hideout/pokeemerald-expansion')+'. Nenhuma alteração nos golpes do elenco.</p>';
   view.querySelector('[data-play-effect]')?.addEventListener('click',play);
   view.querySelector('[data-move-detail]').scrollTop=0;
   const token=session;if(move.status==='adapted')requestAnimationFrame(()=>{if(token===session&&!view.hidden)play()});
@@ -51,7 +54,7 @@
    const reference=move.localKey||move.key;
    const beamMove=!!move.localKey&&/^(FLAMETHROWER|ICE_BEAM|HYPER_BEAM|SOLAR_BEAM|AURORA_BEAM|PSYBEAM|BUBBLE_BEAM|SIGNAL_BEAM|DRAGON_BREATH)$/.test(reference);
    const support=[4,5,7,13].includes(move.targetId);
-   const dedicated=move.animationRenderer==='nine',raw=beamMove||dedicated?[]:sequence?.events||[],first=raw[0]?.t||0;
+   const dedicated=['nine','psychic'].includes(move.animationRenderer),raw=beamMove||dedicated?[]:sequence?.events||[],first=raw[0]?.t||0;
    const phases=window.CREATE_EMERALD_SEQUENCES?.(renderer),projectiles=[];
    const events=raw.filter(e=>renderer.availableTemplate(e.sprite)).map(e=>({...e,at:.55+Math.max(0,e.t-first)}));
    let taskPending=!events.length,elapsed=0,last=performance.now(),shown=false;
@@ -82,7 +85,7 @@
   view.querySelector('[data-page]').textContent=(page+1)+' / '+pages+' · '+filtered.length+' golpes';view.querySelector('[data-prev]').disabled=page===0;view.querySelector('[data-next]').disabled=page===pages-1;
   if(visible.length)detail(visible.find(m=>m.id===selected?.id)||visible[0]);else view.querySelector('[data-move-detail]').replaceChildren();
  }
- window.DEX_MOVE_LIBRARY={open(id,species){actorSpecies=species||null;button.click();const move=catalog.find(m=>m.id===id);if(move)detail(move)}};
+ window.DEX_MOVE_LIBRARY={open(id,species){actorSpecies=species||null;actorSelect.value=species?String(species):'';button.click();const move=catalog.find(m=>m.id===id);if(move)detail(move)}};
  button.onclick=()=>{dex.classList.add('dex-library-open');view.hidden=false;button.setAttribute('aria-pressed','true');render()};
  dex.querySelectorAll('[data-tab]').forEach(tab=>tab.addEventListener('click',()=>{stop();view.hidden=true;dex.classList.remove('dex-library-open');button.setAttribute('aria-pressed','false')}));
  view.querySelector('input').oninput=view.querySelector('select').onchange=()=>{page=0;render()};view.querySelector('[data-prev]').onclick=()=>{page--;render()};view.querySelector('[data-next]').onclick=()=>{page++;render()};
