@@ -40,3 +40,13 @@
 #pokedex [data-move-detail] canvas{order:-3;margin:0 0 6px;min-height:140px;max-height:200px}
 #pokedex [data-move-detail]>[data-play-effect]{order:-2;min-height:32px;margin-bottom:5px}
 #pokedex [data-move-detail]>[data-effect-status]{order:-1;min-height:30px;margin:0 0 10px;font-size:11px;line-height:1.4}
+
+@media(max-height:720px){
+ #pokedex.dex-library-open .dex-summary{display:none}
+ #pokedex.dex-library-open .dex-window{grid-template-rows:auto auto minmax(0,1fr) auto}
+ #pokedex.dex-library-open .dex-window>header{padding:9px 16px}
+ #pokedex.dex-library-open .dex-window>header small{display:none}
+ #pokedex [data-move-detail] canvas{height:clamp(100px,26vh,180px);min-height:100px;max-height:180px}
+ #pokedex .dex-move-library{gap:5px;padding:7px 12px}
+ #pokedex .dex-move-library-tools input,#pokedex .dex-move-library-tools select{padding:6px}
+}
