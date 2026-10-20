@@ -20,3 +20,5 @@ Verificação realizada: compilação de sintaxe e revisão de integração. Sem
 Apresentação centralizada em um cartão de 92% da largura e 58% da altura do palco. A arena real continua visível ao redor, sob escurecimento leve. Tipografia e personagens ajustados para a altura menor; sons, seleção do destaque e opção de pular preservados.
 
 Cartão compacto: 78% da largura e 36% da altura do palco, centralizado por posição absoluta. Geometria também definida na montagem da cena, evitando retorno à tela inteira com CSS antigo em cache. Fontes e VS reduzidos proporcionalmente.
+
+Faixa sobre a arena: barras cinematográficas internas removidas; fundo do overlay transparente, sem escurecimento ou desfoque. Conferência por leitura do DOM na aba do usuário encontrou CSS e JS v=1, explicando por que as reduções publicadas não apareciam na sessão já aberta.

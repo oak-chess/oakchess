@@ -137,7 +137,7 @@
 #vs.oak-cutscene [hidden]{display:none!important}
 
 /* Horizontal versus card; the live arena remains visible around it. */
-#vs.oak-cutscene{background:rgba(5,9,17,.48);backdrop-filter:blur(2px)}
+#vs.oak-cutscene{background:transparent;backdrop-filter:none}
 #vs.oak-cutscene.show{display:flex!important;align-items:center;justify-content:center}
 #vs.oak-cutscene .screen{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);flex:none;width:78%;height:36%;border:2px solid #c6a969;box-shadow:0 0 0 5px #09111fe6,0 18px 65px #030710a6;overflow:hidden}
 #vs.oak-cutscene .fighter{top:16%;height:59%;width:44%}
@@ -154,3 +154,6 @@
 #vs.oak-cutscene .trainer{height:94%}
 #vs.oak-cutscene .partner{height:95%;width:79%;bottom:6%}
 #vs.oak-cutscene .foe .partner{width:79%}
+#vs.oak-cutscene .cinema{display:none!important}
+#vs.oak-cutscene .chapter{background:#0a1021b3;padding:4px 8px;top:2%;left:2%}
+#vs.oak-cutscene .edition{background:#0a102199;padding:3px 8px;left:2%;bottom:2%}

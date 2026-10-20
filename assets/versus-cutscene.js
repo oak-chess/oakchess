@@ -52,7 +52,7 @@ showVS=function(done){
   const q=s=>overlay.querySelector(s),world=q('.world'),ctx=world.getContext('2d');
   // Keep compact geometry even if an older stylesheet is still cached.
   q('.screen').style.cssText='position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:78%;height:36%;min-height:0;border:2px solid #c6a969';
-  overlay.style.background='rgba(5,9,17,.48)';
+  overlay.style.background='transparent';
   const bg=ctx.createLinearGradient(0,140,240,10);bg.addColorStop(0,leftColor);bg.addColorStop(.5,'#281b35');bg.addColorStop(1,rightColor);ctx.fillStyle=bg;ctx.fillRect(0,0,240,150);
   ctx.fillStyle='#080b164d';ctx.fillRect(0,0,240,150);const rand=n=>{const f=Math.sin(n*72.938)*43758.5453;return f-Math.floor(f)};
   for(let i=0;i<75;i++){const x=rand(i+2)*240,y=rand(i+59)*150;ctx.fillStyle=x<120?leftColor:rightColor;ctx.globalAlpha=.2+rand(i+9)*.4;ctx.fillRect(x,y,1,1+i%3)}ctx.globalAlpha=1;
