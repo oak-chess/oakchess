@@ -37,7 +37,6 @@
   root._pmdPreviewUnit._pmdSp=performance.now();PMD.playNames(root,pose);
   status('Preparação → execução → efeito');
   const prepared=renderer.start(mv,170,213);renderer.pose(mv,root.querySelector('.spr'));
-  root.querySelector('.spr')?.animate(groundedAttackFrames(root._pmdPreviewUnit,[{transform:'scale(1)'},{transform:'scale(1.03,.97)',offset:.4},{transform:'scale(1)'}]),{duration:500});
   const target={x:455,y:213};
   if(['heal','buff','barrier'].includes(mv.k)){later(.2,()=>{status(prepared?'Efeito de '+mv.n+' no Pokémon':'Efeito visual indisponível. Tente Repetir após carregar os arquivos.')})}
   else if(mv.k==='beam'){later(.25,()=>{renderer.beam(mv,170,213,560,213,rc.bw||20);hit()})}

@@ -15,6 +15,18 @@
  }
  const catalog=window.DEX_MOVE_CATALOG||[];let page=0,selected=null,renderer=null,raf=0,session=0,actorSpecies=null;
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ // Use visible pixels as the ground anchor, never the transparent frame padding.
+ function groundedFrames(image,data){
+  const row=image.naturalHeight>=data.h*8?2:0,frames=Math.floor(image.naturalWidth/data.w),sample=document.createElement('canvas');
+  sample.width=image.naturalWidth;sample.height=data.h;const g=sample.getContext('2d',{willReadFrequently:true});
+  g.drawImage(image,0,row*data.h,image.naturalWidth,data.h,0,0,image.naturalWidth,data.h);
+  const pixels=g.getImageData(0,0,sample.width,sample.height).data,rects=[];
+  for(let frame=0;frame<frames;frame++){let left=data.w,top=data.h,right=-1,bottom=-1;
+   for(let y=0;y<data.h;y++)for(let x=0;x<data.w;x++)if(pixels[(y*sample.width+frame*data.w+x)*4+3]>16){left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y)}
+   rects.push(right<0?null:{x:left,y:top,w:right-left+1,h:bottom-top+1});
+  }
+  return {row,rects};
+ }
  function stop(){session++;cancelAnimationFrame(raf);renderer?.clear()}
  function detail(move){stop();selected=move;const type=typeof TYPES!=='undefined'?TYPES[move.type]:null;
   view.querySelector('[data-move-detail]').innerHTML='<small>#'+move.id+' · Geração '+move.generation+'</small><h3>'+esc(move.name)+'</h3><p>'+esc(type?.n||move.type)+' · '+move.category+'</p><div class="dex-stats"><span><b>'+(move.power??'—')+'</b> Poder</span><span><b>'+(move.accuracy==null?'—':move.accuracy+'%')+'</b> Precisão</span></div><p><b>'+(move.status==='adapted'?'Efeito adaptado':'Pendente de importação')+'</b></p><p class="dex-note">'+(move.status==='adapted'?(move.animationRenderer==='nine'?'Animação específica adaptada com sprites originais. Onda de Surf e brilho metálico têm execução própria no navegador.':move.expansionSequence?'Sequência da expansão adaptada com sprites locais. Movimentos de câmera, tarefas C e sons originais não são reproduzidos nesta prévia.':'Recursos locais do Emerald com execução adaptada ao OakChess.'):'O registro do golpe foi catalogado. A animação completa ainda não foi importada.')+'</p>'+(move.status==='adapted'?'<canvas width="440" height="220" aria-label="Prévia do efeito"></canvas><button data-play-effect>▶ Ver efeito</button><p data-effect-status class="dex-note"></p>':'')+'<p class="dex-note">Fonte de dados: PokéAPI. Fonte visual: '+(move.localKey?'pret/pokeemerald':'rh-hideout/pokeemerald-expansion')+'. Nenhuma alteração nos golpes do elenco.</p>';
@@ -43,9 +55,10 @@
    const events=raw.filter(e=>renderer.availableTemplate(e.sprite)).map(e=>({...e,at:.55+Math.max(0,e.t-first)}));
    let taskPending=!events.length,elapsed=0,last=performance.now(),shown=false;
    const end=Math.max(3,Math.min(12,(events.at(-1)?.at||1)+1.8));
-   const durations=local?.durations||[8],total=durations.reduce((a,b)=>a+b,0);
-   const drawActor=()=>{const phase=elapsed%end,lunge=!support&&phase>.22&&phase<.75?Math.sin((phase-.22)/.53*Math.PI)*35:0;ctx.save();ctx.imageSmoothingEnabled=false;if(dedicated&&['HARDEN','IRON_HEAD'].includes(reference)&&elapsed>.4&&elapsed<1.15)ctx.filter='grayscale(.8) brightness('+(1+Math.sin((elapsed-.4)/.75*Math.PI)*1.1)+')';
-    if(local){const attacking=!support&&elapsed>.2&&elapsed<1.3&&attackImage?.naturalWidth,frameData=attacking?local.attack:local,sheet=attacking?attackImage:actor,ds=frameData.durations.length?frameData.durations:[8],sum=ds.reduce((a,b)=>a+b,0);let t=attacking?Math.min(sum-1,Math.floor((elapsed-.2)*60)):Math.floor(elapsed*60)%sum,index=0;while(index<ds.length-1&&t>=ds[index])t-=ds[index++];index=Math.min(index,Math.floor(sheet.naturalWidth/frameData.w)-1);const size=Math.min(108/local.w,108/local.h),row=sheet.naturalHeight>=frameData.h*8?2:0;ctx.drawImage(sheet,index*frameData.w,row*frameData.h,frameData.w,frameData.h,70+lunge-frameData.w*size/2,192-frameData.h*size,frameData.w*size,frameData.h*size)}
+   const idleGround=local?groundedFrames(actor,local):null,attackGround=local?.attack&&attackImage?.naturalWidth?groundedFrames(attackImage,local.attack):null;
+   const contact=!support&&move.category==='Físico'&&/^(POUND|KARATE_CHOP|DOUBLE_SLAP|COMET_PUNCH|MEGA_PUNCH|FIRE_PUNCH|ICE_PUNCH|THUNDER_PUNCH|SCRATCH|VICE_GRIP|GUILLOTINE|CUT|BODY_SLAM|HEADBUTT|TACKLE|BITE|CRUNCH|IRON_HEAD|METAL_CLAW|SLASH|NIGHT_SLASH|DRAGON_CLAW|X_SCISSOR|LOW_KICK|JUMP_KICK|HI_JUMP_KICK)$/.test(reference);
+   const drawActor=()=>{const phase=elapsed%end,lunge=contact&&phase>.22&&phase<.75?Math.sin((phase-.22)/.53*Math.PI)*35:0;ctx.save();ctx.imageSmoothingEnabled=false;if(dedicated&&['HARDEN','IRON_HEAD'].includes(reference)&&elapsed>.4&&elapsed<1.15)ctx.filter='grayscale(.8) brightness('+(1+Math.sin((elapsed-.4)/.75*Math.PI)*1.1)+')';
+    if(local){const attacking=!support&&elapsed>.2&&elapsed<1.3&&attackImage?.naturalWidth,frameData=attacking?local.attack:local,sheet=attacking?attackImage:actor,ds=frameData.durations.length?frameData.durations:[8],sum=ds.reduce((a,b)=>a+b,0);let t=attacking?Math.min(sum-1,Math.floor((elapsed-.2)*60)):Math.floor(elapsed*60)%sum,index=0;while(index<ds.length-1&&t>=ds[index])t-=ds[index++];index=Math.min(index,Math.floor(sheet.naturalWidth/frameData.w)-1);const size=Math.min(108/local.w,108/local.h),ground=attacking?attackGround:idleGround,rect=ground?.rects[index];if(rect)ctx.drawImage(sheet,index*frameData.w+rect.x,ground.row*frameData.h+rect.y,rect.w,rect.h,70+lunge-rect.w*size/2,185-rect.h*size,rect.w*size,rect.h*size)}
     else ctx.drawImage(actor,16+lunge,87,108,108);
     ctx.filter='none';ctx.drawImage(target,275,100,96,96);ctx.restore();
    };
