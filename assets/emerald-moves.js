@@ -2,9 +2,9 @@
 (()=>{
  'use strict';
  const catalog=window.EMERALD_CATALOG;if(!catalog)return;
- const sharedImages=new Map();
+ const sharedImages=new Map(),sharedFrames=new Map(),sharedMetrics=new Map();
  function createRenderer(isolated=false){
- const images=sharedImages,frames=new Map(),active=[],resources=new Map();
+ const images=sharedImages,frames=sharedFrames,active=[],resources=new Map();
  for(const [name,template] of Object.entries(catalog.templates)){
   if(!resources.has(template.tag))resources.set(template.tag,[]);
   resources.get(template.tag).push(name);
@@ -41,22 +41,39 @@
   return (kind==='projectile'?match(travelRE):kind==='hit'?match(hitRE):match(orbitRE))||all[0];
  }
  function animation(template,variant=0){return template.animations[variant%Math.max(1,template.animations.length)]||{frames:[[0,8,0,0]],loop:true}}
- function drawSprite(g,name,x,y,scale,time,angle=0,variant=0,alpha=1){
-  const template=catalog.templates[name];if(!template||!available(name))return false;
-  const sequence=animation(template,variant),total=sequence.frames.reduce((n,f)=>n+Math.max(1,f[1]),0);
-  let tick=Math.floor(time*60);tick=sequence.loop?tick%total:Math.min(tick,total-1);
-  let frame=sequence.frames[0];for(const f of sequence.frames){frame=f;if(tick<Math.max(1,f[1]))break;tick-=Math.max(1,f[1])}
-  const cacheKey=name+':'+frame[0];let canvas=frames.get(cacheKey);
+ function spriteFrame(name,offset){
+  const template=catalog.templates[name],cacheKey=name+':'+offset;let canvas=frames.get(cacheKey);
   if(!canvas){
    canvas=document.createElement('canvas');canvas.width=template.w;canvas.height=template.h;
    const ctx=canvas.getContext('2d'),source=images.get(template.sheet).image,tilesAcross=source.naturalWidth/8;
    // Emerald frame offsets count 8x8 tiles, not rows in a sprite sheet.
    for(let y0=0;y0<template.h;y0+=8)for(let x0=0;x0<template.w;x0+=8){
-    const tile=frame[0]+(y0/8)*(template.w/8)+x0/8,sx=(tile%tilesAcross)*8,sy=Math.floor(tile/tilesAcross)*8;
+    const tile=offset+(y0/8)*(template.w/8)+x0/8,sx=(tile%tilesAcross)*8,sy=Math.floor(tile/tilesAcross)*8;
     if(sy+8<=source.naturalHeight)ctx.drawImage(source,sx,sy,8,8,x0,y0,8,8);
    }
    frames.set(cacheKey,canvas);
   }
+  return canvas;
+ }
+ function visualMetrics(name){
+  if(sharedMetrics.has(name))return sharedMetrics.get(name);
+  const template=catalog.templates[name],offsets=new Set([0,...template.animations.flatMap(a=>a.frames.map(f=>f[0]))]);
+  let left=template.w,top=template.h,right=-1,bottom=-1;
+  // One union for the entire template: no size pumping between animation frames.
+  for(const offset of offsets){const canvas=spriteFrame(name,offset),pixels=canvas.getContext('2d',{willReadFrequently:true}).getImageData(0,0,template.w,template.h).data;
+   for(let y=0;y<template.h;y++)for(let x=0;x<template.w;x++)if(pixels[(y*template.w+x)*4+3]>16){left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y)}
+  }
+  const span=right<0?Math.max(template.w,template.h):Math.max(right-left+1,bottom-top+1),particle=/Sparkle|Spark|Powder|Spore|Dust|Snow|Smoke|Particle/i.test(name+' '+template.callback);
+  const correction=Math.min(particle?1.5:4,Math.max(1,Math.max(template.w,template.h)/Math.max(1,span)));
+  const result={correction,cx:right<0?template.w/2:(left+right+1)/2,cy:bottom<0?template.h/2:(top+bottom+1)/2};sharedMetrics.set(name,result);return result;
+ }
+ function drawSprite(g,name,x,y,scale,time,angle=0,variant=0,alpha=1){
+  const template=catalog.templates[name];if(!template||!available(name))return false;
+  const sequence=animation(template,variant),total=sequence.frames.reduce((n,f)=>n+Math.max(1,f[1]),0);
+  let tick=Math.floor(time*60);tick=sequence.loop?tick%total:Math.min(tick,total-1);
+  let frame=sequence.frames[0];for(const f of sequence.frames){frame=f;if(tick<Math.max(1,f[1]))break;tick-=Math.max(1,f[1])}
+  const canvas=spriteFrame(name,frame[0]),visible=visualMetrics(name);
+  scale*=visible.correction;
   g.save();g.globalAlpha=alpha;g.globalCompositeOperation='source-over';g.imageSmoothingEnabled=false;
   const affine=template.affines?.[variant%Math.max(1,template.affines.length)];
   let sx=256,sy=256,rotation=0;
@@ -66,7 +83,7 @@
   }
   const factor=v=>Math.max(.55,Math.min(1.8,256/Math.max(32,Math.abs(v))));
   g.translate(Math.round(x),Math.round(y));g.rotate(angle+(reduced()?0:rotation*Math.PI/128));g.scale((frame[2]?-scale:scale)*factor(sx),(frame[3]?-scale:scale)*factor(sy));
-  g.drawImage(canvas,-template.w/2,-template.h/2);g.restore();return true;
+  g.drawImage(canvas,-visible.cx,-visible.cy);g.restore();return true;
  }
  function enqueue(o){if(active.length>=maxEffects())return false;active.push({t:0,delay:0,life:.45,scale:1,variant:0,mode:'still',...o});return true}
  function duration(name,variant=0){const a=animation(catalog.templates[name],variant);return Math.max(.22,Math.min(.85,a.frames.reduce((n,f)=>n+f[1],0)/60))}
@@ -150,7 +167,9 @@
   const mv=p.o?.move,move=resolve(mv);if(!move)return false;
   const name=choose(move,'projectile');if(!name)return false;
   const t=catalog.templates[name],angle=/Needle|Stinger|Leaf|AirWave|Arrow/i.test(t.callback+' '+name)?(p.dir||0):0;
-  const scale=Math.max(.65,Math.min(2,(26*(p.size||1))/Math.max(t.w,t.h)));
+  const sizes={52:20,55:30,56:46,85:34,88:34,94:38,129:26,188:36,247:42,324:32};
+  const diameter=sizes[move.id]||(/Needle|Stinger/i.test(t.callback+' '+name)?20:/Ball|Orb|Bomb|Sphere/i.test(t.callback+' '+name)?36:28);
+  const scale=Math.max(.7,Math.min(3,(diameter*(p.size||1))/Math.max(t.w,t.h)));
   const age=p.age||0,callback=t.callback||'';
   // Secondary sprite motion stays local to the authoritative projectile position.
   const wave=!reduced()&&/SinWave|Bounce/.test(callback)?Math.sin(age*18)*4:0;

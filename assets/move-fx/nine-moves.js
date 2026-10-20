@@ -11,7 +11,7 @@
   function hit(mv,x,y,scale=1){const d=definition(mv);if(!d)return null;return add(d,d.kind==='metal'?'prepare':'impact',x,y,{scale})}
   function beam(mv,x,y,x2,y2,width=24){const d=definition(mv);if(!d)return null;if(d.kind==='metal')return start(mv,x,y);return add(d,'travel',x,y,{x2,y2,width,life:d.kind==='wave'?1.05:.65})}
   function projectile(g,p){const d=definition(p.o?.move);if(!d)return null;if(!d.sprite)return false;
-   const angle=p.dir||0,t=p.age||0,scale=d.kind==='orb'||d.kind==='cannon'?1.1:.95;
+   const angle=p.dir||0,t=p.age||0,scale=d.kind==='orb'||d.kind==='cannon'?1.4:1.25;
    if(d.kind==='pulse')for(let i=2;i>=0;i--)drawSprite(g,d.sprite,p.x-Math.cos(angle)*i*12,p.y-Math.sin(angle)*i*12,scale*(1-i*.12),t,angle,0,1-i*.24);
    else drawSprite(g,d.sprite,p.x,p.y,scale*(1+Math.sin(t*18)*.06),t,angle,0,1);
    return true;
@@ -29,7 +29,7 @@
    for(let i=0;i<7;i++){const x=-55+i*10+Math.sin(t*10+i)*5,y=-35-Math.sin(t*7+i)*18;g.fillStyle=i%2?'#baf5ff':'#37b5e4';g.fillRect(Math.round(x),Math.round(y),3,5)}
    g.restore();
   }
-  function impact(g,e,k,fade){const {d,x,y}=e,scale=Math.min(1.8,e.scale||1);
+  function impact(g,e,k,fade){const {d,x,y}=e,scale=Math.min(1.8,Math.max(.9,e.scale||1));
    if(d.kind==='slash'||d.kind==='air'){
     const name=d.kind==='slash'&&k>.35?d.second:d.sprite;
     drawSprite(g,name,x-9,y-7,1.9*scale,e.t,0,0,fade);
@@ -70,7 +70,8 @@
      const dx=e.x2-e.x,dy=e.y2-e.y,angle=Math.atan2(dy,dx),x=e.x+dx*k,y=e.y+dy*k;
      if(e.d.kind==='wave'){g.translate(x,y);g.rotate(angle);wave(g,0,0,e.t,Math.min(1.7,Math.max(.85,(e.width||70)/70)))}
      else if(e.d.kind==='cannon'){
-      for(let i=0;i<12;i++){const p=i/11;drawSprite(g,e.d.sprite,e.x+dx*p,e.y+dy*p,.65,e.t,angle,0,fade*(.5+.5*Math.sin(k*Math.PI)))}
+      g.save();g.globalAlpha=fade*.7;g.strokeStyle='#d6edf5';g.lineWidth=6;g.beginPath();g.moveTo(e.x,e.y);g.lineTo(x,y);g.stroke();g.restore();
+      drawSprite(g,e.d.sprite,x,y,1.45,e.t,angle,0,fade);
      }else if(e.d.sprite)projectile(g,{x,y,dir:angle,age:e.t,o:{move:{emerald:Object.keys(definitions).find(key=>definitions[key]===e.d)}}});
     }else impact(g,{...e,t:time},k,fade);
     g.restore();
