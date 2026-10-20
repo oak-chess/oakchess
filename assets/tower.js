@@ -177,6 +177,20 @@ function migrateRelicLoadout(){
 }
 const storageKey=()=>current()?.preview?(current().startFloor>=5?PREVIEW_KEY+'_sector'+(Math.floor(current().startFloor/5)+1):PREVIEW_KEY):KEY;
 const unlocked=()=>{try{return localStorage.getItem('oakchess_tower_hard_unlocked')==='1'}catch{return false}};
+// Canonical lines only: Mew also has a separate story line that stays excluded.
+const LEGEND_LINES=[LINES.findIndex(L=>L.ids[0]===150),MEWLINE,...BIRDLINES];
+const legendaryUnlocked=()=>{try{return unlocked()||localStorage.getItem('oakchess_tower_legendaries_unlocked')==='1'}catch{return false}};
+const canShop=L=>active()&&legendaryUnlocked()&&G.lvl>=7&&LEGEND_LINES.includes(L.i);
+function seedLegendaryPool(){
+ const t=current();if(!t||t.legendaryPoolVersion===1||!legendaryUnlocked())return;
+ for(const i of LEGEND_LINES){const owned=allUnits().filter(u=>u.line===i).reduce((n,u)=>n+3**(u.star-1),0),offered=G.shop.filter(u=>u?.line===i).length;G.pool[i]=Math.max(0,POOL[4]-owned-offered)}
+ t.legendaryPoolVersion=1;
+}
+function legendaryStats(L,stats){
+ if(!active()||!LEGEND_LINES.includes(L.i))return stats;
+ const tuning={144:{hp:1.04,sp:.78,mana:95},145:{hp:.86,sp:.86,mana:90},146:{hp:.94,sp:.88,mana:105},150:{hp:.84,sp:.92,mana:110},151:{hp:1.02,sp:.76,mana:90}}[L.ids[0]];
+ return {...stats,hp:stats.hp*tuning.hp,atk:stats.atk*.9,sp:stats.sp*tuning.sp,maxMana:tuning.mana,mana0:Math.min(stats.mana0,15)};
+}
 function read(key){try{return JSON.parse(localStorage.getItem(key)||'null')}catch{return null}}
 function valid(s){
  if(!s||s.version!==1||!s.tower||!s.game||!Array.isArray(s.units))return false;
@@ -262,7 +276,7 @@ function menu(){
  const saved=can?(valid(s)?s:null):(valid(p)?p:null),floor=saved?Math.min(FLOORS.length,saved.tower.floor+1):1;
  const steps=SECTORS.map((sector,i)=>'<span class="'+(i<Math.floor((floor-1)/5)?'done':i===Math.floor((floor-1)/5)?'current':'')+'">'+sector.roman+'</span>').join('');
  const card='<button type="button" class="tower-entrance-cover" data-choice="enter-tower"><span class="tower-cover-art"><img src="'+art('entrance')+'" alt="Mewtwo diante da Torre dos Desafios, em pixel art"><small>12 SETORES</small></span><span class="tower-cover-info"><b>Doze setores</b><small>60 andares · 12 chefes</small></span><span class="tower-cover-progress" aria-label="Andar '+floor+' de 60">'+steps+'</span><span class="tower-cover-action">'+esc(label)+' <i aria-hidden="true">▸</i></span></button>';
- const root=panel('Torre dos Desafios',can?'Escolha sua próxima subida.':'Prévia disponível · Oficial após Mewtwo no Difícil.','<div class="tower-entry">'+card+'</div>',actions);
+ const root=panel('Torre dos Desafios',legendaryUnlocked()?'Lendários liberados na loja a partir do nível 7.':can?'Escolha sua próxima subida.':'Prévia disponível · Oficial após Mewtwo no Difícil.','<div class="tower-entry">'+card+'</div>',actions);
  root.querySelector('.tower-dialog').classList.add('tower-entry-dialog');root.querySelector('[data-choice="enter-tower"]').onclick=primary;
 }
 function confirmNew(preview,s){if(!valid(s)){launch(preview);return}panel('Começar outra subida?','Somente a tentativa atual da torre será substituída. O progresso da campanha permanece salvo.','',[{label:'Começar nova subida',run:()=>launch(preview)},{label:'Continuar tentativa atual',secondary:true,run:()=>launch(preview,s)},{label:'Voltar',secondary:true,run:menu}])}
@@ -288,11 +302,16 @@ function launch(preview,saved=null,startFloor=0){
   for(const su of saved.units){const u=newUnit(su.line,su.star);u.items=su.items.slice();u.shiny=su.shiny;u.evoSkip=su.evoSkip;place(u,{...su.pos});attachEl(u,false)}
   allUnits().forEach(u=>{if(u.line===EEVEE&&u.star>=2&&u.evoSkip!==u.star&&!G.evoQueue.includes(u))G.evoQueue.push(u)});
  }
+ seedLegendaryPool();
  document.body.classList.add('tower-active');hud.hidden=false;G.ri=current().floor;G.round=round(G.ri);G.phase='plan';G.eventModal=true;SND.music('plan');renderInv();renderHUD();
  if(current().status==='starter'){save(true);starter()}else plan(true);
 }
 function round(i){const n=Math.max(0,Math.min(FLOORS.length-1,i)),f=FLOORS[n];return{tower:true,kind:'trainer',gym:0,lg:0,st:1+n,rn:n+1,n:FLOORS.length,lbl:'TORRE '+(n+1),kinds:Array(FLOORS.length).fill('trainer'),extra:false,name:f.name}}
 function starter(){
+ const t=current();
+ const benchCandidates=LINES.filter(L=>L.c===1&&!L.boss&&![1,4,7,25,133].includes(L.ids[0]));
+ if(!Array.isArray(t.starterBench)||t.starterBench.length!==2||new Set(t.starterBench).size!==2||t.starterBench.some(id=>!benchCandidates.some(L=>L.ids[0]===id))){t.starterBench=shuffleOwn(benchCandidates).slice(0,2).map(L=>L.ids[0]);save(true)}
+ const benchNames=t.starterBench.map(id=>LINES.find(L=>L.ids[0]===id).names[0]).join(' e ');
  const companions=[
   {id:1,name:'Bulbasaur',role:'SUSTENTAÇÃO',text:'Drena vida com suas vinhas e resiste na linha de frente.',scene:'starter-grass'},
   {id:4,name:'Charmander',role:'OFENSIVO',text:'Queima os inimigos com fogo e pressiona a equipe adversária.',scene:'starter-fire'},
@@ -303,14 +322,14 @@ function starter(){
  const cards=companions.map(d=>{const L=LINES.find(l=>l.ids.includes(d.id)),star=d.id===25?2:1,types=typesOf(L,star);
   {const asset={1:'bulbasaur',4:'charmander',7:'squirtle',25:'pikachu',133:'eevee'}[d.id],extension='webp',effect={1:'leaf',4:'ember',7:'bubble',25:'spark',133:'mote'}[d.id],particles=Array.from({length:7},(_,i)=>'<i style="--p:'+i+';--px:'+(10+(i*29)%80)+'%;--wait:'+(-i*.73)+'s"></i>').join('');return '<article class="tower-collectible tower-painted-companion"><button type="button" class="tower-painted-card" data-element="'+effect+'" style="--card-glow:'+TYPES[types[0]].c+'" data-choice="'+d.id+'" aria-label="Escolher '+d.name+'. '+d.role+'. '+d.text+'"><span class="tower-card-surface"><img src="assets/tower-art/companion-cards/'+asset+'-v1.'+extension+'" alt="'+d.name+' · '+types.map(t=>esc(TYPES[t].n)).join(' · ')+'. '+esc(d.text)+'" width="1024" height="1536"><span class="tower-card-particles" aria-hidden="true">'+particles+'</span><span class="tower-painted-foil" aria-hidden="true"></span></span><span class="tower-painted-action">Escolher '+d.name+' <i aria-hidden="true">▸</i></span></button></article>'}
  }).join('');
- const root=panel('Escolha seu companheiro',G.lvl+' vagas · '+G.gold+' ouro · Pidgey e Geodude no banco','<div class="tower-card-grid tower-starter-grid">'+cards+'</div>');
+ const root=panel('Escolha seu companheiro',G.lvl+' vagas · '+G.gold+' ouro · '+benchNames+' no banco','<div class="tower-card-grid tower-starter-grid">'+cards+'</div>');
  root.querySelector('.tower-dialog').classList.add('tower-starter-dialog');
  root.querySelectorAll('.tower-painted-card').forEach(card=>{
   card.addEventListener('pointermove',e=>{if(e.pointerType==='touch'||CFG.reduceFx||matchMedia('(prefers-reduced-motion: reduce)').matches)return;const box=card.getBoundingClientRect(),x=Math.max(0,Math.min(1,(e.clientX-box.left)/box.width)),y=Math.max(0,Math.min(1,(e.clientY-box.top)/box.height));card.style.setProperty('--tilt-x',((.5-y)*5)+'deg');card.style.setProperty('--tilt-y',((x-.5)*6)+'deg')});
   const reset=()=>{card.style.setProperty('--tilt-x','0deg');card.style.setProperty('--tilt-y','0deg')};card.addEventListener('pointerleave',reset);card.addEventListener('blur',reset);
  });
  root.querySelectorAll('button[data-choice]').forEach(b=>b.onclick=()=>{if(current()?.status!=='starter')return;const id=+b.dataset.choice;
-  for(const [idx,mon] of [id,16,74].entries()){
+  for(const [idx,mon] of [id,...current().starterBench].entries()){
    const L=LINES.find(l=>l.ids.includes(mon)),star=Math.max(mon===25?2:1,current().floor>=25?3:current().floor>=5?2:1),u=newUnit(L.i,star);G.pool[L.i]=Math.max(0,G.pool[L.i]-Math.pow(3,star-1));place(u,idx===0?{z:'b',r:6,c:3}:{z:'n',i:idx-1});attachEl(u,true);if(u.line===EEVEE&&u.star>=2&&!G.evoQueue.includes(u))G.evoQueue.push(u);
   }
   current().status='plan';close();plan();
@@ -343,7 +362,7 @@ function enemy(){
  t.enemy=placeEnemies(strengthenHighBoss(list,t));return t.enemy;
 }
 function plan(resuming=false){
- ensureLoadout();if(current()?.needsRelicSetup){migrateRelicLoadout();return}
+ seedLegendaryPool();ensureLoadout();if(current()?.needsRelicSetup){migrateRelicLoadout();return}
  if(!active())return;const t=current(),f=FLOORS[t.floor];closeBag();mechanic=null;clearMarks();G.paused=false;G.over=false;G.ri=t.floor;G.round=round(t.floor);G.phase='plan';G.weather=null;G.eventModal=false;G.oppSlug=null;G.oppQuote=f.rule;G.oppName=t.floor===4?'Onix · Sentinela':f.name;G.foe=null;G.retry=false;
  document.body.classList.remove('combat');setArenaTheme(typeof f.theme==='string'?ARENA_THEMES.findIndex(a=>a.id===f.theme):f.theme);showNpc(null);setWeatherFx();showTowerWatcher();
  if(t.status==='ended'){end(false);return}
@@ -811,7 +830,7 @@ function exit(){if(!active())return;if(!['combat','vs'].includes(G.phase)&&!save
 function restart(){const t=current();if(!t)return;const modalBefore=G.eventModal,pausedBefore=G.paused;G.eventModal=true;if(G.phase==='combat'&&!G.paused)togglePause(true);panel('Recomeçar a torre?','A equipe e as relíquias desta tentativa serão substituídas. Sua campanha permanece salva.','',[{label:'Recomeçar subida',run:()=>launch(t.preview,null,t.startFloor||0)},{label:'Voltar à tentativa',secondary:true,run:()=>{close();G.eventModal=modalBefore;if(G.phase==='combat'&&!pausedBefore)togglePause(false);if(['path','rest','reward','map','starter'].includes(t.status))plan(true)}}])}
 function records(){const rows=read(RECORDS)||[];panel('Recordes da Torre','Doze setores · tentativas oficiais neste navegador',rows.length?'<ol class="tower-records">'+rows.map(r=>'<li><b>'+r.score+' pontos</b><span>'+r.floors+'/'+(r.total||5)+' andares · '+(r.won?'Setor concluído':'Fim da subida')+'</span><small>'+new Date(r.at).toLocaleDateString('pt-BR')+'</small></li>').join('')+'</ol>':'<p class="tower-note">Nenhuma tentativa oficial registrada. A prévia não entra na classificação.</p>',[{label:'Voltar',run:menu}])}
 function previewStats(u,original=null){if(!active()||!u)return;if(original?.pos?.z==='b'){u.r=original.pos.r;u.c=original.pos.c}else if(original){u.r=-1;u.c=-1}applyRelics([u],new Set(boardUnits().flatMap(x=>typesOf(LINES[x.line],x.star))))}
-window.TOWER={get active(){return active()},round,plan,begin,finish,tick,save,clear,restart,menu,records,previewStats};
+window.TOWER={get active(){return active()},canShop,legendaryStats,round,plan,begin,finish,tick,save,clear,restart,menu,records,previewStats};
 const oldHUD=renderHUD;renderHUD=function(){const result=oldHUD.apply(this,arguments);decorate();return result};
 const oldSync=syncModePreview;syncModePreview=function(){const result=oldSync.apply(this,arguments),can=unlocked(),saved=read(can?KEY:PREVIEW_KEY),hasSave=valid(saved);const hint=document.getElementById('towerPreviewHint');if(hint)hint.textContent=hasSave?'Andar '+Math.min(FLOORS.length,saved.tower.floor+1)+' de 60 · Continuar'+(can?'':' prévia'):'60 andares · 12 setores · 12 chefes';const state=document.getElementById('towerPreviewState');if(state)state.textContent=can?'I–XII':'PRÉVIA';const card=document.getElementById('towerPreview');if(card){card.setAttribute('aria-label','Torre dos Desafios · '+(can?'Primeiro setor':'Prévia disponível; oficial após Mewtwo no Difícil'));card.title=can?'Entrar na Torre':'Jogue a prévia. Modo oficial após Mewtwo no Difícil.'}const notice=document.getElementById('towerNotice');if(notice&&TM.view==='tower')notice.textContent='Doze setores disponíveis: sessenta andares, relíquias e salvamento próprio.';return result};
 document.getElementById('towerPreview').addEventListener('click',()=>{if(LAB.st==='title')menu()});
