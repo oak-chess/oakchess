@@ -39,6 +39,7 @@
    const beamMove=!!move.localKey&&/^(FLAMETHROWER|ICE_BEAM|HYPER_BEAM|SOLAR_BEAM|AURORA_BEAM|PSYBEAM|BUBBLE_BEAM|SIGNAL_BEAM|DRAGON_BREATH)$/.test(reference);
    const support=[4,5,7,13].includes(move.targetId);
    const raw=beamMove?[]:sequence?.events||[],first=raw[0]?.t||0;
+   const phases=window.CREATE_EMERALD_SEQUENCES?.(renderer),projectiles=[];
    const events=raw.filter(e=>renderer.availableTemplate(e.sprite)).map(e=>({...e,at:.55+Math.max(0,e.t-first)}));
    let taskPending=!events.length,elapsed=0,last=performance.now(),shown=false;
    const end=Math.max(3,Math.min(12,(events.at(-1)?.at||1)+1.8));
@@ -52,9 +53,9 @@
    view.querySelector('[data-play-effect]').textContent='↻ Repetir ataque';
    function frame(now){if(token!==session||view.hidden||!dex.classList.contains('show'))return;
     try{const dt=Math.min(.05,(now-last)/1000);last=now;elapsed+=dt;ctx.clearRect(0,0,440,220);ctx.fillStyle='#0d232e';ctx.fillRect(0,0,440,220);ctx.fillStyle='#29474e';for(const x of [70,320]){ctx.beginPath();ctx.ellipse(x,185,48,12,0,0,Math.PI*2);ctx.fill()}drawActor();
-     while(events.length&&events[0].at<=elapsed){const e=events.shift(),origin=effectRecipient(move,e)==='user',x=origin?90:320,y=150;shown=renderer.emitTemplate(e.sprite,x,y,1.8,0,0)||shown}
+     while(events.length&&events[0].at<=elapsed){const e=events.shift(),origin=effectRecipient(move,e)==='user',x=origin?90:320,y=150;if(!support&&phases?.phase(e)==='travel'){projectiles.push({started:elapsed,x:90,y:150,dir:0,age:0,size:1.4,type:move.type,o:{move:{n:move.name,emerald:reference,t:move.type,k:'bolt'}}})}else shown=renderer.emitTemplate(e.sprite,x,y,1.8,0,0)||shown}
      if(taskPending&&elapsed>.55){taskPending=false;const mv={n:move.localKey,emerald:move.localKey,t:move.type,k:support?'buff':beamMove?'beam':'burst'};shown=(beamMove?renderer.beam(mv,110,140,320,150,28):support?renderer.start(mv,90,150):renderer.hit(mv,320,150,1.6))||shown}
-     renderer.update(dt);renderer.draw(ctx);
+     renderer.update(dt);for(let i=projectiles.length-1;i>=0;i--){const p=projectiles[i],progress=Math.min(1,(elapsed-p.started)/.42);p.x=90+230*progress;p.age=elapsed-p.started;shown=renderer.projectile(ctx,p)||shown;if(progress===1){projectiles.splice(i,1);shown=renderer.hit(p.o.move,320,150,1.2)||shown}}renderer.draw(ctx);
      if(elapsed<end)raf=requestAnimationFrame(frame);else box.textContent=shown?'Ataque concluído. Clique em Repetir ataque para ver novamente.':'Este golpe ainda precisa de adaptação visual. A animação do Pokémon foi demonstrada.';
     }catch(error){box.textContent='Não foi possível reproduzir este efeito: '+error.message}
    }raf=requestAnimationFrame(frame);

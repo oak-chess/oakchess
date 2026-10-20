@@ -23,7 +23,8 @@
  function resolve(move){
   if(!move)return null;const name=typeof move==='string'?move:move.n;
   const key=typeof move==='object'&&move.emerald||(name==='Redemoinho'&&move.t==='water'?'WHIRLPOOL':window.EMERALD_ALIASES?.[name])||name;
-  const base=catalog.moves[key];if(!base)return null;
+  const extra=!catalog.moves[key]&&window.DEX_MOVE_CATALOG?.find(m=>m.key===key&&m.expansionSequence);
+  const base=catalog.moves[key]||(extra?{...extra.expansionSequence,id:extra.id,resources:[],sounds:[]}:null);if(!base)return null;
   const variant=typeof move==='object'?move._variant:0;
   if(base.variants?.length&&Number.isFinite(variant)){
    const attack=base.variants.find(v=>/Unleash|SkullBashAttack|SkyAttackUnleash/.test(v.label));
@@ -116,7 +117,7 @@
   if(resolve(mv)?.id===149)return false;
   if((api.sequence||(!isolated?window.EMERALD_SEQUENCES:null))?.start?.(mv,x,y))return true;
   const move=resolve(mv);if(!move)return false;
-  if(!['buff','barrier','heal','field','burst'].includes(mv.k))return false;
+  if(!['buff','barrier','heal'].includes(mv.k))return false;
   const events=move.events.filter(e=>available(e.sprite)&&!travelRE.test(e.sprite+' '+catalog.templates[e.sprite].callback));
   if(!events.length)return taskEffect(move,x,y,1,mv.t);
   const count=quality()==='low'?3:reduced()?4:9,first=events[0].t;

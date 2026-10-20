@@ -51,3 +51,12 @@ A disponibilidade é o inventário do repositório, não promessa de animação 
 
 ## Fase de proposta da Torre
 Proposta concreta em docs/TOWER-EXPANSION-PROPOSAL.md e catálogo de candidatos em docs/TOWER-EXPANSION-PROPOSAL.json. Extensão opcional de 60 para 100 andares em quatro blocos, com primeiro bloco 61–70. Conteúdo ainda não ativado; implementação depende da revisão da proposta conforme o plano acordado.
+
+## Atualização do elenco de combate
+
+- 164 espécies das 89 linhas existentes usam conjuntos por espécie, derivados de listas completas de aprendizado da série principal. Jogos com listas de batalha ou aprendizado reduzidas não substituem essas fontes.
+- Seleção compartilhada por combate, descrições e Pokédex; 2/3/4 espaços por estrela, respeitando espécies com menos opções.
+- Identificador exato e tipo do golpe chegam ao renderizador, incluindo sequências da expansão compatíveis.
+- Golpes passivos consultam a espécie atual. Splash não causa dano, Teleport reposiciona e Transform copia o conjunto de golpes nesta batalha.
+- Cura e fortalecimento pessoais respeitam o usuário. Distribuição de efeitos diferencia preparação, deslocamento e impacto.
+- Sintaxe compilada localmente; ainda não há aprovação visual de todos os efeitos nem avaliação de equilíbrio desta mudança.

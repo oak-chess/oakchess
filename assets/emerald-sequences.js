@@ -7,12 +7,14 @@
  const hit=/HitSplat|Impact|Slash|Claw|Fang|Teeth|Explosion|Punch|Kick|Plume|Burst|Shock|Bolt/i;
  function phase(event){const callback=(templates[event.sprite]?.callback||'')+' '+event.sprite;
   if(travel.test(callback))return 'travel';
-  if(hit.test(callback)||event.anchor==='ANIM_TARGET')return 'impact';
-  return 'start';
+  const selector=(event.args||[]).find(value=>/^ANIM_(?:TARGET|ATTACKER)$/.test(value));
+  if(selector==='ANIM_TARGET'||hit.test(callback))return 'impact';
+  if(selector==='ANIM_ATTACKER'||/Charge|Gather|Warm|Focus|Prepare|Meditat|SwordsDance/i.test(callback))return 'start';
+  return 'impact';
  }
  function drawPhase(mv,x,y,scale,stage){
   const move=renderer?.resolve(mv);if(!move)return false;
-  const support=['heal','buff','barrier','field','burst'].includes(mv.k);
+  const support=['heal','buff','barrier'].includes(mv.k);
   const events=move.events.filter(e=>renderer.availableTemplate(e.sprite)&&(phase(e)===stage||(stage==='start'&&support&&phase(e)!=='travel')));
   if(!events.length)return false;
   const first=events[0].t,last=events[events.length-1].t,span=Math.max(.001,last-first),windowLength=stage==='start'?.4:.5;

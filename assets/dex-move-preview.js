@@ -41,7 +41,9 @@
   const target={x:455,y:213};
   if(['heal','buff','barrier'].includes(mv.k)){later(.2,()=>{status(prepared?'Efeito de '+mv.n+' no Pokémon':'Efeito visual indisponível. Tente Repetir após carregar os arquivos.')})}
   else if(mv.k==='beam'){later(.25,()=>{renderer.beam(mv,170,213,560,213,rc.bw||20);hit()})}
-  else if(mv.k==='burst'){later(.2,()=>hit(170,213))}
+  else if(mv.k==='burst'){later(.2,()=>hit())}
+  else if(mv.k==='debuff'){later(.2,()=>hit())}
+  else if(['splash','teleport','transform'].includes(mv.k)){later(.2,()=>status(mv.k==='splash'?'Splash não causa dano.':mv.k==='teleport'?'Teleporte reposiciona o Pokémon durante o combate.':'Transformação copia os golpes do alvo durante o combate.'))}
   else if(mv.k==='field'){for(let i=0;i<5;i++)later(.25+i*.45,()=>hit(430+(i%2)*24,213))}
   else if(mv.k==='rush'){later(.25,()=>hit());}
   else if(mv.k==='chain'){later(.2,()=>{renderer.beam(mv,170,213,455,213,12);hit()})}

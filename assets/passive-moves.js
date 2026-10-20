@@ -14,10 +14,20 @@
   58:{move:'EMBER',name:'Brasas',type:'fire',every:4,power:.22,status:'burn',duration:2.5,value:.012},
   92:{move:'NIGHT_SHADE',name:'Sombra Noturna',type:'ghost',every:4,power:.30,status:'slow',duration:1}
  };
- function profile(u){const p=species[u.L.ids[0]]||profiles[u.L.passive.id];return p?.forms?.[u.id]||p}
+ function profile(u){
+  const original=species[u.L.ids[0]]||profiles[u.L.passive.id],old=original?.forms?.[u.id]||original;
+  const legal=window.PLAYABLE_MOVES?.[u.id];if(!legal)return old;
+  const selected=old&&legal.find(m=>m.emerald===old.move);
+  if(selected)return {...old,type:selected.t,kind:selected.damageClass,...(old.action==='heal'?{self:selected.targetId===7}:{})};
+  const m=legal.find(m=>!['buff','barrier','heal','splash','teleport','transform','debuff'].includes(m.k))||legal.find(m=>['barrier','heal'].includes(m.k));
+  if(!m)return null;
+  return {move:m.emerald,name:m.n,type:m.t,every:4,power:.30,kind:m.damageClass,
+   ...(m.k==='heal'?{action:'heal',stat:'spell',self:m.targetId===7}:m.k==='barrier'?{action:'shield',stat:'spell',delivery:'self'}:{}),
+   ...(m.k==='drain'?{drain:.6}:{})};
+ }
  function description(p){
   let text=p.chance?'Ataques básicos têm 18% de chance de lançar '+p.name:'A cada '+p.every+' acertos básicos, lança '+p.name;
-  if(p.action==='heal')text+=' no aliado com menor proporção de PS, curando '+Math.round(p.power*100)+'% do Poder';
+  if(p.action==='heal')text+=(p.self?' em si mesmo, curando ':' no aliado com menor proporção de PS, curando ')+Math.round(p.power*100)+'% do Poder';
   else if(p.action==='shield')text+=' e ganha escudo de '+Math.round(p.power*100)+'% do Poder, limitado a 6% dos PS máximos, por 3s';
   else if(p.action==='splash')text+=' (apenas animação; ao evoluir, recebe Mordida)';
   else text+=' ('+Math.round(p.power*100)+'% do Ataque como dano '+(p.kind==='phys'?'físico':'especial')+')';
@@ -30,9 +40,9 @@
   return text+'. Intervalo mínimo de 2s entre ativações.';
  }
  // Clone per line: several lines share their original passive object.
- for(const line of LINES){const p=species[line.ids[0]]||profiles[line.passive.id];if(!p)continue;
+ for(const line of LINES){const p=profile({L:line,id:line.ids[0]});if(!p)continue;
   const old=line.passive,base=['kindling','foxflame','venomfang','voltage','thunderpulse','static'].includes(old.id)?(old.mobility?old.d+' ':''):old.d+' ';
-  const forms=Object.entries(p.forms||{}).map(([id,form])=>{const index=line.ids.indexOf(+id);return (line.names[index]||'#'+id)+': '+description(form)}).join(' ');
+  const forms=[...new Set(line.ids)].slice(1).map(id=>{const form=profile({L:line,id});return (line.names[line.ids.indexOf(id)]||'#'+id)+': '+(form?description(form):'Sem golpe passivo adicional.')}).join(' ');
   line.passive={...old,d:base+description(p)+(forms?' '+forms:''),passiveMove:p.move};
  }
  window.PASSIVE_MOVES={
@@ -43,7 +53,7 @@
    if((u.passiveMoveCd||0)>0)return;
    if(p.chance?Math.random()>=p.chance:u.passiveMoveHits<p.every)return;
    let victim=target;
-   if(p.action==='heal')victim=B.units.filter(e=>e.alive&&e.side===u.side&&e.hp<e.maxHp).sort((a,b)=>a.hp/a.maxHp-b.hp/b.maxHp)[0];
+   if(p.action==='heal')victim=p.self?u:B.units.filter(e=>e.alive&&e.side===u.side&&e.hp<e.maxHp).sort((a,b)=>a.hp/a.maxHp-b.hp/b.maxHp)[0];
    if(p.action==='shield'||p.action==='splash')victim=u;
    if(p.secondary)victim=B.units.filter(e=>e.alive&&e.side!==u.side&&e!==target&&hdist(target.r,target.c,e.r,e.c)<=2).sort((a,b)=>hdist(target.r,target.c,a.r,a.c)-hdist(target.r,target.c,b.r,b.c))[0]||target;
    if(!victim?.alive)return;
