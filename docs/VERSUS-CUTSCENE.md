@@ -14,3 +14,7 @@ Protótipo aprovado: Duelo de treinadores. A abertura agora usa a tela versus re
 - Imagens usam os recursos locais existentes, com alternativas de retrato e sprite estático. Erro ao montar a apresentação retorna à tela versus anterior.
 
 Verificação realizada: compilação de sintaxe e revisão de integração. Sem teste de partida ou conferência visual nesta alteração.
+
+## Cartão horizontal
+
+Apresentação centralizada em um cartão de 92% da largura e 58% da altura do palco. A arena real continua visível ao redor, sob escurecimento leve. Tipografia e personagens ajustados para a altura menor; sons, seleção do destaque e opção de pular preservados.
