@@ -139,7 +139,7 @@
 /* Horizontal versus card; the live arena remains visible around it. */
 #vs.oak-cutscene{background:transparent;backdrop-filter:none}
 #vs.oak-cutscene.show{display:flex!important;align-items:center;justify-content:center}
-#vs.oak-cutscene .screen{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);flex:none;width:78%;height:36%;border:2px solid #c6a969;box-shadow:0 0 0 5px #09111fe6,0 18px 65px #030710a6;overflow:hidden}
+#vs.oak-cutscene .screen{position:absolute;top:50%;left:0;transform:translateY(-50%);flex:none;width:100%;height:36%;border:0;border-top:2px solid #c6a969;border-bottom:2px solid #c6a969;box-shadow:0 14px 40px #03071066,0 -14px 40px #03071044;overflow:hidden}
 #vs.oak-cutscene .fighter{top:16%;height:59%;width:44%}
 #vs.oak-cutscene .nameplate{padding:8px 13px;bottom:-8%}
 #vs.oak-cutscene .nameplate b{font-size:23px;letter-spacing:1px}
@@ -157,3 +157,24 @@
 #vs.oak-cutscene .cinema{display:none!important}
 #vs.oak-cutscene .chapter{background:#0a1021b3;padding:4px 8px;top:2%;left:2%}
 #vs.oak-cutscene .edition{background:#0a102199;padding:3px 8px;left:2%;bottom:2%}
+
+/* Symmetric information panels and quieter motion in the narrow strip. */
+#vs.oak-cutscene .fighter.player{left:2%}
+#vs.oak-cutscene .fighter.foe{right:2%}
+#vs.oak-cutscene .nameplate,#vs.oak-cutscene .foe .nameplate{left:10%;right:auto;width:80%;bottom:-2%;text-align:center;transform:none;border-left:0;border-right:0;border-top:1px solid #e7d09b55;border-bottom:1px solid #e7d09b55;padding:6px 12px;background:linear-gradient(90deg,#10182755,#101827e8 20%,#101827e8 80%,#10182755);box-shadow:none}
+#vs.oak-cutscene .nameplate b,#vs.oak-cutscene .foe .nameplate b{display:block;font-size:23px;line-height:1.15;overflow-wrap:anywhere}
+#vs.oak-cutscene .nameplate small,#vs.oak-cutscene .nameplate span{text-align:center}
+#vs.oak-cutscene .quote{left:18%;right:18%;bottom:2%;min-height:24px;padding:3px 12px;text-align:center;font-size:15px}
+#vs.oak-cutscene .vs{top:42%;transform-origin:center}
+#vs.oak-cutscene .fighter,#vs.oak-cutscene .partner,#vs.oak-cutscene .vs{will-change:transform,opacity}
+
+/* Boss prelude and leader identity, within the same full-width strip. */
+#vs.oak-boss-cutscene .boss-warning{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);height:140px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:9px;background:linear-gradient(90deg,#080d16f5,#111929fa,#080d16f5);border-top:2px solid #dbbb71;border-bottom:2px solid #dbbb71;text-align:center;z-index:9;opacity:0;pointer-events:none}
+#vs.oak-boss-cutscene .boss-warning small{font:16px monospace;letter-spacing:5px;color:#edce83}
+#vs.oak-boss-cutscene .boss-warning b{font:700 32px monospace;color:#fff0c9;letter-spacing:2px}
+#vs.oak-boss-cutscene .boss-warning span{font:16px monospace;color:#b9c7d5}
+#vs.oak-boss-cutscene .nameplate,#vs.oak-boss-cutscene .foe .nameplate{border-top-color:#dbbb7188;border-bottom-color:#dbbb7188}
+#vs.oak-boss-cutscene .foe .trainer{height:105%;bottom:0}
+#vs.oak-boss-cutscene .foe .partner{height:104%;bottom:4%}
+#vs.oak-boss-cutscene .boss-badge{position:absolute;top:0;right:9%;width:45px;height:45px;object-fit:contain;image-rendering:pixelated;z-index:3;filter:drop-shadow(0 0 8px #edd18b66)}
+#vs.oak-boss-cutscene .chapter{color:#edce83}

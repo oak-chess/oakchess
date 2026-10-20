@@ -231,7 +231,7 @@ function dealRelicOffers(){
  try{localStorage.setItem(historyKey,JSON.stringify([...history,...offers].slice(-72)))}catch{}
  return offers;
 }
-function close(){if(overlay){overlay.cardTitleObserver?.disconnect();overlay.remove()}overlay=null;if(returnFocus?.isConnected)returnFocus.focus()}
+function close(){document.body.classList.remove('tower-entry-open');if(overlay){overlay.cardTitleObserver?.disconnect();overlay.remove()}overlay=null;if(returnFocus?.isConnected)returnFocus.focus()}
 function fitCardTitles(root){
  const titles=[...root.querySelectorAll('.tower-event-title>b')];if(!titles.length)return;
  const fit=()=>{if(!root.isConnected)return;for(const title of titles){title.style.fontSize='18px';const width=title.clientWidth;if(!width)continue;let size=18;if(title.scrollWidth>width)size=Math.max(10,Math.floor(180*width/title.scrollWidth)/10);title.style.fontSize=size+'px';while(title.scrollWidth>width&&size>10){size=Math.max(10,size-.25);title.style.fontSize=size+'px'}title.title=title.textContent}};
@@ -247,7 +247,7 @@ function panel(title,subtitle,html,actions=[]){
  overlay.addEventListener('keydown',e=>{if(e.key!=='Tab')return;const els=[...overlay.querySelectorAll('button:not(:disabled),a[href],summary')];if(!els.length)return;const first=els[0],last=els.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}});
  overlay.querySelector('button')?.focus();
  overlay.querySelectorAll('button,summary').forEach(control=>{
-  const hoverSound=()=>{if(!control.disabled)SND.hover()};
+  const hoverSound=()=>{if(control.disabled)return;SND.init();if(control.closest('.tower-pixel-entry'))SND.mnav();else SND.hover()};
   control.addEventListener('mouseenter',hoverSound);
   control.addEventListener('focus',hoverSound);
  });
@@ -273,18 +273,31 @@ function artCard({id,title,text,tag='ESCOLHA',image,color='#d9bd76',extra=''}){
  return '<article class="tower-collectible tower-painted-companion"><button type="button" class="tower-painted-card tower-event-painted" data-art="'+key+'" data-choice="'+esc(id)+'" style="--card-glow:'+color+';--event-copy-size:'+(text.length>130?11:text.length>85?12:14)+'px" aria-label="'+esc(title+'. '+text)+'"><span class="tower-card-surface"><img src="assets/tower-art/event-cards/'+key+'-v1.webp" alt="" width="1024" height="1536"><span class="tower-event-title"><small>'+esc(tag)+'</small><b>'+esc(title)+'</b></span>'+(isRelic?'<span class="tower-event-relic-art" aria-hidden="true">'+image+'</span>':'')+'<span class="tower-card-particles" aria-hidden="true">'+particles+'</span><span class="tower-painted-foil" aria-hidden="true"></span><span class="tower-event-description">'+esc(text)+extra+'</span></span><span class="tower-painted-action">Escolher <i aria-hidden="true">▸</i></span></button></article>';
 }
 function menu(){
- const s=read(KEY),p=read(PREVIEW_KEY),can=unlocked(),actions=[];
- const primary=can?(valid(s)?()=>launch(false,s):()=>launch(false)):()=>launch(true,valid(p)?p:null);
- const label=can?(valid(s)?'Continuar · Andar '+(s.tower.floor+1):'Começar subida'):(valid(p)?'Continuar prévia':'Jogar prévia');
- if(can&&valid(s))actions.push({label:'Nova subida',secondary:true,run:()=>confirmNew(false,s)});
- if(can)actions.push({label:'Prévia',secondary:true,run:()=>launch(true,valid(p)?p:null)});
- actions.push({label:'Escolher setor · Prévia',secondary:true,run:previewMenu});
- actions.push({label:'Recordes',secondary:true,run:records},{label:'Voltar',secondary:true,run:close});
- const saved=can?(valid(s)?s:null):(valid(p)?p:null),floor=saved?Math.min(FLOORS.length,saved.tower.floor+1):1;
- const steps=SECTORS.map((sector,i)=>'<span class="'+(i<Math.floor((floor-1)/5)?'done':i===Math.floor((floor-1)/5)?'current':'')+'">'+sector.roman+'</span>').join('');
- const card='<button type="button" class="tower-entrance-cover" data-choice="enter-tower"><span class="tower-cover-art"><img src="'+art('entrance')+'" alt="Mewtwo diante da Torre dos Desafios, em pixel art"><small>12 SETORES</small></span><span class="tower-cover-info"><b>Doze setores</b><small>60 andares · 12 chefes</small></span><span class="tower-cover-progress" aria-label="Andar '+floor+' de 60">'+steps+'</span><span class="tower-cover-action">'+esc(label)+' <i aria-hidden="true">▸</i></span></button>';
- const root=panel('Torre dos Desafios',legendaryUnlocked()?'Lendários liberados na loja a partir do nível 7.':can?'Escolha sua próxima subida.':'Prévia disponível · Oficial após Mewtwo no Difícil.','<div class="tower-entry">'+card+'</div>',actions);
- root.querySelector('.tower-dialog').classList.add('tower-entry-dialog');root.querySelector('[data-choice="enter-tower"]').onclick=primary;
+ const can=unlocked(),official=read(KEY),preview=read(PREVIEW_KEY),candidate=can?official:preview;
+ const saved=valid(candidate)&&candidate.tower.status!=='ended'?candidate:null;
+ const floor=saved?Math.max(1,Math.min(FLOORS.length,saved.tower.floor+1)):1,sectorIndex=Math.floor((floor-1)/5),sector=SECTORS[sectorIndex];
+ const cleared=saved?new Set(saved.tower.cleared.filter(n=>Number.isInteger(n)&&n>=0&&n<FLOORS.length)).size:0;
+ const bossFloor=Math.min(FLOORS.length,sectorIndex*5+5),bossId=sector.portrait||sector.boss,bossLine=LINES.find(L=>L.ids.includes(bossId)),bossName=bossLine?bossLine.names[bossLine.ids.indexOf(bossId)]:FLOORS[bossFloor-1].name;
+ const primary=()=>launch(!can,saved),label=saved?(can?'Continuar':'Continuar prévia')+' · Andar '+floor:can?'Começar subida':'Jogar prévia';
+ let selected=sectorIndex;
+ const steps=SECTORS.map((s,i)=>'<button type="button" class="sector'+(i<sectorIndex?' done':i===sectorIndex?' active selected':'')+'" data-entry-sector="'+i+'" aria-pressed="'+(i===sectorIndex)+'" aria-label="Setor '+s.roman+' · '+esc(s.name)+' · Andares '+(i*5+1)+' a '+Math.min(FLOORS.length,i*5+5)+'">'+s.roman+'</button>').join('');
+ const html='<div class="window">'+['tl','tr','bl','br'].map(c=>'<span class="corner '+c+'" aria-hidden="true"></span>').join('')+
+ '<header class="head"><div><span class="eyebrow">Uma nova prova a cada andar</span><h2>Torre dos Desafios</h2></div><button type="button" class="unlocked" data-entry-unlock><span aria-hidden="true">'+(legendaryUnlocked()?'✦':'◇')+'</span> '+(legendaryUnlocked()?'Lendários liberados':'Modo prévia')+'</button></header>'+
+ '<div class="hero"><img src="'+art('entrance')+'" alt="Mewtwo diante da Torre dos Desafios"><div class="hero-note"><div><b>O topo espera por você.</b><span>Monte sua equipe. Conquiste cada setor.</span></div><div class="seal">'+FLOORS.length+' ANDARES · '+SECTORS.length+' CHEFES</div></div></div>'+
+ '<div class="content"><div class="save-row"><span class="save-label">'+(saved?can?'Subida em andamento':'Prévia em andamento':can?'Pronto para uma nova subida':'Conheça os desafios da Torre')+'</span><small>'+cleared+' '+(cleared===1?'andar concluído':'andares concluídos')+'</small></div>'+
+ '<div class="progress-heading"><strong>ANDAR '+floor+'</strong><span>/ '+FLOORS.length+'</span></div><div class="progress-track" role="progressbar" aria-label="Andares concluídos" aria-valuenow="'+cleared+'" aria-valuemin="0" aria-valuemax="'+FLOORS.length+'"><i style="width:'+Math.min(100,cleared/FLOORS.length*100)+'%"></i></div>'+
+ '<div class="encounter"><img src="'+sprFront(bossId)+'" alt="'+esc(bossName)+'"><div><small>'+(floor===bossFloor?'SEU PRÓXIMO DESAFIO':'PRÓXIMO CHEFE · ANDAR '+bossFloor)+'</small><b>'+esc(bossName)+' · '+esc(sector.name)+'</b></div><span class="boss-tag">CHEFE</span></div>'+
+ '<div class="section-title"><b>Sua jornada</b><small>Setor '+sector.roman+' · Andares '+(sectorIndex*5+1)+'–'+bossFloor+'</small></div><div class="sectors" role="group" aria-label="Percurso pelos setores">'+steps+'</div><div class="sector-note"><span data-entry-description>Setor '+sector.roman+' · '+esc(sector.name)+'</span><span class="legend"><em>◆ Atual</em> · ◇ Explorar</span></div></div>'+
+ '<div class="actions"><button type="button" class="continue" data-entry-continue>'+esc(label)+'</button><div class="secondary"><button type="button" data-entry-new>Nova subida</button><button type="button" data-entry-explore>Explorar setores</button><button type="button" data-entry-records>Recordes</button></div></div>'+
+ '<footer class="footer"><button type="button" data-entry-back>← Voltar</button><small>'+(saved?'Progresso salvo neste navegador':can?'Salvamento automático':'Oficial após Mewtwo no Difícil')+'</small></footer></div>';
+ const root=panel('Torre dos Desafios','',html);root.classList.add('tower-pixel-entry');document.body.classList.add('tower-entry-open');root.querySelector('.tower-dialog').classList.add('tower-entry-dialog');
+ root.querySelector('[data-entry-continue]').onclick=primary;
+ root.querySelector('[data-entry-new]').onclick=()=>saved?confirmNew(!can,saved):launch(!can);
+ root.querySelector('[data-entry-records]').onclick=records;root.querySelector('[data-entry-back]').onclick=close;
+ root.querySelector('[data-entry-unlock]').onclick=()=>panel(legendaryUnlocked()?'Lendários liberados':'Conheça a Torre',legendaryUnlocked()?'Uma recompensa pela sua jornada.':'A prévia tem salvamento próprio.','<p class="tower-note">'+(legendaryUnlocked()?'Mew, Mewtwo, Articuno, Zapdos e Moltres podem aparecer na loja a partir do nível 7.':'Explore os setores na prévia. Para liberar a Torre oficial, derrote Mewtwo na campanha no modo Difícil.')+'</p>',[{label:'Voltar à Torre',run:menu}]);
+ root.querySelectorAll('[data-entry-sector]').forEach(button=>button.onclick=()=>{selected=+button.dataset.entrySector;root.querySelectorAll('[data-entry-sector]').forEach(other=>{const on=+other.dataset.entrySector===selected;other.classList.toggle('selected',on);other.setAttribute('aria-pressed',String(on))});root.querySelector('[data-entry-description]').textContent='Setor '+SECTORS[selected].roman+' · '+SECTORS[selected].name;root.querySelector('[data-entry-explore]').textContent='Explorar setor '+SECTORS[selected].roman});
+ root.querySelector('[data-entry-explore]').onclick=()=>{const index=selected,key=index?PREVIEW_KEY+'_sector'+(index+1):PREVIEW_KEY,sectorSave=read(key);panel('Explorar setor '+SECTORS[index].roman,SECTORS[index].name,'<p class="tower-note">Andares '+(index*5+1)+'–'+Math.min(FLOORS.length,index*5+5)+'. A prévia tem seu próprio salvamento e não substitui sua subida oficial.</p>',[{label:valid(sectorSave)?'Continuar prévia':'Começar prévia',run:()=>launch(true,valid(sectorSave)?sectorSave:null,index*5)},{label:'Todos os setores',secondary:true,run:previewMenu},{label:'Voltar',secondary:true,run:menu}])};
+ root.querySelector('[data-entry-continue]').focus();
 }
 function confirmNew(preview,s){if(!valid(s)){launch(preview);return}panel('Começar outra subida?','Somente a tentativa atual da torre será substituída. O progresso da campanha permanece salvo.','',[{label:'Começar nova subida',run:()=>launch(preview)},{label:'Continuar tentativa atual',secondary:true,run:()=>launch(preview,s)},{label:'Voltar',secondary:true,run:menu}])}
 function previewMenu(){
@@ -313,7 +326,7 @@ function launch(preview,saved=null,startFloor=0){
  document.body.classList.add('tower-active');hud.hidden=false;G.ri=current().floor;G.round=round(G.ri);G.phase='plan';G.eventModal=true;SND.music('plan');renderInv();renderHUD();
  if(current().status==='starter'){save(true);starter()}else plan(true);
 }
-function round(i){const n=Math.max(0,Math.min(FLOORS.length-1,i)),f=FLOORS[n];return{tower:true,kind:'trainer',gym:0,lg:0,st:1+n,rn:n+1,n:FLOORS.length,lbl:'TORRE '+(n+1),kinds:Array(FLOORS.length).fill('trainer'),extra:false,name:f.name}}
+function round(i){const n=Math.max(0,Math.min(FLOORS.length-1,i)),f=FLOORS[n];return{tower:true,boss:n%5===4,kind:'trainer',gym:0,lg:0,st:1+n,rn:n+1,n:FLOORS.length,lbl:'TORRE '+(n+1),kinds:Array(FLOORS.length).fill('trainer'),extra:false,name:f.name}}
 function starter(){
  const t=current();
  const benchCandidates=LINES.filter(L=>L.c===1&&!L.boss&&![1,4,7,25,133].includes(L.ids[0]));
