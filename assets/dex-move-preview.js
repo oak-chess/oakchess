@@ -39,7 +39,7 @@
   const prepared=renderer.start(mv,170,213);renderer.pose(mv,root.querySelector('.spr'));
   const target={x:455,y:213};
   if(['heal','buff','barrier'].includes(mv.k)){later(.2,()=>{status(prepared?'Efeito de '+mv.n+' no Pokémon':'Efeito visual indisponível. Tente Repetir após carregar os arquivos.')})}
-  else if(mv.k==='beam'){later(.25,()=>{renderer.beam(mv,170,213,560,213,rc.bw||20);hit()})}
+  else if(mv.k==='beam'){later(.25,()=>{renderer.beam(mv,170,213,455,213,rc.bw||20);hit()})}
   else if(mv.k==='burst'){if(renderer.specialKind(mv)==='wave')later(.05,()=>renderer.beam(mv,170,213,455,213,85));later(renderer.specialKind(mv)==='wave'?.85:.2,()=>hit())}
   else if(mv.k==='debuff'){later(.2,()=>hit())}
   else if(['splash','teleport','transform'].includes(mv.k)){later(.2,()=>status(mv.k==='splash'?'Splash não causa dano.':mv.k==='teleport'?'Teleporte reposiciona o Pokémon durante o combate.':'Transformação copia os golpes do alvo durante o combate.'))}

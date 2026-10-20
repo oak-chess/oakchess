@@ -136,6 +136,8 @@
    const flame=available('gFlamethrowerFlameSpriteTemplate')?'gFlamethrowerFlameSpriteTemplate':name;
    return enqueue({name:flame,x:x1,y:y1,x2,y2,life:.78,mode:'flamethrower',width,angle:Math.atan2(y2-y1,x2-x1)});
   }
+  const beamColors={58:['#358edb','#72d7ff','#edffff'],63:['#c44630','#ffb342','#fff7b1'],76:['#3e9c38','#b4eb50','#ffffcb'],62:['#6385c9','#a3e9e2','#f5ffff'],60:['#773aa8','#df89e8','#ffe4ff'],324:['#3ba27a','#b6e65b','#efffc3'],225:['#5945b8','#ad7df0','#f7d9ff']};
+  if(beamColors[move.id])return enqueue({name,x:x1,y:y1,x2,y2,life:.65,mode:'energyJet',width:Math.max(14,width),colors:beamColors[move.id],angle:Math.atan2(y2-y1,x2-x1)});
   const distance=Math.hypot(x2-x1,y2-y1),count=quality()==='low'?7:reduced()?12:22;
   const events=move.events.filter(e=>available(e.sprite)&&travelRE.test(e.sprite+' '+catalog.templates[e.sprite].callback));
   for(let i=0;i<count;i++){
@@ -189,21 +191,38 @@
    if(e.mode==='bounce')y-=Math.abs(Math.sin(k*Math.PI*2))*16*(1-k);
    if(e.mode==='spiralIn'||e.mode==='spiralOut'){const angle=(e.angle||0)+k*Math.PI*3,radius=24*(e.mode==='spiralIn'?1-k:k);x+=Math.cos(angle)*radius;y+=Math.sin(angle)*radius*.6;rotation=angle*.25;}
    if(e.mode==='orbit'){const angle=(e.angle||0)+k*Math.PI*2;x+=Math.cos(angle)*(e.radius||18);y+=Math.sin(angle)*(e.radius||18)*.55;rotation=angle*.3;}
-   if(e.mode==='flamethrower'){
-    const dx=e.x2-e.x,dy=e.y2-e.y,length=Math.hypot(dx,dy)||1;
-    const count=Math.min(90,Math.max(18,Math.ceil(length/(quality()==='low'?16:10))));
-    const opacity=Math.min(1,time/.07,(e.life-time)/.16);
-    // A thin warm core joins overlapping source sprites into a continuous flame stream.
-    g.save();g.globalCompositeOperation='lighter';g.globalAlpha=opacity*.55;g.lineCap='round';
-    g.strokeStyle='#ef5b16';g.lineWidth=Math.max(9,e.width*.65);g.beginPath();g.moveTo(e.x,e.y);g.lineTo(e.x2,e.y2);g.stroke();
-    g.strokeStyle='#ffd46b';g.lineWidth=Math.max(3,e.width*.18);g.stroke();g.restore();
-    for(let i=0;i<count;i++){
-     const p=(i/count+time*1.65)%1;
-     const ripple=Math.sin(p*23-time*26)*Math.min(5,e.width*.15)*Math.sin(p*Math.PI);
-     const px=e.x+dx*p-Math.sin(e.angle)*ripple,py=e.y+dy*p+Math.cos(e.angle)*ripple;
-     const size=(.85+p*.35)*(1+Math.sin(i*2.1+time*20)*.06);
-     drawSprite(g,e.name,px,py,size,time+i*.018,e.angle,0,opacity*.88);
+   if(e.mode==='flamethrower'||e.mode==='energyJet'){
+    const fire=e.mode==='flamethrower',length=Math.hypot(e.x2-e.x,e.y2-e.y),reach=length*Math.min(1,time/.12);
+    const opacity=Math.max(0,Math.min(1,time/.045,(e.life-time)/.14));
+    const half=Math.max(fire?13:7,Math.min(fire?29:20,e.width*(fire?.75:.48)));
+    const colors=fire?['#a82a12','#ed4812','#ff9826','#ffdf64','#fff5ba']:e.colors;
+    g.save();g.translate(e.x,e.y);g.rotate(e.angle);g.globalCompositeOperation='source-over';g.globalAlpha=opacity;
+    // Filled, overlapping contours form a single body. No repeated projectile
+    // sprites along the beam: stepped edges and moving tongues supply texture.
+    colors.forEach((color,layer)=>{
+     const ratio=1-layer/(colors.length+.1),upper=[],lower=[],step=quality()==='low'?12:6;
+     for(let at=0;at<reach;at+=step){
+      const p=at/Math.max(1,reach),ripple=Math.sin(p*25-time*23+layer)*Math.sin(p*Math.PI)*half*(fire?.18:.10);
+      const envelope=fire?(3+half*Math.sin(p*Math.PI*.73)):(3+half*Math.sin(Math.min(1,p*5)*Math.PI/2));
+      const flicker=fire?Math.sin(at*.34-time*31+layer)*(.8+p*2.5):Math.sin(at*.18-time*20)*1.3;
+      const radius=Math.max(1,envelope*ratio+flicker*ratio);
+      upper.push([at,Math.round((ripple-radius)/2)*2]);lower.push([at,Math.round((ripple+radius)/2)*2]);
+     }
+     if(!upper.length)return;
+     g.fillStyle=color;g.beginPath();g.moveTo(0,0);for(const pt of upper)g.lineTo(pt[0],pt[1]);
+     g.lineTo(reach+(fire?(1-layer/colors.length)*12:0),Math.sin(time*26+layer)*half*.15);
+     for(let i=lower.length-1;i>=0;i--)g.lineTo(lower[i][0],lower[i][1]);g.closePath();g.fill();
+    });
+    if(fire){
+     // A few broad tongues break away from the head, rather than a bead chain.
+     for(let i=0;i<(reduced()?2:4);i++){
+      const p=(time*2+i*.27)%1,at=reach-24+p*32,y=Math.sin(time*17+i*2.4)*half*.85;
+      g.fillStyle=i%2?'#ffc443':'#f36b19';g.beginPath();g.moveTo(at-12,y-4);g.lineTo(at+9,y-9-p*7);g.lineTo(at+3,y+4);g.lineTo(at-14,y+5);g.closePath();g.fill();
+     }
+    }else if(!reduced()){
+     g.fillStyle=colors[colors.length-1];for(let i=0;i<3;i++){const at=(time*1.8+i/3)%1*reach,y=Math.sin(i*2.3+time*15)*half*1.1;g.fillRect(Math.round(at),Math.round(y),4,2)}
     }
+    g.restore();
    }else if(e.mode==='psywave'){
     const expansion=(.8+k*5.5)*e.scale;
     drawSprite(g,e.name,x,y,expansion,time,Math.PI/2,0,fade*.95);
