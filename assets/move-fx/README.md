@@ -25,3 +25,20 @@ Não é um emulador de scripts ou callbacks C do GBA. Os sprites e suas sequênc
 ## Regenerar os recursos
 
 Descompactar o repositório da fonte em `tmp/emerald-source/pokeemerald-master`, executar `scripts/prepare-emerald-composites.ps1`, `node scripts/import-emerald-moves.cjs` e depois `scripts/prepare-emerald-sheets.ps1`. São ferramentas de importação, não testes do jogo.
+
+## Nove efeitos do elenco atual
+
+Fonte adicional: rh-hideout/pokeemerald-expansion; revisão e hashes em nine-sources.json. Sete folhas com paletas originais foram importadas.
+
+- Surf: onda com crista e espuma, deslocamento e respingo no impacto; porta visual do comando create_surf_wave, sem emular o fundo GBA.
+- Harden: brilho metálico no próprio sprite e reflexos locais.
+- Aura Sphere: carga, esfera original em movimento e impacto.
+- Dark Pulse e Dragon Pulse: partículas originais em pulsos direcionados ao alvo.
+- Night Slash: cortes sucessivos nos dois sentidos com quadros e inversões da fonte.
+- Air Slash: lâminas e cortes no alvo; usa o caminho de batalha normal, sem fundo de concurso.
+- Flash Cannon: carga prateada, disparo e faíscas no impacto.
+- Iron Head: brilho no usuário, movimento de contato existente e impacto no alvo; não altera o tamanho do sprite.
+
+Execução específica em nine-moves.js, integrada ao relógio e à limpeza de cada renderizador. Danos e tempos de combate continuam definidos pelo jogo. As nove animações são adaptadas, não emulação integral.
+
+Regeneração: importar as fontes para tmp/dex-source, executar scripts/import-nine-moves.cjs e scripts/prepare-nine-sheets.ps1; depois regenerar os catálogos e o manifesto.

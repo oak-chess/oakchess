@@ -6,8 +6,8 @@ Fontes: PokeAPI/pokeapi data/v2/csv e rh-hideout/pokeemerald-expansion master. C
 - existing: 354
 - new: 565
 - newAdapted: 129
-- pending: 439
+- pending: 430
 - sourceScripts: 882
 - newWithReusableSprites: 291
 
-Adaptado indica o renderizador existente de Emerald; não significa reprodução fiel do GBA. 129 sequências novas têm prévia adaptada de sprites existentes; suas tarefas C, sons e movimentos de câmera não são executados. Os demais novos golpes permanecem pendentes. Templates parcialmente compatíveis não são classificados como prévia disponível. Não altera habilidades de combate.
+Adaptado indica o renderizador existente de Emerald; não significa reprodução fiel do GBA. 129 sequências novas têm prévia adaptada de sprites existentes; nove golpes do elenco têm execução específica em nine-moves.js. Não há emulação integral de tarefas C, sons ou câmera. Os demais novos golpes permanecem pendentes. Templates parcialmente compatíveis não são classificados como prévia disponível. Não altera habilidades de combate.

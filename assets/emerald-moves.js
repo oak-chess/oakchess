@@ -15,6 +15,7 @@
  const number=(v,fallback=0)=>Number.isFinite(Number(v))?Number(v):fallback;
  const quality=()=>typeof CFG==='undefined'?'normal':CFG.fxLevel;
  const reduced=()=>typeof CFG!=='undefined'&&CFG.reduceFx;
+ const nine=window.CREATE_NINE_MOVE_EFFECTS?.(drawSprite,reduced);
  const maxEffects=()=>quality()==='low'?40:quality()==='high'?140:90;
  for(const t of Object.values(catalog.templates))if(!images.has(t.sheet)){
   const image=new Image(),entry={image,ready:false};images.set(t.sheet,entry);
@@ -91,6 +92,7 @@
   return enqueue({name:null,x,y,scale,life:reduced()?.32:.55,color,mode});
  }
  function hit(mv,x,y,scale=1){
+  const specific=nine?.hit(mv,x,y,scale);if(specific!=null)return specific;
   const resolved=resolve(mv);
   if(resolved?.id===149){
    const name='gPsywaveRingSpriteTemplate';
@@ -112,6 +114,7 @@
   return ok;
  }
  function start(mv,x,y){
+  const specific=nine?.start(mv,x,y);if(specific!=null)return specific;
   // Psywave's rings are travelling sprites in Emerald; OakChess resolves this move as a burst.
   // Emit its expanding rings at the actual impact phase instead of dropping them at preparation.
   if(resolve(mv)?.id===149)return false;
@@ -127,6 +130,7 @@
   });return true;
  }
  function beam(mv,x1,y1,x2,y2,width=18){
+  const specific=nine?.beam(mv,x1,y1,x2,y2,width);if(specific!=null)return specific;
   const move=resolve(mv);if(!move)return false;const name=choose(move,'projectile');if(!name)return false;
   if(move.id===53){
    const flame=available('gFlamethrowerFlameSpriteTemplate')?'gFlamethrowerFlameSpriteTemplate':name;
@@ -140,6 +144,7 @@
   }return true;
  }
  function projectile(g,p){
+  const specific=nine?.projectile(g,p);if(specific!=null)return specific;
   const mv=p.o?.move,move=resolve(mv);if(!move)return false;
   const name=choose(move,'projectile');if(!name)return false;
   const t=catalog.templates[name],angle=/Needle|Stinger|Leaf|AirWave|Arrow/i.test(t.callback+' '+name)?(p.dir||0):0;
@@ -154,6 +159,9 @@
   return drawSprite(g,name,x,y,scale,age,angle,Math.floor(age*2));
  }
  const api={resolve,start,hit,beam,projectile,
+  specialKind(mv){return nine?.kind(mv)},
+  preview(mv,x,y,x2,y2){return nine?.preview(mv,x,y,x2,y2)||false},
+  pose(mv,node){nine?.pose(mv,node)},
   ready(){return Promise.all([...images.values()].map(s=>s.image.complete?Promise.resolve():new Promise(resolve=>{s.image.addEventListener('load',resolve,{once:true});s.image.addEventListener('error',resolve,{once:true})})))},
   emitTemplate(name,x,y,scale,delay,variant,extra={}){if(!available(name))return false;return emit(null,name,x,y,scale,motion(name),delay,variant,extra)},
   availableTemplate:available,
@@ -171,8 +179,8 @@
    if(['buff','heal','barrier'].includes(mv.k))return start(mv,source.x,source.y);
    return hit(mv,target.x,target.y,options.scale||1);
   },
-  update(dt){for(let i=active.length-1;i>=0;i--){const e=active[i];e.t+=dt;if(e.t>=e.life+e.delay)active.splice(i,1)}},
-  draw(g){for(const e of active){
+  update(dt){nine?.update(dt);for(let i=active.length-1;i>=0;i--){const e=active[i];e.t+=dt;if(e.t>=e.life+e.delay)active.splice(i,1)}},
+  draw(g){nine?.draw(g);for(const e of active){
    const time=e.t-e.delay;if(time<0)continue;const k=Math.min(1,time/e.life),fade=Math.min(1,(1-k)*5);
    let x=e.x,y=e.y,rotation=0;
    if(e.mode==='travel'){const wave=Math.sin(k*Math.PI*4)*(e.wave||0);x+=(e.x2-e.x)*k-Math.sin(e.angle)*wave;y+=(e.y2-e.y)*k+Math.cos(e.angle)*wave;}
@@ -205,7 +213,7 @@
     const radius=(12+k*25)*e.scale;g.beginPath();g.ellipse(x,y,radius,radius*.65,0,0,Math.PI*2);g.stroke();g.restore();
    }
   }},
-  clear(){active.length=0},get active(){return active.length>0}
+  clear(){active.length=0;nine?.clear()},get active(){return active.length>0||!!nine?.active}
  };
  return api;
  }

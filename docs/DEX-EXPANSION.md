@@ -60,3 +60,7 @@ Proposta concreta em docs/TOWER-EXPANSION-PROPOSAL.md e catálogo de candidatos 
 - Golpes passivos consultam a espécie atual. Splash não causa dano, Teleport reposiciona e Transform copia o conjunto de golpes nesta batalha.
 - Cura e fortalecimento pessoais respeitam o usuário. Distribuição de efeitos diferencia preparação, deslocamento e impacto.
 - Sintaxe compilada localmente; ainda não há aprovação visual de todos os efeitos nem avaliação de equilíbrio desta mudança.
+
+## Nove animações pendentes do elenco
+
+Surf, Harden, Aura Sphere, Dark Pulse, Night Slash, Air Slash, Dragon Pulse, Flash Cannon e Iron Head receberam execução específica. Catálogo: 489 adaptados e 430 pendentes; 104/104 golpes dos conjuntos atuais possuem efeito disponível. Ver assets/move-fx/README.md e nine-sources.json para origem e limites. Verificação de execução: 489 efeitos, zero exceções, zero efeitos sem emissão e zero folhas ausentes. Isso não substitui avaliação visual de cada efeito.
