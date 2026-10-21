@@ -213,6 +213,7 @@ function valid(s){
 function save(force=false){
  const t=current();if(!t||t.status==='ended'||DEMO.on)return false;
  if(!force&&['combat','vs'].includes(G.phase))return false;
+ window.ACH?.towerProgress(t);
  const data={version:1,t:Date.now(),tower:JSON.parse(JSON.stringify(t)),game:{gold:G.gold,hp:G.hp,lvl:G.lvl,xp:G.xp,streak:G.streak,locked:G.locked,shop:G.shop,pool:G.pool,items:G.items,shPity:G.shPity||0},units:allUnits().filter(u=>u.pos).map(u=>({line:u.line,star:u.star,items:u.items.slice(),shiny:!!u.shiny,evoSkip:u.evoSkip??null,pos:{...u.pos}}))};
  try{localStorage.setItem(storageKey(),JSON.stringify(data));saveFailed=false;return true}catch{if(!saveFailed)toast('Não foi possível salvar a Torre neste navegador.');saveFailed=true;return false}
 }
@@ -604,7 +605,7 @@ function finish(){
   G.eventModal=true;panel('Reorganize e tente outra vez','−'+loss+' de vida'+(recoveryGold?' · +'+recoveryGold+' ouro para reorganizar a equipe.':' · Limite de ajuda deste andar atingido.'),'<p class="tower-note">Ajuda por andar: 3 ouro na primeira derrota, 2 na segunda. A loja não é renovada; a recompensa da vitória continua inteira.</p>',[{label:'Reorganizar a equipe',autoContinue:true,run:()=>{close();plan(true)}},{label:'Salvar e sair',secondary:true,run:exit}]);return;
  }
  if(t.cleared.includes(t.floor))return;
- t.wins++;t.cleared.push(t.floor);const shinyBonus=t.enemy?.some(u=>u.shiny)?2:0;const gain=FLOORS[t.floor].reward+routeFor(t).gold+shinyBonus+(t.eventRisk===t.floor?12:0);G.gold+=gain;addXp(2);G.phase='plan';
+ t.wins++;t.cleared.push(t.floor);if(!t.preview){window.ACH?.towerProgress(t);window.TRAINER_PROFILE?.towerWin();}const shinyBonus=t.enemy?.some(u=>u.shiny)?2:0;const gain=FLOORS[t.floor].reward+routeFor(t).gold+shinyBonus+(t.eventRisk===t.floor?12:0);G.gold+=gain;addXp(2);G.phase='plan';
  const potions=t.floor%5===4?3:routeFor(t).potions;
  gainVials(potions);
  if(t.floor===FLOORS.length-1){end(true);return}if(t.floor%5===4){t.status='map';save(true);renderHUD();sectorGate();return}
@@ -838,6 +839,7 @@ function decorate(){
 function end(won){
  document.getElementById('towerWatcher')?.remove();
  const t=current();if(!t)return;B.on=false;mechanic=null;clearMarks();G.over=true;G.eventModal=true;G.phase='over';t.status='ended';
+ window.ACH?.towerProgress(t);
  const score=Math.max(0,t.cleared.length*100+Math.ceil(G.hp)*2+t.relics.length*15-t.losses*20);
  if(!t.preview){const list=read(RECORDS)||[];if(!list.some(r=>r.id===t.id)){list.push({id:t.id,won,score,total:FLOORS.length,floors:t.cleared.length,hp:Math.ceil(G.hp),losses:t.losses,relics:t.relics.map(r=>r.id),at:Date.now()});try{localStorage.setItem(RECORDS,JSON.stringify(list.sort((a,b)=>b.score-a.score).slice(0,20)))}catch{}}}
  clear();renderHUD();SND[won?'win':'lose']();
@@ -848,9 +850,9 @@ function end(won){
 }
 function exit(){if(!active())return;if(!['combat','vs'].includes(G.phase)&&!save(true)&&current().status!=='ended'){toast('Não foi possível salvar. Tente novamente antes de sair.');return}location.href='index.html'}
 function restart(){const t=current();if(!t)return;const modalBefore=G.eventModal,pausedBefore=G.paused;G.eventModal=true;if(G.phase==='combat'&&!G.paused)togglePause(true);panel('Recomeçar a torre?','A equipe e as relíquias desta tentativa serão substituídas. Sua campanha permanece salva.','',[{label:'Recomeçar subida',run:()=>launch(t.preview,null,t.startFloor||0)},{label:'Voltar à tentativa',secondary:true,run:()=>{close();G.eventModal=modalBefore;if(G.phase==='combat'&&!pausedBefore)togglePause(false);if(['path','rest','reward','map','starter'].includes(t.status))plan(true)}}])}
-function records(){const rows=read(RECORDS)||[];panel('Recordes da Torre','Doze setores · tentativas oficiais neste navegador',rows.length?'<ol class="tower-records">'+rows.map(r=>'<li><b>'+r.score+' pontos</b><span>'+r.floors+'/'+(r.total||5)+' andares · '+(r.won?'Setor concluído':'Fim da subida')+'</span><small>'+new Date(r.at).toLocaleDateString('pt-BR')+'</small></li>').join('')+'</ol>':'<p class="tower-note">Nenhuma tentativa oficial registrada. A prévia não entra na classificação.</p>',[{label:'Voltar',run:menu}])}
+function records(){if(window.OAK_OPEN_SCORES){window.OAK_OPEN_SCORES('tower');return}const rows=read(RECORDS)||[];panel('Recordes da Torre','Doze setores · tentativas oficiais neste navegador',rows.length?'<ol class="tower-records">'+rows.map(r=>'<li><b>'+r.score+' pontos</b><span>'+r.floors+'/'+(r.total||5)+' andares · '+(r.won?'Setor concluído':'Fim da subida')+'</span><small>'+new Date(r.at).toLocaleDateString('pt-BR')+'</small></li>').join('')+'</ol>':'<p class="tower-note">Nenhuma tentativa oficial registrada. A prévia não entra na classificação.</p>',[{label:'Voltar',run:menu}])}
 function previewStats(u,original=null){if(!active()||!u)return;if(original?.pos?.z==='b'){u.r=original.pos.r;u.c=original.pos.c}else if(original){u.r=-1;u.c=-1}applyRelics([u],new Set(boardUnits().flatMap(x=>typesOf(LINES[x.line],x.star))))}
-window.TOWER={get active(){return active()},canShop,legendaryVisible,legendaryStats,seedCampaignLegendaryPool,round,plan,begin,finish,tick,save,clear,restart,menu,records,previewStats};
+window.TOWER={get isPreview(){return !!current()?.preview},get active(){return active()},canShop,legendaryVisible,legendaryStats,seedCampaignLegendaryPool,round,plan,begin,finish,tick,save,clear,restart,menu,records,previewStats};
 const oldHUD=renderHUD;renderHUD=function(){const result=oldHUD.apply(this,arguments);decorate();return result};
 const oldSync=syncModePreview;syncModePreview=function(){const result=oldSync.apply(this,arguments),can=unlocked(),saved=read(can?KEY:PREVIEW_KEY),hasSave=valid(saved);const hint=document.getElementById('towerPreviewHint');if(hint)hint.textContent=hasSave?'Andar '+Math.min(FLOORS.length,saved.tower.floor+1)+' de 60 · Continuar'+(can?'':' prévia'):'60 andares · 12 setores · 12 chefes';const state=document.getElementById('towerPreviewState');if(state)state.textContent=can?'I–XII':'PRÉVIA';const card=document.getElementById('towerPreview');if(card){card.setAttribute('aria-label','Torre dos Desafios · '+(can?'Primeiro setor':'Prévia disponível; oficial após Mewtwo no Difícil'));card.title=can?'Entrar na Torre':'Jogue a prévia. Modo oficial após Mewtwo no Difícil.'}const notice=document.getElementById('towerNotice');if(notice&&TM.view==='tower')notice.textContent='Doze setores disponíveis: sessenta andares, relíquias e salvamento próprio.';return result};
 document.getElementById('towerPreview').addEventListener('click',()=>{if(LAB.st==='title')menu()});

@@ -1,0 +1,28 @@
+
+/* Trainer identity, displayed as one digital credential. */
+.tp-at-home .tp-digital-hero{display:grid;grid-template-columns:150px minmax(0,1fr) 330px;align-items:center;gap:26px;min-height:190px;padding:17px 22px;margin-top:0;border:1px solid #3b759355;border-radius:8px;background:linear-gradient(110deg,#1b405a66,#17355022);box-shadow:inset 0 1px #a9dcff0b;position:relative}.tp-at-home .tp-digital-hero:after{display:none}.tp-at-home .tp-digital-hero .tp-scene{width:150px;max-width:150px;grid-column:1;grid-row:1;border-color:#76a3bc;box-shadow:0 6px 20px #0005}.tp-digital-identity{grid-column:2;grid-row:1;align-items:flex-start;min-width:0}.tp-digital-identity .tp-tablet-heading{margin:0}.tp-digital-identity .tp-tablet-heading>small{font-size:8px;letter-spacing:1.6px;color:#79b8dc}.tp-digital-identity .tp-tablet-heading h2{font-size:30px;margin:10px 0 7px;overflow-wrap:anywhere}.tp-digital-identity .tp-tablet-heading p{font-size:9px;letter-spacing:1.3px;color:#8caecb}.tp-digital-identity .tp-home-title{margin:15px 0 0;padding:6px 10px;font-size:10px;border-radius:4px;color:#f2d993;background:#76683d22;border-color:#c1a45e55}.tp-home-badge-panel{grid-column:3;grid-row:1;padding:18px;border-left:1px solid #426e8b55;min-width:0}.tp-home-badge-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;gap:10px}.tp-home-badge-heading span{font:9px Arial;letter-spacing:1.4px;color:#9bc7e3}.tp-home-badge-heading strong{font:bold 12px Arial;color:#c7eeff}.tp-home-badge-panel .tp-digital-badges.tp-badge-case{max-width:none;width:100%;gap:8px;padding:0;display:grid!important;grid-template-columns:repeat(8,minmax(0,1fr))}.tp-home-badge-panel .tp-digital-badges img{height:26px;width:100%;object-fit:contain}.tp-home-badge-track{height:3px;background:#091c30;margin:17px 0 9px;overflow:hidden;border-radius:2px}.tp-home-badge-track i{display:block;height:100%;background:linear-gradient(90deg,#378db5,#9ae5fa)}.tp-home-badge-panel>small{font:9px Arial;color:#7eabc8;line-height:1.5}
+@media(max-height:760px) and (min-width:950px){.tp-at-home .tp-digital-hero{grid-template-columns:125px minmax(0,1fr) 320px;min-height:160px;padding:12px 20px;gap:23px}.tp-at-home .tp-digital-hero .tp-scene{width:125px;max-width:125px}.tp-digital-identity .tp-tablet-heading h2{font-size:27px}}
+@media(max-width:950px){.tp-at-home .tp-digital-hero{grid-template-columns:125px minmax(0,1fr) 270px;gap:18px;padding:14px}.tp-at-home .tp-digital-hero .tp-scene{width:125px;max-width:125px}.tp-home-badge-panel{padding:12px}.tp-home-badge-heading span{font-size:8px;letter-spacing:.6px}.tp-home-badge-panel .tp-digital-badges img{height:23px}.tp-digital-identity .tp-tablet-heading h2{font-size:25px}}
+@media(max-width:750px){.tp-at-home .tp-digital-hero{grid-template-columns:110px minmax(0,1fr);gap:16px}.tp-at-home .tp-digital-hero .tp-scene{width:110px;max-width:110px;grid-row:1/3}.tp-home-badge-panel{grid-column:2;grid-row:2;border:0;padding:0;max-width:330px}.tp-home-badge-heading{margin:7px 0 10px}.tp-home-badge-track{margin:10px 0 6px}.tp-digital-identity .tp-tablet-heading h2{font-size:23px}.tp-digital-identity .tp-home-title{margin-top:9px}.tp-home-badge-panel>small{display:none}}
+@media(max-width:450px){.tp-at-home .tp-digital-hero{grid-template-columns:85px minmax(0,1fr);gap:12px;padding:12px}.tp-at-home .tp-digital-hero .tp-scene{width:85px;max-width:85px}.tp-digital-identity .tp-tablet-heading>small{font-size:7px;letter-spacing:.8px}.tp-digital-identity .tp-tablet-heading h2{font-size:21px}.tp-digital-identity .tp-tablet-heading p{font-size:7px}.tp-home-badge-panel .tp-digital-badges.tp-badge-case{gap:4px}.tp-home-badge-panel .tp-digital-badges img{height:18px}.tp-home-badge-heading{margin-bottom:7px}}
+
+/* Fit the launcher within shorter desktop windows without clipping content. */
+@media(min-width:800px) and (max-height:850px){
+.tp-at-home:not(.tp-in-application) .tp-trainer-home{padding:13px 24px;gap:12px}
+.tp-at-home:not(.tp-in-application) .tp-digital-hero{grid-template-columns:110px minmax(0,1fr) 320px;min-height:0;padding:12px 19px;gap:24px;flex-shrink:0}
+.tp-at-home:not(.tp-in-application) .tp-digital-hero .tp-scene{width:110px;max-width:110px}
+.tp-at-home:not(.tp-in-application) .tp-tablet-heading h2{font-size:25px}
+.tp-at-home:not(.tp-in-application) .tp-home-title{margin-top:10px}
+.tp-at-home:not(.tp-in-application) .tp-app-grid{margin:auto 0;gap:10px;flex-shrink:0}
+.tp-at-home:not(.tp-in-application) .tp-app{min-height:85px;padding:11px 17px!important}
+.tp-at-home:not(.tp-in-application) .tp-tablet-dock{padding:10px 0 0!important;flex-shrink:0}
+}
+@media(min-width:800px) and (max-height:690px){
+.tp-at-home:not(.tp-in-application) .tp-trainer-home{padding:10px 20px;gap:9px}
+.tp-at-home:not(.tp-in-application) .tp-digital-hero{grid-template-columns:85px minmax(0,1fr) 310px;padding:9px 17px}
+.tp-at-home:not(.tp-in-application) .tp-digital-hero .tp-scene{width:85px;max-width:85px}
+.tp-at-home:not(.tp-in-application) .tp-app{min-height:70px;padding:8px 15px!important;row-gap:3px}
+.tp-at-home:not(.tp-in-application) .tp-app-icon{width:46px;height:46px}
+.tp-at-home:not(.tp-in-application) .tp-app-grid{gap:8px}
+.tp-at-home:not(.tp-in-application) .tp-home-badge-panel{padding:8px 15px}
+}

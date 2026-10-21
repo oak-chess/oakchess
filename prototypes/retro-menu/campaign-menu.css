@@ -1,0 +1,39 @@
+
+/* Campaign setup remains over the new game library. */
+.stream-campaign-shell{position:absolute;inset:0;z-index:120;display:flex;align-items:center;justify-content:center;padding:24px;background:#030d18bf;backdrop-filter:blur(9px)}
+.stream-campaign-shell[hidden]{display:none!important}
+body #ttl.stream-browsing .stream-campaign-shell #tcampaign.campaign-layout{position:relative!important;inset:auto!important;transform:none!important;display:flex!important;flex-direction:column!important;gap:21px!important;width:min(610px,100%)!important;max-height:90%;overflow:auto;background:linear-gradient(130deg,#1b3b52,#0f273c)!important;border:1px solid #688aa2!important;border-radius:10px!important;padding:0 24px 25px!important;box-shadow:0 25px 80px #0008!important;color:#dcebf4}
+body #ttl.stream-browsing .stream-campaign-shell #tcampaign .mode-panel-heading{display:flex!important;align-items:center;gap:13px;margin:0 -24px!important;padding:21px 24px!important;background:#214157!important;border:0!important;border-bottom:1px solid #567a9255!important;border-radius:0!important}
+body #ttl.stream-browsing .stream-campaign-shell #tcampaign .mode-panel-heading .ti{display:grid!important;place-items:center;width:32px!important;min-width:32px;height:32px!important;min-height:32px!important;border:1px solid #6f91a7!important;background:#284c64!important;color:#d8ebf8!important;border-radius:4px!important;box-shadow:none!important;font:18px Arial!important;padding:0!important}
+body #ttl.stream-browsing .stream-campaign-shell #tcampaign .mode-panel-heading b{font:700 22px Arial!important;color:#edf4f9!important;display:block;text-shadow:none}
+body #ttl.stream-browsing .stream-campaign-shell #tcampaign .mode-panel-heading small{font:11px Arial!important;color:#91b4cb!important;margin-top:6px;display:block}
+body #ttl.stream-browsing .stream-campaign-shell #tcampaign .r1{display:flex!important;flex-direction:row!important;gap:12px!important;grid-area:auto!important;margin:0!important;width:100%!important}
+body #ttl.stream-browsing .stream-campaign-shell #tcampaign .r1 .ti.big{flex:1!important;width:auto!important;max-width:none!important;height:auto!important;min-height:52px!important;padding:14px!important;display:flex!important;flex-direction:column!important;gap:6px!important;background:linear-gradient(#ce6058,#ac4043)!important;border:1px solid #e18a81!important;border-radius:5px!important;box-shadow:0 3px #702e37!important;transform:none!important;cursor:pointer}
+body #ttl.stream-browsing .stream-campaign-shell #tcampaign .r1 .ti.big .tl{font:700 13px Arial!important;line-height:1.4!important;color:#fff4ec!important;text-shadow:none!important}
+body #ttl.stream-browsing .stream-campaign-shell #tcampaign .r1 .ti.big:after{font:10px Arial!important;text-shadow:none!important;color:#f7d5ca!important}
+body #ttl.stream-browsing .stream-campaign-shell #tcampaign .r3{display:flex!important;flex-direction:column!important;gap:13px!important;width:100%!important;grid-area:auto!important;flex:auto!important;margin:0!important}
+body #ttl.stream-browsing .stream-campaign-shell #tcampaign .tdl{font:600 9px Arial!important;color:#95b6cc!important;letter-spacing:1.5px;text-shadow:none!important}
+body #ttl.stream-browsing .stream-campaign-shell #tdiff{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px!important;width:100%!important}
+body #ttl.stream-browsing .stream-campaign-shell #tcampaign #tdiff .ti{display:flex!important;flex-direction:column!important;align-items:center;justify-content:center;gap:7px!important;height:auto!important;min-height:98px!important;border:1px solid #4e738e!important;border-radius:5px!important;background:#18374e!important;box-shadow:none!important;padding:13px 6px!important;transform:none!important;cursor:pointer}
+body #ttl.stream-browsing .stream-campaign-shell #tcampaign #tdiff .ti.on{background:#425052!important;border-color:#d4bc82!important;box-shadow:inset 0 -2px #d4bc82!important}
+body #ttl.stream-browsing .stream-campaign-shell #tcampaign #tdiff .ti img{position:static!important;width:22px!important;height:22px!important}
+body #ttl.stream-browsing .stream-campaign-shell #tcampaign #tdiff .ti .tl{font:700 11px Arial!important;color:#e4eef5!important;text-shadow:none!important}
+body #ttl.stream-browsing .stream-campaign-shell #tcampaign #tdiff .ti .dd{font:9px Arial!important;color:#9ebbd0!important;text-shadow:none!important;text-align:center;white-space:normal!important}
+body #ttl.stream-browsing .stream-campaign-shell #tcampaign .ti .tar,body #ttl.stream-browsing .stream-campaign-shell #tcampaign #tdiff .ti:after{display:none!important}
+body #ttl.stream-browsing .stream-campaign-shell #tcampaign .ti:hover{filter:brightness(1.12)!important}
+body #ttl.stream-browsing .stream-campaign-shell #tcampaign .ti:focus-visible{outline:2px solid #e0c68c!important;outline-offset:3px}
+body #ttl.stream-browsing .stream-campaign-shell #tpress{display:none!important}
+body #ttl.stream-browsing .stream-campaign-shell.confirm #tcampaign{display:none!important}
+body #ttl.stream-browsing .stream-campaign-shell.confirm #tpress{display:block!important;visibility:visible!important;pointer-events:auto!important;position:relative!important;inset:auto!important;transform:none!important;width:min(510px,100%)!important;background:#17364c!important;border:1px solid #688aa2!important;border-radius:10px!important;padding:25px!important;max-height:90%;overflow:auto;box-shadow:0 25px 80px #0008!important}
+body #ttl.stream-browsing .stream-campaign-shell.confirm #tmain,body #ttl.stream-browsing .stream-campaign-shell.confirm #ttower,body #ttl.stream-browsing .stream-campaign-shell.confirm #tdd,body #ttl.stream-browsing .stream-campaign-shell.confirm .hint{display:none!important}
+body #ttl.stream-browsing .stream-campaign-shell.confirm #tconf{display:block!important;padding:0!important}
+body #ttl.stream-browsing .stream-campaign-shell.confirm #tconf p{font:14px/1.7 Arial!important;color:#d9e9f4!important;margin:0 0 22px!important}
+body #ttl.stream-browsing .stream-campaign-shell.confirm #tconf p b{color:#ef9c90}
+body #ttl.stream-browsing .stream-campaign-shell.confirm #tconf .trow{display:flex;gap:12px}
+body #ttl.stream-browsing .stream-campaign-shell.confirm #tconf .ti.big{flex:1;background:#24485e!important;border:1px solid #61879f!important;box-shadow:none!important;border-radius:5px!important;padding:13px!important;min-height:45px!important;cursor:pointer}
+body #ttl.stream-browsing .stream-campaign-shell.confirm #tconf .ti.big .tl{font:700 11px Arial!important;color:#e6f0f5!important;text-shadow:none!important}
+body #ttl.stream-browsing .stream-campaign-shell.confirm #tconf [data-act=confirmyes]{background:#a94345!important;border-color:#da8379!important}
+body #ttl.stream-browsing .stream-campaign-shell.confirm #tconf .ti:after,body #ttl.stream-browsing .stream-campaign-shell.confirm #tconf .tar{display:none!important}
+@media(max-width:540px){.stream-campaign-shell{padding:14px}body #ttl.stream-browsing .stream-campaign-shell #tcampaign .mode-panel-heading b{font-size:18px!important}body #ttl.stream-browsing .stream-campaign-shell #tcampaign .r1{flex-direction:column!important}}
+
+body #ttl.stream-browsing .stream-campaign-shell #tcampaign .ti.hide{display:none!important}

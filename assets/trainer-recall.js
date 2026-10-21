@@ -11,6 +11,7 @@
  function clear(){jobs.length=0;ground.clearRect(0,0,1280,800);front.clearRect(0,0,1280,800)}
  function drawTrainers(active=-1,gesture=false){
   ground.clearRect(0,0,1280,800);front.clearRect(0,0,1280,800);
+  if(window.TRAINER_DUO){TRAINER_DUO.draw(front,345,590,performance.now(),1,'arena');front.font='10px Arial';front.textAlign='center';front.fillStyle='#f3deb0';front.fillText(window.TRAINER_PROFILE_API?.state.name||'VOCÊ',345,610);return}
   trainers.forEach((p,i)=>{
    ground.globalAlpha=.45;ground.fillStyle='#17201a';ground.beginPath();ground.ellipse(p.x,p.y+2,27,9,0,0,Math.PI*2);ground.fill();ground.globalAlpha=1;
    const img=assets[i===0&&i===active&&gesture?'red_item':p.sprite];if(img&&img.complete&&img.naturalWidth){const frame=i===0&&i===active&&gesture?5:2;front.save();front.translate(p.x,p.y);front.scale(p.mirror?-1:1,1);front.imageSmoothingEnabled=false;front.drawImage(img,frame*16,0,16,32,-30,-120,60,120);front.restore()}
@@ -42,7 +43,7 @@
   const center=point(screenX,screenY),left=point(screenX-sw*px/2,screenY),right=point(screenX+sw*px/2,screenY),top=point(screenX,screenY-sh*py/2),bottom=point(screenX,screenY+sh*py/2);
   const w=Math.hypot(right.x-left.x,right.y-left.y),h=Math.hypot(bottom.x-top.x,bottom.y-top.y),owner=trainers[side],hand={x:owner.x+(side===0?26:-26),y:owner.y-68};
 
-  jobs.push({u,node,image,w,h,center,hand,age:0});u.el.style.display='none';return true;
+  window.TRAINER_DUO?.react('recall');jobs.push({u,node,image,w,h,center,hand,age:0});u.el.style.display='none';return true;
   }catch(e){return false}
  }
  function drawJob(job){

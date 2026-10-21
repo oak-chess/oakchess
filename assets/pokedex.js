@@ -10,7 +10,7 @@ const entries=[...catalog.values()].sort((a,b)=>a.id-b.id),roleNames={tank:'Tanq
 let selected=entries[0]?.id,tab='pokemon',filter='all',search='',type='',region='all',detailOpen=false,selectedTrait=null,traitPokemon=false,returnFocus=null,pausedHere=false,savePending=false;
 function flush(){if(!savePending)return;clearTimeout(saveTimer);savePending=false;try{localStorage.setItem(KEY,JSON.stringify(state));storageError=false}catch(e){storageError=true}if(panel.classList.contains('show'))status()}
 function persist(){savePending=true;clearTimeout(saveTimer);saveTimer=setTimeout(flush,180)}
-function real(){return !DEMO.on&&!(typeof ARENA_PREVIEW!=='undefined'&&ARENA_PREVIEW)}
+function real(){return !DEMO.on&&!window.TOWER?.isPreview&&!(typeof ARENA_PREVIEW!=='undefined'&&ARENA_PREVIEW)}
 function remember(unit,owned=false,evolved=false,source='batalha'){
  if(!unit||!LINES[unit.line])return false;
  const L=LINES[unit.line],star=Math.max(1,Math.min(3,Number(unit.star)||1)),id=L.ids[star-1];
@@ -113,7 +113,7 @@ const pauseCard=document.querySelector('#pausedOverlay .pause-card'),resume=docu
 const launch=document.createElement('button');launch.id='pokedexLaunch';launch.type='button';launch.innerHTML='<img src="assets/ui-sprites/pokedex-device.svg" alt="" draggable="false">';launch.title='Pokédex de descobertas';launch.setAttribute('aria-label','Abrir Pokédex');launch.onclick=open;document.getElementById('pauseBtn')?.parentElement.append(launch);
 // Migra apenas as composições comprovadas pelo histórico, sem supor evolução.
 try{const history=JSON.parse(localStorage.getItem('ptft_runs_v2')||'[]');if(Array.isArray(history))for(const run of history)for(const u of run.last?.us||[]){const known=entries.find(e=>e.id===+u.id);if(known)remember({line:known.line,star:Math.max(1,Math.min(3,+u.star||known.star))},true,false,'histórico')}}catch(e){}
-window.PDEX={open,observe,owned,battleStart,cast};
+window.PDEX={snapshot:()=>({seen:Object.keys(state.entries).length,owned:Object.entries(state.entries).filter(([id,r])=>r.owned).map(([id])=>+id)}),open,observe,owned,battleStart,cast};
 if(typeof T_DESC!=='undefined')T_DESC.pokedex='Consulte Pokémon descobertos, evoluções, golpes e sinergias usadas.';
 if(real()){observe(G.shop||[],'loja');observe((B.units||[]).filter(u=>u.side===1),'batalha');for(const u of allPlus())owned(u)}
 window.addEventListener('pagehide',flush);document.addEventListener('visibilitychange',()=>{if(document.hidden)flush()});flush();
