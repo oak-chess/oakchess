@@ -76,7 +76,7 @@
    clear();if(!B.on||B.over)return;
    g.imageSmoothingEnabled=false;g.globalCompositeOperation='source-over';
    for(const f of B.fields){
-    if(f.age>=f.life)continue;const s=styles[f.kind];if(!s)continue;
+    if(f.age>=f.life||window.ARENA_INTERACTIONS?.handles(f))continue;const s=styles[f.kind];if(!s)continue;
     const fade=Math.min(1,f.age/.12,Math.max(0,(f.life-f.age)/.25));
     for(const cell of affected(f)){footprint(cell,f,s,fade);sprites(cell,f,s,fade)}
    }

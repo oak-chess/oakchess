@@ -1,0 +1,92 @@
+/* Approved arena interactions. Visual displacement never changes combat occupancy. */
+(()=>{
+ 'use strict';
+ const combat=B,pmd=PMD,parent=document.getElementById('arenaView'),units=document.getElementById('units');
+ if(!parent||!units)return;
+ const jobs=[],pending=new Map(),handled=new WeakMap();let serial=0;
+ const flameImage=new Image();flameImage.src='assets/move-fx/emerald/fire.png';
+ const alias={wildfire:'fire',charged:'electric',frost:'ice',spores:'poison'};
+ const tornadoMoves=new Set(['WHIRLWIND','TWISTER','HURRICANE']);
+ const tornadoIds=new Set([18,239,542]);
+ function moveKind(mv){
+  if(mv.emerald==='SURF'||mv.id===57)return 'surf';
+  if(mv.emerald==='EARTHQUAKE'||mv.id===89)return 'earthquake';
+  if(tornadoMoves.has(mv.emerald)||tornadoIds.has(mv.id))return 'wind';
+  return ['fire','electric','ice','rock','poison'].includes(mv.t)?mv.t:null;
+ }
+ const supported=new Set(['fire','electric','rock','poison','wind','ice','surf','earthquake']);
+ function slideDestination(u,event){
+  let dx=u.x-(event.owner?.x??hexXY(event.r,event.c).x),dy=u.y-(event.owner?.y??hexXY(event.r,event.c).y);if(Math.hypot(dx,dy)<1){dx=0;dy=-1}const size=Math.hypot(dx,dy);return{x:u.x+dx/size*HW*.9,y:u.y+dy/size*HW*.9};
+ }
+ function environment(event,job){
+  const clone=u=>{const shadow={...u,_real:u,_baseX:u.x,_baseY:u.y};return shadow};
+  const targets=event.targets.filter(u=>u.alive&&u.el?.isConnected).map(clone);
+  const pos=hexXY(event.r,event.c),center={...pos,r:event.r,c:event.c,el:document.createElement('div')};
+  const attacker=event.owner?clone(event.owner):{...center,el:document.createElement('div')};
+  const updateCUEl=u=>{if(!u?._real)return;job.offsets.set(u._real,{x:u.x-u._baseX,y:u.y-u._baseY});};
+  return {attacker,targets,center,updateCUEl,
+   B:{units:targets},clock:{now:()=>job.elapsed*1000},
+   queue:frame=>{job.next=frame;return 1},unqueue:()=>{job.next=null},
+   PMD:Object.assign(Object.create(pmd),{playNames(root,names){if(event.reactions&&root?.isConnected&&!root.classList.contains('st-frozen'))pmd.playNames(root,names)}}),
+   layer(z){const canvas=document.createElement('canvas');canvas.width=1280;canvas.height=800;canvas.setAttribute('aria-hidden','true');canvas.style.cssText=`position:absolute;left:0;top:0;width:1280px;height:800px;pointer-events:none;image-rendering:pixelated;z-index:${z}`;if(z===1)parent.insertBefore(canvas,units);else parent.append(canvas);job.layers.push(canvas);return canvas.getContext('2d')}
+  };
+ }
+ function trackAnimation(job,element,frames,options){const animation=element.animate(frames,options);animation.playbackRate=Number(CFG.speed)||1;job.animations.push(animation);return animation}
+ function destroy(job){
+  try{job.renderer?.stop()}catch(e){console.warn('Arena interaction cleanup:',e)}
+  job.animations.forEach(a=>a.cancel());job.layers.forEach(c=>c.remove());job.targets.forEach(u=>{if(u.el?.isConnected)updateCUEl(u)});job.offsets.clear();
+  const index=jobs.indexOf(job);if(index>=0)jobs.splice(index,1);
+ }
+ function clear(){for(const j of [...jobs])destroy(j);pending.clear()}
+ function start(input){
+  const kind=alias[input.kind]||input.kind;if(!supported.has(kind)||!combat.on||combat.over)return false;
+  const event={radius:1,targets:[],life:4,reactions:true,...input,kind};
+  if(!Number.isFinite(event.r)||!Number.isFinite(event.c))return false;
+  event.radius=Math.max(0,Math.min(3,event.radius));event.targets=[...new Set(event.targets)].filter(u=>u.alive&&u.side!==event.owner?.side);
+  const priority=({earthquake:5,surf:4,ice:4,wind:4,fire:3,electric:3,rock:2,poison:2})[kind];
+  if(jobs.some(j=>j.priority>priority&&j.targets.some(u=>event.targets.includes(u))))return false;
+  // New interactions replace older body reactions on the same units.
+  for(const j of [...jobs])if(j.targets.some(u=>event.targets.includes(u)))destroy(j);
+  const limit=CFG.fxLevel==='low'?2:4;while(jobs.length>=limit)destroy(jobs[0]);
+  const nativeDuration=kind==='earthquake'?5.4:kind==='surf'?5:6;
+  const duration=Math.max(1.5,Math.min(nativeDuration,Number(event.life)||4));
+  const job={id:++serial,priority,kind,owner:event.owner,r:event.r,c:event.c,start:combat.t,elapsed:0,duration,nativeDuration,layers:[],animations:[],offsets:new Map(),targets:event.targets,next:null,renderer:null};
+  try{job.renderer=({earthquake,surf,ice,elements}[kind]||elements)(event,job);jobs.push(job);return true}catch(e){console.warn('Arena interaction fallback:',e);destroy(job);return false}
+ }
+ function field(f){
+  const kind=alias[f.kind]||f.kind;if(!supported.has(kind))return false;
+  const targets=combat.units.filter(u=>u.alive&&u.side!==f.owner?.side&&hdist(f.r,f.c,u.r,u.c)<=f.radius);
+  // A field takes precedence over a pending effect from the hit that created it.
+  for(const [key,e] of pending)if(e.owner===f.owner&&(alias[e.kind]||e.kind)===kind)pending.delete(key);
+  const ok=start({kind,r:f.r,c:f.c,radius:f.radius,life:f.life+.6,owner:f.owner,targets});
+  if(ok){handled.set(f,jobs.at(-1));f._arenaReactSeen=new Set(targets)}return ok;
+ }
+ function touch(f,u){if(!jobs.includes(handled.get(f))||f._arenaReactSeen?.has(u))return;f._arenaReactSeen?.add(u);start({kind:f.kind,owner:f.owner,r:u.r,c:u.c,radius:0,targets:[u],life:Math.min(3,f.life-f.age)})}
+ function hit(owner,target,mv){
+  if(!owner||!target||!target.alive||!mv)return;
+  const kind=moveKind(mv);
+  if(!supported.has(kind))return;
+  if(jobs.some(j=>j.owner===owner&&j.kind===kind&&combat.t-j.start<.8))return;
+  const key=owner.key+':'+(mv.emerald||mv.id||mv.n)+':'+(mv._variant||owner.mi||0);
+  let event=pending.get(key);
+  if(!event){const area=['blast','burst','field','meteor','storm'].includes(mv.k),center=mv.k==='burst'?owner:target;event={kind,r:center.r,c:center.c,radius:area?(mv.r||(mv.k==='meteor'?1:mv.p>=1.8?2:1)):0,owner,targets:[],life:kind==='earthquake'?4.5:kind==='surf'?4:3.8};pending.set(key,event)}
+  if(!event.targets.includes(target))event.targets.push(target);
+ }
+ function tick(){
+  if(!combat.on||combat.over){if(jobs.length||pending.size)clear();return}
+  if(document.hidden)return;
+  const paused=G.paused||combat.hold;
+  if(!paused){for(const event of pending.values())start(event);pending.clear()}
+  for(const job of [...jobs]){
+   if(job.targets.length&&job.targets.every(u=>!u.alive||!u.el?.isConnected)){destroy(job);continue}
+   const age=combat.t-job.start;if(age>=job.duration){destroy(job);continue}
+   job.elapsed=age*job.nativeDuration/job.duration;
+   for(const a of job.animations){if(paused&&a.playState==='running')a.pause();else if(!paused&&a.playState==='paused')a.play()}
+   try{job.renderer.draw(job.elapsed*1000)}catch(e){console.warn('Arena interaction frame:',e);destroy(job);continue}
+   const settle=Math.min(1,Math.max(0,(job.duration-age)/.45));
+   for(const [u,offset] of job.offsets){if(!u.alive||!u.el?.isConnected)continue;u.el.style.transform=`translate(${u.x+offset.x*settle}px,${u.y+offset.y*settle}px)`}
+  }
+ }
+ /* GENERATED_RENDERERS */
+ window.ARENA_INTERACTIONS={field,touch,hit,tick,clear,handles:f=>jobs.includes(handled.get(f))};
+})();

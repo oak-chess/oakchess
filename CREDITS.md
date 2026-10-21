@@ -14,3 +14,6 @@ O jogo reúne conteúdo de fãs e recursos de terceiros. Os créditos abaixo ide
 - **Retratos de treinadores:** [Pokémon Showdown](https://play.pokemonshowdown.com/sprites/trainers/). Os créditos dos artistas conhecidos estão em [assets/showdown/trainers/ATTRIBUTION.txt](assets/showdown/trainers/ATTRIBUTION.txt); respeite os avisos da fonte sobre atribuição e edição.
 
 Este projeto é um jogo de fã, sem afiliação ou endosso da Nintendo, The Pokémon Company, Game Freak, Spike Chunsoft ou Pokémon Showdown. Antes de usar ou distribuir comercialmente qualquer conteúdo, obtenha as permissões necessárias dos titulares.
+
+### Treinador de mapa
+Sprites Red de Pokémon FireRed: [pret/pokefirered](https://github.com/pret/pokefirered/tree/master/graphics/object_events/pics/people). Personagens e gráficos pertencem aos respectivos titulares.
