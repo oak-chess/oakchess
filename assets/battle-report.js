@@ -53,7 +53,7 @@ setInterval(()=>{
   const team=pending.units.filter(u=>u.side===0),best=top(team,'damage');
   notice.dataset.result=pending.win?'win':'loss';notice.querySelector('small').textContent=pending.win?'Vitória':'Derrota';notice.querySelector('b').textContent=pending.foe;
   notice.querySelector('span').textContent=best&&best.damage?best.name+' · '+fmt(best.damage)+' dano':'Relatório pronto';
-  positionReportNotice();noticeShown=true;visibleFor=0;notice.style.setProperty('--remaining',1);notice.classList.add('show');return;
+  positionReportNotice();noticeShown=true;visibleFor=0;notice.style.setProperty('--remaining',1);notice.classList.add('show');window.POKEBALL_NOTICES?.revealSide(notice);return;
  }
  if(!notice.matches(':hover')&&!notice.contains(document.activeElement))visibleFor+=elapsed;
  notice.style.setProperty('--remaining',Math.max(0,1-visibleFor/7));if(visibleFor>=7){pending=null;notice.classList.remove('show')}

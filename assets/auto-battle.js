@@ -24,7 +24,7 @@
  toggle.addEventListener('mouseenter',()=>SND.hover());
  window.AUTO_BATTLE={get enabled(){return enabled},stop(){cancelHold();enabled=false;clear();render()},update(dt){
   const capacity=document.getElementById('boardcnt');if(capacity){const count=boardCount()+'/'+G.lvl;if(capacity.dataset.count!==count)capacity.dataset.count=count}
-  const playing=!G.over&&!DEMO.on&&!['starter','over'].includes(G.phase)&&!document.body.classList.contains('on-title');toggle.hidden=!playing;
+  const playing=!G.over&&!DEMO.on&&!['starter','over'].includes(G.phase)&&!document.body.classList.contains('on-title');toggle.hidden=!playing||G.phase==='carousel'||document.body.classList.contains('car-on');
   const identity=G.tower?.id||G;if(run!==identity){cancelHold();if(run!==null)enabled=false;run=identity;clear()}
   if(!playing){cancelHold();enabled=false;clear();render();return}
   if(!enabled){clear();render();return}
