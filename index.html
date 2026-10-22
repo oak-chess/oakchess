@@ -5861,7 +5861,7 @@ function resolveRound(win,surv){
     else{G.streak=G.streak<0?G.streak-1:-1;const d=db+surv;G.hp-=d;toast(`A Equipe Rocket venceu. Você perdeu ${d} de vida`)}
   }else if(info.kind==='trainer'||info.kind==='rival'){
     if(win){G.streak=G.streak>0?G.streak+1:1;G.gold+=1;gainVials(info.kind==='rival'?2:1)}
-    else{G.streak=G.streak<0?G.streak-1:-1;const d=db+surv;G.hp-=d;toast(`Você perdeu ${d} de vida`)}
+    else{G.streak=G.streak<0?G.streak-1:-1;const d=db+surv;G.hp-=d;G.retry=info.kind==='trainer';toast(`Você perdeu ${d} de vida`+(G.retry?'. Vença este treinador para avançar.':''))}
   }else if(info.kind==='boss'){
     const ld=LEADERS[info.gym];
     if(win){G.streak=G.streak>0?G.streak+1:1;G.gold+=2;if(!G.badges.includes(info.gym))G.newBadge=info.gym;gainVials(2);dropRare(1)}
@@ -5875,7 +5875,7 @@ function resolveRound(win,surv){
     else if(!G.mewHelp){G.mewHelp=true;G.retry=true;toast('Mewtwo venceu! Mas algo está chegando...')}
     else toast('Mewtwo foi forte demais... mas você continua sendo o Campeão!');
   }else if(win)gainVials(1);
-  else toast('Os selvagens venceram, mas você não perde vida');
+  else{G.retry=info.kind==='pve';toast(G.retry?'Os selvagens venceram. Você não perde vida, mas precisa vencer para avançar.':'Os selvagens venceram, mas você não perde vida')}
   if(info.event==='rematch'&&win){G.gold+=5;toast('Bônus de revanche: +5 de ouro!')}
   if(G.fenix&&G.hp<hp0){G.hp=hp0;G.fenix=false;toast('🔥 A Chama Renascida protegeu a sua vida!')}
   renderHUD();
