@@ -5875,7 +5875,7 @@ function resolveRound(win,surv){
     else if(!G.mewHelp){G.mewHelp=true;G.retry=true;toast('Mewtwo venceu! Mas algo está chegando...')}
     else toast('Mewtwo foi forte demais... mas você continua sendo o Campeão!');
   }else if(win)gainVials(1);
-  else{G.retry=info.kind==='pve';toast(G.retry?'Os selvagens venceram. Você não perde vida, mas precisa vencer para avançar.':'Os selvagens venceram, mas você não perde vida')}
+  else if(info.kind==='pve'){const d=db+surv;G.hp-=d;G.retry=true;toast(`Os selvagens venceram. Você perdeu ${d} de vida. Vença para avançar.`)}
   if(info.event==='rematch'&&win){G.gold+=5;toast('Bônus de revanche: +5 de ouro!')}
   if(G.fenix&&G.hp<hp0){G.hp=hp0;G.fenix=false;toast('🔥 A Chama Renascida protegeu a sua vida!')}
   renderHUD();
