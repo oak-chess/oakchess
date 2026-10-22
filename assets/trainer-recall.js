@@ -19,6 +19,12 @@
   });
  }
 
+
+ // Campaign opponents stand on the far-side walkway, outside the playable hexes.
+ const opponentSprites=new Map();for(const slug of [...LEADERS.map(l=>l.s),...LEAGUE.slice(0,5).map(l=>l.s)]){if(!slug||opponentSprites.has(slug))continue;const image=new Image();image.src='assets/trainer-profile/sprites/'+slug+'_normal.png';opponentSprites.set(slug,image)}
+ function drawOpponent(){if(G.tower||DEMO.on)return;const r=G.round;if(!r)return;const opponent=r.kind==='boss'&&r.gym<8?LEADERS[r.gym]:r.kind==='e4'?LEAGUE[r.lg]:r.kind==='champ'?LEAGUE[4]:null;if(!opponent?.s)return;const image=opponentSprites.get(opponent.s);if(!image?.complete||!image.naturalWidth)return;
+ const x=1000,y=255,frameWidth=16,frameHeight=32,frame=Math.min(2,Math.floor(image.naturalWidth/frameWidth)-1);ground.save();ground.globalAlpha=.4;ground.fillStyle='#17201a';ground.beginPath();ground.ellipse(x,y+2,25,8,0,0,Math.PI*2);ground.fill();ground.restore();front.save();front.imageSmoothingEnabled=false;const still=CFG.reduceFx||G.paused||matchMedia('(prefers-reduced-motion:reduce)').matches,bob=still?0:Math.floor(performance.now()/1500)%2;front.drawImage(image,frame*frameWidth,0,frameWidth,frameHeight,x-30,y-120-bob,60,120);front.font='10px Arial';front.textAlign='center';front.lineWidth=3;front.strokeStyle='#18201dcc';front.strokeText(opponent.n,x,y+20);front.fillStyle='#f3deb0';front.fillText(opponent.n,x,y+20);front.restore()}
+
  function begin(u){
   if(u.side!==0||!visible()||!assets.red_normal.complete||!assets.red_normal.naturalWidth)return false;
   const side=0,node=u.el?.querySelector('canvas.pmdc')||u.el?.querySelector('.spr img');if(!node)return false;
@@ -66,6 +72,7 @@
   if(!visible()){clear();return}
   for(let i=jobs.length-1;i>=0;i--){jobs[i].age+=dt;if(jobs[i].age>=2.5||!jobs[i].u.el?.isConnected)jobs.splice(i,1)}
   drawTrainers(jobs.length?0:-1,jobs.some(j=>j.age>.2&&j.age<1.8));
+  drawOpponent();
   for(const job of jobs)drawJob(job);
  }
  window.TRAINER_RECALL={begin,tick,clear};
