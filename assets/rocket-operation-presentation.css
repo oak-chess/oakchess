@@ -72,3 +72,15 @@
 #rocketOperationOverlay[data-screen=entry] .rop-body>p{font-size:11px;line-height:1.5;max-width:700px}
 #rocketOperationOverlay[data-screen=entry] .rop-notice{padding:5px 0}
 @media(max-width:600px){#rocketOperationOverlay[data-screen=entry] footer.rop-explained-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}#rocketOperationOverlay[data-screen=entry] .rop-action-choice:last-child:nth-child(odd){grid-column:auto}#rocketOperationOverlay[data-screen=entry] .rop-mission-cover{min-height:110px}#rocketOperationOverlay[data-screen=entry] .rop-body:has(.rop-mission-cover){gap:8px}}
+
+/* Give the offer grid an explicit width inside the centered flex body. */
+#rocketOperationOverlay .rop-body>.rop-event-options{display:grid;width:min(680px,100%);grid-template-columns:repeat(4,minmax(0,1fr));justify-content:center;gap:12px;flex-shrink:0}
+#rocketOperationOverlay .rop-event-options button{width:100%;min-width:0;min-height:115px;padding:10px 8px;gap:6px}
+#rocketOperationOverlay .rop-event-options img{width:55px;height:55px}
+#rocketOperationOverlay .rop-event-options b{font:600 12px/1.4 Arial,sans-serif}
+#rocketOperationOverlay .rop-event-options small{font:11px/1.4 Arial,sans-serif;color:#bbc8df}
+#rocketOperationOverlay .rop-body>.rop-event-options:has(>button:last-child:nth-child(3)){width:min(510px,100%);grid-template-columns:repeat(3,minmax(0,1fr))}
+#rocketOperationOverlay .rop-body>.rop-event-options:has(>button:last-child:nth-child(2)){width:min(340px,100%);grid-template-columns:repeat(2,minmax(0,1fr))}
+#rocketOperationOverlay .rop-body>.rop-event-options:has(>button:only-child){width:160px;grid-template-columns:1fr}
+@media(max-width:600px){#rocketOperationOverlay .rop-body>.rop-event-options,#rocketOperationOverlay .rop-body>.rop-event-options:has(>button:last-child:nth-child(3)){width:min(440px,100%);grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}#rocketOperationOverlay .rop-event-options button{min-height:105px;padding:8px 5px}#rocketOperationOverlay .rop-event-options img{width:47px;height:47px}}
+@media(max-width:380px){#rocketOperationOverlay .rop-body>.rop-event-options,#rocketOperationOverlay .rop-body>.rop-event-options:has(>button:last-child:nth-child(3)){grid-template-columns:repeat(2,minmax(0,1fr))}}
