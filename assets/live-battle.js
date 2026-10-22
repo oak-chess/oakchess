@@ -32,6 +32,7 @@
   if(now-last<100)return;last=now;
   const signature=B.units.map(u=>u.key).join('|');if(signature!==roster){roster=signature;build()}
   if(collapsed)return;
+  const count=Math.max(1,...[0,1].map(side=>B.units.filter(u=>u.side===side).length)),room=Math.max(1,host.clientHeight-panel.offsetTop-162),rowHeight=Math.min(56,Math.floor(room/count));panel.style.setProperty('--lbs-count',count);panel.style.setProperty('--lbs-row-height',rowHeight+'px');panel.classList.toggle('dense',rowHeight<50);
   const maximum=Math.max(1,...B.units.map(value));
   for(const side of [0,1]){
    const team=B.units.filter(u=>u.side===side);

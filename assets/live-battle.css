@@ -14,3 +14,35 @@
 #liveBattleStats footer{padding:7px 8px;border-top:1px solid #3d5970;font:9px/13px 'Trebuchet MS',sans-serif;color:#9db8c9}#liveBattleStats.collapsed{width:170px}#liveBattleStats.collapsed .lbs-content{display:none}#liveBattleStats.collapsed header{border-bottom:0}
 body.reduce-fx .lbs-unit,body.reduce-fx .lbs-health>i,body.reduce-fx .lbs-value-track i{transition:none}
 @media(prefers-reduced-motion:reduce){.lbs-unit,.lbs-health>i,.lbs-value-track i{transition:none}}
+
+/* Inventory sand palette and a roster height fitted to the actual stage. */
+#stage #liveBattleStats{background:#b29d76;border-color:#79603e;color:#3d2d1c;box-shadow:inset 1px 1px #d4bb8b,0 0 0 3px #3c3025,4px 5px #0005;max-height:calc(100% - 98px)}
+#liveBattleStats header{padding:8px 10px;background:#87523b;border-color:#67452c}
+#liveBattleStats header small{color:#d7dfb1}#liveBattleStats header b{color:#fff0cc}
+#liveBattleStats button{background:#a18b63;border-color:#79603e;color:#3d2d1c;box-shadow:inset 1px 1px #d0b582}
+#liveBattleStats [data-collapse]{background:#997448;color:#fff0cc;border-color:#d1af78}
+#liveBattleStats nav{padding:7px 8px 5px;gap:4px}#liveBattleStats nav button{padding:4px 2px}
+#liveBattleStats nav button.on{background:#aa4134;border-color:#743d2a;color:#fff0c8;box-shadow:inset 1px 1px #d9825c}
+#liveBattleStats .lbs-versus{padding:3px 9px 7px;border-color:#81644366}
+#liveBattleStats .lbs-versus b{color:#5e472f}#liveBattleStats .lbs-versus span{color:#49301b}#liveBattleStats .lbs-versus i{color:#7a5a36}
+#liveBattleStats .lbs-teams{padding:5px 7px;gap:8px;max-height:none;overflow:visible}
+#liveBattleStats .lbs-teams>[data-team]{display:grid;grid-auto-rows:var(--lbs-row-height,56px);align-content:start;gap:0}
+#liveBattleStats .lbs-unit{box-sizing:border-box;padding:3px 1px;gap:4px;border-bottom:1px solid #846b4822;min-height:0;overflow:hidden}
+#liveBattleStats .lbs-portrait{width:24px;height:29px;background:#a18b63;border-color:#816342;box-shadow:inset 1px 1px #c6ab7c}
+#liveBattleStats .lbs-portrait img{width:29px;height:29px}
+#liveBattleStats .lbs-label{display:grid;grid-template-columns:minmax(0,1fr);gap:0}
+#liveBattleStats .lbs-label b{font-size:9px;line-height:10px;color:#3f2d1b}
+#liveBattleStats .lbs-label span{font-size:11px;line-height:12px;color:#683924}
+#liveBattleStats .lbs-value-track{height:4px;margin:2px 0;background:#927a53}
+#liveBattleStats .lbs-value-track i{background:#a94b35}
+#liveBattleStats[data-metric=healing] .lbs-value-track i{background:#547b42}
+#liveBattleStats[data-metric=shield] .lbs-value-track i{background:#48798f}
+#liveBattleStats .lbs-health{height:4px;background:#927a53;border-color:#77603e}
+#liveBattleStats .lbs-vitals{font-size:7px;line-height:9px;margin-top:2px;color:#5c472f;white-space:nowrap}
+#liveBattleStats .lbs-unit.fainted{opacity:.55}
+#liveBattleStats .lbs-unit.healing{background:#607f3b22;border-color:#64834a66}
+#liveBattleStats .lbs-unit.damaged:not(.healing){background:#a9433422}
+#liveBattleStats footer{padding:5px 7px;border-color:#80613e66;background:#a58e67;color:#4e3922;font-size:8px;line-height:11px}
+#liveBattleStats.dense .lbs-portrait{height:25px;width:22px}#liveBattleStats.dense .lbs-portrait img{width:25px;height:25px}
+#liveBattleStats.dense .lbs-label{grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:2px}
+#liveBattleStats.dense .lbs-label b{font-size:8px}#liveBattleStats.dense .lbs-label span{font-size:9px}
