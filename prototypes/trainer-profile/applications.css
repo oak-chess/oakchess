@@ -44,3 +44,5 @@
 .tp-in-application[data-application=trail] .ta-app[data-trail-page=notice] .ta-notice-preview-host{min-height:240px;width:100%}
 .tp-in-application[data-application=trail] .ta-app[data-trail-page=notice] .ta-notice-preview{min-height:400px;gap:8px;padding:24px 30px}
 @media(max-height:700px) and (min-width:651px){.tp-in-application[data-application=trail] .ta-app[data-trail-page=trail] .ta-stage{padding:12px 20px;gap:9px}.tp-in-application[data-application=trail] .ta-app[data-trail-page=trail] .ta-preview{width:95px;max-width:95px}.tp-in-application[data-application=trail] .ta-app[data-trail-page=trail] .ta-original-reward{min-height:65px}.tp-in-application[data-application=trail] .ta-app[data-trail-page=trail] .ta-ball-flight{height:35px}}
+
+.ta-partner-variants{display:flex;gap:8px;margin-bottom:14px}.ta-partner-variants button{border:1px solid #577991;border-radius:4px;padding:8px 15px;background:#17364e;color:#adc8dc;font:600 11px Arial;cursor:pointer}.ta-partner-variants button[aria-pressed=true]{border-color:#d2b87c;background:#4d4d42;color:#f1dba7}

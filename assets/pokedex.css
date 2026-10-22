@@ -55,3 +55,8 @@
 #pokedex .dex-pmd-preview{width:132px;min-height:132px;display:grid;place-items:center;flex:none;background:radial-gradient(ellipse at 50% 85%,#8ec8af33,transparent 65%)}
 #pokedex [data-form]{max-width:100%;margin:8px;padding:7px;color:#efe1ae;background:#162b35;border:1px solid #a38c59;border-radius:5px}
 #pokedex [data-animations]{overflow-wrap:anywhere}
+
+/* Sightings reveal identity; only shop registrations reveal full color. */
+#pokedex img.dex-seen-only{filter:grayscale(1) brightness(.75)!important;opacity:.75!important}
+#pokedex img.dex-silhouette{filter:brightness(0)!important;opacity:.25!important}
+#pokedex .dex-tabs{display:flex;flex-wrap:wrap}

@@ -186,3 +186,5 @@
 .tp-at-home:not(.tp-in-application) .tp-app-grid{gap:8px}
 .tp-at-home:not(.tp-in-application) .tp-home-badge-panel{padding:8px 15px}
 }
+
+.ta-partner-variants{display:flex;gap:8px;margin-bottom:14px}.ta-partner-variants button{border:1px solid #577991;border-radius:4px;padding:8px 15px;background:#17364e;color:#adc8dc;font:600 11px Arial;cursor:pointer}.ta-partner-variants button[aria-pressed=true]{border-color:#d2b87c;background:#4d4d42;color:#f1dba7}

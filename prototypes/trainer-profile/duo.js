@@ -5,9 +5,9 @@
  for(const name of [...new Set(['red_normal','red_item','leaf_normal','leaf_item',...(window.TRAINER_PROFILE_TRAINERS||[]).map(t=>t.id+'_normal')])]){const im=new Image();im.src='prototypes/trainer-profile/sprites/'+name+'.png';imgs[name]=im}
  let state={trainer:'red',partner:25,frame:'classic'},data=null,request=0,reaction=null,raf=0;
  const reduced=matchMedia('(prefers-reduced-motion:reduce)');
- function load(id){data=null;const token=++request;if(!id)return;TRAINER_PARTNER_SPRITES.load(id).then(d=>{if(token===request){data=d;if(d?._res?.('Pose'))PMD.ensure(d,'Pose').catch(()=>{})}}).catch(()=>{})}
+ function load(id,shiny=false){data=null;const token=++request;if(!id)return;TRAINER_PARTNER_SPRITES.load(id,shiny).then(d=>{if(token===request){data=d;if(d?._res?.('Pose'))PMD.ensure(d,'Pose').catch(()=>{})}}).catch(()=>{})}
  function react(kind,id){reaction={kind,id,start:performance.now()}}
- addEventListener('trainer-profile-change',e=>{const last=state.partner;state={...e.detail};if(last!==state.partner||!data)load(state.partner)});
+ addEventListener('trainer-profile-change',e=>{const last=state.partner,lastShiny=state.partnerShiny;state={...e.detail};if(last!==state.partner||lastShiny!==state.partnerShiny||!data)load(state.partner,!!state.partnerShiny)});
  addEventListener('trainer-victory-preview',e=>react('victory',e.detail.effect));addEventListener('trainer-emote-preview',e=>react('emote',e.detail.id));
  for(const [event,kind] of [['trainer-victory-stop','victory'],['trainer-emote-stop','emote']])addEventListener(event,()=>{if(reaction?.kind===kind)reaction=null});
  function drawPartner(ctx,x,y,height,now,row=0){if(!state.partner)return;const a=(reaction?.kind==='victory'?data?.x?.Pose:reaction?.id==='sleep'?data?.Sleep:null)||data?.Idle;if(a){row=a.rows>=8?row:0;const total=a.dur.reduce((v,n)=>v+n,0)||1;let t=reduced.matches?0:(now*.06)%total,i=0;while(i<a.dur.length-1&&t>=a.dur[i]){t-=a.dur[i];i++}const top=a.b.rt[row]??a.b.mny,bottom=(a.b.fb?.[row]?.[i]>=0?a.b.fb[row][i]:a.b.rb[row])??a.b.mxy,visible=Math.max(1,(a.b.rb[row]??a.b.mxy)-top+1),sc=Math.min(3,height/visible),fw=a.fw*sc,fh=a.fh*sc;ctx.drawImage(a.img,i*a.fw,row*a.fh,a.fw,a.fh,Math.round(x-fw/2),Math.round(y-(bottom+1)*sc),Math.round(fw),Math.round(fh))}}
