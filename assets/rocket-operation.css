@@ -50,3 +50,49 @@ body .stream-games{grid-template-columns:repeat(3,minmax(0,1fr))}
 body.rocket-operation-active #cards{min-height:0}
 body.rocket-operation-active .rpop{display:none!important}
 @media(max-width:700px){#rocketOperationHud{left:50%;top:55px;width:max-content;padding:6px 8px;gap:9px;max-width:calc(100% - 110px)}#rocketOperationHud>p{display:none}#rocketOperationHud{grid-template-columns:auto auto auto}}
+
+/* Compact library and a mission dossier rather than full-width tiles. */
+body #ttl .stream-games{grid-template-columns:repeat(3,minmax(0,280px));justify-content:start;width:100%;gap:18px}
+body #ttl .stream-game .stream-cover{height:auto;aspect-ratio:16/10;min-height:0}
+body #ttl .stream-game-info{padding:12px 14px;min-height:58px}
+#rocketOperationOverlay{background:#080b12b8;backdrop-filter:blur(7px)}
+#rocketOperationOverlay .rop-dialog{width:min(720px,100%);border-radius:10px;background:linear-gradient(115deg,#c6b28a,#af9971);box-shadow:0 24px 90px #0009,inset 0 0 0 1px #fff2c244}
+#rocketOperationOverlay header{padding:19px 24px;background:linear-gradient(115deg,#76462f,#925b3c);position:relative;border-bottom:3px solid #ae4234}
+#rocketOperationOverlay h2{font-size:25px;letter-spacing:-.5px;margin:5px 0 8px}
+#rocketOperationOverlay header p{font-size:12px;max-width:570px;line-height:1.6}
+#rocketOperationOverlay .rop-body{padding:20px 24px}
+#rocketOperationOverlay footer{padding:14px 24px;background:#91784f44;gap:9px;align-items:center}
+#rocketOperationOverlay footer button{font-size:12px;min-height:38px;padding:9px 13px}
+#rocketOperationOverlay footer button:first-child:not(.secondary){background:linear-gradient(#b64f3d,#95372c);color:#fff0cd;border-color:#e1ac71;border-bottom-color:#642b25}
+.rop-mission-cover{height:154px;position:relative;overflow:hidden;border:2px solid #82643f;border-radius:5px;background:#292a2c;margin-bottom:14px;box-shadow:0 3px 0 #68523655}
+.rop-mission-cover>img{position:absolute;right:0;top:0;width:72%;height:100%;object-fit:cover;opacity:.9}
+.rop-mission-cover:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#292729 12%,#292729bb 42%,transparent 85%)}
+.rop-mission-cover>span{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;height:100%;padding:22px;color:#f9e8c0;gap:8px}
+.rop-mission-cover small{color:#d1ab67;font-size:9px;letter-spacing:2px}.rop-mission-cover b{font-size:26px}.rop-mission-cover em{font-size:11px;font-style:normal;color:#d3c3a5}
+#rocketOperationOverlay[data-screen=entry] .rop-body:has(.rop-mission-cover){display:grid;grid-template-columns:1.1fr 1fr;gap:12px}
+#rocketOperationOverlay[data-screen=entry] .rop-mission-cover{height:100%;min-height:190px;margin:0}
+#rocketOperationOverlay[data-screen=entry] .rop-mission-cover>img{width:100%;opacity:.65}
+#rocketOperationOverlay[data-screen=entry] .rop-mission-cover>span{justify-content:flex-end;padding:18px}
+#rocketOperationOverlay[data-screen=entry] .rop-mission-cover b{font-size:23px}
+#rocketOperationOverlay[data-screen=entry] .rop-story{display:grid;grid-template-columns:1fr;gap:7px}
+#rocketOperationOverlay[data-screen=entry] .rop-story article{padding:10px 12px;gap:3px}
+#rocketOperationOverlay[data-screen=entry] .rop-body>p{grid-column:1/-1;margin:0}
+.rop-story{grid-template-columns:1.1fr 1fr 1fr;gap:8px}.rop-story article{padding:12px;gap:6px;border-radius:4px;border-width:1px;font-size:12px}.rop-story article:not(.available){background:#9d8c6c55;color:#66573f}.rop-story article:not(.available) b:before{content:'◇ ';color:#79694e}.rop-story span{font-size:10px}.rop-story small{font-size:9px}.rop-notice{border-radius:3px;font-size:12px}.rop-body>p{font-size:12px;line-height:1.7}
+#rocketOperationOverlay[data-screen=starter] .rop-dialog{width:min(610px,100%)}
+.rop-starters{grid-template-columns:repeat(3,minmax(0,155px));justify-content:center;gap:12px}
+#rocketOperationOverlay .rop-starters button{position:relative;min-height:151px;padding:12px 8px;gap:5px;background:radial-gradient(ellipse at 50% 25%,#d7c295,#a38b63 90%);border:1px solid #e6d1a2;border-bottom:4px solid #81633c;border-radius:7px;box-shadow:inset 0 0 0 3px #9c815133,0 3px 8px #59432522}
+#rocketOperationOverlay .rop-starters button[aria-pressed=true]{background:radial-gradient(ellipse at 50% 25%,#fbe5a8,#ceb06c 90%);border-color:#a94031;box-shadow:0 0 0 2px #a94031,inset 0 0 0 3px #fff2bf66}
+#rocketOperationOverlay .rop-starters button[aria-pressed=true]:after{content:'✓';position:absolute;top:7px;right:7px;display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:#9e3e31;color:#fff0ca;font-size:12px}
+.rop-starters img{width:78px;height:78px;filter:drop-shadow(0 5px 2px #57452f33)}.rop-starters b{font-size:12px}.rop-starters small{font-size:10px}
+.rop-selected-team{display:flex;justify-content:center;gap:9px;margin-top:18px}.rop-selected-team>span{display:grid;place-items:center;width:42px;height:42px;background:#78654866;border:1px solid #8c7148;border-radius:50%;box-shadow:inset 0 2px 3px #51412b33}.rop-selected-team img{width:42px;height:42px;object-fit:contain;image-rendering:pixelated}.rop-selected-team .empty{color:#d4bf92;font-size:22px}.rop-selection{font-size:11px;margin:8px 0 0}
+.rop-map-caption{display:flex;align-items:center;justify-content:space-between;color:#654e30;font-size:10px;margin-bottom:14px}.rop-map-caption b{font-size:9px;letter-spacing:1.4px}
+.rop-map{grid-template-columns:repeat(10,minmax(0,1fr));gap:0;margin:0 0 23px;padding:0 0 18px;border-bottom:1px solid #8a714944}
+.rop-map li{position:relative;background:none;border:0!important;padding:0;align-items:center;gap:0}.rop-map li:before{content:'';position:absolute;left:-50%;right:50%;top:17px;height:2px;background:#89755066}.rop-map li:first-child:before{display:none}.rop-map li>b{z-index:1;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;font-size:11px;background:#a38d67;border:2px solid #8d744d;color:#d9c69d;box-shadow:0 0 0 4px #bba67d}.rop-map li span{display:none}.rop-map li.current{background:none}.rop-map li.current>b{background:#a94031;border-color:#f3ce85;color:#fff1cd;box-shadow:0 0 0 4px #ad47342b}.rop-map li.done{background:none}.rop-map li.done>b{background:#68734b;border-color:#bac18a;color:#f6edc7}
+.rop-choices{grid-template-columns:repeat(2,minmax(0,235px));justify-content:center;gap:18px}
+#rocketOperationOverlay .rop-room-card{position:relative;padding:0 14px 15px;min-height:260px;overflow:hidden;gap:8px;border-radius:7px;border-width:1px;border-bottom-width:4px;background:linear-gradient(#dcc599,#c8af7f);box-shadow:0 4px 10px #5d452522}
+.rop-route-art{display:flex;position:relative;align-items:center;justify-content:center;width:calc(100% + 28px);height:106px;margin-bottom:5px;background:radial-gradient(ellipse at 50% 90%,#a77e56,#51463a);border-bottom:2px solid #9e7e4f;overflow:hidden}
+.rop-route-art:before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 24px,#eee0ac0a 25px 26px),repeating-linear-gradient(90deg,transparent 0 38px,#eee0ac0a 39px 40px)}
+.rop-route-art img{position:relative;width:80px;height:90px;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 7px 3px #0004);align-self:flex-end}.rop-route-art em{position:absolute;left:9px;top:8px;color:#f2d59c;font-size:8px;font-style:normal;letter-spacing:1px;background:#342c27aa;padding:4px 6px;border-radius:2px}
+#rocketOperationOverlay .rop-room-card .rop-room-icon{position:absolute;top:87px;right:10px;width:28px;height:28px;font-size:15px;border-width:1px}.rop-room-card>b{font-size:16px}.rop-room-card p{font-size:12px;line-height:1.6}.rop-room-card small{font-size:10px;line-height:1.5;margin-top:auto;background:#9c81532b;border-radius:3px;padding:6px;width:100%}
+@media(max-width:600px){body #ttl .stream-games{grid-template-columns:repeat(3, minmax(155px,215px));gap:12px;overflow-x:auto;padding-bottom:6px}.rop-story{grid-template-columns:1fr}.rop-story article:not(.available){display:block}.rop-mission-cover{height:130px}.rop-mission-cover b{font-size:22px}#rocketOperationOverlay .rop-body{padding:16px}#rocketOperationOverlay header{padding:16px}.rop-starters{gap:8px}#rocketOperationOverlay .rop-starters button{min-height:135px}.rop-starters img{width:65px;height:65px}.rop-map li>b{width:25px;height:25px;font-size:9px;box-shadow:0 0 0 2px #bba67d}.rop-map li:before{top:12px}.rop-map-caption{font-size:9px}.rop-choices{gap:10px}#rocketOperationOverlay .rop-room-card{padding:0 10px 12px;min-height:250px}.rop-route-art{width:calc(100% + 20px)}.rop-room-card>b{font-size:14px}.rop-room-card p{font-size:11px}#rocketOperationOverlay footer{padding:12px 16px}}
+@media(max-width:600px){#rocketOperationOverlay[data-screen=entry] .rop-body:has(.rop-mission-cover){grid-template-columns:1fr}#rocketOperationOverlay[data-screen=entry] .rop-mission-cover{min-height:125px}#rocketOperationOverlay[data-screen=entry] .rop-story{grid-template-columns:1fr}#rocketOperationOverlay[data-screen=entry] .rop-story article:not(.available){font-size:11px;padding:8px 10px}}
