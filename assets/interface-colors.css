@@ -57,3 +57,57 @@ body #stage .rpop .rp-f i{color:#c9b99f}
 #roundbox #campaignModeChip[data-diff=hard]{border-color:#ae7464;color:#efd1b1}
 #roundbox #campaignModeChip[data-diff=easy]{border-color:#778364;color:#ccd9b6}
 @media(max-width:640px){#roundbox #campaignModeChip{font-size:9px;padding:2px 6px;gap:4px}#campaignModeChip img{width:12px;height:12px}}
+
+/* Settings and pause use the inventory's deeper sand, brass and red enamel. */
+body #stage #menu{background:#b29d76!important;color:#3c3025!important;border:2px solid #756246!important;box-shadow:inset 0 0 0 2px #cfb580,0 0 0 2px #3c3025,5px 6px #0006!important;scrollbar-color:#80613e #a99169}
+body #stage #menu :is(.mhead,.mh){background:#87523b!important;border-color:#67452c!important;color:#fff0cc!important;box-shadow:inset 0 2px #b1855b55!important}
+body #stage #menu h3{color:#fff0cf!important}
+body #stage #menu h3 .mico{background:#ad9163;border-color:#5b412b;box-shadow:inset 1px 1px #dac18e}
+body #stage #menu #mclose{background:#876846!important;border-color:#d1b47c!important;color:#fff0cc!important;box-shadow:inset 1px 1px #c5a370!important}
+body #stage #menu .mtabs{background:none!important}
+body #stage #menu .mtab{background:#a18b63!important;border-color:#79603e!important;color:#40301d!important;box-shadow:inset 1px 1px #ceb684,0 2px #715735!important}
+body #stage #menu .mtab.on{background:#aa4134!important;color:#fff0c8!important;border-color:#743d2a!important;box-shadow:inset 1px 1px #da8c66,inset -1px -1px #792d26,0 2px #69442c!important}
+body #stage #menu .mtab:hover{filter:brightness(1.09)}
+body #stage #menu .mgroup{background:#bca780!important;border-color:#8a704c!important}
+body #stage #menu .mrow{background:transparent!important;color:#3b2d1d}
+body #stage #menu .mgroup .mrow+.mrow{border-color:#927a5355}
+body #stage #menu :is(.ml,.mt,.comfort-choice,.key-setting){color:#3b2d1d!important}
+body #stage #menu .ms{color:#6c563d!important}
+body #stage #menu .mv{color:#684224!important}
+body #stage #menu .mpanes{scrollbar-color:#80613e #a99169}
+body #stage #menu .sw span{background:#927c58!important;border-color:#715435!important;box-shadow:inset 2px 2px #5c432d44}
+body #stage #menu .sw span:after{background:#e1c58c!important;box-shadow:inset 1px 1px #f5dfa8,inset -1px -1px #a2824d,1px 1px #59422e}
+body #stage #menu .sw input:checked+span{background:#8b4e36!important;border-color:#70402c!important}
+body #stage #menu :is(.seg button,.mbtn,.mbtn.soft,select,[data-bind-key]){background:#a18b63!important;border-color:#7a5c3a!important;color:#3e2e1c!important;box-shadow:inset 1px 1px #d2b989,inset -1px -1px #806342,0 2px #655036!important}
+body #stage #menu .seg button.on{background:#8b513b!important;border-color:#663b2b!important;color:#fff0cc!important}
+body #stage #menu .mbtn:hover{background:#c9b084!important}
+body #stage #menu :is(.help,kbd){background:#c6b28b!important;border-color:#90734b!important;color:#4a3621!important}
+body #stage #menu :is(.credit,.video-setup p){color:#654e36!important}
+body #stage #menu .video-setup>b{color:#6b3d29!important}
+body #stage #menu .mfoot{border-color:#80613e77}
+body #stage #menu a{color:#7d3028!important}
+body #stage #quickVolumePanel{background:#b29d76!important;border:2px solid #79603e!important;color:#3b2b1a!important;box-shadow:inset 2px 2px #dcc18f,inset -2px -2px #806342,0 0 0 3px #3c3025,5px 6px #0006!important}
+body #stage #quickVolumePanel output{color:#63482e!important}
+body #stage #quickVolumePanel .quick-volume-mute{background:#a18b63!important;border-color:#755737!important;color:#3b2918!important;box-shadow:inset 1px 1px #d0b582,inset -1px -1px #806342,0 2px #5e472f!important}
+body #stage #pausedOverlay{background:#17110ed4}
+body #stage #pausedOverlay .pause-card{background:#b29d76;border-color:#756246;box-shadow:inset 0 0 0 2px #cfb580,0 0 0 3px #3c3025,7px 8px #0006;scrollbar-color:#80613e #a99169}
+body #stage #pausedOverlay .pause-icon{background:#9b4e38;border-color:#d0ae73;box-shadow:inset 1px 1px #d98a5f,0 3px #65442b}
+body #stage #pausedOverlay .pause-icon:before,body #stage #pausedOverlay .pause-icon:after{background:#f2d79b;box-shadow:1px 1px #733b28}
+body #stage #pausedOverlay h2{color:#49301b;text-shadow:1px 1px #d4bc8e}
+body #stage #pausedOverlay :is(p,small){color:#644e35}
+body #stage #pausedOverlay .pause-settings{border-color:#80613e77}
+body #stage #pausedOverlay .pause-settings h3{color:#62432a}
+body #stage #pausedOverlay .pause-toggles{background:#bca780;border-color:#8a704c}
+body #stage #pausedOverlay :is(.pause-volume,.pause-quality,.pause-toggles label){color:#3e2d1b}
+body #stage #pausedOverlay .pause-volume output{color:#71472a}
+body #stage #pausedOverlay .pause-toggles input{background:#967b54;border-color:#715435}
+body #stage #pausedOverlay .pause-toggles input:checked{background:#974d36;border-color:#6c432c;box-shadow:inset 0 0 0 3px #d2b780}
+body #stage #pausedOverlay :is(button,select){background:#a18b63;border-color:#7a5c3a;color:#3e2e1c;box-shadow:inset 1px 1px #d2b989,inset -1px -1px #806342,0 2px #655036}
+body #stage #pausedOverlay #resumeBtn{background:#a94334;border-color:#773a29;color:#fff0c8;box-shadow:inset 2px 2px #d78059,inset -2px -2px #782c25,0 3px #63452d}
+body #stage #pausedOverlay #resumeBtn:hover{filter:brightness(1.1)}
+body #stage #quickVolumePanel input{background:linear-gradient(90deg,#895338 var(--p),#8e7854 var(--p))!important;box-shadow:0 2px #6b5034}
+body #stage #menu input[type=range]::-webkit-slider-runnable-track,body #stage #pausedOverlay .pause-volume input::-webkit-slider-runnable-track{background:linear-gradient(90deg,#985137 var(--p),#8e7854 var(--p));box-shadow:0 2px #705234}
+body #stage #menu input[type=range]::-webkit-slider-thumb,body #stage #quickVolumePanel input::-webkit-slider-thumb,body #stage #pausedOverlay .pause-volume input::-webkit-slider-thumb{background:#efd499;border-color:#927044;box-shadow:inset 1px 1px #fff0bf,1px 2px #65492e}
+body #stage #menu input[type=range]::-moz-range-track,body #stage #pausedOverlay .pause-volume input::-moz-range-track{background:#8e7854}
+body #stage #menu input[type=range]::-moz-range-progress,body #stage #pausedOverlay .pause-volume input::-moz-range-progress{background:#985137}
+body #stage #menu input[type=range]::-moz-range-thumb,body #stage #quickVolumePanel input::-moz-range-thumb,body #stage #pausedOverlay .pause-volume input::-moz-range-thumb{background:#efd499;border-color:#927044;box-shadow:1px 2px #65492e}
