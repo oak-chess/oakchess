@@ -1,76 +1,57 @@
 # Operação Rocket — Celadon
 
-Primeira operação jogável do modo de infiltração, com 25 etapas e combate na arena existente.
+## Estrutura
 
-## Entrada e equipe
+- 50 etapas em dez setores de cinco; Giovanni na etapa 50.
+- Três iniciais entre Bulbasaur, Charmander, Squirtle, Voltorb, Gastly e Machop.
+- Início: 100 vida, 10 ouro, quatro vagas; banco normal.
+- Cada setor oferece patrulha/celas, eventos especiais, combate, abrigo/evento e contrabandista. O último setor reserva loja na etapa 49 e Giovanni na 50.
+- Os nove eventos especiais são embaralhados uma vez por tentativa e distribuídos sem repetição em salas consecutivas. Todos são oferecidos ao longo do mapa; a escolha de caminho determina quais serão visitados.
+- Rotas e ofertas são persistidas. O mapa mantém cinco etapas visíveis e dez setores no indicador.
+- Preparação sem cronômetro, visualização do tabuleiro real com V.
 
-- Biblioteca → Operação Rocket → Iniciar ou continuar.
-- Escolha três entre Bulbasaur, Charmander, Squirtle, Voltorb, Gastly e Machop.
-- 100 de vida, 10 de ouro, nível 4, sem objetos iniciais.
-- Loja com linhas originárias de Kanto; lendários excluídos.
-- A campanha, a Torre e a Operação Rocket possuem salvamentos independentes.
+## Eventos especiais
 
-## Caminhos
+| Evento | Regras |
+| --- | --- |
+| Laboratório Rocket | Resgate de um Pokémon com duas estrelas ou duas cópias de um equipamento escolhido. Espécie e ofertas persistem. |
+| Funcionário disfarçado | Duas vitórias de escolta rendem um cartão e acesso ampliado aos terminais. Revela próximas lojas. Derrotas não reiniciam a escolta. |
+| Comboio | Combate reforçado: 10 ouro e 3 XP. Escolha um entre três presos; os demais são protegidos. |
+| Arquivo de pesquisas | Escolha uma linha da equipe. Uma oferta básica garantida em cada uma das próximas três visitas à loja, inclusive renovações, enquanto houver estoque. Pesquisa nova substitui a anterior. |
+| Sala de treinamento | +6 XP ou uma cópia básica de uma linha da equipe. |
+| Armadilha | Pagar 4 ouro ou +1 alerta e combate contra guardas. Vitória: 6 ouro e 2 XP. |
+| Mercado clandestino | Uma compra de cópia básica de aliado por custo normal +3 ouro. Exige estoque e vaga ou fusão imediata. |
+| Depósito trancado | Consumir um cartão ou arrombar com +2 alerta. Escolher equipamento especial. |
+| Comunicação interceptada | Revela três etapas futuras e permite evitar uma patrulha comum sem recompensa. Uma oportunidade armazenada; não evita oficiais nem Giovanni. |
 
-Cinco setores de cinco etapas. Contrabandistas garantidos nas etapas 5, 10, 15, 20 e 24; Giovanni na etapa 25. Os demais encontros alternam patrulhas, celas, depósitos, terminais, oficiais e abrigos. O mapa exibe cinco etapas por setor.
+Não há perseguidor recorrente ou adversário adaptado à composição.
 
-Rotas são salvas antes da escolha. Equipes adversárias, equipamentos oferecidos e Pokémon presos persistem quando a página é recarregada. O estado da arena é salvo antes da batalha; fechar durante o combate retoma sua preparação, como nos demais modos.
+## Regras compartilhadas
 
-## Alerta
+- Terminais: −2 alerta, copiar um cartão, ou equipamento. Após escolta: redução de 3.
+- Abrigo: +5 vida, −1 alerta ou +12% de ataque e vida na próxima batalha.
+- Patrulha: 6 ouro e 2 XP; celas: 5 ouro, 2 XP e resgate; oficial: 9 ouro, 2 XP e equipamento.
+- Derrota causa dano normal, mantém o encontro e não entrega recursos. Primeira derrota de cada etapa aumenta alerta em 1.
+- Alertas 2/3 trazem reforços/oficiais; 4 gera emboscada anunciada e volta a 2 ao entrar.
+- Resgates e cópias gratuitas contam como vistos. Compras registram; evoluções propagam o comprovante de compra.
+- Banco cheio permite organizar a equipe e voltar ao evento. Nenhuma compra é cobrada antes de haver vaga ou fusão.
+- Escolhas, submenus, prisioneiros, cartões, escolta, pesquisas e recompensas ficam no salvamento. Recarregar não sorteia novamente uma recompensa já apresentada.
+- Extração a cada setor encerrado, exceto após Giovanni. Salvar e sair permite retomar; extrair encerra a tentativa.
 
-- 0: oculto; 1: suspeita.
-- 2: os próximos encontros recebem um reforço.
-- 3: caminhos de patrulha passam a oferecer oficiais.
-- 4: a próxima patrulha/oficial vira uma emboscada anunciada; ao entrar, o alerta cai para 2.
-- A primeira derrota de cada etapa e as escolhas arriscadas aumentam o alerta em 1.
-- Terminal reduz 2; esconder-se no abrigo reduz 1.
-- Sem aumento por tempo decorrido; preparação sem contagem regressiva neste modo.
+## Persistência e migração
 
-## Recompensas e derrota
+Chaves: oakchess_rocket_operation_v1; sufixos _records e _progress.
 
-- Patrulha: 6 ouro e 2 XP.
-- Celas: 5 ouro, 2 XP e um resgate.
-- Oficial: 9 ouro, 2 XP e um equipamento.
-- Giovanni: 12 ouro, 2 XP, conclusão e Silph Scope como marco permanente.
-- Derrota: dano base da etapa mais os sobreviventes vencedores. Empate também conta como derrota.
-- Derrota exige nova tentativa no mesmo encontro; não concede ouro, cura ou itens.
-- Vida zero encerra a tentativa.
-- Equipamentos do depósito: escolha entre três ofertas salvas.
-- Abrigo: +5 vida (limite 100), −1 alerta ou reforço de 12% de ataque/vida por uma batalha.
-- Pokémon e suprimentos só podem ser comprados no contrabandista. Venda e organização continuam disponíveis na preparação.
+layoutVersion 3 identifica o mapa de 50 etapas. Saves de dez ou 25 etapas mantêm equipe, inventário, dinheiro, vida e histórico; encontros em andamento são preservados. Se estavam diante do antigo Giovanni, voltam ao mapa no mesmo índice e seguem os novos caminhos. Tentativas encerradas mantêm o total antigo nos resultados.
 
-## Resgates
+Os frascos são contados pelos itens da mochila; o contador dinâmico é recriado ao carregar.
 
-- Ajudar: entra no banco com uma estrela. Banco cheio permite organizar a equipe e retornar à escolha, ou encaminhar para segurança.
-- Segurança: conta como protegido, sem ocupar vaga.
-- Reserva vigiada: um equipamento adicional por cela e +1 alerta. Não pode repetir após recarregar.
-- Possibilidade de resgate shiny, sorteada e salva uma única vez.
-- Resgate marca visto. Compra na loja registra; evolução mantém comprovante de compra. O comportamento vem da Pokédex compartilhada.
-- Nenhum Pokémon da operação é transferido para a campanha.
+## Organização dos arquivos
 
-## Extração e resultado
+- assets/rocket-operation.js: fluxo da operação, combate, salvamento e interface principal.
+- assets/rocket-operation-events.js: definições, geração dos caminhos e nove eventos novos.
+- assets/rocket-operation.css: identidade Rocket e layouts responsivos.
+- assets/music/ROCKET-SOURCES.md: fontes das três trilhas.
+- assets/team-view.js: consulta ao tabuleiro real.
 
-- Extração disponível após as etapas 5, 10, 15 e 20, com confirmação de encerramento.
-- Salvar e sair preserva a tentativa; extrair encerra.
-- Pontuação: 100 por etapa, 150 por resgate, 50 adicionais por protegido, 1000 pela missão concluída, 5 por vida restante, penalidade de 25 por derrota limitada a 300.
-- Registros deduplicados pelo identificador da tentativa, máximo de cem registros.
-- Silph Scope persistente ao vencer Giovanni. Lavender e Silph Co. aparecem como expansões futuras, sem botões de operação jogável.
-
-## Arquivos e integração
-
-- `assets/rocket-operation.js`: estado, salas, persistência, resgates, conclusão e interface.
-- `assets/rocket-operation.css`: identidade Rocket em preto, grafite, vermelho e prata; menu e indicadores.
-- `assets/mode-art/rocket-base.svg`: capa vetorial própria da base.
-- `assets/game-home/streaming.js`: terceiro cartão e entrada do modo.
-- `assets/team-view.js`: botão V revela o tabuleiro real durante escolhas da operação.
-- `index.html`: encaminha rodada, preparação, resultado, reinício e salvamento; restringe loja e isola efeitos exclusivos da campanha.
-
-Armazenamento local: `oakchess_rocket_operation_v1`, sufixos `_records` e `_progress`.
-
-## Estado de entrega
-
-Implementação e recursos de distribuição preparados. Não foram executados testes de jogo ou validação visual no navegador. Equilíbrio inicial ainda depende de partidas completas e observação da experiência.
-
-## Migração para 25 etapas
-
-Tentativas em andamento preservam equipe, ouro, itens, vida e encontros concluídos. A antiga etapa 10 de Giovanni passa a oferecer o próximo caminho. Tentativas já encerradas e seus recordes mantêm o total original de dez etapas.
+Implementação preparada sem execução de testes de jogo ou conferência visual no navegador. O equilíbrio de uma partida completa de 50 etapas ainda precisa ser avaliado jogando.

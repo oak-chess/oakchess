@@ -127,3 +127,11 @@ body #ttl .stream-game-info{padding:12px 14px;min-height:58px}
 
 /* The infiltration map shows the five stages of the current sector. */
 #rocketOperationOverlay .rop-map{grid-template-columns:repeat(5,minmax(0,1fr))}
+.rop-event-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+#rocketOperationOverlay .rop-event-options button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:145px;background:radial-gradient(ellipse at 50% 20%,#424653,#282a35);border-color:#666d7e;border-bottom-color:#11131c;color:#f4f4fa}
+.rop-event-options img{width:76px;height:76px;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 5px 3px #0005)}
+.rop-event-options small{font-size:11px;line-height:1.5}.rop-event-options b{font-size:13px}.rop-special-event .rop-body>p{line-height:1.8;color:#d6d8e4}
+.rop-intel{list-style:none;padding:0;margin:14px 0}.rop-intel li{padding:10px 12px;border-left:3px solid #d44a61;background:#171a25;margin-bottom:8px;font-size:12px}.rop-intel li b{color:#ff9db0}
+.rop-intel-note{display:flex;flex-direction:column;gap:7px;padding:12px 14px;margin:0 0 16px;background:#181b27;border:1px solid #515a70;border-left:3px solid #dd5068;color:#d4d8e5;font-size:11px;line-height:1.7}.rop-intel-note>b{color:#ff9bb0}
+body.rocket-operation-event-wait #autoBattleToggle{display:none!important}
+@media(max-width:600px){.rop-event-options{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}#rocketOperationOverlay .rop-event-options button{padding:10px;min-height:130px}.rop-event-options img{width:66px;height:66px}}
