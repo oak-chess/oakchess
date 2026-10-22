@@ -223,3 +223,18 @@ body.rocket-operation-event-wait #autoBattleToggle{display:none!important}
 #rocketOperationOverlay[data-screen=starter] .rop-team-summary{border:0}
 #rocketOperationOverlay[data-screen=starter] .rop-guide .rop-guide-hint{border:0;padding-top:7px}
 @media(max-height:740px){#rocketOperationOverlay .rop-opponent{gap:7px;padding-bottom:8px}#rocketOperationOverlay .rop-opponent>img{height:92px;width:80px}#rocketOperationOverlay .rop-guide{padding-bottom:8px;margin-bottom:6px}}
+
+/* Floating presentation over the arena: no enclosing panel or segmented backdrop. */
+#rocketOperationOverlay{background:radial-gradient(ellipse at center,#080c16bf,#060910de);backdrop-filter:blur(5px)}
+#rocketOperationOverlay .rop-dialog,#rocketOperationOverlay[data-screen=starter] .rop-dialog{background:transparent;border:0;outline:0;border-radius:0;box-shadow:none}
+#rocketOperationOverlay header,#rocketOperationOverlay .rop-context,#rocketOperationOverlay footer{background:transparent;border:0;box-shadow:none}
+#rocketOperationOverlay header:after{display:none}
+#rocketOperationOverlay header{padding-top:7px}
+#rocketOperationOverlay .rop-body{background:transparent;border:0;box-shadow:none}
+#rocketOperationOverlay .rop-context{color:#c0cbde}
+#rocketOperationOverlay h2{color:#fff;text-shadow:0 2px 12px #0008}
+#rocketOperationOverlay header p,#rocketOperationOverlay .rop-guide>p{text-shadow:0 1px 5px #0008}
+#rocketOperationOverlay .rop-map{border-bottom:0}
+#rocketOperationOverlay .rop-map li>b{box-shadow:0 0 0 4px #11182799}
+#rocketOperationOverlay .rop-map li.current>b{box-shadow:0 0 0 4px #ec526729,0 0 20px #ec526722}
+#rocketOperationOverlay footer{padding-top:14px;padding-bottom:7px}
