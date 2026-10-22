@@ -4021,11 +4021,11 @@ function pickBird(i,els){
 
 function birdWin(done){const b=BIRDS[G.bird];storyScene(birdLines(b,[b.win]),()=>showBirdReward(done))}
 function showBirdReward(done){const b=BIRDS[G.bird];G.birdDone=done;
-  eventScreen(b.n,b.pick+`<div class="event-options"><button onclick="claimBird('item')">🎁 Itens raros<small>2 itens raros</small></button><button onclick="claimBird('gold')">🪙 12 de ouro<small>Receba na hora</small></button><button onclick="claimBird('catch')">🦅 Levar ${b.n}<small>Entra no seu banco</small></button></div>`,'story');
+  eventScreen(b.n,b.pick+`<div class="event-options"><button onclick="claimBird('item')">🎁 Itens raros<small>2 itens raros</small></button><button onclick="claimBird('gold')">🪙 12 de ouro<small>Receba na hora</small></button><button onclick="claimBird('catch')">🦅 Levar ${b.n}<small>Vaga exclusiva no campo · não ocupa o banco</small></button></div>`,'story');
   const e=$('#eventov');if(e){const l=birdLines(b,[b.pick])[0];e.classList.add('th-'+b.th);e.querySelector('.event-art').innerHTML=storyArt(l)}}
 function claimBird(kind){const b=BIRDS[G.bird];
-  if(kind==='catch'){const slot=freeBenchSlot();if(slot<0){toast('Banco cheio: libere uma vaga para levar '+b.n+'.');return}
-    const u=newUnit(b.line,1);place(u,{z:'n',i:slot});attachEl(u,true);mergeCheck();SND.cry(b.id,.9);toast('🦅 '+b.n+' juntou-se ao seu time!')}
+  if(kind==='catch'){if(G.tower)return;let spot=null;for(const r of[7,6,5,4])for(const c of[3,2,4,1,5,0,6])if(!spot&&!G.board.has(r+','+c))spot={z:'b',r,c};if(!spot){toast('Não há um hexágono livre para a ave. Reorganize o campo.');return}
+    const u=newUnit(b.line,1);u.campaignBird=true;place(u,spot);attachEl(u,true);mergeCheck();SND.cry(b.id,.9);toast('🦅 '+b.n+' entrou em uma vaga exclusiva! Não conta no limite da equipe.')}
   else if(kind==='gold'){G.gold+=12;toast('+12 de ouro!')}
   else dropRare(2);
   const done=G.birdDone;G.birdDone=null;closeEvent();renderShop();renderInv();renderHUD();layoutAll();if(done)setTimeout(done,300)}
@@ -4650,7 +4650,7 @@ function mergeCheck(){
         const pr=u=>!u.pos?2:u.pos.z==='b'?0:1;list.sort((a,b)=>pr(a)-pr(b));
         const keep=list[0],trio=[list[0],list[1],list[2]],shM=trio.some(x=>x.shiny),shMix=shM&&trio.some(x=>!x.shiny);
         for(const r of[list[1],list[2]]){for(const k of r.items){if(keep.items.length<3)keep.items.push(k);else G.items.push(k)}removeUnit(r)}
-        keep.star++;if(window.PDEX)PDEX.owned(keep,true);if(shM){keep.shiny=true;if(keep.el)keep.el.classList.add('shiny');if(shMix)setTimeout(()=>{toast('✨ A forma shiny foi mantida na evolução!');SND.star()},700)}
+        if(trio.some(x=>x.campaignBird))keep.campaignBird=true;keep.star++;if(window.PDEX)PDEX.owned(keep,true);if(shM){keep.shiny=true;if(keep.el)keep.el.classList.add('shiny');if(shMix)setTimeout(()=>{toast('✨ A forma shiny foi mantida na evolução!');SND.star()},700)}
         if(!keep.el){/* nunca deve ocorrer */}
         else{playEvolve(keep,keep.star-1);if(keep.line===EEVEE&&keep.star>=2&&!G.evoQueue.includes(keep))G.evoQueue.push(keep)}
         changed=true;break}}
@@ -4745,16 +4745,17 @@ function buyXp(){if(G.over||G.phase==='starter'||G.phase==='carousel')return;if(
 function income(){const n=G.ri+1,base=n<=1?2:n===2?3:n===3?4:5,interest=Math.min(5,Math.floor(G.gold/10)),s=Math.abs(G.streak),st=s>=5?3:s>=4?2:s>=2?1:0;return{base,interest,st,total:base+interest+st}}
 
 /* ---------- mover / drag & drop ---------- */
-const boardCount=()=>{let n=0;for(const u of G.board.values())if(!(G.mewHelp&&u.line===MEWLINE))n++;return n};
+function exclusiveCampaignSlot(u){return !!u&&((G.mewHelp&&u.line===MEWLINE)||(!G.tower&&u.campaignBird===true&&BIRDS.some(b=>b.line===u.line)))}
+const boardCount=()=>{let n=0;for(const u of G.board.values())if(!exclusiveCampaignSlot(u))n++;return n};
 function moveToBench(u,i){
   if(G.egg&&G.egg.slot===i){toast("Esse espaço está reservado para o ovo.");SND.err();return}
-  const v=G.bench[i];if(v===u)return;
+  const v=G.bench[i];if(v===u)return;if(u.pos.z==='b'&&v&&boardCount()-(exclusiveCampaignSlot(u)?0:1)+(exclusiveCampaignSlot(v)?0:1)>G.lvl){toast('A vaga exclusiva não pode ser usada por outro Pokémon.');SND.err();return}
   if(u.pos.z==='n'){G.bench[u.pos.i]=v;if(v)v.pos={z:'n',i:u.pos.i}}
   else{const old={...u.pos};G.board.delete(rk(old));if(v){v.pos=old;G.board.set(rk(old),v)}}
   G.bench[i]=u;u.pos={z:'n',i}}
 function moveToBoard(u,r,c){
   const k=r+','+c,v=G.board.get(k);if(v===u)return true;
-  if(u.pos.z==='n'){if(!v&&boardCount()>=G.lvl&&!(G.mewHelp&&u.line===MEWLINE)){toast(`Limite de ${G.lvl} Pokémon no campo. Suba de nível!`);SND.err();return false}
+  if(u.pos.z==='n'){if(boardCount()+(exclusiveCampaignSlot(u)?0:1)-(v&&!exclusiveCampaignSlot(v)?1:0)>G.lvl){toast(`Limite de ${G.lvl} Pokémon no campo. Suba de nível!`);SND.err();return false}
     G.bench[u.pos.i]=v||null;if(v)v.pos={z:'n',i:u.pos.i}}
   else{const old={...u.pos};G.board.delete(rk(old));if(v){v.pos=old;G.board.set(rk(old),v)}}
   G.board.set(k,u);u.pos={z:'b',r,c};return true}
@@ -4784,7 +4785,7 @@ addEventListener('pointermove',e=>{
   let occ=null;
   if(hlHex){const u0=D.u;
     if(hlHex.bench!=null){occ=G.bench[hlHex.bench]||null;hlHex.bad=!!(G.egg&&G.egg.slot===hlHex.bench)}
-    else{occ=G.board.get(hlHex.r+','+hlHex.c)||null;hlHex.bad=!occ&&u0.pos.z==='n'&&boardCount()>=G.lvl&&!(G.mewHelp&&u0.line===MEWLINE)}
+    else{occ=G.board.get(hlHex.r+','+hlHex.c)||null;hlHex.bad=u0.pos.z==='n'&&boardCount()+(exclusiveCampaignSlot(u0)?0:1)-(occ&&!exclusiveCampaignSlot(occ)?1:0)>G.lvl}
     if(occ===u0)occ=null;if(hlHex.bad)occ=null}
   setSwapTarget(occ);
   const sb=$('#sellbar');if(sb)sb.classList.toggle('hot',sell);
@@ -6249,7 +6250,7 @@ function snapshot(){
   g.items=G.items.slice();g.pool=G.pool.slice();g.vials=Object.assign({},G.vials);g.badges=G.badges.slice();g.said=Object.assign({},G.said||{});
   g.bless=G.bless?Object.assign({},G.bless):null;g.boons=(G.boons||[]).map(b=>JSON.parse(JSON.stringify(b)));g.boonQ=(G.boonQ||[]).slice();g.egg=G.egg?Object.assign({},G.egg):null;
   g.shop=G.shop.map(x=>x?{line:x.line,shiny:!!x.shiny}:null);g.shPity=G.shPity||0;g.weather=G.weather?Object.assign({},G.weather):null;g.evDone=!!G._evDone;
-  return{v:1,sch:SCHED_V,t:Date.now(),G:g,units:allUnits().filter(u=>u.pos).map(u=>({line:u.line,star:u.star,items:u.items.slice(),shiny:!!u.shiny,pos:Object.assign({},u.pos),evoSkip:u.evoSkip==null?null:u.evoSkip}))}}
+  return{v:1,sch:SCHED_V,t:Date.now(),G:g,units:allUnits().filter(u=>u.pos).map(u=>({line:u.line,star:u.star,items:u.items.slice(),shiny:!!u.shiny,campaignBird:!!u.campaignBird,pos:Object.assign({},u.pos),evoSkip:u.evoSkip==null?null:u.evoSkip}))}}
 function saveNow(){
   if(G.tower&&window.TOWER){TOWER.save();return}
   if(SAVE_TM){clearTimeout(SAVE_TM);SAVE_TM=null}
@@ -6571,7 +6572,7 @@ function loadGame(S){
     SAVE_KEYS.forEach(k=>{if(g[k]!==null&&g[k]!==undefined)G[k]=g[k]});if(!g.runDiff)G.runDiff='normal';if(g.birdPicked===null||g.birdPicked===undefined)G.birdPicked=true;
     G.items=g.items.slice();G.pool=g.pool.slice();{const ov=Object.assign({hp:0,pr:0,fe:0,ca:0},g.vials);POTI.forEach(k=>{for(let i=0;i<(+ov[k]||0);i++)G.items.push('pot_'+k)})}G.vials=mkVials();G.badges=g.badges.slice();G.said=Object.assign({},g.said);
     G.bless=g.bless;G.egg=g.egg;G.shop=g.shop;G.shPity=g.shPity||0;G.boons=Array.isArray(g.boons)?g.boons:[];G.boonQ=Array.isArray(g.boonQ)?g.boonQ:[];
-    S.units.forEach(su=>{const u=newUnit(su.line,su.star);u.items=su.items.slice();u.shiny=!!su.shiny;if(su.evoSkip!=null)u.evoSkip=su.evoSkip;place(u,su.pos);attachEl(u,false)});
+    S.units.forEach(su=>{const u=newUnit(su.line,su.star);u.items=su.items.slice();u.shiny=!!su.shiny;u.campaignBird=!!su.campaignBird||(su.campaignBird===undefined&&!G.tower&&g.birdBeaten&&BIRDS[g.bird]?.line===su.line);if(su.evoSkip!=null)u.evoSkip=su.evoSkip;place(u,su.pos);attachEl(u,false)});
     G.uid=Math.max(G.uid,g.uid||0);
     allUnits().forEach(u=>{if(u.line===EEVEE&&u.star>=2&&u.evoSkip!==u.star&&!G.evoQueue.includes(u))G.evoQueue.push(u)});
     $('#starter').classList.remove('show');stage.classList.remove('tdemo');SND.init();SND.music('plan');
