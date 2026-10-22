@@ -1,0 +1,50 @@
+/* Graphite and aged gold for gameplay information, retaining semantic type colors. */
+body #stage #tip,body #stage #tip.item-tip-open{background:#242329!important;color:#e9e0d1!important;box-shadow:0 -3px #9b8467,0 3px #9b8467,-3px 0 #9b8467,3px 0 #9b8467,0 -6px #17151b,0 6px #17151b,-6px 0 #17151b,6px 0 #17151b,0 9px #0c0b10,inset 2px 2px #ffffff0c,inset -2px -2px #17151b!important;scrollbar-color:#8e795f #1c1b21}
+body #stage #tip .uhc h4,body #stage #tip .abh b{color:#f5ecdf}
+body #stage #tip .tys .rl{color:#b6a38c}
+body #stage #tip .tys .ty{border-color:#1b191f;box-shadow:0 2px #151319}
+body #stage #tip .uc{border-color:#221c19;box-shadow:0 2px #141218}
+body #stage #tip .bar{background:#16151c;border-color:#222029;box-shadow:0 0 0 1px #7c6c58}
+body #stage #tip .sts div{background:#343038;border-color:#74645633}
+body #stage #tip .sts i{color:#b6a38e}
+body #stage #tip .sts b{color:#f4eadb}
+body #stage #tip .ab{background:#2e2b32;border-color:#77665733}
+body #stage #tip .ab.pas{background:linear-gradient(105deg,#51453288,#302c32);border-color:#b3975f66}
+body #stage #tip .ab p{color:#bfb2a1}
+body #stage #tip .ab em,body #stage #tip .itc em{color:#f3e6cf}
+body #stage #tip .abi{border-color:#aa9276;box-shadow:0 0 0 1px #18151b}
+body #stage #tip .tag{background:#48404a;color:#cbbb9f}
+body #stage #tip .ab.pas .tag{background:#d6b767;color:#302513}
+body #stage #tip .unl{border-color:#88725277;color:#9b8c7a;background:#1c1b21}
+body #stage #tip .unl b{color:#d9bc7c}
+body #stage #tip .syn-mem{border-color:#75614c}
+body #stage #tip .syn-lbl{color:#b8a58a}
+body #stage #tip .syn-lbl b{color:#e3c585}
+body #stage #tip .syn-p{background:#302d34;box-shadow:inset 1px 1px #ffffff09,inset -1px -1px #16151b}
+body #stage #tip .syn-p span{color:#8d8175}
+body #stage #tip .syn-p.on{background:#494038;box-shadow:inset 0 1px #cfb37c22}
+body #stage #tip .syn-p.on span{color:#f0e2ca}
+body #stage #tip .syn-tier{color:#b4a591!important}
+body #stage #tip .syn-tier.active{color:#e9c775!important}
+body #stage #tip .iti-head,body #stage #tip .iti-foot{border-color:#75614c}
+body #stage #tip .iti-head b{color:#f0e6d6}
+body #stage #tip.item-tip-open p{color:#cdbfae}
+body #stage #tip .iti-foot{color:#ad9b84}
+body #stage #tip .itc{background:#54462e44;border-color:#b4975855;color:#d8c8a6}
+body #stage #tip .skill-live-clock{color:#baa78c;border-color:#89714e55}
+body #stage .rpop{background:linear-gradient(135deg,#30292e,#1b1a21);border-color:#967c59;box-shadow:0 8px 26px #0009,inset 0 1px #cfb78a22;color:#f3e7d4}
+body #stage .rpop:before{background:#967c59}
+body #stage .rpop .rp-h{background:linear-gradient(110deg,#60423f88,#332a2d44);border-bottom:1px solid #9b805333}
+body #stage .rpop .rp-av{border-color:#bda27b;background:radial-gradient(circle at 50% 30%,#655044,#242129)}
+body #stage .rpop .rp-t b{text-shadow:0 1px #17131b;color:#f3e7d4}
+body #stage .rpop .rp-t small,body #stage .rpop .rp-f span{color:#bbac9b}
+body #stage .rpop .rp-st{background:#49404a;color:#d8c8b5}
+body #stage .rpop .rp-st.done{background:#304b3b;color:#b0d9ad}
+body #stage .rpop .rp-st.cur{background:linear-gradient(#dfc788,#b99a58);color:#332711}
+body #stage .rpop .rp-m span{background:#4c403f88;border-color:#a4895d44;color:#d9c9b3}
+body #stage .rpop .rp-tm img,body #stage .rpop .rp-tm i{background:#18161c;border-color:#79644a55;color:#aa987e}
+body #stage .rpop .rp-q{border-color:#aa8d5f;color:#c6b5a0}
+body #stage .rpop .rp-f{background:#16151b88;border-color:#85704f44}
+body #stage .rpop .rp-f img{background:#29232a;border-color:#c5a361}
+body #stage .rpop .rp-f small,body #stage .rpop .rp-f i b{color:#dfbf7b}
+body #stage .rpop .rp-f i{color:#c9b99f}
