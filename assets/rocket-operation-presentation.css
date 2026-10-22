@@ -1,0 +1,45 @@
+/* Shared presentation layer: open scene, readable facts and aligned decisions. */
+#rocketOperationOverlay .rop-dialog{width:min(900px,100%);isolation:isolate}
+#rocketOperationOverlay header{padding:10px 22px 12px}
+#rocketOperationOverlay header h2{font:700 27px/1.2 Arial,sans-serif;letter-spacing:-.7px;margin:9px 0}
+#rocketOperationOverlay header p{max-width:580px;font:13px/1.6 Arial,sans-serif;color:#c4ccdd;margin:0 auto}
+#rocketOperationOverlay .rop-context{gap:0;padding:8px 10px;line-height:1.5}
+#rocketOperationOverlay .rop-context>span{padding:0 11px;border-left:1px solid #8995ad33;font:11px/1.5 Arial,sans-serif;color:#aebcd3}
+#rocketOperationOverlay .rop-context>span:first-child{border:0;color:#f4c0cc;letter-spacing:.5px;font-size:9px}
+#rocketOperationOverlay .rop-guide{display:none}
+#rocketOperationOverlay[data-screen=starter] .rop-guide{display:flex}
+#rocketOperationOverlay .rop-body{display:flex;flex-direction:column;align-items:center;gap:12px;padding:14px 24px}
+#rocketOperationOverlay .rop-body>p{max-width:640px;margin:0 auto;font:13px/1.75 Arial,sans-serif;color:#c2cde0;text-wrap:pretty}
+#rocketOperationOverlay .rop-body>.rop-map,#rocketOperationOverlay .rop-body>.rop-map-caption{width:100%}
+#rocketOperationOverlay .rop-body>.rop-choices{width:100%}
+#rocketOperationOverlay[data-screen=starter] .rop-body{display:grid}
+#rocketOperationOverlay[data-screen=entry] .rop-body:has(.rop-mission-cover){display:grid}
+.rop-event-visual{position:relative;display:flex;align-items:center;justify-content:center;width:150px;height:104px;flex-shrink:0;margin:2px auto 5px}
+.rop-event-visual:before{content:'';position:absolute;inset:-12px -28px;background:radial-gradient(ellipse,#e5527330,transparent 67%);pointer-events:none}
+.rop-event-visual>i{position:absolute;bottom:1px;width:100px;height:29px;border:1px solid #dc607055;border-radius:50%;background:radial-gradient(ellipse,#cf5b6c22,transparent 70%);box-shadow:0 0 24px #c8436122}
+.rop-event-visual>img{position:relative;z-index:1;width:82px;height:99px;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 5px 3px #0006)}
+.rop-event-visual>span{position:absolute;right:0;bottom:0;display:grid;place-items:center;width:25px;height:25px;border:1px solid #ed6c83;border-radius:50%;background:#401f2d;color:#ff8199;font:bold 17px Arial,sans-serif;box-shadow:0 0 12px #e94e6c22}
+.rop-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;width:min(570px,100%);margin:3px auto 0}
+.rop-facts>div{display:flex;align-items:center;flex-direction:column;gap:7px;padding:8px 12px;position:relative}
+.rop-facts>div+div:before{content:'';position:absolute;left:-12px;top:12px;bottom:12px;width:1px;background:linear-gradient(transparent,#8c9fbd66,transparent)}
+#rocketOperationOverlay .rop-facts small{font:700 9px Arial,sans-serif;letter-spacing:1px;color:#ee9aac}
+.rop-facts b{font:600 19px/1.3 Arial,sans-serif;color:#f8faff}
+.rop-facts span{font:11px/1.6 Arial,sans-serif;color:#aebed7}
+#rocketOperationOverlay .rop-body>.rop-scene-note{font:11px/1.6 Arial,sans-serif;color:#90a6c7;margin:2px auto}
+#rocketOperationOverlay footer.rop-explained-actions{display:flex;align-items:stretch;justify-content:center;gap:18px;max-width:790px;width:100%;padding:16px 12px 5px}
+#rocketOperationOverlay .rop-action-choice{display:grid;grid-template-rows:15px minmax(36px,auto) auto;align-content:start;justify-items:center;align-items:start;gap:7px;flex:0 1 220px;margin:0}
+#rocketOperationOverlay .rop-action-kind{font:700 8px/15px Arial,sans-serif;letter-spacing:1.2px;color:#8399bc;min-height:15px}
+#rocketOperationOverlay .rop-action-choice[data-primary=true] .rop-action-kind{color:#f39aaf}
+#rocketOperationOverlay .rop-action-choice button{min-height:36px;padding:8px 13px;border-radius:7px;font:600 11px/1.4 Arial,sans-serif;max-width:220px;width:100%;align-self:stretch;box-shadow:0 3px 10px #0003;transition:background .18s,border-color .18s,box-shadow .18s,transform .18s}
+#rocketOperationOverlay .rop-action-choice[data-primary=true] button{background:linear-gradient(125deg,#d74262,#a92a49);border-color:#ec718b;color:#fff;box-shadow:0 3px 12px #c6385622,inset 0 1px #ffb3c222}
+#rocketOperationOverlay .rop-action-choice button.secondary{background:linear-gradient(120deg,#303c50,#253044);border-color:#52647e;color:#e0e9f9}
+#rocketOperationOverlay .rop-action-choice p{font:11px/1.6 Arial,sans-serif;color:#9fb0cb;margin:0;max-width:220px;min-height:34px;text-wrap:pretty}
+#rocketOperationOverlay .rop-action-choice button:hover:not(:disabled){transform:translateY(-2px);filter:none;border-color:#ffc0d0;box-shadow:0 4px 18px #ef668533}
+#rocketOperationOverlay .rop-action-choice button:active:not(:disabled){transform:translateY(0)}
+#rocketOperationOverlay .rop-room-card:hover:not(:disabled){border-color:#f78aa5;box-shadow:0 0 24px #dd5b7422;transform:translateY(-3px)}
+#rocketOperationOverlay[data-motion=on] .rop-event-visual>i{animation:rop-orbit-light 3.5s ease-in-out infinite}
+#rocketOperationOverlay[data-motion=on] .rop-body{animation:rop-content-enter .3s ease-out both}
+@keyframes rop-orbit-light{50%{opacity:.5;transform:scale(.9)}}
+@keyframes rop-content-enter{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:600px){#rocketOperationOverlay header h2{font-size:23px}#rocketOperationOverlay .rop-context{gap:6px 0}.rop-facts{gap:12px}.rop-facts b{font-size:16px}.rop-facts span{font-size:10px}#rocketOperationOverlay footer.rop-explained-actions{gap:12px}#rocketOperationOverlay .rop-action-choice{flex-basis:160px}#rocketOperationOverlay .rop-action-choice p{font-size:10px}#rocketOperationOverlay .rop-body{padding:12px}.rop-event-visual{height:90px}.rop-event-visual>img{height:85px}}
+@media(prefers-reduced-motion:reduce){#rocketOperationOverlay .rop-body,#rocketOperationOverlay .rop-event-visual>i{animation:none!important}#rocketOperationOverlay .rop-action-choice button{transition:none}}

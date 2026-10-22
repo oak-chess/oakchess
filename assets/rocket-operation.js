@@ -50,6 +50,7 @@ function save(force=false){
 function close(){if(overlay&&!active())SND.music('title');if(window.TEAM_VIEW?.isOpen)TEAM_VIEW.close();if(overlay){overlay.remove();overlay=null}document.body.classList.remove('rocket-entry-open');if(focusBefore?.isConnected)focusBefore.focus()}
 function actionExplanation(label){
  const rules=[
+ [/Pedir (uma )?rota segura/,['Reduza o alerta em 1 e siga sem iniciar uma escolta.','AJUDA IMEDIATA']],
  [/Preparar equipe|Reorganizar/,['Organize a equipe. Vença para avançar; a derrota retira vida.','PREPARAÇÃO']],
  [/Equipe pronta|Começar infiltração/,['Entre na base com os três Pokémon selecionados.','INICIAR']],
  [/Ajudar na operação|Tentar receber no banco|Levar para/,['O Pokémon entra no seu banco e pode lutar nesta tentativa.','EQUIPE']],
@@ -84,7 +85,7 @@ function actionExplanation(label){
 }
 function clarifyActions(root,actions){
  const footer=root.querySelector('footer');
- actions.forEach((a,i)=>{const explanation=actionExplanation(a.label);if(!explanation)return;const button=root.querySelector('[data-rop-action="'+i+'"]'),choice=document.createElement('div'),tag=document.createElement('small'),detail=document.createElement('p');choice.className='rop-action-choice';tag.className='rop-action-kind';tag.textContent=explanation[1];detail.textContent=a.detail||explanation[0];footer.insertBefore(choice,button);choice.append(tag,button,detail);if(a.label.startsWith('Arrombar reserva'))button.textContent='Buscar item extra';else if(a.label.startsWith('Encaminhar para segurança'))button.textContent='Proteger o Pokémon';else if(a.label.startsWith('Salvar e sair'))button.textContent='Salvar e sair'});
+ actions.forEach((a,i)=>{const explanation=actionExplanation(a.label)||[a.detail||'','OUTRA OPÇÃO'];const button=root.querySelector('[data-rop-action="'+i+'"]'),choice=document.createElement('div'),tag=document.createElement('small'),detail=document.createElement('p');choice.className='rop-action-choice';choice.dataset.primary=String(!a.secondary);tag.className='rop-action-kind';tag.textContent=explanation[1];detail.textContent=a.detail||explanation[0];footer.insertBefore(choice,button);choice.append(tag,button,detail);if(a.label.startsWith('Arrombar reserva'))button.textContent='Buscar item extra';else if(a.label.startsWith('Encaminhar para segurança'))button.textContent='Proteger o Pokémon';else if(a.label.startsWith('Salvar e sair'))button.textContent='Salvar e sair'});
  footer.classList.toggle('rop-explained-actions',!!footer.querySelector('.rop-action-choice'));
 }
 function explainPanel(root){
@@ -103,7 +104,7 @@ function panel(title,text,html='',actions=[],entry=false){
  overlay=document.createElement('section');overlay.id='rocketOperationOverlay';overlay.className=entry?'rocket-operation-entry':'';overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-labelledby','rocketOperationTitle');
  overlay.innerHTML='<div class="rop-dialog"><header><span class="rop-eyebrow">OPERAÇÃO ROCKET · CELADON</span><h2 id="rocketOperationTitle">'+esc(title)+'</h2><p>'+esc(text)+'</p></header><div class="rop-body">'+html+'</div><footer>'+actions.map((a,i)=>'<button type="button" data-rop-action="'+i+'" class="'+(a.secondary?'secondary':'')+'">'+esc(a.label)+'</button>').join('')+'</footer></div>';
  document.body.append(overlay);SND.init();SND.music(active()&&['intro','rescue'].includes(state().status)?'rocket-encounter':'rocket-hideout');const root=overlay;root.dataset.screen=entry?'entry':root.querySelector('.rop-starters')?'starter':root.querySelector('.rop-map')?'map':'event';
- explainPanel(root);
+ root.dataset.motion=CFG.reduceFx?'off':'on';explainPanel(root);
  clarifyActions(root,actions);
  actions.forEach((a,i)=>root.querySelector('[data-rop-action="'+i+'"]').onclick=()=>{if(overlay!==root)return;SND.init();SND.click();a.run()});
  root.addEventListener('keydown',e=>{if(e.key!=='Tab')return;const els=[...root.querySelectorAll('button:not(:disabled),a[href]')];if(!els.length)return;const i=els.indexOf(document.activeElement);if(e.shiftKey&&i<=0||!e.shiftKey&&i===els.length-1){e.preventDefault();els[e.shiftKey?els.length-1:0].focus()}});

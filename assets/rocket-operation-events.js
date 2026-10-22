@@ -28,7 +28,12 @@ function create(c){
  function teamLines(){return [...new Set(allUnits().map(u=>baseLine(u.line)))].filter(i=>LINES[i]&&!LINES[i].boss&&LINES[i].ids[0]<=151&&LINES[i].ids[0]!==151)}
  function stock(){return Object.keys(ITEMBY).filter(k=>['scope','vest','leftovers','sash','specs','helmet','bell','scarf','band'].includes(k))}
  function itemOptions(){const d=data();if(!d.items)d.items=shuffled(stock()).slice(0,3);save(true);return d.items}
- function scene(title,text,html='',actions=[]){const root=panel(title,text,html,actions);root.classList.add('rop-special-event');return root}
+ function scene(title,text,html='',actions=[]){
+  const root=panel(title,text,html,actions);root.classList.add('rop-special-event');
+  const art={laboratory:trainerUrl('scientist'),employee:trainerUrl('scientist'),research:'assets/mode-art/rocket-terminal.svg',training:sprite(66),trap:trainerUrl('rocketgrunt'),blackmarket:trainerUrl('gentleman'),locked:itemUrl('choice-band'),intercept:'assets/mode-art/rocket-terminal.svg',terminal:'assets/mode-art/rocket-terminal.svg'}[state().room];
+  if(art&&!root.querySelector('.rop-event-options,.rop-item-options')){const visual=document.createElement('div');visual.className='rop-event-visual';visual.innerHTML='<i></i><img src="'+art+'" alt=""><span>R</span>';root.querySelector('.rop-body').prepend(visual)}
+  return root;
+ }
  function done(){const d=data();if(d.claimed)return;d.claimed=true;complete()}
  function receive(line,purchased=false,cost=0){
   const d=data();if(d.claimed||!LINES[line])return;
@@ -68,7 +73,7 @@ function create(c){
    scene('Laboratório Rocket','Experimentos foram interrompidos. Você pode ajudar o Pokémon ou recolher os equipamentos.','<p>O Pokémon experimental entra como resgate com duas estrelas. Equipamentos: duas cópias de um item escolhido.</p>',[{label:'Libertar Pokémon experimental · ★★',run:()=>freePokemon(2)},{label:'Recuperar equipamentos',secondary:true,run:()=>{d.view='items';save(true);room()}}]);
   }else if(t.room==='employee'){
    if(t.escort){scene('Funcionário em segurança','Você já está escoltando um funcionário. Ele revela uma passagem protegida.','<p>Reduza o alerta em 1 e continue a escolta atual.</p>',[{label:'Usar passagem · −1 alerta',run:()=>{c.alertBy(-1);done()}}]);return true}
-   scene('Funcionário disfarçado','“Sou da manutenção! Se me ajudar a sair, consigo abrir os controles da base.”','<p>Vença duas batalhas durante a escolta. Ao concluir, receba um cartão de acesso; terminais passam a reduzir 3 de alerta. O funcionário também revela a localização das próximas lojas. Derrotas não apagam as vitórias da escolta.</p>',[{label:'Escoltar funcionário',run:()=>{t.escort={left:2};t.shopIntel=true;done()}},{label:'Pedir uma rota segura · −1 alerta',secondary:true,run:()=>{c.alertBy(-1);done()}}]);
+   scene('Funcionário disfarçado','“Sou da manutenção. Você pode me ajudar a sair?”','<div class="rop-facts"><div><small>OBJETIVO DA ESCOLTA</small><b>Vencer 2 batalhas</b><span>Derrotas não apagam suas vitórias.</span></div><div><small>AO CONCLUIR</small><b>1 cartão de acesso</b><span>Terminais passam a reduzir 3 de alerta.</span></div></div><p class="rop-scene-note">Ao aceitar, você também descobre onde estão as próximas lojas.</p>',[{label:'Escoltar funcionário',run:()=>{t.escort={left:2};t.shopIntel=true;done()}},{label:'Pedir rota segura',detail:'Reduza o alerta em 1 e avance sem iniciar uma escolta.',secondary:true,run:()=>{c.alertBy(-1);done()}}]);
   }else if(t.room==='research'){
    if(!teamLines().length){scene('Arquivo de pesquisas','Não há Pokémon na sua equipe para pesquisar.','',[{label:'Recuperar verba · +4 ouro',run:()=>{G.gold+=4;done()}}]);return true}
    scene('Arquivo de pesquisas','Direcione a busca de cópias para uma linha da sua equipe.','<p>Uma cópia básica garantida nas ofertas de cada uma das próximas três visitas à loja, incluindo renovações enquanto houver estoque. Uma pesquisa nova substitui a anterior. Não concede cópias nem registros gratuitamente.</p>',[{label:'Escolher linha da equipe',run:()=>{d.view='focus';save(true);chooseFocus()}},{label:'Seguir sem pesquisar',secondary:true,run:done}]);
