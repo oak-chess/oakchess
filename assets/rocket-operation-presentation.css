@@ -43,3 +43,19 @@
 @keyframes rop-content-enter{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:600px){#rocketOperationOverlay header h2{font-size:23px}#rocketOperationOverlay .rop-context{gap:6px 0}.rop-facts{gap:12px}.rop-facts b{font-size:16px}.rop-facts span{font-size:10px}#rocketOperationOverlay footer.rop-explained-actions{gap:12px}#rocketOperationOverlay .rop-action-choice{flex-basis:160px}#rocketOperationOverlay .rop-action-choice p{font-size:10px}#rocketOperationOverlay .rop-body{padding:12px}.rop-event-visual{height:90px}.rop-event-visual>img{height:85px}}
 @media(prefers-reduced-motion:reduce){#rocketOperationOverlay .rop-body,#rocketOperationOverlay .rop-event-visual>i{animation:none!important}#rocketOperationOverlay .rop-action-choice button{transition:none}}
+
+/* Fit the map, intelligence and choices without the previous few overflowing pixels. */
+#rocketOperationOverlay[data-screen=map] .rop-body{gap:8px;padding-top:8px;padding-bottom:8px}
+#rocketOperationOverlay[data-screen=map] .rop-map{padding-bottom:4px;margin-bottom:3px}
+#rocketOperationOverlay[data-screen=map] .rop-map-caption{margin-bottom:4px}
+#rocketOperationOverlay[data-screen=map] .rop-body>.rop-intel-note{padding:3px 0;margin:0;font:11px/1.4 Arial,sans-serif}
+#rocketOperationOverlay[data-screen=map] .rop-choices{margin-top:5px}
+#rocketOperationOverlay[data-screen=map] .rop-room-card{gap:4px;padding-bottom:7px}
+#rocketOperationOverlay[data-screen=map] .rop-route-art{height:55px;margin-bottom:1px}
+#rocketOperationOverlay[data-screen=map] .rop-route-art img{height:50px;width:52px}
+#rocketOperationOverlay[data-screen=map] .rop-room-card .rop-room-icon{top:39px}
+#rocketOperationOverlay[data-screen=map] footer.rop-explained-actions{padding-top:9px}
+#rocketOperationOverlay[data-screen=map] footer .rop-action-kind{display:none}
+#rocketOperationOverlay[data-screen=map] footer .rop-action-choice{grid-template-rows:minmax(32px,auto) auto;gap:4px}
+#rocketOperationOverlay[data-screen=map] footer .rop-action-choice p{min-height:0;font-size:10px;max-width:320px}
+@media(min-width:761px) and (max-height:780px){#rocketOperationOverlay{padding-top:55px;padding-bottom:10px}#rocketOperationOverlay[data-screen=map] header{padding-top:5px;padding-bottom:7px}#rocketOperationOverlay[data-screen=map] .rop-context{padding-block:5px}#rocketOperationOverlay[data-screen=map] .rop-room-card p{line-height:1.4}#rocketOperationOverlay[data-screen=map] .rop-map li span{margin-top:5px}}

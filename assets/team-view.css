@@ -15,3 +15,6 @@ body.team-view-real .carw,body.team-view-real .carw *{visibility:hidden!importan
 @media(prefers-reduced-motion:reduce){.team-view-trigger,.team-view-return{transition:none}}
 .team-view-trigger,.team-view-return{left:24px;right:auto;transform:none}
 @media(max-width:700px){.team-view-trigger,.team-view-return{left:12px}}
+.team-view-trigger,.team-view-return{left:50%;transform:translateX(-50%);touch-action:none;user-select:none;cursor:grab}
+.team-view-trigger.team-view-dragging,.team-view-return.team-view-dragging{cursor:grabbing;box-shadow:0 5px 22px #0008}
+@media(max-width:700px){.team-view-trigger,.team-view-return{left:50%}}
