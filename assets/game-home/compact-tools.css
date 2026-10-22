@@ -55,3 +55,18 @@ body #ttl.stream-browsing .stream-home{grid-template-rows:49px minmax(240px,1fr)
 .stream-home .stream-tool-dock.stream-nav button[aria-current=page]:before{background:linear-gradient(#d8be83 0 43%,#223e3a 43% 56%,#e6dfbd 56%)}
 .stream-home .stream-tool-dock.stream-nav button:focus-visible{outline:2px solid #e6d29b!important;outline-offset:3px}
 .stream-home .stream-tool-dock.stream-nav button.stream-settings{margin-top:10px!important}
+
+/* Inventory-inspired sand keys and red enamel for the library navigation. */
+body .stream-home .stream-tool-dock.stream-nav button,body .stream-home .stream-tool-dock.stream-nav button.stream-settings{background:linear-gradient(135deg,#bca780,#a18b63)!important;border-color:#7b6041!important;box-shadow:inset 1px 1px #d9bf8c,inset -1px -2px #816443,0 3px 8px #130e0a55!important}
+body .stream-home .stream-tool-dock.stream-nav button>span:not(.stream-nav-icon){color:#3b2b1b!important;text-shadow:0 1px #e2cda055}
+body .stream-home .stream-tool-dock.stream-nav button .stream-nav-icon{background:#5a4534;box-shadow:inset 1px 1px #39291d66,inset -1px -1px #e8cfa033;border-radius:3px}
+body .stream-home .stream-tool-dock.stream-nav button .stream-nav-icon svg{filter:drop-shadow(0 1px #21160d88)}
+body .stream-home .stream-tool-dock.stream-nav button .stream-nav-icon svg path:last-child{fill:#4a3426}
+body .stream-home .stream-tool-dock.stream-nav button:before{background:linear-gradient(#b74937 0 43%,#715137 43% 56%,#e6cea1 56%);box-shadow:1px 0 #6f513a33}
+body .stream-home .stream-tool-dock.stream-nav button:hover,body .stream-home .stream-tool-dock.stream-nav button:focus-visible,body .stream-home .stream-tool-dock.stream-nav button.stream-settings:hover,body .stream-home .stream-tool-dock.stream-nav button.stream-settings:focus-visible{background:linear-gradient(110deg,#d5bd8e,#bda174)!important;border-color:#e4c891!important;box-shadow:inset 1px 1px #f0d9a7,inset -1px -2px #997747,0 5px 14px #130e0a66!important}
+body .stream-home .stream-tool-dock.stream-nav button[aria-current=page]{background:linear-gradient(135deg,#b4533f,#8d392f)!important;border-color:#cb9b6b!important;box-shadow:inset 1px 1px #d68a62,inset -1px -2px #682c25,0 3px 8px #130e0a55!important}
+body .stream-home .stream-tool-dock.stream-nav button[aria-current=page]>span:not(.stream-nav-icon){color:#fff0ce!important;text-shadow:0 1px #68302688}
+body .stream-home .stream-tool-dock.stream-nav button[aria-current=page] .stream-nav-icon{background:#612f27;box-shadow:inset 1px 1px #3c211b55,inset -1px -1px #d49d6633}
+body .stream-home .stream-tool-dock.stream-nav button[aria-current=page]:hover,body .stream-home .stream-tool-dock.stream-nav button[aria-current=page]:focus-visible{background:linear-gradient(110deg,#c8674b,#a44434)!important;box-shadow:inset 1px 1px #e59a6c,inset -1px -2px #7d3227,0 5px 14px #130e0a66!important}
+body .stream-home .stream-tool-dock.stream-nav button[aria-current=page]:before{background:linear-gradient(#ebd28e 0 43%,#773528 43% 56%,#f6e5bd 56%)}
+body .stream-home .stream-tool-dock.stream-nav button:focus-visible{outline-color:#f3d79a!important}
