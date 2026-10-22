@@ -177,3 +177,30 @@ body.rocket-operation-event-wait #autoBattleToggle{display:none!important}
 .rop-map li span{display:block;font:10px/1.4 Arial,sans-serif;color:#8f9db5;max-width:110px;margin-top:10px;padding:0 4px}.rop-map li.current span{color:#ffc0ce}.rop-map li.done span{color:#bac5d7}
 .rop-route-action{display:block;width:100%;padding:9px 0 2px;color:#ff9eb5;font:600 11px Arial,sans-serif;border-top:1px solid #59617466;margin-top:3px}
 #rocketOperationOverlay .rop-room-card small{margin-top:8px}
+
+/* Fit stage decisions within normal desktop heights; retain readable overflow on small screens. */
+#rocketOperationOverlay header{text-align:center;padding:15px 24px 12px}
+#rocketOperationOverlay header p{margin-inline:auto}
+#rocketOperationOverlay .rop-context{justify-content:center;gap:9px 20px;padding:10px 20px}
+#rocketOperationOverlay .rop-context>span:first-child{margin-right:0}
+#rocketOperationOverlay footer{justify-content:center;padding:12px 22px}
+#rocketOperationOverlay .rop-body{text-align:center;padding:16px 24px}
+.rop-guide{text-align:center;grid-template-columns:1fr;gap:1px;margin-bottom:14px;padding:10px 16px}
+.rop-guide h3{font-size:15px;margin:3px 0}.rop-guide>p{font-size:11px;margin:2px 0;line-height:1.5}
+.rop-map-caption{justify-content:center;gap:18px;margin-bottom:10px}
+.rop-map{margin-bottom:14px;padding-bottom:12px}.rop-map li span{font-size:9px;margin-top:7px}
+#rocketOperationOverlay[data-screen=map] .rop-choices{gap:16px}
+#rocketOperationOverlay[data-screen=map] .rop-room-card{min-height:0;gap:6px;padding-bottom:10px}
+#rocketOperationOverlay[data-screen=map] .rop-route-art{height:76px;margin-bottom:3px}
+#rocketOperationOverlay[data-screen=map] .rop-route-art img{height:69px;width:68px}
+#rocketOperationOverlay[data-screen=map] .rop-room-card .rop-room-icon{top:59px;width:25px;height:25px}
+#rocketOperationOverlay[data-screen=map] .rop-room-card>b{font-size:15px}
+#rocketOperationOverlay[data-screen=map] .rop-room-card p{font-size:11px;line-height:1.5}
+#rocketOperationOverlay[data-screen=map] .rop-room-card small{font-size:9px;line-height:1.4;margin-top:3px;padding:5px}
+#rocketOperationOverlay[data-screen=map] .rop-route-action{padding:7px 0 0;margin-top:1px;font-size:10px}
+#rocketOperationOverlay .rop-intel-note{padding:8px 12px;margin-bottom:10px;font-size:10px;line-height:1.5;text-align:center}
+#rocketOperationOverlay[data-screen=starter] .rop-guide{text-align:center;align-items:center}
+#rocketOperationOverlay[data-screen=starter] .rop-team-summary{width:100%}
+@media(min-width:761px) and (min-height:680px){#rocketOperationOverlay{padding-top:62px;padding-bottom:14px}#rocketOperationOverlay[data-screen=map] h2{font-size:24px;margin-block:5px}#rocketOperationOverlay[data-screen=map] header p{font-size:12px}#rocketOperationOverlay[data-screen=map] .rop-guide>small{font-size:8px!important}#rocketOperationOverlay[data-screen=map] .rop-guide{padding:8px 12px;margin-bottom:12px}}
+@media(max-height:740px) and (min-width:761px){#rocketOperationOverlay header{padding:11px 22px 9px}#rocketOperationOverlay h2{font-size:23px;margin-block:4px}#rocketOperationOverlay header p{font-size:11px;line-height:1.4}#rocketOperationOverlay .rop-context{padding:8px 16px;font-size:10px}#rocketOperationOverlay .rop-body{padding:12px 22px}#rocketOperationOverlay footer{padding:9px 20px}#rocketOperationOverlay footer button{min-height:36px;padding:9px 14px}#rocketOperationOverlay[data-screen=map] .rop-guide{padding:7px 10px;margin-bottom:10px}.rop-map li>b{width:29px;height:29px}.rop-map li:before{top:14px}.rop-map{margin-bottom:10px;padding-bottom:8px}#rocketOperationOverlay[data-screen=map] .rop-route-art{height:64px}#rocketOperationOverlay[data-screen=map] .rop-route-art img{height:59px}#rocketOperationOverlay[data-screen=map] .rop-room-card .rop-room-icon{top:48px}#rocketOperationOverlay[data-screen=map] .rop-room-card{gap:5px}}
+@media(max-width:580px){.rop-context>span:first-child{width:auto}.rop-guide h3{font-size:14px}.rop-guide>p{font-size:11px}#rocketOperationOverlay .rop-context{gap:8px 12px}.rop-map-caption{gap:9px;font-size:9px}#rocketOperationOverlay[data-screen=map] .rop-room-card>b{font-size:13px}}
