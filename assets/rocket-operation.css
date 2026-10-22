@@ -255,3 +255,22 @@ body.rocket-operation-event-wait #autoBattleToggle{display:none!important}
 #rocketOperationOverlay .rop-rescue>small{font:11px/1.6 Arial,sans-serif;color:#9baac4;max-width:460px;margin:0 auto}
 .rop-room-mode{font:700 8px Arial,sans-serif;letter-spacing:1.1px;color:#e0a6b6;margin:3px 0}
 @media(max-width:600px){#rocketOperationOverlay .rop-explained-actions{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 12px;padding-inline:0}.rop-action-choice:last-child:nth-child(odd){grid-column:1/-1;max-width:300px;justify-self:center;width:100%}.rop-action-choice p{font-size:10px}.rop-action-kind{font-size:8px}#rocketOperationOverlay .rop-rescue img{width:85px;height:85px}}
+
+/* Compact controls; explanatory text remains outside the click target. */
+#rocketOperationOverlay footer button,#rocketOperationOverlay .rop-action-choice button{width:auto;max-width:220px;min-height:32px;padding:7px 12px;font:600 11px/1.35 Arial,sans-serif;border-radius:6px}
+#rocketOperationOverlay .rop-explained-actions{display:flex;justify-content:center;flex-wrap:wrap;width:auto;max-width:800px;gap:14px 18px;padding-top:10px}
+#rocketOperationOverlay .rop-action-choice{flex:0 1 205px;gap:6px}
+#rocketOperationOverlay .rop-action-choice p{font-size:10px;line-height:1.5;max-width:205px}
+#rocketOperationOverlay .rop-action-kind{font-size:8px;letter-spacing:.8px}
+#rocketOperationOverlay .rop-room-card{max-width:210px;padding-inline:11px;padding-bottom:8px;gap:5px;justify-self:center;width:100%}
+#rocketOperationOverlay .rop-choices{grid-template-columns:repeat(2,minmax(0,210px));gap:13px}
+#rocketOperationOverlay .rop-route-art{width:calc(100% + 22px);height:65px}
+#rocketOperationOverlay[data-screen=map] .rop-route-art{height:65px}
+#rocketOperationOverlay[data-screen=map] .rop-route-art img{height:58px;width:58px}
+#rocketOperationOverlay[data-screen=map] .rop-room-card .rop-room-icon{top:49px}
+#rocketOperationOverlay .rop-event-options{grid-template-columns:repeat(auto-fit,minmax(120px,155px));justify-content:center;gap:10px}
+#rocketOperationOverlay .rop-event-options button{min-height:115px;padding:9px;gap:5px}
+#rocketOperationOverlay .rop-event-options img{width:55px;height:55px}
+#rocketOperationOverlay .rop-item-options button{min-width:115px;max-width:170px;min-height:0;padding:10px;gap:7px}
+#rocketOperationOverlay .rop-item-options img{width:36px;height:36px}
+@media(max-width:600px){#rocketOperationOverlay .rop-action-choice{flex-basis:160px}#rocketOperationOverlay .rop-explained-actions{gap:12px}.rop-action-choice:last-child:nth-child(odd){max-width:205px}#rocketOperationOverlay footer button{min-height:34px}#rocketOperationOverlay .rop-choices{grid-template-columns:repeat(2,minmax(0,190px))}}
