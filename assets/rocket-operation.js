@@ -48,6 +48,45 @@ function save(force=false){
  finally{writing=false}
 }
 function close(){if(overlay&&!active())SND.music('title');if(window.TEAM_VIEW?.isOpen)TEAM_VIEW.close();if(overlay){overlay.remove();overlay=null}document.body.classList.remove('rocket-entry-open');if(focusBefore?.isConnected)focusBefore.focus()}
+function actionExplanation(label){
+ const rules=[
+ [/Preparar equipe|Reorganizar/,['Organize a equipe. Vença para avançar; a derrota retira vida.','PREPARAÇÃO']],
+ [/Equipe pronta|Começar infiltração/,['Entre na base com os três Pokémon selecionados.','INICIAR']],
+ [/Ajudar na operação|Tentar receber no banco|Levar para/,['O Pokémon entra no seu banco e pode lutar nesta tentativa.','EQUIPE']],
+ [/Encaminhar para segurança/,['Proteja o Pokémon sem ocupar uma vaga na equipe.','RESGATE']],
+ [/Arrombar reserva/,['Receba um equipamento e +1 alerta. Depois, escolha o destino do Pokémon.','OPCIONAL']],
+ [/Organizar banco/,['Libere uma vaga e retorne a este mesmo resgate.','BANCO CHEIO']],
+ [/Salvar e sair/,['Guarde o progresso para continuar esta tentativa depois.','CONTINUAR DEPOIS']],
+ [/Extrair|Confirmar extração/,['Encerre esta tentativa e registre os resgates realizados.','ENCERRAR']],
+ [/Evitar patrulha/,['Gaste a informação interceptada. Avance sem receber ouro ou XP.','SEM COMBATE']],
+ [/Continuar infiltração|Escolher próximo caminho/,['Veja os encontros disponíveis e escolha por onde avançar.','PRÓXIMA ETAPA']],
+ [/Usar cartão/,['Consuma um cartão para abrir o depósito sem aumentar o alerta.','ACESSO SEGURO']],
+ [/Copiar cartão/,['Guarde um cartão para abrir um depósito trancado mais adiante.','RECURSO']],
+ [/^Arrombar/,['Abra o depósito, receba um equipamento e aumente o alerta em 2.','RISCO']],
+ [/Desativar câmeras|Esconder-se|Usar passagem/,['Reduza o alerta da base. O encontro será concluído.','SEGURANÇA']],
+ [/Recuperar 5/,['Recupere até 5 pontos de vida, respeitando o limite de 100.','CURA']],
+ [/Preparar reforço/,['+12% de ataque e vida para seus Pokémon apenas na próxima batalha.','PRÓXIMA BATALHA']],
+ [/Libertar Pokémon experimental/,['Resgate um Pokémon de duas estrelas e escolha levá-lo ou protegê-lo.','RESGATE']],
+ [/Recuperar equipamentos/,['Escolha um equipamento e receba duas cópias dele.','MOCHILA']],
+ [/Escoltar funcionário/,['Vença duas batalhas para ganhar um cartão e acesso ampliado aos terminais.','MISSÃO EXTRA']],
+ [/Treinar equipe/,['Receba 6 XP para aumentar a capacidade da sua arena.','DESENVOLVIMENTO']],
+ [/Receber cópia/,['Escolha uma cópia básica gratuita de uma linha da sua equipe.','EVOLUÇÃO']],
+ [/Escolher linha/,['Direcione as próximas três lojas para uma linha da sua equipe.','PESQUISA']],
+ [/Enfrentar os guardas/,['+1 alerta. Vença para ganhar 6 ouro e 2 XP; derrota causa dano normal.','COMBATE']],
+ [/Desativar sistema/,['Pague 4 ouro e avance sem enfrentar os guardas.','SEM COMBATE']],
+ [/Guardar informações/,['Revele três etapas e guarde uma oportunidade de evitar uma patrulha.','INTELIGÊNCIA']],
+ [/Localizar equipamento|Localizar depósito/,['Escolha um equipamento para adicionar à mochila.','MOCHILA']],
+ [/Seguir sem comprar|Seguir sem pesquisar/,['Conclua o encontro sem gastar recursos nem receber esta recompensa.','SEGUIR']],
+ [/Voltar/,['Retorne à escolha anterior.','VOLTAR']]
+ ];
+ for(const [pattern,words] of rules)if(pattern.test(label))return words;
+ return null;
+}
+function clarifyActions(root,actions){
+ const footer=root.querySelector('footer');
+ actions.forEach((a,i)=>{const explanation=actionExplanation(a.label);if(!explanation)return;const button=root.querySelector('[data-rop-action="'+i+'"]'),choice=document.createElement('div'),tag=document.createElement('small'),detail=document.createElement('p');choice.className='rop-action-choice';tag.className='rop-action-kind';tag.textContent=explanation[1];detail.textContent=a.detail||explanation[0];footer.insertBefore(choice,button);choice.append(tag,button,detail);if(a.label.startsWith('Arrombar reserva'))button.textContent='Buscar item extra';else if(a.label.startsWith('Encaminhar para segurança'))button.textContent='Proteger o Pokémon';else if(a.label.startsWith('Salvar e sair'))button.textContent='Salvar e sair'});
+ footer.classList.toggle('rop-explained-actions',!!footer.querySelector('.rop-action-choice'));
+}
 function explainPanel(root){
  if(!active()||state().status==='ended')return;const t=state(),preparing=root.dataset.screen==='starter',mapping=root.dataset.screen==='map';
  const context=document.createElement('div');context.className='rop-context';context.innerHTML='<span><i class="rop-status-dot"></i>'+ (preparing?'PREPARAÇÃO':mapping?'ESCOLHA DO CAMINHO':t.room?esc(ROOMS[t.room].name).toUpperCase():'INFILTRAÇÃO')+'</span><span>'+(preparing?'3 Pokémon iniciais':'Etapa '+(t.step+1)+' / '+TOTAL)+'</span><span>'+Math.round(G.hp)+' vida</span><span>'+G.gold+' ouro</span><span>Alerta '+t.alert+'/4 · '+ALERT[t.alert]+'</span>';
@@ -65,6 +104,7 @@ function panel(title,text,html='',actions=[],entry=false){
  overlay.innerHTML='<div class="rop-dialog"><header><span class="rop-eyebrow">OPERAÇÃO ROCKET · CELADON</span><h2 id="rocketOperationTitle">'+esc(title)+'</h2><p>'+esc(text)+'</p></header><div class="rop-body">'+html+'</div><footer>'+actions.map((a,i)=>'<button type="button" data-rop-action="'+i+'" class="'+(a.secondary?'secondary':'')+'">'+esc(a.label)+'</button>').join('')+'</footer></div>';
  document.body.append(overlay);SND.init();SND.music(active()&&['intro','rescue'].includes(state().status)?'rocket-encounter':'rocket-hideout');const root=overlay;root.dataset.screen=entry?'entry':root.querySelector('.rop-starters')?'starter':root.querySelector('.rop-map')?'map':'event';
  explainPanel(root);
+ clarifyActions(root,actions);
  actions.forEach((a,i)=>root.querySelector('[data-rop-action="'+i+'"]').onclick=()=>{if(overlay!==root)return;SND.init();SND.click();a.run()});
  root.addEventListener('keydown',e=>{if(e.key!=='Tab')return;const els=[...root.querySelectorAll('button:not(:disabled),a[href]')];if(!els.length)return;const i=els.indexOf(document.activeElement);if(e.shiftKey&&i<=0||!e.shiftKey&&i===els.length-1){e.preventDefault();els[e.shiftKey?els.length-1:0].focus()}});
  root.querySelector('button')?.focus();return root;
@@ -123,7 +163,8 @@ function map(readOnly=false){
  const t=state();if(!readOnly){t.status='map';G.phase='plan';G.eventModal=true;choices();save(true)}
  const tiles=Array.from({length:SECTOR_SIZE},(_,offset)=>{const i=Math.floor(t.step/SECTOR_SIZE)*SECTOR_SIZE+offset,past=t.history.find(x=>x.step===i);return '<li title="Etapa '+(i+1)+' · '+(past?esc(ROOMS[past.room].name):i===TOTAL-1?'Giovanni':i===t.step?(t.room?esc(ROOMS[t.room].name):'Escolha o caminho'):'Ainda não explorada')+'" class="'+(past?'done':i===t.step?'current':'')+'"><b>'+(past?'✓':i+1)+'</b><span>'+(past?esc(ROOMS[past.room].name):i===TOTAL-1?'Giovanni':i===t.step?(t.room?esc(ROOMS[t.room].name):'Escolha o caminho'):'A explorar')+'</span></li>'}).join('');
  const roomArt={patrol:trainerUrl('rocketgrunt'),cells:sprite(104),depot:itemUrl('choice-band'),terminal:'assets/mode-art/rocket-terminal.svg',shop:trainerUrl('scientist'),shelter:sprite(113),officer:trainerUrl('rocketgruntf'),boss:trainerUrl('giovanni'),laboratory:trainerUrl('scientist'),employee:trainerUrl('scientist'),convoy:trainerUrl('rocketgruntf'),research:'assets/mode-art/rocket-terminal.svg',training:sprite(66),trap:itemUrl('red-card'),blackmarket:trainerUrl('gentleman'),locked:itemUrl('choice-band'),intercept:'assets/mode-art/rocket-terminal.svg'};
- const list=readOnly?'':choices().map((c,i)=>'<button type="button" class="rop-room-card" data-kind="'+c.id+'" data-route="'+i+'"><span class="rop-route-art"><img src="'+roomArt[c.id]+'" alt=""><em>CAMINHO '+(i+1)+'</em></span><span class="rop-room-icon">'+ROOMS[c.id].icon+'</span><b>'+ROOMS[c.id].name+'</b><p>'+ROOMS[c.id].text+'</p><small>'+ (c.risk?'Rota arriscada · +1 alerta ao entrar':'Sem aumento de alerta ao entrar')+'</small><span class="rop-route-action">Escolher caminho →</span></button>').join('');
+ const combatRooms=['patrol','cells','officer','boss','convoy'];
+ const list=readOnly?'':choices().map((c,i)=>'<button type="button" class="rop-room-card" data-kind="'+c.id+'" data-route="'+i+'"><span class="rop-route-art"><img src="'+roomArt[c.id]+'" alt=""><em>CAMINHO '+(i+1)+'</em></span><span class="rop-room-icon">'+ROOMS[c.id].icon+'</span><span class="rop-room-mode">'+(combatRooms.includes(c.id)?'COMBATE':c.id==='shop'||c.id==='blackmarket'?'COMPRAS':'EVENTO DE ESCOLHA')+'</span><b>'+ROOMS[c.id].name+'</b><p>'+ROOMS[c.id].text+'</p><small>'+ (c.risk?'Rota arriscada · +1 alerta ao entrar':'Sem aumento de alerta ao entrar')+'</small><span class="rop-route-action">Escolher caminho →</span></button>').join('');
  const intel=(t.revealedThrough>=t.step?'<div class="rop-intel-note"><b>Comunicação decodificada</b><span>'+t.routes.slice(t.step,Math.min(t.revealedThrough+1,TOTAL)).map((r,i)=>'Etapa '+(t.step+i+1)+': '+r.map(id=>esc(ROOMS[id].name)).join(' / ')).join('<br>')+'</span></div>':'')+(t.shopIntel?'<p class="rop-intel-note">Próximas lojas: '+t.routes.map((r,i)=>r.includes('shop')&&i>=t.step?i+1:null).filter(Boolean).slice(0,3).join(', ')+'</p>':'');
  const root=panel('Mapa da infiltração','Setor '+(Math.floor(t.step/SECTOR_SIZE)+1)+'/10 · Alerta '+t.alert+' — '+ALERT[t.alert],'<div class="rop-map-caption"><b>PLANTA DA BASE</b><span>Etapa '+(t.step+1)+' de 50 · '+t.rescued.length+' resgates</span></div><ol class="rop-map">'+tiles+'</ol>'+intel+'<div class="rop-choices">'+list+'</div>',readOnly?[{label:'Voltar à preparação',run:()=>{close();G.eventModal=false;renderHUD()}}]:[{label:'Salvar e sair',secondary:true,run:exit}]);
  root.querySelectorAll('[data-route]').forEach(b=>b.onclick=()=>enter(+b.dataset.route));
@@ -180,10 +221,10 @@ function shop(){
 function rescue(){
  const t=state();if(!t.pendingRescue){const id=shuffled([100,35,37,43,54,58,63,66,77,79,81,86,102,104,108,114,116,133].filter(id=>lineFor(id)))[0];t.pendingRescue={id,shiny:random()<.03};save(true)}
  const p=t.pendingRescue,l=lineFor(p.id),star=p.star||1,name=l.names[star-1]||l.names[0],waiting=t.rescueChoice==='help';
- const root=panel(waiting?'Abra uma vaga no banco':'Uma cela foi aberta',waiting?'O Pokémon aguarda em segurança. Organize o banco para recebê-lo ou encaminhe-o para proteção.':'“Você veio me buscar?” O Pokémon está livre. Escolha como ele seguirá a operação.',
+ const root=panel(waiting?'Seu banco está cheio':'Pokémon libertado',waiting?'Libere uma vaga para levar o Pokémon ou encaminhe-o para segurança.':'Escolha se ele entra na sua equipe ou segue para um lugar seguro.',
  '<div class="rop-rescue"><img src="'+sprite(l.ids[star-1],p.shiny)+'" alt="'+esc(name)+'"><h3>'+esc(name)+(p.shiny?' ✦ Shiny':'')+'</h3><p>'+('★'.repeat(star))+' · '+typesOf(l,star).map(k=>esc(TYPES[k].n)).join(' · ')+'</p><small>Libertar conta como visto. O registro na Pokédex exige compra na loja.</small></div>',
- [{label:waiting?'Tentar receber no banco':'Ajudar na operação',run:()=>recruit()},{label:'Encaminhar para segurança',secondary:true,run:()=>protect()},{label:waiting?'Organizar banco':'Arrombar reserva · +1 equipamento e +1 alerta',secondary:true,run:()=>waiting?organizeRescue():riskRescue()}]);
- if(t.ransacked&&!waiting){const b=root.querySelector('[data-rop-action="2"]');b.disabled=true;b.textContent='Reserva aberta · equipamento recebido'}window.PDEX?.observe([{line:l.i,star,shiny:p.shiny}],'rocket:resgate');return root;
+ [{label:waiting?'Tentar receber no banco':'Levar para minha equipe',run:()=>recruit()},{label:'Encaminhar para segurança',secondary:true,run:()=>protect()},{label:waiting?'Organizar banco':'Arrombar reserva · +1 equipamento e +1 alerta',secondary:true,run:()=>waiting?organizeRescue():riskRescue()}]);
+ if(t.ransacked&&!waiting){const b=root.querySelector('[data-rop-action="2"]');b.disabled=true;b.textContent='Reserva aberta';const choice=b.closest('.rop-action-choice');if(choice){choice.querySelector('.rop-action-kind').textContent='CONCLUÍDO';choice.querySelector('p').textContent='Equipamento recebido. Agora escolha levar ou proteger o Pokémon.'}}window.PDEX?.observe([{line:l.i,star,shiny:p.shiny}],'rocket:resgate');return root;
 }
 function finishRescue(help){const t=state(),p=t.pendingRescue;t.rescued.push({id:p.id,shiny:p.shiny,help,star:p.star||1,step:t.step});if(!help)t.protected++;t.pendingRescue=null;t.rescueChoice=null;complete()}
 function recruit(){const t=state();if(t.status!=='rescue'||!t.pendingRescue)return;const slot=freeBenchSlot();if(slot<0){t.rescueChoice='help';save(true);rescue();return}const p=t.pendingRescue,l=lineFor(p.id),u=newUnit(l.i,p.star||1);u.shiny=p.shiny;if(u.line===EEVEE&&u.star>=2&&!G.evoQueue.includes(u))G.evoQueue.push(u);place(u,{z:'n',i:slot});attachEl(u,true);mergeCheck();finishRescue(true)}
