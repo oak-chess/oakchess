@@ -14,7 +14,14 @@ const ROOMS={
  boss:{name:'Giovanni',icon:'R',text:'Derrote o líder da base, recupere o Silph Scope e conclua a operação.'}
 };
 // Every sector offers a rescue, a trader and a shelter; optional routes remain explicit.
-const ROUTES=[['patrol','cells'],['cells','depot'],['shop','shelter'],['terminal','patrol'],['cells','officer'],['shelter','shop'],['depot','patrol'],['terminal','shop'],['officer','cells'],['boss']];
+const SECTOR_SIZE=5, TOTAL=25;
+const ROUTES=[
+ ['patrol','cells'],['patrol','depot'],['cells','patrol'],['shelter','terminal'],['shop'],
+ ['patrol','terminal'],['cells','depot'],['patrol','officer'],['shelter','depot'],['shop'],
+ ['patrol','cells'],['depot','terminal'],['cells','officer'],['shelter','patrol'],['shop'],
+ ['patrol','officer'],['cells','terminal'],['officer','depot'],['shelter','cells'],['shop'],
+ ['patrol','cells'],['terminal','officer'],['shelter','depot'],['shop'],['boss']
+];
 let overlay=null,focusBefore=null,writing=false,saveFailed=false;
 const hud=document.createElement('aside');hud.id='rocketOperationHud';hud.hidden=true;document.getElementById('stage').append(hud);
 const active=()=>!!G.rocketOperation, state=()=>G.rocketOperation;
@@ -29,7 +36,7 @@ function shuffled(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floo
 function valid(s){
  if(!s||s.version!==1||!s.operation||!s.game||!Array.isArray(s.units))return false;
  const t=s.operation,g=s.game;
- if(!Number.isInteger(t.step)||t.step<0||t.step>9||!Number.isInteger(t.alert)||t.alert<0||t.alert>4||!Number.isInteger(t.rng)||!Array.isArray(t.history)||!Array.isArray(t.rescued)||!Array.isArray(t.selected)||!['starter','map','intro','plan','room','shop','rescue','gate','result','ended'].includes(t.status))return false;
+ if(!Number.isInteger(t.step)||t.step<0||t.step>=TOTAL||!Number.isInteger(t.alert)||t.alert<0||t.alert>4||!Number.isInteger(t.rng)||!Array.isArray(t.history)||!Array.isArray(t.rescued)||!Array.isArray(t.selected)||!['starter','map','intro','plan','room','shop','rescue','gate','result','ended'].includes(t.status))return false;
  if(t.room&&!ROOMS[t.room]||!Array.isArray(g.pool)||g.pool.length!==LINES.length||!Array.isArray(g.shop)||g.shop.some(x=>x&&(!LINES[x.line]||LINES[x.line].boss))||!Array.isArray(g.items)||g.items.some(k=>!ITEMBY[k])||![g.hp,g.gold,g.lvl,g.xp].every(Number.isFinite)||g.lvl<2||g.lvl>9)return false;
  if(t.pendingRescue&&(!lineFor(t.pendingRescue.id)||typeof t.pendingRescue.shiny!=='boolean'))return false;
  const used=new Set();return s.units.every(u=>{const p=u.pos,k=JSON.stringify(p);if(!LINES[u.line]||(LINES[u.line].boss&&!EEVEE_FORMS.includes(u.line))||!Number.isInteger(u.star)||u.star<1||u.star>3||!Array.isArray(u.items)||u.items.some(k=>!ITEMBY[k])||!p||used.has(k))return false;used.add(k);return p.z==='n'?Number.isInteger(p.i)&&p.i>=0&&p.i<9:p.z==='b'&&Number.isInteger(p.r)&&p.r>=4&&p.r<8&&Number.isInteger(p.c)&&p.c>=0&&p.c<7});
@@ -63,7 +70,7 @@ window.addEventListener('keydown',e=>{
 function menu(){
  const s=read(KEY),has=valid(s),running=has&&s.operation.status!=='ended',progress=read(PROGRESS)||{};
  panel('Operação Rocket','Infiltre-se na base de Celadon, liberte Pokémon e recupere o Silph Scope.',
- '<div class="rop-mission-cover"><img src="assets/mode-art/rocket-base.svg" alt="Base da Equipe Rocket em Celadon"><span><small>DOSSIÊ 01 / KANTO</small><b>Base escondida</b><em>10 etapas · Infiltração · Resgate</em></span></div><div class="rop-story"><article class="available"><b>01 · Base escondida</b><span>Celadon · 10 etapas · Giovanni</span><small>'+(progress.celadon?'✓ Silph Scope recuperado':'Disponível')+'</small></article><article><b>02 · Ecos de Lavender</b><span>Torre Pokémon · Resgate do Sr. Fuji</span><small>'+(progress.celadon?'Próxima operação · em expansão':'Após Celadon · em expansão')+'</small></article><article><b>03 · Silph sob ataque</b><span>Silph Co. · Libertação de Saffron</span><small>Expansão futura</small></article></div>'+(running?'<p class="rop-notice">Tentativa salva · etapa '+(s.operation.step+1)+'/10 · '+Math.round(s.game.hp)+' de vida · alerta '+s.operation.alert+'</p>':'')+'<p>Escolha três Pokémon, explore caminhos e proteja seus resgates. A dificuldade desta operação é própria; o ouro e a equipe pertencem a esta tentativa.</p>',
+ '<div class="rop-mission-cover"><img src="assets/mode-art/rocket-base.svg" alt="Base da Equipe Rocket em Celadon"><span><small>DOSSIÊ 01 / KANTO</small><b>Base escondida</b><em>25 etapas · Infiltração · Resgate</em></span></div><div class="rop-story"><article class="available"><b>01 · Base escondida</b><span>Celadon · 25 etapas · Giovanni</span><small>'+(progress.celadon?'✓ Silph Scope recuperado':'Disponível')+'</small></article><article><b>02 · Ecos de Lavender</b><span>Torre Pokémon · Resgate do Sr. Fuji</span><small>'+(progress.celadon?'Próxima operação · em expansão':'Após Celadon · em expansão')+'</small></article><article><b>03 · Silph sob ataque</b><span>Silph Co. · Libertação de Saffron</span><small>Expansão futura</small></article></div>'+(running?'<p class="rop-notice">Tentativa salva · etapa '+(s.operation.step+1)+'/25 · '+Math.round(s.game.hp)+' de vida · alerta '+s.operation.alert+'</p>':'')+'<p>Escolha três Pokémon, explore caminhos e proteja seus resgates. A dificuldade desta operação é própria; o ouro e a equipe pertencem a esta tentativa.</p>',
  [...(running?[{label:'Continuar operação',run:()=>launch(s)}]:[]),{label:'Iniciar operação',run:()=>running?confirmNew():launch()},{label:'Recordes',secondary:true,run:records},{label:'Voltar à biblioteca',secondary:true,run:close}],true);
 }
 function confirmNew(){panel('Substituir a tentativa?','A equipe e os recursos da Operação Rocket atual serão substituídos. Os recordes e o progresso de conclusão serão mantidos.','',[{label:'Voltar',run:menu},{label:'Começar nova operação',secondary:true,run:()=>launch()}],true)}
@@ -76,9 +83,9 @@ function clean(){
 function launch(s=null){
  clean();newGame();G.runDiff='normal';G.lvl=4;G.gold=10;G.xp=0;G.hp=100;G.mk=null;G.hintOn=false;G.casinoAt=[];
  const seed=(Math.random()*4294967295)>>>0||1;
- G.rocketOperation={version:1,id:Date.now().toString(36)+'-'+seed.toString(36),rng:seed,step:0,status:'starter',selected:[],room:null,alert:0,maxAlert:0,wins:0,losses:0,history:[],rescued:[],protected:0,enemy:null,offers:[],pendingRescue:null,lossAlertSteps:[],risky:false,startedAt:Date.now(),result:null};
+ G.rocketOperation={version:1,id:Date.now().toString(36)+'-'+seed.toString(36),rng:seed,layoutVersion:2,total:TOTAL,step:0,status:'starter',selected:[],room:null,alert:0,maxAlert:0,wins:0,losses:0,history:[],rescued:[],protected:0,enemy:null,offers:[],pendingRescue:null,lossAlertSteps:[],risky:false,startedAt:Date.now(),result:null};
  if(valid(s)){
-  G.rocketOperation=copy(s.operation);const game=copy(s.game);delete game.vials;Object.assign(G,game);G.vials=mkVials();
+  G.rocketOperation=copy(s.operation);const t=state();if(t.layoutVersion!==2){t.total=t.status==='ended'?10:TOTAL;if(t.status!=='ended'&&t.step===9){t.status='map';t.room=null;t.enemy=null;t.choices=null;t.shopOpened=false}t.layoutVersion=2}const game=copy(s.game);delete game.vials;Object.assign(G,game);G.vials=mkVials();
   for(const su of s.units){const u=newUnit(su.line,su.star);u.items=su.items.slice();u.shiny=!!su.shiny;u.dexPurchased=!!su.dexPurchased;u.evoSkip=su.evoSkip;place(u,{...su.pos});attachEl(u,false)}
   allUnits().forEach(u=>{if(u.line===EEVEE&&u.star>=2&&u.evoSkip!==u.star&&!G.evoQueue.includes(u))G.evoQueue.push(u)});
  }
@@ -87,7 +94,7 @@ function launch(s=null){
  document.body.classList.add('rocket-operation-active');G.phase='plan';G.eventModal=true;G.round=round(state().step);G.ri=state().step;SND.music('plan');setArenaTheme(7);showNpc(null);renderInv();layoutAll();renderHUD();
  if(state().status==='ended'){resultScreen();return}save(true);resume();
 }
-function round(i){return{rocketOperation:true,kind:'trainer',gym:0,lg:0,st:1+Math.floor(i/3),rn:i+1,n:10,lbl:(i+1)+'/10',kinds:Array(10).fill('trainer'),extra:true}}
+function round(i){return{rocketOperation:true,kind:'trainer',gym:0,lg:0,st:1+Math.floor(i/SECTOR_SIZE),rn:i+1,n:TOTAL,lbl:(i+1)+'/25',kinds:Array(TOTAL).fill('trainer'),extra:true}}
 function alertBy(n){const t=state();t.alert=Math.max(0,Math.min(4,t.alert+n));t.maxAlert=Math.max(t.maxAlert,t.alert)}
 function starter(){
  const t=state();const root=panel('Prepare sua equipe','Escolha três Pokémon básicos. Eles começam com uma estrela; quatro vagas ficam disponíveis na arena.',
@@ -101,10 +108,10 @@ function choices(){
 }
 function map(readOnly=false){
  const t=state();if(!readOnly){t.status='map';G.phase='plan';G.eventModal=true;choices();save(true)}
- const tiles=Array.from({length:10},(_,i)=>{const past=t.history.find(x=>x.step===i);return '<li title="Etapa '+(i+1)+' · '+(past?esc(ROOMS[past.room].name):i===9?'Giovanni':i===t.step?'Escolha atual':'Ainda não explorada')+'" class="'+(past?'done':i===t.step?'current':'')+'"><b>'+(past?'✓':i+1)+'</b><span>'+(past?esc(ROOMS[past.room].name):i===9?'Giovanni':i===t.step?'Escolha atual':'Caminho desconhecido')+'</span></li>'}).join('');
+ const tiles=Array.from({length:SECTOR_SIZE},(_,offset)=>{const i=Math.floor(t.step/SECTOR_SIZE)*SECTOR_SIZE+offset,past=t.history.find(x=>x.step===i);return '<li title="Etapa '+(i+1)+' · '+(past?esc(ROOMS[past.room].name):i===TOTAL-1?'Giovanni':i===t.step?'Escolha atual':'Ainda não explorada')+'" class="'+(past?'done':i===t.step?'current':'')+'"><b>'+(past?'✓':i+1)+'</b><span>'+(past?esc(ROOMS[past.room].name):i===TOTAL-1?'Giovanni':i===t.step?'Escolha atual':'Caminho desconhecido')+'</span></li>'}).join('');
  const roomArt={patrol:trainerUrl('rocketgrunt'),cells:sprite(104),depot:itemUrl('choice-band'),terminal:'assets/mode-art/rocket-terminal.svg',shop:trainerUrl('scientist'),shelter:sprite(113),officer:trainerUrl('rocketgruntf'),boss:trainerUrl('giovanni')};
  const list=readOnly?'':choices().map((c,i)=>'<button type="button" class="rop-room-card" data-kind="'+c.id+'" data-route="'+i+'"><span class="rop-route-art"><img src="'+roomArt[c.id]+'" alt=""><em>CAMINHO '+(i+1)+'</em></span><span class="rop-room-icon">'+ROOMS[c.id].icon+'</span><b>'+ROOMS[c.id].name+'</b><p>'+ROOMS[c.id].text+'</p><small>'+ (c.risk?'Rota arriscada · +1 alerta ao entrar':'Sem aumento de alerta ao entrar')+'</small></button>').join('');
- const root=panel('Mapa da infiltração','Setor '+Math.min(3,Math.floor(t.step/3)+1)+'/3 · Alerta '+t.alert+' — '+ALERT[t.alert],'<div class="rop-map-caption"><b>PLANTA DA BASE</b><span>Etapa '+(t.step+1)+' de 10 · '+t.rescued.length+' resgates</span></div><ol class="rop-map">'+tiles+'</ol><div class="rop-choices">'+list+'</div>',readOnly?[{label:'Voltar à preparação',run:()=>{close();G.eventModal=false;renderHUD()}}]:[{label:'Salvar e sair',secondary:true,run:exit}]);
+ const root=panel('Mapa da infiltração','Setor '+(Math.floor(t.step/SECTOR_SIZE)+1)+'/5 · Alerta '+t.alert+' — '+ALERT[t.alert],'<div class="rop-map-caption"><b>PLANTA DA BASE</b><span>Etapa '+(t.step+1)+' de 25 · '+t.rescued.length+' resgates</span></div><ol class="rop-map">'+tiles+'</ol><div class="rop-choices">'+list+'</div>',readOnly?[{label:'Voltar à preparação',run:()=>{close();G.eventModal=false;renderHUD()}}]:[{label:'Salvar e sair',secondary:true,run:exit}]);
  root.querySelectorAll('[data-route]').forEach(b=>b.onclick=()=>enter(+b.dataset.route));
 }
 function enter(index){
@@ -119,10 +126,10 @@ function enter(index){
 }
 function makeEnemy(){
  const t=state();if(t.enemy)return t.enemy;
- const sector=Math.min(2,Math.floor(t.step/3)),officer=t.room==='officer',boss=t.room==='boss',pool=[19,41,23,109,96,27,66,88];
- const ids=boss?[95,111,29,32,104]:shuffled(pool).slice(0,2+sector+(officer?1:0));
+ const sector=Math.floor(t.step/SECTOR_SIZE),officer=t.room==='officer',boss=t.room==='boss',pool=[19,41,23,109,96,27,66,88];
+ const ids=boss?[95,111,29,32,104]:shuffled(pool).slice(0,Math.min(5,2+sector)+(officer?1:0));
  if(!boss&&t.alert>=2)ids.push(41);if(t.ambush)ids.push(109);
- t.enemy=placeEnemies(ids.map((id,i)=>{const l=lineFor(id),maxStar=Math.max(1,l.ids.findLastIndex(mon=>mon<=151)+1);return{line:l.i,star:boss?Math.min(maxStar,i===1?2:3):Math.min(maxStar,sector===2?2:1),items:officer||boss?[equipment()[i%equipment().length]].filter(Boolean):[],scale:1,hpx:boss?(id===95?1.65:1.15):officer?1.1:t.ambush?1.1:1,dx:1}}));return t.enemy;
+ t.enemy=placeEnemies(ids.map((id,i)=>{const l=lineFor(id),maxStar=Math.max(1,l.ids.findLastIndex(mon=>mon<=151)+1);return{line:l.i,star:boss?Math.min(maxStar,i===1?2:3):Math.min(maxStar,sector>=2?2:1),items:officer||boss?[equipment()[i%equipment().length]].filter(Boolean):[],scale:1,hpx:boss?(id===95?1.65:1.15):officer?1.1:t.ambush?1.1:1,dx:1}}));return t.enemy;
 }
 function intro(){
  const t=state(),boss=t.room==='boss';setupBoard(false);
@@ -173,14 +180,14 @@ function complete(){
  const t=state();if(t.history.some(x=>x.step===t.step))return;
  t.history.push({step:t.step,room:t.room,alert:t.alert});t.roomDone=true;t.choices=null;t.enemy=null;t.shopOpened=false;t.ransacked=false;t.offers=[];
  G.phase='plan';G.eventModal=true;clearCombatUnits();G.enemy=[];G.oppSlug=null;
- if(t.step===9){end('won');return}
- t.status=[2,5,8].includes(t.step)?'gate':'result';save(true);renderHUD();checkpoint();
+ if(t.step===TOTAL-1){end('won');return}
+ t.status=(t.step+1)%SECTOR_SIZE===0?'gate':'result';save(true);renderHUD();checkpoint();
 }
 function checkpoint(){
  const t=state();if(t.status==='gate'){
   panel('Ponto de extração','Setor concluído. Você pode sair com os resgates ou continuar em direção a Giovanni.',
   '<div class="rop-stats"><span>Vida <b>'+Math.round(G.hp)+'</b></span><span>Resgates <b>'+t.rescued.length+'</b></span><span>Alerta <b>'+t.alert+'/4</b></span></div><p>Sair registra a tentativa e os resgates. Apenas derrotar Giovanni conclui Celadon e recupera o Silph Scope.</p>',[{label:'Continuar infiltração',run:next},{label:'Extrair e encerrar tentativa',secondary:true,run:confirmExtract},{label:'Salvar e sair · continuar depois',secondary:true,run:exit}]);
- }else panel('Passagem liberada','Etapa '+(t.step+1)+'/10 concluída. Escolha o próximo caminho.','<p>Objetivo: recuperar o Silph Scope e libertar os Pokémon da base.</p>',[{label:'Escolher próximo caminho',run:next},{label:'Salvar e sair',secondary:true,run:exit}]);
+ }else panel('Passagem liberada','Etapa '+(t.step+1)+'/25 concluída. Escolha o próximo caminho.','<p>Objetivo: recuperar o Silph Scope e libertar os Pokémon da base.</p>',[{label:'Escolher próximo caminho',run:next},{label:'Salvar e sair',secondary:true,run:exit}]);
 }
 function next(){const t=state();if(!['result','gate'].includes(t.status))return;t.step++;t.room=null;t.status='map';G.ri=t.step;G.round=round(t.step);map()}
 function confirmExtract(){panel('Encerrar a infiltração?','A tentativa será concluída agora. Você precisará começar outra para enfrentar Giovanni.','<p>Se deseja continuar esta mesma tentativa depois, escolha “Voltar” e use “Salvar e sair”.</p>',[{label:'Voltar',run:checkpoint},{label:'Confirmar extração',secondary:true,run:()=>end('extracted')}])}
@@ -202,7 +209,7 @@ function finish(){
 function score(t,hp){return t.history.length*100+t.rescued.length*150+t.protected*50+(t.result==='won'?1000:0)+Math.round(hp)*5-Math.min(300,t.losses*25)}
 function storeResult(){
  const t=state();try{
-  const rows=read(RECORDS)||[],entry={id:t.id,at:t.endedAt,result:t.result,steps:t.history.length,rescued:t.rescued.length,protected:t.protected,hp:G.hp,maxAlert:t.maxAlert,losses:t.losses,score:score(t,G.hp)};
+  const rows=read(RECORDS)||[],entry={id:t.id,at:t.endedAt,result:t.result,steps:t.history.length,total:t.total||TOTAL,rescued:t.rescued.length,protected:t.protected,hp:G.hp,maxAlert:t.maxAlert,losses:t.losses,score:score(t,G.hp)};
   const records=Array.isArray(rows)?rows:[];if(!records.some(r=>r.id===t.id))records.push(entry);localStorage.setItem(RECORDS,JSON.stringify(records.slice(-100)));
   if(t.result==='won'){const p=read(PROGRESS)||{};p.celadon=true;p.silphScope=true;p.completedAt=p.completedAt||t.endedAt;localStorage.setItem(PROGRESS,JSON.stringify(p))}return true;
  }catch{toast('Não foi possível registrar o resultado. O salvamento da tentativa será mantido.');return false}
@@ -211,12 +218,12 @@ function end(result){const t=state();t.result=result;t.endedAt=Date.now();t.stat
 function resultScreen(){
  const t=state(),won=t.result==='won';G.over=true;G.eventModal=true;storeResult();
  panel(won?'Silph Scope recuperado!':t.result==='extracted'?'Extração concluída':'Fim da operação',won?'Giovanni recuou. Os Pokémon estão livres, e uma pista leva à Torre Pokémon de Lavender.':t.result==='extracted'?'Sua equipe deixou a base em segurança. Os resgates foram registrados.':'A base resistiu à infiltração. Monte outra equipe e tente uma nova estratégia.',
- '<div class="rop-result-emblem">'+(won?'✓':'R')+'</div><div class="rop-stats"><span>Pontuação <b>'+score(t,G.hp)+'</b></span><span>Etapas <b>'+t.history.length+'/10</b></span><span>Resgates <b>'+t.rescued.length+'</b></span><span>Protegidos <b>'+t.protected+'</b></span><span>Vida <b>'+Math.round(G.hp)+'</b></span><span>Maior alerta <b>'+t.maxAlert+'/4</b></span></div>'+(won?'<p class="rop-notice">Marco conquistado: Silph Scope. A próxima operação será Ecos de Lavender, disponível em uma expansão futura.</p>':''),
+ '<div class="rop-result-emblem">'+(won?'✓':'R')+'</div><div class="rop-stats"><span>Pontuação <b>'+score(t,G.hp)+'</b></span><span>Etapas <b>'+t.history.length+'/'+(t.total||TOTAL)+'</b></span><span>Resgates <b>'+t.rescued.length+'</b></span><span>Protegidos <b>'+t.protected+'</b></span><span>Vida <b>'+Math.round(G.hp)+'</b></span><span>Maior alerta <b>'+t.maxAlert+'/4</b></span></div>'+(won?'<p class="rop-notice">Marco conquistado: Silph Scope. A próxima operação será Ecos de Lavender, disponível em uma expansão futura.</p>':''),
  [{label:'Voltar à biblioteca',run:exit},{label:'Iniciar outra operação',secondary:true,run:()=>panel('Começar outra operação?','O resultado desta tentativa já foi registrado.','',[{label:'Voltar',run:resultScreen},{label:'Nova operação',secondary:true,run:()=>launch()}])}]);
 }
 function records(){
  const rows=read(RECORDS),list=Array.isArray(rows)?rows.slice().sort((a,b)=>b.score-a.score):[];
- panel('Recordes da Operação Rocket','Tentativas registradas neste navegador.',list.length?'<ol class="rop-records">'+list.map(r=>'<li><b>'+Math.round(r.score)+' pontos</b><span>'+({won:'Missão concluída',lost:'Derrota',extracted:'Extração'}[r.result]||'Tentativa')+' · '+r.steps+'/10 etapas · '+r.rescued+' resgates</span><small>'+new Date(r.at).toLocaleDateString('pt-BR')+' · alerta máximo '+r.maxAlert+'</small></li>').join('')+'</ol>':'<p>Nenhuma tentativa encerrada.</p>',[{label:'Voltar',run:menu}],true);
+ panel('Recordes da Operação Rocket','Tentativas registradas neste navegador.',list.length?'<ol class="rop-records">'+list.map(r=>'<li><b>'+Math.round(r.score)+' pontos</b><span>'+({won:'Missão concluída',lost:'Derrota',extracted:'Extração'}[r.result]||'Tentativa')+' · '+r.steps+'/'+(r.total||10)+' etapas · '+r.rescued+' resgates</span><small>'+new Date(r.at).toLocaleDateString('pt-BR')+' · alerta máximo '+r.maxAlert+'</small></li>').join('')+'</ol>':'<p>Nenhuma tentativa encerrada.</p>',[{label:'Voltar',run:menu}],true);
 }
 function exit(){
  if(!active()){close();return}if(['combat','vs'].includes(G.phase)){toast('Conclua a batalha antes de salvar e sair.');return}
@@ -231,11 +238,11 @@ function decorate(){
  hud.hidden=!active();document.body.classList.toggle('rocket-operation-active',active());if(!active()){document.body.classList.remove('rocket-operation-shopping','rocket-operation-rescue-wait');return}const t=state(),busy=G.phase!=='plan'||G.eventModal||G.over,shopping=t.status==='shop';
  document.body.classList.toggle('rocket-operation-shopping',shopping&&!G.over);document.body.classList.toggle('rocket-operation-rescue-wait',t.status==='rescue'&&!G.eventModal);
  const chip=document.getElementById('campaignModeChip');if(chip)chip.hidden=true;
- document.getElementById('rtitle').textContent='CELADON · '+(t.step+1)+'/10';document.getElementById('rl1').textContent='Operação Rocket';document.getElementById('rl2').textContent=t.room?ROOMS[t.room].name:'Infiltração';document.getElementById('rl3').textContent='Alerta '+t.alert+' · '+ALERT[t.alert];
- document.getElementById('rchips').innerHTML=Array.from({length:3},(_,i)=>'<i class="'+(t.step>=i*3?'done':'')+'" title="Setor '+(i+1)+'">'+(i+1)+'</i>').join('');const leader=document.getElementById('lcount');if(leader){leader.hidden=false;leader.textContent=t.step===9?'Giovanni':'Giovanni em '+(9-t.step)}
- const lb=document.getElementById('lb');if(lb)lb.innerHTML='<small>OPERAÇÃO ROCKET</small><b>Celadon · '+(t.step+1)+'/10</b><span>Alerta '+t.alert+' · '+ALERT[t.alert]+'</span>';
+ document.getElementById('rtitle').textContent='CELADON · '+(t.step+1)+'/25';document.getElementById('rl1').textContent='Operação Rocket';document.getElementById('rl2').textContent=t.room?ROOMS[t.room].name:'Infiltração';document.getElementById('rl3').textContent='Alerta '+t.alert+' · '+ALERT[t.alert];
+ document.getElementById('rchips').innerHTML=Array.from({length:5},(_,i)=>'<i class="'+(t.step>=i*SECTOR_SIZE?'done':'')+'" title="Setor '+(i+1)+'">'+(i+1)+'</i>').join('');const leader=document.getElementById('lcount');if(leader){leader.hidden=false;leader.textContent=t.step===TOTAL-1?'Giovanni':'Giovanni em '+(TOTAL-1-t.step)}
+ const lb=document.getElementById('lb');if(lb)lb.innerHTML='<small>OPERAÇÃO ROCKET</small><b>Celadon · '+(t.step+1)+'/25</b><span>Alerta '+t.alert+' · '+ALERT[t.alert]+'</span>';
  const signature=[t.status,t.step,t.alert,t.rescued.length,busy,shopping].join(':');if(hud.dataset.signature===signature)return;hud.dataset.signature=signature;
- hud.innerHTML='<div class="rop-hud-head"><strong>R</strong><span><small>SETOR '+Math.min(3,Math.floor(t.step/3)+1)+'/3</small><b>Operação Celadon</b></span></div><div class="rop-alert" aria-label="Alerta '+t.alert+' de 4"><b>'+ALERT[t.alert]+'</b><span>'+Array.from({length:4},(_,i)=>'<i class="'+(i<t.alert?'on':'')+'"></i>').join('')+'</span></div><p>Recupere o Silph Scope<br>'+t.rescued.length+' Pokémon resgatados</p><nav><button type="button" data-map '+(busy?'disabled':'')+'>Mapa</button><button type="button" data-exit '+(['combat','vs'].includes(G.phase)?'disabled':'')+'>Salvar e sair</button></nav>'+(shopping?'<button type="button" class="rop-hud-next" data-next>Concluir compras</button>':t.status==='rescue'&&!G.eventModal?'<button type="button" class="rop-hud-next" data-rescue>Receber resgate</button>':'');
+ hud.innerHTML='<div class="rop-hud-head"><strong>R</strong><span><small>SETOR '+(Math.floor(t.step/SECTOR_SIZE)+1)+'/5</small><b>Operação Celadon</b></span></div><div class="rop-alert" aria-label="Alerta '+t.alert+' de 4"><b>'+ALERT[t.alert]+'</b><span>'+Array.from({length:4},(_,i)=>'<i class="'+(i<t.alert?'on':'')+'"></i>').join('')+'</span></div><p>Recupere o Silph Scope<br>'+t.rescued.length+' Pokémon resgatados</p><nav><button type="button" data-map '+(busy?'disabled':'')+'>Mapa</button><button type="button" data-exit '+(['combat','vs'].includes(G.phase)?'disabled':'')+'>Salvar e sair</button></nav>'+(shopping?'<button type="button" class="rop-hud-next" data-next>Concluir compras</button>':t.status==='rescue'&&!G.eventModal?'<button type="button" class="rop-hud-next" data-rescue>Receber resgate</button>':'');
  hud.querySelector('[data-map]').onclick=()=>map(true);hud.querySelector('[data-exit]').onclick=exit;hud.querySelector('[data-next]')?.addEventListener('click',()=>{if(t.status==='shop')complete()});hud.querySelector('[data-rescue]')?.addEventListener('click',rescue);
 }
 const previousHUD=renderHUD;renderHUD=function(){const r=previousHUD.apply(this,arguments);decorate();return r};

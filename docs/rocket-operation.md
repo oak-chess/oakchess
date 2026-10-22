@@ -1,6 +1,6 @@
 # Operação Rocket — Celadon
 
-Primeira operação jogável do modo de infiltração, com dez etapas e combate na arena existente.
+Primeira operação jogável do modo de infiltração, com 25 etapas e combate na arena existente.
 
 ## Entrada e equipe
 
@@ -12,18 +12,7 @@ Primeira operação jogável do modo de infiltração, com dez etapas e combate 
 
 ## Caminhos
 
-| Etapa | Caminho A | Caminho B |
-| --- | --- | --- |
-| 1 | Patrulha | Celas |
-| 2 | Celas | Depósito |
-| 3 | Contrabandista | Abrigo |
-| 4 | Terminal | Patrulha arriscada |
-| 5 | Celas | Oficial arriscado |
-| 6 | Abrigo | Contrabandista |
-| 7 | Depósito | Patrulha arriscada |
-| 8 | Terminal | Contrabandista |
-| 9 | Oficial | Celas |
-| 10 | Giovanni | — |
+Cinco setores de cinco etapas. Contrabandistas garantidos nas etapas 5, 10, 15, 20 e 24; Giovanni na etapa 25. Os demais encontros alternam patrulhas, celas, depósitos, terminais, oficiais e abrigos. O mapa exibe cinco etapas por setor.
 
 Rotas são salvas antes da escolha. Equipes adversárias, equipamentos oferecidos e Pokémon presos persistem quando a página é recarregada. O estado da arena é salvo antes da batalha; fechar durante o combate retoma sua preparação, como nos demais modos.
 
@@ -61,7 +50,7 @@ Rotas são salvas antes da escolha. Equipes adversárias, equipamentos oferecido
 
 ## Extração e resultado
 
-- Extração disponível após as etapas 3, 6 e 9, com confirmação de encerramento.
+- Extração disponível após as etapas 5, 10, 15 e 20, com confirmação de encerramento.
 - Salvar e sair preserva a tentativa; extrair encerra.
 - Pontuação: 100 por etapa, 150 por resgate, 50 adicionais por protegido, 1000 pela missão concluída, 5 por vida restante, penalidade de 25 por derrota limitada a 300.
 - Registros deduplicados pelo identificador da tentativa, máximo de cem registros.
@@ -81,3 +70,7 @@ Armazenamento local: `oakchess_rocket_operation_v1`, sufixos `_records` e `_prog
 ## Estado de entrega
 
 Implementação e recursos de distribuição preparados. Não foram executados testes de jogo ou validação visual no navegador. Equilíbrio inicial ainda depende de partidas completas e observação da experiência.
+
+## Migração para 25 etapas
+
+Tentativas em andamento preservam equipe, ouro, itens, vida e encontros concluídos. A antiga etapa 10 de Giovanni passa a oferecer o próximo caminho. Tentativas já encerradas e seus recordes mantêm o total original de dez etapas.
