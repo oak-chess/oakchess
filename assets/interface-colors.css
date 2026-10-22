@@ -111,3 +111,11 @@ body #stage #menu input[type=range]::-webkit-slider-thumb,body #stage #quickVolu
 body #stage #menu input[type=range]::-moz-range-track,body #stage #pausedOverlay .pause-volume input::-moz-range-track{background:#8e7854}
 body #stage #menu input[type=range]::-moz-range-progress,body #stage #pausedOverlay .pause-volume input::-moz-range-progress{background:#985137}
 body #stage #menu input[type=range]::-moz-range-thumb,body #stage #quickVolumePanel input::-moz-range-thumb,body #stage #pausedOverlay .pause-volume input::-moz-range-thumb{background:#efd499;border-color:#927044;box-shadow:1px 2px #65492e}
+
+/* Item descriptions grow with their contents and remain scrollable if exceptionally long. */
+body #stage #tip.item-tip-open{width:320px!important;max-width:calc(100% - 28px)!important;height:auto!important;min-height:0;overflow-y:auto!important;overflow-x:hidden!important;pointer-events:auto!important;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#a28a64 #201e25;padding:14px 16px!important;line-height:18px!important}
+body #stage #tip.item-tip-open .iti-head{align-items:flex-start;padding-bottom:10px}
+body #stage #tip.item-tip-open .iti-head div{min-width:0}
+body #stage #tip.item-tip-open .iti-head b{white-space:normal;overflow-wrap:anywhere;font-size:14px;line-height:20px}
+body #stage #tip.item-tip-open p{margin:11px 0;white-space:normal;overflow:visible;max-height:none;line-height:18px}
+body #stage #tip.item-tip-open .iti-foot{padding:9px 0 2px;line-height:16px}
