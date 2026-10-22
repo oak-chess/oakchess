@@ -5108,7 +5108,7 @@ const BOSS_ROW=2,BOSS_COL=3,BOSS_TOP=88;/* BOSS_TOP: altura (em px do palco, 800
 function bossToRow(list){for(const sp of list){const Ln=LINES[sp.line];if(Ln&&(Ln.names[0]==='Mewtwo'||BIRDLINES.includes(sp.line))){sp.r=BOSS_ROW;sp.c=BOSS_COL}}return list}
 function fitBossEl(u){
   const e=u&&u.el;if(!e||u.side!==1||!e.isConnected)return;
-  const cl=e.classList,fin=cl.contains('final');if(!fin&&!cl.contains('bossmon'))return;
+  const cl=e.classList,fin=cl.contains('final');if(!fin){e.style.removeProperty('--boss-fit');return}/* Regular gym teams retain their normal sprite size; only giant bosses need fitting. */
   const inn=e.querySelector('.in');if(!inn||inn.offsetHeight<30)return;
   // Fit once per viewport and sprite source, using layout size rather than animated bounds.
   const key=[innerWidth,innerHeight,SC,cl.contains('pmd')?1:0].join(':');
