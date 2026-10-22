@@ -37,7 +37,7 @@ function valid(s){
 function save(force=false){
  if(!active()||writing||DEMO.on||G.pending.length||!force&&['combat','vs'].includes(G.phase))return false;
  writing=true;
- try{localStorage.setItem(KEY,JSON.stringify({version:1,operation:copy(state()),game:{hp:G.hp,gold:G.gold,lvl:G.lvl,xp:G.xp,streak:G.streak,items:G.items.slice(),pool:G.pool.slice(),shop:copy(G.shop),locked:G.locked,shPity:G.shPity||0,joyBuff:G.joyBuff||0,vials:{...G.vials},mk:G.mk?copy(G.mk):null},units:allUnits().filter(u=>u.pos).map(u=>({line:u.line,star:u.star,items:u.items.slice(),pos:{...u.pos},shiny:!!u.shiny,dexPurchased:!!u.dexPurchased,evoSkip:u.evoSkip??null}))}));saveFailed=false;return true}
+ try{localStorage.setItem(KEY,JSON.stringify({version:1,operation:copy(state()),game:{hp:G.hp,gold:G.gold,lvl:G.lvl,xp:G.xp,streak:G.streak,items:G.items.slice(),pool:G.pool.slice(),shop:copy(G.shop),locked:G.locked,shPity:G.shPity||0,joyBuff:G.joyBuff||0,mk:G.mk?copy(G.mk):null},units:allUnits().filter(u=>u.pos).map(u=>({line:u.line,star:u.star,items:u.items.slice(),pos:{...u.pos},shiny:!!u.shiny,dexPurchased:!!u.dexPurchased,evoSkip:u.evoSkip??null}))}));saveFailed=false;return true}
  catch{if(!saveFailed)toast('Não foi possível salvar a Operação Rocket. Libere espaço no navegador antes de sair.');saveFailed=true;return false}
  finally{writing=false}
 }
@@ -78,7 +78,7 @@ function launch(s=null){
  const seed=(Math.random()*4294967295)>>>0||1;
  G.rocketOperation={version:1,id:Date.now().toString(36)+'-'+seed.toString(36),rng:seed,step:0,status:'starter',selected:[],room:null,alert:0,maxAlert:0,wins:0,losses:0,history:[],rescued:[],protected:0,enemy:null,offers:[],pendingRescue:null,lossAlertSteps:[],risky:false,startedAt:Date.now(),result:null};
  if(valid(s)){
-  G.rocketOperation=copy(s.operation);Object.assign(G,copy(s.game));
+  G.rocketOperation=copy(s.operation);const game=copy(s.game);delete game.vials;Object.assign(G,game);G.vials=mkVials();
   for(const su of s.units){const u=newUnit(su.line,su.star);u.items=su.items.slice();u.shiny=!!su.shiny;u.dexPurchased=!!su.dexPurchased;u.evoSkip=su.evoSkip;place(u,{...su.pos});attachEl(u,false)}
   allUnits().forEach(u=>{if(u.line===EEVEE&&u.star>=2&&u.evoSkip!==u.star&&!G.evoQueue.includes(u))G.evoQueue.push(u)});
  }
