@@ -17,3 +17,10 @@ Este projeto é um jogo de fã, sem afiliação ou endosso da Nintendo, The Pok�
 
 ### Treinador de mapa
 Sprites Red de Pokémon FireRed: [pret/pokefirered](https://github.com/pret/pokefirered/tree/master/graphics/object_events/pics/people). Personagens e gráficos pertencem aos respectivos titulares.
+
+### Terminal do treinador
+Sprites de mapa dos treinadores em `assets/trainer-profile/sprites/`: [pret/pokefirered](https://github.com/pret/pokefirered/tree/master/graphics/object_events/pics/people). Os parceiros usam as animações PMD e os créditos por espécie já listados acima. Interface e ornamentos digitais adaptados para OakChess.
+
+### Trilhas da Operação Rocket
+
+Faixas de Pokémon HeartGold/SoulSilver (2009), obtidas do [álbum de gamerip no KHInsider](https://downloads.khinsider.com/game-soundtracks/album/pokemon-heartgold-and-soulsilver): Team Rocket HQ, Trainers' Eyes Meet (Team Rocket) e Battle! (Team Rocket). Fontes e utilização em `assets/music/ROCKET-SOURCES.md`. Músicas pertencem aos respectivos titulares; a disponibilidade para download não representa licença de redistribuição.

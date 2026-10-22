@@ -41,13 +41,13 @@ function save(force=false){
  catch{if(!saveFailed)toast('Não foi possível salvar a Operação Rocket. Libere espaço no navegador antes de sair.');saveFailed=true;return false}
  finally{writing=false}
 }
-function close(){if(window.TEAM_VIEW?.isOpen)TEAM_VIEW.close();if(overlay){overlay.remove();overlay=null}document.body.classList.remove('rocket-entry-open');if(focusBefore?.isConnected)focusBefore.focus()}
+function close(){if(overlay&&!active())SND.music('title');if(window.TEAM_VIEW?.isOpen)TEAM_VIEW.close();if(overlay){overlay.remove();overlay=null}document.body.classList.remove('rocket-entry-open');if(focusBefore?.isConnected)focusBefore.focus()}
 function panel(title,text,html='',actions=[],entry=false){
  close();focusBefore=document.activeElement;
  if(active()){G.eventModal=true;hideTip()}else document.body.classList.add('rocket-entry-open');
  overlay=document.createElement('section');overlay.id='rocketOperationOverlay';overlay.className=entry?'rocket-operation-entry':'';overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-labelledby','rocketOperationTitle');
  overlay.innerHTML='<div class="rop-dialog"><header><span class="rop-eyebrow">OPERAÇÃO ROCKET · CELADON</span><h2 id="rocketOperationTitle">'+esc(title)+'</h2><p>'+esc(text)+'</p></header><div class="rop-body">'+html+'</div><footer>'+actions.map((a,i)=>'<button type="button" data-rop-action="'+i+'" class="'+(a.secondary?'secondary':'')+'">'+esc(a.label)+'</button>').join('')+'</footer></div>';
- document.body.append(overlay);const root=overlay;root.dataset.screen=entry?'entry':root.querySelector('.rop-starters')?'starter':root.querySelector('.rop-map')?'map':'event';
+ document.body.append(overlay);SND.init();SND.music(active()&&['intro','rescue'].includes(state().status)?'rocket-encounter':'rocket-hideout');const root=overlay;root.dataset.screen=entry?'entry':root.querySelector('.rop-starters')?'starter':root.querySelector('.rop-map')?'map':'event';
  actions.forEach((a,i)=>root.querySelector('[data-rop-action="'+i+'"]').onclick=()=>{if(overlay!==root)return;SND.init();SND.click();a.run()});
  root.addEventListener('keydown',e=>{if(e.key!=='Tab')return;const els=[...root.querySelectorAll('button:not(:disabled),a[href]')];if(!els.length)return;const i=els.indexOf(document.activeElement);if(e.shiftKey&&i<=0||!e.shiftKey&&i===els.length-1){e.preventDefault();els[e.shiftKey?els.length-1:0].focus()}});
  root.querySelector('button')?.focus();return root;
@@ -136,7 +136,7 @@ function setupBoard(refreshShop=false){
  document.body.classList.remove('combat');setArenaTheme(7);setWeatherFx();showNpc(null);G.enemy=makeEnemy();spawnEnemies(G.enemy);G.timerMax=G.timer=90;
  if(refreshShop&&!G.shop.some(Boolean))rollShop(true);renderInv();renderShop();updateTraitsUI();layoutAll();renderHUD();warmPlanAssets();
 }
-function plan(){if(!active())return;close();state().status='plan';G.eventModal=false;setupBoard();G.eventModal=false;save(true);setTimeout(()=>{if(active()&&G.phase==='plan'&&!G.eventModal)processEvoQueue()},600)}
+function plan(){if(!active())return;close();state().status='plan';G.eventModal=false;setupBoard();G.eventModal=false;SND.music('plan');save(true);setTimeout(()=>{if(active()&&G.phase==='plan'&&!G.eventModal)processEvoQueue()},600)}
 function rewardItems(){const t=state();if(!t.offers.length)t.offers=shuffled(equipment()).slice(0,3);return t.offers}
 function itemCards(){return rewardItems().map(k=>'<button type="button" data-item="'+k+'"><img src="'+itemUrl(ITEMBY[k].s)+'" alt=""><b>'+esc(ITEMBY[k].n)+'</b><small>'+esc(ITEMBY[k].d)+'</small></button>').join('')}
 function bindItems(root,done){root.querySelectorAll('[data-item]').forEach(b=>b.onclick=()=>{const t=state(),k=b.dataset.item;if(t.roomDone||!t.offers.includes(k))return;t.roomDone=true;G.items.push(k);renderInv();SND.loot();done()})}
