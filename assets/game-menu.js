@@ -5,7 +5,7 @@
  const menu=document.createElement('div');menu.id='gameMenuItems';menu.hidden=true;
  bar.classList.add('game-tools');bar.replaceChildren(pause,fullscreen,toggle,menu);document.getElementById('pokedexLaunch')?.remove();if(gear){menu.append(gear);toggle.onclick=()=>gear.click()}
  const group=document.querySelector('#menu [data-pane="visual"] .mgroup');
- if(group&&view){const row=document.createElement('div');row.className='mrow arena-view-setting';row.innerHTML='<div class="mtop"><span class="ml"><img class="mi" src="assets/pokeapi/sprites/items/scope-lens.png" alt=""><span class="mt">Perspectiva da arena<small class="ms">Alterne entre 2D e 3D na preparação</small></span></span></div>';row.querySelector('.mtop').append(view);group.prepend(row);view.setAttribute('aria-label','Alternar perspectiva da arena entre 2D e 3D');view.removeAttribute('role');view.tabIndex=0;}
+ if(view)view.remove();
 })();
 
 (function(){
