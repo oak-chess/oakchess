@@ -70,7 +70,7 @@ Rotas são salvas antes da escolha. Equipes adversárias, equipamentos oferecido
 ## Arquivos e integração
 
 - `assets/rocket-operation.js`: estado, salas, persistência, resgates, conclusão e interface.
-- `assets/rocket-operation.css`: identidade da mochila, menu e indicadores.
+- `assets/rocket-operation.css`: identidade Rocket em preto, grafite, vermelho e prata; menu e indicadores.
 - `assets/mode-art/rocket-base.svg`: capa vetorial própria da base.
 - `assets/game-home/streaming.js`: terceiro cartão e entrada do modo.
 - `assets/team-view.js`: botão V revela o tabuleiro real durante escolhas da operação.
