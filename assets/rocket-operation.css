@@ -135,3 +135,45 @@ body #ttl .stream-game-info{padding:12px 14px;min-height:58px}
 .rop-intel-note{display:flex;flex-direction:column;gap:7px;padding:12px 14px;margin:0 0 16px;background:#181b27;border:1px solid #515a70;border-left:3px solid #dd5068;color:#d4d8e5;font-size:11px;line-height:1.7}.rop-intel-note>b{color:#ff9bb0}
 body.rocket-operation-event-wait #autoBattleToggle{display:none!important}
 @media(max-width:600px){.rop-event-options{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}#rocketOperationOverlay .rop-event-options button{padding:10px;min-height:130px}.rop-event-options img{width:66px;height:66px}}
+
+/* Mission workspace: persistent context and actions, with scrolling confined to choices. */
+#rocketOperationOverlay{padding:65px 24px 20px;font:14px/1.5 Arial,sans-serif}
+#rocketOperationOverlay .rop-dialog,#rocketOperationOverlay[data-screen=starter] .rop-dialog{display:flex;flex-direction:column;width:min(960px,100%);max-height:100%;overflow:hidden;border:1px solid #525766;outline:0;border-radius:16px;background:#1b1e28;box-shadow:0 24px 100px #000a}
+#rocketOperationOverlay header{flex:none;padding:21px 26px 18px;background:linear-gradient(115deg,#242835,#1c202a);border-bottom:0}
+#rocketOperationOverlay header:after{font-size:75px;right:26px;top:10px;opacity:.12}
+#rocketOperationOverlay .rop-eyebrow{font:700 9px Arial,sans-serif;letter-spacing:2px;color:#ff8297}
+#rocketOperationOverlay h2{font:700 26px/1.2 Arial,sans-serif;letter-spacing:-.5px;margin:7px 0 8px}
+#rocketOperationOverlay header p{font:13px/1.6 Arial,sans-serif;color:#b9c0d1;max-width:740px}
+#rocketOperationOverlay .rop-body{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:22px 26px;scrollbar-color:#6a4559 #1b1e28;scrollbar-width:thin}
+#rocketOperationOverlay footer{flex:none;display:flex;align-items:center;padding:15px 26px;background:#171a23;border-top:1px solid #343b4a;gap:10px}
+#rocketOperationOverlay footer button{border:1px solid #667085;border-radius:8px;box-shadow:none;min-height:42px;padding:11px 17px;font:600 12px Arial,sans-serif}
+#rocketOperationOverlay footer button:first-child:not(.secondary){background:#d74160;border-color:#ed6d87}
+#rocketOperationOverlay footer button.secondary{background:#242936;color:#d0d6e5;border-color:#465064}
+#rocketOperationOverlay footer button:disabled{background:#2c303b!important;color:#9299a9!important;border-color:#454c5c!important;opacity:.8}
+.rop-context{display:flex;align-items:center;flex-wrap:wrap;gap:10px 20px;flex:none;padding:11px 26px;background:#131720;border-block:1px solid #353d4e;color:#bac4d8;font:11px Arial,sans-serif}
+.rop-context>span:first-child{color:#f3d8e2;font-weight:700;letter-spacing:.6px;margin-right:auto}.rop-status-dot{display:inline-block;width:6px;height:6px;background:#ff617e;border-radius:50%;margin-right:7px;box-shadow:0 0 8px #ff617e55}
+.rop-guide{display:grid;grid-template-columns:1fr 1.5fr;gap:4px 24px;padding:15px 18px;margin-bottom:20px;border:1px solid #3e485d;background:linear-gradient(120deg,#292d3e,#222636);border-radius:10px;color:#e4e9f6}
+.rop-guide>small{grid-column:1/-1;font:700 9px Arial,sans-serif!important;color:#f58da2!important;letter-spacing:1.4px}
+.rop-guide h3{font:600 17px/1.4 Arial,sans-serif;margin:6px 0}.rop-guide>p{font:12px/1.7 Arial,sans-serif;margin:6px 0;color:#bac4d9}.rop-guide-tip{display:none}
+#rocketOperationOverlay[data-screen=starter] .rop-body{display:grid;grid-template-columns:minmax(0,1fr) 235px;gap:22px;align-items:start}
+#rocketOperationOverlay[data-screen=starter] .rop-starters{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+#rocketOperationOverlay .rop-starters button{min-height:173px;padding:10px 9px;gap:5px;border:1px solid #4a5368;border-radius:10px;background:radial-gradient(ellipse at 50% 10%,#373e50,#252b39 85%);box-shadow:none;transition:background .15s,border-color .15s,transform .15s}
+#rocketOperationOverlay .rop-starters button:hover:not(:disabled){border-color:var(--mon-accent,#ef8199);filter:none;transform:translateY(-2px)}
+#rocketOperationOverlay .rop-starters button[aria-pressed=true]{border:2px solid #f36b88;padding:9px 8px;background:radial-gradient(ellipse at 50% 10%,#573745,#332737 85%);box-shadow:0 0 0 2px #ed627810}
+.rop-starters img{width:62px;height:62px}.rop-starters b{font:700 13px Arial,sans-serif}.rop-starters small{font:10px Arial,sans-serif;color:#c3c9d7!important}
+.rop-mon-role{font:600 10px Arial,sans-serif;border-radius:20px;padding:4px 7px;background:#10172280;color:#d7e0f3;border:1px solid #65738b55;margin-top:2px}
+.rop-mon-description{font:11px/1.4 Arial,sans-serif;font-weight:400;color:#b9c3d6;max-width:155px;text-align:center}
+#rocketOperationOverlay[data-screen=starter] .rop-guide{display:flex;flex-direction:column;gap:8px;margin:0;padding:18px;min-width:0;position:sticky;top:0}
+#rocketOperationOverlay[data-screen=starter] .rop-guide h3{font-size:19px;margin:3px 0}
+#rocketOperationOverlay[data-screen=starter] .rop-guide>p{font-size:12px;margin:0}
+#rocketOperationOverlay[data-screen=starter] .rop-guide .rop-guide-hint{font-size:11px;padding-top:14px;border-top:1px solid #495268;color:#9faec8}
+.rop-team-summary{margin:5px 0 10px;padding:14px 0;border-block:1px solid #495268}.rop-team-summary .rop-selected-team{margin:0;gap:8px}.rop-team-summary .rop-selection{font:600 11px Arial,sans-serif;text-align:center;line-height:1.5;color:#f4b6c4;margin:12px 0 0}
+#rocketOperationOverlay .rop-room-card{border-radius:11px;border-width:1px;box-shadow:none;min-height:255px}
+.rop-map-caption{font:11px Arial,sans-serif}.rop-map{margin-bottom:20px}.rop-map li>b{width:35px;height:35px;font:600 12px Arial,sans-serif}
+#rocketOperationOverlay .rop-item-options button,#rocketOperationOverlay .rop-event-options button{border-radius:10px;border-width:1px;box-shadow:none}
+@media(max-width:760px){#rocketOperationOverlay{padding:60px 12px 12px}#rocketOperationOverlay[data-screen=starter] .rop-body{grid-template-columns:minmax(0,1fr) 190px;gap:14px;padding:17px}#rocketOperationOverlay .rop-starters button{padding:9px 6px}.rop-mon-description{font-size:10px}#rocketOperationOverlay[data-screen=starter] .rop-guide{padding:13px}.rop-context{padding:10px 18px;gap:9px 13px}}
+@media(max-width:580px){#rocketOperationOverlay[data-screen=starter] .rop-body{display:flex;flex-direction:column}#rocketOperationOverlay[data-screen=starter] .rop-starters{width:100%;grid-template-columns:repeat(2,minmax(0,1fr))}#rocketOperationOverlay[data-screen=starter] .rop-guide{position:static;width:100%}.rop-guide{grid-template-columns:1fr;gap:0}.rop-guide h3{font-size:16px}.rop-guide>p{font-size:12px}#rocketOperationOverlay header{padding:17px 18px 14px}#rocketOperationOverlay h2{font-size:23px}#rocketOperationOverlay footer{padding:12px 16px;gap:8px}.rop-context>span:first-child{width:100%}.rop-context{font-size:10px}#rocketOperationOverlay .rop-body{padding:16px}}
+@media(prefers-reduced-motion:reduce){#rocketOperationOverlay .rop-starters button{transition:none}}
+.rop-map li span{display:block;font:10px/1.4 Arial,sans-serif;color:#8f9db5;max-width:110px;margin-top:10px;padding:0 4px}.rop-map li.current span{color:#ffc0ce}.rop-map li.done span{color:#bac5d7}
+.rop-route-action{display:block;width:100%;padding:9px 0 2px;color:#ff9eb5;font:600 11px Arial,sans-serif;border-top:1px solid #59617466;margin-top:3px}
+#rocketOperationOverlay .rop-room-card small{margin-top:8px}
