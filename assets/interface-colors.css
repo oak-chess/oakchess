@@ -48,3 +48,12 @@ body #stage .rpop .rp-f{background:#16151b88;border-color:#85704f44}
 body #stage .rpop .rp-f img{background:#29232a;border-color:#c5a361}
 body #stage .rpop .rp-f small,body #stage .rpop .rp-f i b{color:#dfbf7b}
 body #stage .rpop .rp-f i{color:#c9b99f}
+
+/* Difficulty comes from the active run, independent of new-game settings. */
+#roundbox #campaignModeChip{display:inline-flex;align-items:center;justify-content:center;gap:5px;flex:none;padding:3px 8px;border:1px solid #887253;border-radius:12px;background:linear-gradient(#393039,#221f28);color:#e1cfad;box-shadow:0 2px #101018;white-space:nowrap;font:700 10px/15px Arial}
+#roundbox #campaignModeChip[hidden]{display:none!important}
+#campaignModeChip img{width:14px;height:14px;object-fit:contain;image-rendering:pixelated}
+#campaignModeChip b{font:inherit}
+#roundbox #campaignModeChip[data-diff=hard]{border-color:#ae7464;color:#efd1b1}
+#roundbox #campaignModeChip[data-diff=easy]{border-color:#778364;color:#ccd9b6}
+@media(max-width:640px){#roundbox #campaignModeChip{font-size:9px;padding:2px 6px;gap:4px}#campaignModeChip img{width:12px;height:12px}}
