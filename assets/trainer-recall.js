@@ -1,4 +1,4 @@
-/* Player trainer and defeat recall, using the approved arena prototype. */
+/* Player and campaign opponent trainers recall their own defeated Pokemon. */
 (()=>{
  if(location.pathname.includes('/prototypes/'))return;
  const arena=document.getElementById('arenaView');if(!arena)return;
@@ -22,12 +22,13 @@
 
  // Campaign opponents stand on the far-side walkway, outside the playable hexes.
  const opponentSprites=new Map();for(const slug of [...LEADERS.map(l=>l.s),...LEAGUE.slice(0,5).map(l=>l.s)]){if(!slug||opponentSprites.has(slug))continue;const image=new Image();image.src='assets/trainer-profile/sprites/'+slug+'_normal.png';opponentSprites.set(slug,image)}
- function drawOpponent(){if(G.tower||DEMO.on)return;const r=G.round;if(!r)return;const opponent=r.kind==='boss'&&r.gym<8?LEADERS[r.gym]:r.kind==='e4'?LEAGUE[r.lg]:r.kind==='champ'?LEAGUE[4]:null;if(!opponent?.s)return;const image=opponentSprites.get(opponent.s);if(!image?.complete||!image.naturalWidth)return;
- const player=trainers[0],nearEdge=hexXY(ROWS-1,0),farEdge=hexXY(0,COLS-1),x=W-player.x,y=farEdge.y+(player.y-nearEdge.y),frameWidth=16,frameHeight=32,frame=Math.min(2,Math.floor(image.naturalWidth/frameWidth)-1);ground.save();ground.globalAlpha=.4;ground.fillStyle='#17201a';ground.beginPath();ground.ellipse(x,y+2,25,8,0,0,Math.PI*2);ground.fill();ground.restore();front.save();front.imageSmoothingEnabled=false;const still=CFG.reduceFx||G.paused||matchMedia('(prefers-reduced-motion:reduce)').matches,bob=still?0:Math.floor(performance.now()/1500)%2;front.drawImage(image,frame*frameWidth,0,frameWidth,frameHeight,x-30,y-120-bob,60,120);front.font='10px Arial';front.textAlign='center';front.lineWidth=3;front.strokeStyle='#18201dcc';front.strokeText(opponent.n,x,y+20);front.fillStyle='#f3deb0';front.fillText(opponent.n,x,y+20);front.restore()}
+ function campaignOpponent(){if(G.tower||DEMO.on)return null;const r=G.round;if(!r)return null;const opponent=r.kind==='boss'&&r.gym<8?LEADERS[r.gym]:r.kind==='e4'?LEAGUE[r.lg]:r.kind==='champ'?LEAGUE[4]:null;if(!opponent?.s)return null;const image=opponentSprites.get(opponent.s);if(!image?.complete||!image.naturalWidth)return null;const player=trainers[0],nearEdge=hexXY(ROWS-1,0),farEdge=hexXY(0,COLS-1);return {image,name:opponent.n,x:W-player.x,y:farEdge.y+(player.y-nearEdge.y)}}
+ function drawOpponent(){const opponent=campaignOpponent();if(!opponent)return;const {image,name,x,y}=opponent,frameWidth=16,frameHeight=32,frame=Math.min(2,Math.floor(image.naturalWidth/frameWidth)-1);ground.save();ground.globalAlpha=.4;ground.fillStyle='#17201a';ground.beginPath();ground.ellipse(x,y+2,25,8,0,0,Math.PI*2);ground.fill();ground.restore();front.save();front.imageSmoothingEnabled=false;const still=CFG.reduceFx||G.paused||matchMedia('(prefers-reduced-motion:reduce)').matches,bob=still?0:Math.floor(performance.now()/1500)%2;front.drawImage(image,frame*frameWidth,0,frameWidth,frameHeight,x-30,y-120-bob,60,120);front.font='10px Arial';front.textAlign='center';front.lineWidth=3;front.strokeStyle='#18201dcc';front.strokeText(name,x,y+20);front.fillStyle='#f3deb0';front.fillText(name,x,y+20);front.restore()}
 
  function begin(u){
-  if(u.side!==0||!visible()||!assets.red_normal.complete||!assets.red_normal.naturalWidth)return false;
-  const side=0,node=u.el?.querySelector('canvas.pmdc')||u.el?.querySelector('.spr img');if(!node)return false;
+  if(!visible()||![0,1].includes(u.side))return false;
+  const side=u.side,owner=side===0?trainers[0]:campaignOpponent();if(!owner)return false;
+  const node=u.el?.querySelector('canvas.pmdc')||u.el?.querySelector('.spr img');if(!node)return false;
   try{
   const width=node.width||node.naturalWidth,height=node.height||node.naturalHeight;if(!width||!height){return false}
   // Use the visible body bounds, excluding PMD padding reserved for attack poses.
@@ -47,9 +48,9 @@
   const point=(x,y)=>toWorld({clientX:x,clientY:y});
   const screenX=rect.left+(sx+sw/2)*px,screenY=rect.top+(sy+sh/2)*py;
   const center=point(screenX,screenY),left=point(screenX-sw*px/2,screenY),right=point(screenX+sw*px/2,screenY),top=point(screenX,screenY-sh*py/2),bottom=point(screenX,screenY+sh*py/2);
-  const w=Math.hypot(right.x-left.x,right.y-left.y),h=Math.hypot(bottom.x-top.x,bottom.y-top.y),owner=trainers[side],hand={x:owner.x+(side===0?26:-26),y:owner.y-68};
+  const w=Math.hypot(right.x-left.x,right.y-left.y),h=Math.hypot(bottom.x-top.x,bottom.y-top.y),hand={x:owner.x+(side===0?26:-26),y:owner.y-68};
 
-  window.TRAINER_DUO?.react('recall');jobs.push({u,node,image,w,h,center,hand,age:0});u.el.style.display='none';return true;
+  if(side===0)window.TRAINER_DUO?.react('recall');jobs.push({side,u,node,image,w,h,center,hand,age:0});u.el.style.display='none';return true;
   }catch(e){return false}
  }
  function drawJob(job){
@@ -71,7 +72,7 @@
  function tick(dt){
   if(!visible()){clear();return}
   for(let i=jobs.length-1;i>=0;i--){jobs[i].age+=dt;if(jobs[i].age>=2.5||!jobs[i].u.el?.isConnected)jobs.splice(i,1)}
-  drawTrainers(jobs.length?0:-1,jobs.some(j=>j.age>.2&&j.age<1.8));
+  drawTrainers(jobs.some(j=>j.side===0)?0:-1,jobs.some(j=>j.side===0&&j.age>.2&&j.age<1.8));
   drawOpponent();
   for(const job of jobs)drawJob(job);
  }
