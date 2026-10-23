@@ -15,34 +15,41 @@
 body.reduce-fx .lbs-unit,body.reduce-fx .lbs-health>i,body.reduce-fx .lbs-value-track i{transition:none}
 @media(prefers-reduced-motion:reduce){.lbs-unit,.lbs-health>i,.lbs-value-track i{transition:none}}
 
-/* Inventory sand palette and a roster height fitted to the actual stage. */
-#stage #liveBattleStats{background:#b29d76;border-color:#79603e;color:#3d2d1c;box-shadow:inset 1px 1px #d4bb8b,0 0 0 3px #3c3025,4px 5px #0005;max-height:calc(100% - 98px)}
-#liveBattleStats header{padding:8px 10px;background:#87523b;border-color:#67452c}
-#liveBattleStats header small{color:#d7dfb1}#liveBattleStats header b{color:#fff0cc}
-#liveBattleStats button{background:#a18b63;border-color:#79603e;color:#3d2d1c;box-shadow:inset 1px 1px #d0b582}
-#liveBattleStats [data-collapse]{background:#997448;color:#fff0cc;border-color:#d1af78}
+/* High-contrast live stats with a roster height fitted to the actual stage. */
+#stage #liveBattleStats{background:#202027;border-color:#6e515b;color:#f4f1f3;box-shadow:inset 1px 1px #936370,0 0 0 3px #0c0b10,4px 5px #0005;max-height:calc(100% - 98px)}
+#liveBattleStats header{padding:8px 10px;background:#351e28;border-color:#b43a55}
+#liveBattleStats header small{color:#ff8ca4}#liveBattleStats header b{color:#f5f7fa}
+#liveBattleStats button{background:#2d2931;border-color:#6e515b;color:#f4f1f3;box-shadow:inset 1px 1px #55434d}
+#liveBattleStats [data-collapse]{background:#482a35;color:#f5f7fa;border-color:#c87086}
 #liveBattleStats nav{padding:7px 8px 5px;gap:4px}#liveBattleStats nav button{padding:4px 2px}
-#liveBattleStats nav button.on{background:#aa4134;border-color:#743d2a;color:#fff0c8;box-shadow:inset 1px 1px #d9825c}
-#liveBattleStats .lbs-versus{padding:3px 9px 7px;border-color:#81644366}
-#liveBattleStats .lbs-versus b{color:#5e472f}#liveBattleStats .lbs-versus span{color:#49301b}#liveBattleStats .lbs-versus i{color:#7a5a36}
+#liveBattleStats nav button.on{background:#a82e4b;border-color:#f47a98;color:#ffffff;box-shadow:inset 1px 1px #d8627f}
+#liveBattleStats .lbs-versus{padding:3px 9px 7px;border-color:#ab6b7b44}
+#liveBattleStats .lbs-versus b{color:#dbd1d7}#liveBattleStats .lbs-versus span{color:#ffffff}#liveBattleStats .lbs-versus i{color:#af929e}
 #liveBattleStats .lbs-teams{padding:5px 7px;gap:8px;max-height:none;overflow:visible}
 #liveBattleStats .lbs-teams>[data-team]{display:grid;grid-auto-rows:var(--lbs-row-height,56px);align-content:start;gap:0}
-#liveBattleStats .lbs-unit{box-sizing:border-box;padding:3px 1px;gap:4px;border-bottom:1px solid #846b4822;min-height:0;overflow:hidden}
-#liveBattleStats .lbs-portrait{width:24px;height:29px;background:#a18b63;border-color:#816342;box-shadow:inset 1px 1px #c6ab7c}
+#liveBattleStats .lbs-unit{box-sizing:border-box;padding:3px 1px;gap:4px;border-bottom:1px solid #b2768b26;min-height:0;overflow:hidden}
+#liveBattleStats .lbs-portrait{width:24px;height:29px;background:#2d2931;border-color:#79505e;box-shadow:inset 1px 1px #59404c}
 #liveBattleStats .lbs-portrait img{width:29px;height:29px}
 #liveBattleStats .lbs-label{display:grid;grid-template-columns:minmax(0,1fr);gap:0}
-#liveBattleStats .lbs-label b{font-size:9px;line-height:10px;color:#3f2d1b}
-#liveBattleStats .lbs-label span{font-size:11px;line-height:12px;color:#683924}
-#liveBattleStats .lbs-value-track{height:4px;margin:2px 0;background:#927a53}
-#liveBattleStats .lbs-value-track i{background:#a94b35}
-#liveBattleStats[data-metric=healing] .lbs-value-track i{background:#547b42}
-#liveBattleStats[data-metric=shield] .lbs-value-track i{background:#48798f}
-#liveBattleStats .lbs-health{height:4px;background:#927a53;border-color:#77603e}
-#liveBattleStats .lbs-vitals{font-size:7px;line-height:9px;margin-top:2px;color:#5c472f;white-space:nowrap}
+#liveBattleStats .lbs-label b{font-size:9px;line-height:10px;color:#f6f1f4}
+#liveBattleStats .lbs-label span{font-size:11px;line-height:12px;color:#ffd49a}
+#liveBattleStats .lbs-value-track{height:4px;margin:2px 0;background:#100e15}
+#liveBattleStats .lbs-value-track i{background:#f2a46d}
+#liveBattleStats[data-metric=healing] .lbs-value-track i{background:#76d7a0}
+#liveBattleStats[data-metric=shield] .lbs-value-track i{background:#7fcafa}
+#liveBattleStats .lbs-health{height:4px;background:#100e15;border-color:#654651}
+#liveBattleStats .lbs-vitals{font-size:8px;line-height:10px;margin-top:2px;color:#d6c7cf;white-space:nowrap}
 #liveBattleStats .lbs-unit.fainted{opacity:.55}
-#liveBattleStats .lbs-unit.healing{background:#607f3b22;border-color:#64834a66}
-#liveBattleStats .lbs-unit.damaged:not(.healing){background:#a9433422}
-#liveBattleStats footer{padding:5px 7px;border-color:#80613e66;background:#a58e67;color:#4e3922;font-size:8px;line-height:11px}
+#liveBattleStats .lbs-unit.healing{background:#69d79b22;border-color:#69d79b66}
+#liveBattleStats .lbs-unit.damaged:not(.healing){background:#e5756c24}
+#liveBattleStats footer{padding:5px 7px;border-color:#ab6b7b44;background:#17131b;color:#cbbbc4;font-size:8px;line-height:11px}
 #liveBattleStats.dense .lbs-portrait{height:25px;width:22px}#liveBattleStats.dense .lbs-portrait img{width:25px;height:25px}
 #liveBattleStats.dense .lbs-label{grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:2px}
 #liveBattleStats.dense .lbs-label b{font-size:8px}#liveBattleStats.dense .lbs-label span{font-size:9px}
+
+#liveBattleStats [data-total="0"]{color:#f3e5ec}#liveBattleStats [data-total="1"]{color:#ff829d}
+#liveBattleStats nav button:hover{background:#613044;color:#fff}
+
+#stage #liveBattleStats{border-top:3px solid #e33e66}
+#liveBattleStats header{box-shadow:inset 3px 0 #ef456d}
+#liveBattleStats .lbs-value-track i{background:#f16a87}

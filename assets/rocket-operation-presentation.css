@@ -84,3 +84,13 @@
 #rocketOperationOverlay .rop-body>.rop-event-options:has(>button:only-child){width:160px;grid-template-columns:1fr}
 @media(max-width:600px){#rocketOperationOverlay .rop-body>.rop-event-options,#rocketOperationOverlay .rop-body>.rop-event-options:has(>button:last-child:nth-child(3)){width:min(440px,100%);grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}#rocketOperationOverlay .rop-event-options button{min-height:105px;padding:8px 5px}#rocketOperationOverlay .rop-event-options img{width:47px;height:47px}}
 @media(max-width:380px){#rocketOperationOverlay .rop-body>.rop-event-options,#rocketOperationOverlay .rop-body>.rop-event-options:has(>button:last-child:nth-child(3)){grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Lavender keeps the shared compact layout and adds its own visual identity. */
+#rocketOperationOverlay[data-chapter="lavender"] .rop-eyebrow,
+#rocketOperationOverlay[data-chapter="lavender"] .rop-action-kind{color:#dab9f2}
+#rocketOperationOverlay[data-chapter="lavender"] .rop-room-card{background:linear-gradient(155deg,#3d354d,#252333);border-color:#7e658e}
+#rocketOperationOverlay[data-chapter="lavender"] .rop-route-art{background:linear-gradient(135deg,#4d3e60,#242237)}
+#rocketOperationOverlay[data-chapter="lavender"] footer button:not(.secondary){background:#77518f;border-color:#bd94d1}
+#rocketOperationOverlay[data-chapter="lavender"] .rop-mission-cover{border-color:#a386b3}
+body.rocket-lavender-active #rocketOperationHud{border-color:#9272a7}
+body.rocket-lavender-active #rocketOperationHud .rop-hud-head strong{color:#ceb0e2}

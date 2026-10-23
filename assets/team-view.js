@@ -34,7 +34,7 @@
  }
  window.addEventListener('resize',restorePosition);restorePosition();
  // Preserve hover inspection while preventing moves or event choices during this lookup.
- for(const name of ['pointerdown','click','contextmenu','touchstart'])window.addEventListener(name,e=>{if(!opened||e.target.closest('[data-team-view-control]'))return;e.preventDefault();e.stopImmediatePropagation()},{capture:true,passive:false});
+ for(const name of ['pointerdown','click','contextmenu','touchstart'])window.addEventListener(name,e=>{if(!opened||e.target.closest('[data-team-view-control]'))return;if(e.target.closest('#combatbtn')&&G.rocketOperation&&['intro','plan'].includes(G.rocketOperation.status)){close();window.ROCKET_OPERATION?.plan();return}e.preventDefault();e.stopImmediatePropagation()},{capture:true,passive:false});
  window.addEventListener('keydown',e=>{if(e.key.toLowerCase()===gameKey('view').toLowerCase()&&!document.querySelector('#menu.show')&&!e.ctrlKey&&!e.metaKey&&!e.altKey&&!e.target.closest('input,textarea,select,[contenteditable=true]')&&(opened||eventHost())){e.preventDefault();e.stopImmediatePropagation();if(!e.repeat){if(opened)close();else show()}return}if(!opened||e.ctrlKey||e.metaKey||['F5','F11','F12'].includes(e.key))return;e.stopImmediatePropagation();e.preventDefault();if(e.key==='Escape'||((e.key==='Enter'||e.key===' ')&&!e.repeat))close();else if(e.key==='Tab')back.focus()},true);
  setInterval(sync,180);sync();window.TEAM_VIEW={open:show,close,get isOpen(){return opened}};
 })();

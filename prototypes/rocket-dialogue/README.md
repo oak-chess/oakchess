@@ -1,0 +1,5 @@
+# Protótipo de diálogos Rocket
+
+Abrir `index.html`. Cinco atalhos principais e 25 etapas adicionais pelo seletor: início, equipe, mapa, patrulha, celas, depósito, abrigo, loja, laboratório, funcionário, comboio, pesquisa, treinamento, armadilha, mercado, depósito trancado, interceptação, extração, derrota/revanche, Giovanni, conclusão e os eventos de Lavender. Todas as escolhas são demonstrações narrativas; não executam regras reais de jogo. O conjunto é centralizado verticalmente e limitado em largura para aproximar personagem, diálogo e menu. Diálogo com escrita progressiva, duas páginas e escolhas acompanhadas das consequências. Espaço revela/avança o texto; setas selecionam opções; Enter confirma; V mostra o tabuleiro. Música iniciada somente pelo botão.
+
+Exemplos usam artes e sprites locais. O fundo incorpora o protótipo independente da arena em modo cenário. Não acessa localStorage, não inicia batalhas nem modifica campanha ou Operação Rocket. As escolhas demonstram o texto da consequência e podem ser reiniciadas pelas abas superiores. Texto e animações respeitam movimento reduzido. Sem testes ou inspeção visual no navegador nesta entrega.
