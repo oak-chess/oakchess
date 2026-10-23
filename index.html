@@ -2708,7 +2708,7 @@ function moveText(L,star,mv){
 /* =====================================================================
    ÁUDIO — efeitos sintetizados (WebAudio), gritos da PokeAPI, música simples
    ===================================================================== */
-const CFG0={sfx:.7,cry:.6,music:true,musvol:.5,timer:true,speed:1,pmd:true,mute:false,shake:true,reduceFx:true,diff:'normal',remSpeed:false,txt:'normal',skipDlg:true,dmgnum:'all',manabar:true,confirmSell:false,autoPause:false,uiSize:'normal',fxLevel:'normal',teamMarkers:false,noticeVol:.5,recordReplays:true,keys:{roll:'d',xp:'f',sell:'e',bag:'b',fight:' ',pause:'p',view:'v',mute:'m'}};
+const CFG0={movePreview:true,sfx:.7,cry:.6,music:true,musvol:.5,timer:true,speed:1,pmd:true,mute:false,shake:true,reduceFx:true,diff:'normal',remSpeed:false,txt:'normal',skipDlg:true,dmgnum:'all',manabar:true,confirmSell:false,autoPause:false,uiSize:'normal',fxLevel:'normal',teamMarkers:false,noticeVol:.5,recordReplays:true,keys:{roll:'d',xp:'f',sell:'e',bag:'b',fight:' ',pause:'p',view:'v',mute:'m'}};
 CFG0.hexNeon=.5;
 const CFG=Object.assign({},CFG0);
 try{Object.assign(CFG,JSON.parse(localStorage.getItem('pktft')||'{}'));if(!CFG.remSpeed)CFG.speed=1}catch(e){}
