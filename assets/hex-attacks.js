@@ -114,6 +114,7 @@
   g.restore();
  }
  function draw(g){
+  if(CFG.movePreview===false)return;
   if(!B.on||B.over){marks.length=0;return;}
   const reduced=!!CFG.reduceFx,low=CFG.fxLevel==='low';let particleBudget=low?72:reduced?140:CFG.fxLevel==='high'?420:280;
   for(let i=marks.length-1;i>=0;i--){const m=marks[i],age=B.t-m.start;if(age>=m.life){marks.splice(i,1);continue;}
