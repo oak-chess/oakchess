@@ -1962,3 +1962,28 @@ body.idle-native-mode #idle-hunt-block{width:470px;padding:0;border:1px solid #a
 #idle-hunt-block>footer{padding:12px 18px;border-top:1px solid #ffffff10;background:#172630}
 #idle-hunt-block footer label{display:flex;align-items:center;gap:8px;font-size:10px;color:#a9bfcc;cursor:pointer}
 #idle-hunt-block footer input{width:14px;height:14px;margin:0;accent-color:#b56280}
+/* Real Kanto badge sprites and an Idle-specific badge case. */
+#idle-world .iw-profile-badges>div{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:7px}
+#idle-world .iw-profile-badges span{display:flex;flex-direction:column;align-items:center;gap:7px;padding:10px 4px;text-align:center}
+#idle-world .iw-profile-badges img{width:32px;height:32px;object-fit:contain;image-rendering:pixelated}
+#idle-world .iw-profile-badges b{font-size:8px;font-weight:normal}
+#idle-world .iw-profile-badges [data-earned=false] img{filter:grayscale(1);opacity:.35}
+body.idle-native-mode #idle-world[data-family=badges]{width:900px;height:620px;max-height:620px!important;top:365px!important;display:flex;flex-direction:column;overflow:hidden!important}
+body.idle-native-mode #idle-world[data-family=badges][hidden]{display:none!important}
+#idle-world[data-family=badges]>header{flex:none}
+body.idle-native-mode #idle-world[data-family=badges]>.iw-shell{display:flex;flex:1;min-height:0}
+body.idle-native-mode #idle-world[data-family=badges] .iw-shell>nav{display:none!important}
+body.idle-native-mode #idle-world[data-family=badges] .iw-content{flex:1;min-height:0;max-height:none!important;overflow-y:auto;padding:16px!important;scrollbar-width:thin}
+.iw-badge-case-intro h3{font-size:16px;color:#edf4f7;margin:0 0 6px}
+.iw-badge-case-intro p{font-size:10px;color:#a5bdcb;margin:0 0 15px}
+.iw-badge-case-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+.iw-badge-case-card{display:flex;flex-direction:column;align-items:center;gap:7px;padding:13px 9px;border:1px solid #ffffff12;border-radius:10px;background:#20313d;text-align:center}
+.iw-badge-case-card>img{width:48px;height:48px;object-fit:contain;image-rendering:pixelated}
+.iw-badge-case-card[data-earned=false]>img{filter:grayscale(1);opacity:.4}
+.iw-badge-case-card[data-earned=true]{background:#213d34;border-color:#79bb9266}
+.iw-badge-case-card>small{font-size:8px;color:#8fa8b9;letter-spacing:.5px}
+.iw-badge-case-card[data-earned=true]>small{color:#9fd5b0}
+.iw-badge-case-card h4{font-size:12px;color:#edf4f7;margin:0}
+.iw-badge-case-card>b{font-size:10px;color:#dbc489}
+.iw-badge-case-card>p{font-size:9px;color:#9fb8c8;margin:0;line-height:14px}
+body.idle-native-mode #idle-world .iw-badge-case-card>.iw-button{width:auto;padding:5px 9px!important;font-size:9px!important;margin-top:auto;border-radius:6px!important}
