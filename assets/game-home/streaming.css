@@ -15,3 +15,9 @@ body #ttl>.sun,body #ttl>.moon,body #ttl .sun,body #ttl .moon{display:none!impor
 body #ttl .stream-home{background:linear-gradient(90deg,#07131bf5 0%,#091621dd 30%,#08131d44 65%,#08131d25 100%),linear-gradient(0deg,#08121b 0%,#08121bf2 21%,transparent 68%)}
 .stream-live{right:8px;top:24px;border-radius:4px;padding:8px 11px;background:#0a1e2bbd;border-color:#99c1cb44;color:#a6d4cf;box-shadow:0 3px 12px #0002}
 .stream-library-heading{max-width:678px}.stream-header{position:relative;z-index:2}.stream-nav button{padding:10px 1px;border-bottom:2px solid transparent;border-radius:0}.stream-nav button:hover,.stream-nav button:focus-visible{border-bottom-color:#e4cf98;color:#edf6fa}
+
+/* Four official modes in the game library. */
+.stream-games{grid-template-columns:repeat(4,minmax(0,1fr))}
+.stream-game[data-game=idle] .stream-cover{background-color:#1b4b45}
+.stream-game[data-game=idle] .stream-mode{background:#204d47;color:#ceeee1}
+@media(max-width:800px){.stream-games{grid-template-columns:repeat(2,minmax(0,1fr))}}

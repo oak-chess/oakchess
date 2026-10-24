@@ -1,6 +1,6 @@
 /* Player and campaign opponent trainers recall their own defeated Pokemon. */
 (()=>{
- if(location.pathname.includes('/prototypes/'))return;
+ if(window.OAK_IDLE_MODE||location.pathname.includes('/prototypes/'))return;
  const arena=document.getElementById('arenaView');if(!arena)return;
  const layer=z=>{const cv=document.createElement('canvas');cv.width=1280;cv.height=800;cv.setAttribute('aria-hidden','true');cv.style.cssText=`position:absolute;inset:0;width:1280px;height:800px;pointer-events:none;z-index:${z}`;arena.append(cv);return cv.getContext('2d')},ground=layer(1),front=layer(2501);
  const assets={};for(const name of ['red_normal','red_item']){const im=new Image();im.src='assets/trainers/'+name+'.png';assets[name]=im}

@@ -1,0 +1,32 @@
+/* Same presentation model as the campaign tutorial, scoped to Jornada Idle. */
+#idle-oak-tutorial[hidden],#idle-oak-tutorial [hidden]{display:none!important}
+#idle-oak-tutorial{position:absolute;inset:0;z-index:31020;pointer-events:none;font-family:'Press Start 2P','Courier New',monospace}
+#idle-oak-tutorial .ioc-dim,#idle-oak-tutorial .ioc-block{position:absolute;inset:0}
+#idle-oak-tutorial .ioc-dim{background:rgba(4,8,22,.66);pointer-events:none}
+#idle-oak-tutorial .ioc-block{pointer-events:auto;background:transparent}
+#idle-oak-tutorial .ioc-ring{position:absolute;border:3px solid #ffd84a;border-radius:12px;pointer-events:none;box-shadow:0 0 0 2px #0008,0 0 18px 4px #ffd84a66,inset 0 0 14px #ffd84a22}
+#idle-oak-tutorial .ioc-dialog{position:absolute;left:50%;width:900px;max-width:calc(100% - 36px);transform:translateX(-50%);padding:22px 28px 48px 152px;min-height:158px;background:#f8f8f0;border:6px solid #3d4f7a;border-radius:14px;color:#2a2a35;font-size:12px;line-height:25px;cursor:pointer;pointer-events:auto;box-shadow:0 0 0 4px #1b2440,inset 0 0 0 3px #cdd5ea,0 12px 28px #0008;user-select:none;outline:none}
+#idle-oak-tutorial .ioc-dialog[data-position=bottom]{bottom:18px}
+#idle-oak-tutorial .ioc-dialog[data-position=top]{top:76px}
+#idle-oak-tutorial .ioc-name{position:absolute;left:22px;top:-31px;background:#3d4f7a;color:#fff;font-size:10px;line-height:14px;padding:8px 12px;border-radius:8px 8px 0 0;letter-spacing:1px}
+#idle-oak-tutorial button{font:9px/14px 'Press Start 2P','Courier New',monospace;cursor:pointer}
+#idle-oak-tutorial .ioc-stop{position:absolute;right:12px;top:-35px;font-size:8px;padding:7px 9px;border-radius:7px;background:#0a1028e6;border:2px solid #cdd5ea;color:#fff}
+#idle-oak-tutorial .ioc-stop:hover{background:#3d4f7a}
+#idle-oak-tutorial .ioc-portrait{position:absolute;left:24px;top:50%;width:104px;height:104px;margin-top:-52px;display:flex;align-items:center;justify-content:center}
+#idle-oak-tutorial .ioc-portrait img{max-width:100%;max-height:100%;image-rendering:pixelated;filter:drop-shadow(0 4px #0003)}
+#idle-oak-tutorial .ioc-speech{position:relative}
+#idle-oak-tutorial .ioc-ghost{visibility:hidden;white-space:pre-wrap}
+#idle-oak-tutorial .ioc-typed{position:absolute;inset:0;white-space:pre-wrap}
+#idle-oak-tutorial .ioc-footer{position:absolute;left:152px;right:22px;bottom:12px;display:flex;align-items:center;gap:10px;line-height:14px}
+#idle-oak-tutorial .ioc-hint{font:9px/14px 'Trebuchet MS',sans-serif;color:#6c7792;flex:1}
+#idle-oak-tutorial .ioc-counter{font-size:8px;line-height:14px;color:#8590aa;white-space:nowrap}
+#idle-oak-tutorial .ioc-topic-toggle{font:9px/14px 'Trebuchet MS',sans-serif;color:#667494;background:transparent;border:0;padding:4px}
+#idle-oak-tutorial .ioc-action,#idle-oak-tutorial .ioc-skip-step{font:9px/14px 'Trebuchet MS',sans-serif;padding:5px 8px;border:1px solid #3d4f7a;border-radius:6px;color:#3d4f7a;background:#e8ecf8}
+#idle-oak-tutorial .ioc-action{background:#3d4f7a;color:#fff;font-weight:bold}
+#idle-oak-tutorial .ioc-arrow{position:absolute;right:9px;bottom:12px;font-size:12px;color:#d2342c;pointer-events:none}
+#idle-oak-tutorial .ioc-dialog[data-waiting=true] .ioc-arrow{display:none}
+#idle-oak-tutorial .ioc-topics{position:absolute;left:152px;right:22px;bottom:42px;width:calc(100% - 174px);padding:8px;background:#eff1f8;border:2px solid #3d4f7a;color:#3d4f7a;font:11px 'Trebuchet MS',sans-serif;border-radius:6px;cursor:pointer}
+#idle-oak-tutorial button:focus-visible,#idle-oak-tutorial select:focus-visible{outline:2px solid #d5aa35;outline-offset:3px}
+body.idle-native-mode #collectionShortcuts #idleTutorialLaunch{display:inline-flex!important;position:static!important;align-items:center;justify-content:center;flex:none;width:32px!important;height:32px!important;min-width:32px!important;min-height:32px!important;margin:0!important;padding:0!important;background:transparent!important;border:0!important;overflow:hidden;cursor:pointer}
+#idleTutorialLaunch>span{display:block;width:24px;height:32px;background:url('../../assets/trainer-profile/sprites/oak_normal.png') no-repeat 0 0 / auto 48px;image-rendering:pixelated}
+@media(prefers-reduced-motion:no-preference){#idle-oak-tutorial .ioc-arrow{animation:ioc-next .8s ease-in-out infinite alternate}@keyframes ioc-next{to{transform:translateY(4px)}}}

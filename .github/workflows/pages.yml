@@ -30,7 +30,7 @@ jobs:
         run: |
           mkdir -p _site
           cp index.html CREDITS.md _site/
-          cp -R assets wallpapers _site/
+          cp -R assets wallpapers modes _site/
       - name: Upload site
         uses: actions/upload-pages-artifact@v3
         with:
