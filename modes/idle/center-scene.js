@@ -61,5 +61,5 @@ window.createIdleCenterScene=function(ctx){
   dialogue=el('aside',undefined,'ic-dialogue');dialogue.hidden=true;dialogue.setAttribute('role','dialog');dialogue.setAttribute('aria-label','Conversa com a enfermeira');const portrait=el('span',undefined,'ic-dialogue-portrait');portrait.setAttribute('aria-hidden','true');const copy=el('div',undefined,'ic-dialogue-copy');dialogueText=el('p');dialogueText.setAttribute('aria-live','polite');dialogueActions=el('div',undefined,'ic-dialogue-actions');copy.append(el('b','Enfermeira'),dialogueText,dialogueActions);dialogue.append(portrait,copy);stage.append(dialogue);
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!root.hidden&&!document.querySelector('.idle-window:not([hidden])')){e.preventDefault();e.stopImmediatePropagation();if(!dialogue.hidden)dismissDialogue();else close()}},true);
  }
- return {mount,open,close,refresh,isOpen:()=>!!root&&!root.hidden};
+ return {mount,open,close,refresh,openRecovery(){if(!root||root.hidden)open();talkToNurse()},isOpen:()=>!!root&&!root.hidden};
 };

@@ -1930,3 +1930,35 @@ body.idle-native-mode #menu.idle-settings [hidden]{display:none!important}
 #menu .idle-settings-data p{font:11px/1.6 'Trebuchet MS';color:#b5cbd8}
 #menu .idle-settings-data>.mbtn{margin:0 6px 8px 0}
 #menu .idle-settings-data>div:not(:empty){padding:12px;border:1px solid #b3775d;border-radius:8px;background:#3b3028;margin-top:10px}
+/* Captured-only session inbox next to the supply counters. */
+body.idle-native-mode .is-supply-hud:has(.is-caught-chip){display:flex;gap:5px}
+body.idle-native-mode .is-caught-chip{border-color:#79bda56b!important;background:#244238!important}
+#idle-quick-supplies:has(.is-caught-list){width:380px;max-width:calc(100vw - 24px)}
+.is-caught-list{display:flex;flex-direction:column;gap:7px;max-height:340px;overflow-y:auto;scrollbar-width:thin;padding:3px}
+.is-caught-card{display:flex;align-items:center;gap:10px;background:#20333f;border:1px solid #ffffff13;border-radius:8px;padding:9px}
+.is-caught-card>img{width:40px;height:44px;object-fit:contain;image-rendering:pixelated;flex:none}
+.is-caught-card>div{display:flex;flex-direction:column;gap:5px;min-width:0}
+.is-caught-card b{font-size:12px;color:#edf4f7}
+.is-caught-card small{font-size:8px;color:#9fb9c9}
+.is-caught-tags{display:flex;gap:5px}
+.is-caught-tags>span{font-size:9px;color:#bacbd5;border:1px solid currentColor;border-radius:3px;padding:2px 4px}
+.is-caught-tags>[data-quality='2']{color:#76c6a0}
+.is-caught-tags>[data-quality='3']{color:#7fbeef}
+.is-caught-tags>[data-quality='4']{color:#c6a0ef}
+.is-caught-tags>[data-quality='5']{color:#f1ce72}
+/* Narrow capture inbox without reducing card height or sprite size. */
+body.idle-native-mode #idle-quick-supplies:has(.is-caught-list){width:270px;max-width:calc(100vw - 24px);box-sizing:border-box}
+body.idle-native-mode #idle-quick-supplies .is-caught-card{gap:8px;padding:9px 8px}
+/* Clear recovery warning with a daily, Idle-only dismissal preference. */
+body.idle-native-mode #idle-hunt-block{width:470px;padding:0;border:1px solid #a37757;border-radius:13px;background:#1d2c37;overflow:hidden;box-shadow:0 16px 55px #0009;color:#d9e6ed}
+#idle-hunt-block>header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;background:#2c3437;border-bottom:1px solid #ffffff0d}
+#idle-hunt-block header small{font-size:8px;letter-spacing:1px;color:#dfb67e}
+#idle-hunt-block header h3{margin:4px 0 0;font-size:17px;line-height:22px;color:#f3e6cc}
+#idle-hunt-block .idle-hunt-block-close{width:26px;height:26px;padding:0;border-radius:50%;font-size:18px;flex:none}
+#idle-hunt-block>p{margin:0;padding:16px 18px;font-size:12px;line-height:19px;color:#c4d7e2}
+#idle-hunt-block>.idle-hunt-block-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:0 18px 16px}
+#idle-hunt-block .idle-hunt-block-actions>button{padding:8px 10px;border-radius:7px;background:#304956;font-size:10px;min-height:32px;text-align:center}
+#idle-hunt-block .idle-hunt-block-actions>button:nth-child(3){background:#2b5042;color:#bce8ce;border-color:#6ca48655}
+#idle-hunt-block>footer{padding:12px 18px;border-top:1px solid #ffffff10;background:#172630}
+#idle-hunt-block footer label{display:flex;align-items:center;gap:8px;font-size:10px;color:#a9bfcc;cursor:pointer}
+#idle-hunt-block footer input{width:14px;height:14px;margin:0;accent-color:#b56280}
