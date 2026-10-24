@@ -2493,6 +2493,12 @@ ln(3,[132,132,132],['Ditto','Ditto','Ditto'],['normal'],'skirm',['Transformaçã
 ln(3,[137,137,137],['Porygon','Porygon','Porygon'],['normal'],'mage',['Tri Ataque','normal','beam',1.1]);
 ln(3,[138,139,139],['Omanyte','Omastar','Omastar'],['rock','water'],'tank',['Hidro Canhão','water','burst',1.0,{st:'slow',d:3}]);
 ln(3,[140,141,141],['Kabuto','Kabutops','Kabutops'],['rock','water'],'melee',['Corte Rochoso','rock','multi',.7]);
+/* Additional Idle family members use separate lines to preserve saved form indices. */
+ln(1,[236,236,236],['Tyrogue','Tyrogue','Tyrogue'],['fighting'],'melee',['Golpe de Treino','fighting','rush',.8]);
+ln(3,[237,237,237],['Hitmontop','Hitmontop','Hitmontop'],['fighting'],'bruiser',['Chute Triplo','fighting','multi',1.0]);
+ln(1,[239,239,239],['Elekid','Elekid','Elekid'],['electric'],'skirm',['Onda de Choque','electric','chain',.8]);
+ln(4,[466,466,466],['Electivire','Electivire','Electivire'],['electric'],'melee',['Punho de Plasma','electric','multi',1.5]);
+ln(1,[440,440,440],['Happiny','Happiny','Happiny'],['normal'],'support',['Cura Suave','normal','heal',.8]);
 /* Lendárias (Mewtwo, Mew, Articuno, Zapdos, Moltres): só aparecem nos eventos, nunca na loja ou no carrossel */
 LINES.forEach(L=>{if(L.c===5)L.boss=true});
 const poolIdx=l=>LINES[l].from!=null?LINES[l].from:l;
@@ -6624,7 +6630,7 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden)saveNow()})
 let lastT=performance.now(),lastTick=-1;
 function frame(ts){try{frame_(ts)}catch(e){reportErr(e)}requestAnimationFrame(frame)}
 function frame_(ts){
-  const dt=Math.min(.05,(ts-lastT)/1000);lastT=ts;if(window.OAK_IDLE_MODE&&(document.hidden||window.IDLE_BACKGROUND_BUSY))return;
+  const dt=Math.max(0,Math.min(.05,(ts-lastT)/1000));lastT=ts;if(window.OAK_IDLE_MODE&&(document.hidden||window.IDLE_BACKGROUND_BUSY))return;
   if(document.body.classList.contains('tower-entry-open')||document.body.classList.contains('rocket-entry-open'))return;
   const sdt=G.paused?0:((G.phase==='combat'||G.phase==='result')?dt*CFG.speed:dt);
   tickApprovedArenas(dt);
@@ -7241,7 +7247,7 @@ FX.lightning=function(x1,y1,x2,y2){o.lightning.apply(FX,arguments);mark('electri
 FX.fx=function(name,x,y,type,sc){o.fx.apply(FX,arguments);sc=sc||1;mark(type,x,y,34*sc);wave(x,y,type,70*sc,.5);tint(x,y,type,.26);punch(.008);themed(x,y,1.2)};
 FX.zone=function(type,x,y,r,dur,fx){o.zone.apply(FX,arguments);mark(type,x,y-20,r*.8,(dur||3)+1.5)};
 FX.clear=function(){o.clear.apply(FX,arguments);dec.length=0;waves.length=0};
-FX.update=function(dt){o.update.apply(FX,arguments);for(let i=dec.length-1;i>=0;i--){dec[i].t+=dt;if(dec[i].t>=dec[i].life)dec.splice(i,1)}
+FX.update=function(dt){dt=Number.isFinite(dt)?Math.max(0,dt):0;o.update.call(FX,dt);for(let i=dec.length-1;i>=0;i--){dec[i].t+=dt;if(dec[i].t>=dec[i].life)dec.splice(i,1)}
   for(let i=waves.length-1;i>=0;i--){waves[i].t+=dt;if(waves[i].t>=waves[i].life)waves.splice(i,1)}};
 
 /* nocaute e golpes pesados */
@@ -7276,7 +7282,7 @@ function drawDecal(d){const a=A(d),r=d.r,c=d.c,t=d.t;g.save();g.translate(d.x,d.
    default:{const ph=Math.min(1,t/.6);g.fillStyle=`rgba(0,0,0,${.12*a})`;g.beginPath();g.arc(0,0,r*.5,0,6.283);g.fill();
      g.strokeStyle=`rgba(210,200,180,${.4*(1-ph)*a})`;g.lineWidth=6*(1-ph)+1;g.beginPath();g.arc(0,0,r*(.4+.6*ph),0,6.283);g.stroke()}}
   g.restore()}
-function drawWave(w){const p=w.t/w.life,e=1-(1-p)*(1-p),r=w.r*e;g.save();g.translate(w.x,w.y);g.scale(1,.62);g.globalCompositeOperation='lighter';
+function drawWave(w){if(!Number.isFinite(w.life)||w.life<=0||!Number.isFinite(w.t)||!Number.isFinite(w.r)||w.r<=0||w.t>=w.life)return;const p=Math.max(0,Math.min(1,w.t/w.life)),e=1-(1-p)*(1-p),r=Math.max(0,w.r*e);if(r<=0)return;g.save();g.translate(w.x,w.y);g.scale(1,.62);g.globalCompositeOperation='lighter';
   const q=g.createRadialGradient(0,0,r*.4,0,0,r);q.addColorStop(0,hexA(w.c[1],0));q.addColorStop(1,hexA(w.c[1],.2*(1-p)));g.fillStyle=q;g.beginPath();g.arc(0,0,r,0,6.283);g.fill();
   g.strokeStyle=hexA(w.c[0],.8*(1-p));g.lineWidth=5*(1-p)+1;g.beginPath();g.arc(0,0,r,0,6.283);g.stroke();g.restore()}
 FX.draw=function(){o.draw.apply(FX,arguments);

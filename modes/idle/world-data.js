@@ -24,7 +24,7 @@ window.IDLE_WORLD_DATA={
  tasks:{research:{name:'Pesquisa de rastros',seconds:180,reward:'3 materiais e 2 doces'},training:{name:'Treino da reserva',seconds:180,reward:'24 XP e amizade'},materials:{name:'Coleta na caverna',seconds:240,reward:'5 materiais e chance de fóssil'},conservation:{name:'Centro de conservação',seconds:300,reward:'4 materiais e 2 doces'}},
  objective:{balanced:{name:'Equilibrado',gold:1,xp:1,materials:1},xp:{name:'Treinamento',gold:.7,xp:1.6,materials:.7},capture:{name:'Busca de espécies',gold:.8,xp:.8,materials:1},materials:{name:'Coleta de materiais',gold:.8,xp:.8,materials:2}},
  weather:['Céu aberto','Chuva','Névoa','Sol forte'],
- stones:{fire:'Pedra do Fogo',water:'Pedra da Água',thunder:'Pedra do Trovão',leaf:'Pedra da Folha',moon:'Pedra da Lua',ice:'Pedra do Gelo',shiny:'Pedra Brilhante',dusk:'Pedra do Crepúsculo',metal:'Revestimento Metálico',dragon:'Escama de Dragão',prism:'Escama Prisma',tooth:'Dente do Mar Profundo',scale:'Escama do Mar Profundo',protector:'Protetor',reaper:'Tecido Reaper'}
+ stones:{oval:'Pedra Oval',electirizer:'Electirizer',fire:'Pedra do Fogo',water:'Pedra da Água',thunder:'Pedra do Trovão',leaf:'Pedra da Folha',moon:'Pedra da Lua',ice:'Pedra do Gelo',shiny:'Pedra Brilhante',dusk:'Pedra do Crepúsculo',metal:'Revestimento Metálico',dragon:'Escama de Dragão',prism:'Escama Prisma',tooth:'Dente do Mar Profundo',scale:'Escama do Mar Profundo',protector:'Protetor',reaper:'Tecido Reaper'}
 };
 // Presentation metadata; challenge teams remain the teams configured above.
 window.IDLE_WORLD_DATA.gyms=[
