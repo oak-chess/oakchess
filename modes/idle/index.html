@@ -2494,11 +2494,11 @@ ln(3,[137,137,137],['Porygon','Porygon','Porygon'],['normal'],'mage',['Tri Ataqu
 ln(3,[138,139,139],['Omanyte','Omastar','Omastar'],['rock','water'],'tank',['Hidro Canhão','water','burst',1.0,{st:'slow',d:3}]);
 ln(3,[140,141,141],['Kabuto','Kabutops','Kabutops'],['rock','water'],'melee',['Corte Rochoso','rock','multi',.7]);
 /* Additional Idle family members use separate lines to preserve saved form indices. */
-ln(1,[236,236,236],['Tyrogue','Tyrogue','Tyrogue'],['fighting'],'melee',['Golpe de Treino','fighting','rush',.8]);
+ln(1,[236,236,236],['Tyrogue','Tyrogue','Tyrogue'],['fighting'],'melee',['Investida','normal','rush',.8]);
 ln(3,[237,237,237],['Hitmontop','Hitmontop','Hitmontop'],['fighting'],'bruiser',['Chute Triplo','fighting','multi',1.0]);
 ln(1,[239,239,239],['Elekid','Elekid','Elekid'],['electric'],'skirm',['Onda de Choque','electric','chain',.8]);
-ln(4,[466,466,466],['Electivire','Electivire','Electivire'],['electric'],'melee',['Punho de Plasma','electric','multi',1.5]);
-ln(1,[440,440,440],['Happiny','Happiny','Happiny'],['normal'],'support',['Cura Suave','normal','heal',.8]);
+ln(4,[466,466,466],['Electivire','Electivire','Electivire'],['electric'],'melee',['Soco do Trovão','electric','rush',1.5]);
+ln(1,[440,440,440],['Happiny','Happiny','Happiny'],['normal'],'support',['Pancada','normal','rush',.8]);
 /* Lendárias (Mewtwo, Mew, Articuno, Zapdos, Moltres): só aparecem nos eventos, nunca na loja ou no carrossel */
 LINES.forEach(L=>{if(L.c===5)L.boss=true});
 const poolIdx=l=>LINES[l].from!=null?LINES[l].from:l;
@@ -9103,4 +9103,5 @@ body #tip .ut .usec.its{padding-top:4px}
 <link rel="stylesheet" href="assets/rocket-dialogue.css?v=3">
 <script src="assets/rocket-dialogue.js?v=2"></script>
 <script src="assets/rocket-operation.js?v=18"></script>
+<script src="modes/idle/playable-moves.js"></script>
 <script src="modes/idle/items-data.js"></script><script src="modes/idle/capture-rates.js"></script><script src="modes/idle/shiny.js"></script><script src="modes/idle/individuals.js"></script><script src="modes/idle/progression.js"></script><script src="modes/idle/world-data.js"></script><script src="modes/idle/region-hunts.js"></script><script src="modes/idle/evolution-data.js"></script><script src="modes/idle/systems.js"></script><script src="modes/idle/field-notes.js"></script><script src="modes/idle/capture-fx.js"></script><script src="modes/idle/capture.js"></script><script src="modes/idle/drops-data.js"></script><script src="modes/idle/hunt-areas.js"></script><script src="modes/idle/capture-history.js"></script><script src="modes/idle/hunts.js"></script><script src="modes/idle/pc.js"></script><script src="modes/idle/party.js"></script><script src="modes/idle/shop.js?v=legendary-equipment-only-2"></script><script src="modes/idle/screen.js"></script><script src="modes/idle/automation.js"></script><link rel="stylesheet" href="modes/idle/center-scene.css"><script src="modes/idle/center-scene.js"></script><link rel="stylesheet" href="modes/idle/trainer.css"><script src="modes/idle/trainer.js"></script><link rel="stylesheet" href="modes/idle/tutorial.css"><script src="modes/idle/tutorial.js"></script><script src="modes/idle/music-loops.js"></script><script src="modes/idle/music.js"></script><script src="modes/idle/idle.js"></script></body></html>
