@@ -25,7 +25,7 @@ window.createIdleFieldNotes=function(ctx){
  }else if(view==='contracts'){
  const c=data.contract;if(c){body.append(el('h3','Derrotar '+c.name),el('p',progress()+' / '+c.need+' derrotados desde a aceitação'),el('p','Recompensa: '+c.gold+' ouro + '+c.balls+' Poké Bolas.'),btn('Recolher recompensa',claim,progress()<c.need),btn('Abandonar contrato',()=>{data.contract=null;commit()}));return}
  body.append(el('p','Aceite um contrato por vez. Só contam os inimigos derrotados depois da aceitação; o contrato não pausa a caçada.','ip-help'));
- for(const e of ctx.entries()){const name=e.line.names[0],card=el('article',undefined,'ifn-contract'),gold=e.rarity==='rare'?100:60;card.append(el('b','Derrotar 30 '+name),el('p',gold+' ouro + 5 Poké Bolas'),btn('Aceitar contrato',()=>{data.contract={name,need:30,start:data.defeated[name]||0,gold,balls:5,claimed:false};commit()}));body.append(card)}
+ for(const e of ctx.entries()){const name=e.speciesName||e.line.names[0],card=el('article',undefined,'ifn-contract'),gold=Math.round((e.rarity==='rare'?100:60)*(1+s.area*.2));card.append(el('b','Derrotar 30 '+name),el('p',gold+' ouro + 5 Poké Bolas'),btn('Aceitar contrato',()=>{data.contract={name,need:30,start:data.defeated[name]||0,gold,balls:5,claimed:false};commit()}));body.append(card)}
  }else{
  const report=s.offlineReceipt,format=n=>Math.round(n||0).toLocaleString('pt-BR'),gold=s.pending||0,xp=s.hunts.pendingXp||0,members=[...s.team,...s.collection].filter(m=>(s.hunts.pendingMembers[m.id]||0)>0),dashboard=el('div',undefined,'ifn-offline-dashboard');root.dataset.view='offline';
  const summary=el('section',undefined,'ifn-offline-summary'),reward=el('div');reward.append(el('small','DISPONÍVEL PARA RECOLHER'),el('h3',format(gold)+' ouro'),el('p','+'+format(xp)+' XP do treinador'));const collect=btn(gold||xp?'Recolher recompensas':'Tudo recolhido',()=>{ctx.collect();ctx.save();ctx.refresh();render()},!(gold||xp));collect.classList.add('ip-primary');summary.append(reward,collect);dashboard.append(summary);
@@ -35,5 +35,5 @@ window.createIdleFieldNotes=function(ctx){
  }
  }
  function mount(stage){root=el('section',undefined,'idle-window ifn-window');root.id='idle-field-notes';root.hidden=true;stage.append(root);document.addEventListener('keydown',e=>{if(e.key==='Escape')close()})}
- return {mount,open,close,refresh(){if(view==='contracts'&&progress()!==lastProgress){lastProgress=progress();render()}},onEncounter(names){s.discovered=Array.from(new Set([...s.discovered,...names]))},onDefeat(u){const name=u.L.names[0];data.defeated[name]=(data.defeated[name]||0)+1},progress};
+ return {mount,open,close,refresh(){if(view==='contracts'&&progress()!==lastProgress){lastProgress=progress();render()}},onEncounter(names){s.discovered=Array.from(new Set([...s.discovered,...names]))},onDefeat(u){const name=u.L.names[(u.star||1)-1]||u.L.names[0];data.defeated[name]=(data.defeated[name]||0)+1},progress};
 };

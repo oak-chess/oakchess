@@ -27,8 +27,8 @@ window.createIdleCenterScene=function(ctx){
  function dismissDialogue(){clearTimeout(healingTimer);healingTimer=0;if(!dialogue)return;dialogue.hidden=true;layer.classList.remove('ic-healing');dialogueFocus?.focus()}
  function talkToNurse(){
   if(healingTimer)return;ctx.closePanels();dialogueFocus=document.activeElement;dialogue.hidden=false;dialogueActions.replaceChildren();
-  dialogueText.textContent='Olá! Bem-vindo ao Centro Pokémon. Posso recuperar seus Pokémon por 10 ouro?'+(ctx.isRunning()?' A caçada será encerrada ao confirmar.':'');
-  const confirm=btn('Sim, cuidar da equipe · 10 ouro',()=>{
+  dialogueText.textContent='Olá! Bem-vindo ao Centro Pokémon. Posso recuperar seus Pokémon gratuitamente?'+(ctx.isRunning()?' A caçada será encerrada ao confirmar.':'');
+  const confirm=btn('Sim, cuidar da equipe · Grátis',()=>{
    confirm.disabled=true;const result=ctx.recover();dialogueActions.replaceChildren();
    if(!result.ok){dialogueText.textContent=result.message;const done=btn('Entendi',dismissDialogue);dialogueActions.append(done);done.focus();return}
    dialogueText.textContent='Só um instante! Estamos cuidando dos seus Pokémon…';layer.classList.add('ic-healing');

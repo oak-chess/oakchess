@@ -4746,7 +4746,7 @@ function buyCard(i){
     if(u.el&&UB['u'+u.uid]){u.el.style.visibility='';u.el.classList.add('spawn');setTimeout(()=>u.el&&u.el.classList.remove('spawn'),500);FX.poof(to.x-OFF,to.y)}
     SND.cry(L.ids[0],.9);if(u.shiny){const wx=to.x-OFF;FX.text(wx,to.y-64,'✨ SHINY!','#ffe36a',20,true);FX.ring(wx,to.y,'#ffe36a',8,90,.7,4);FX.glow(wx,to.y,70,'#ffe36a',.6,.8);for(let q=0;q<14;q++)FX.P({sh:'star',x:wx,y:to.y,vx:rnd(-150,150),vy:rnd(-190,-30),ay:200,life:rnd(.6,1.1),s:rnd(5,10),c:pick(['#ffe36a','#fff','#ffb02e'])})}mergeCheck();
     if(G.pending.length){G.pending.slice().forEach(p=>{G.gold+=L.c;removeUnit(p)});renderHUD()}})}
-function sellUnit(u,confirmed=false){
+function sellUnit(u,confirmed=false){if(document.body.classList.contains('idle-native-mode')){layoutAll();return}
   if(!u||!allUnits().includes(u))return;
   if(G.phase==='combat'&&u.pos&&u.pos.z==='b')return layoutAll();
   if(CFG.confirmSell&&!confirmed&&(u.star>=2||u.items.length)){confirmUnitSale(u);return}
@@ -4799,7 +4799,7 @@ addEventListener('pointermove',e=>{
   if(!D.on){if(Math.hypot(e.clientX-D.sx,e.clientY-D.sy)<5)return;D.on=true;D.u._idleDragged=true;dragL.appendChild(D.u.el);D.u.el.classList.add('drag');document.body.classList.add('dragging');dragOn=true;hideTip();setHoverEl(null);HVU=null;
     $('#sellbar').textContent=`Soltar aqui para vender (+${sellPrice(D.u)} ouro)`}
   const p=toWorld(e);D.u.el.style.transform=`translate(${p.x}px,${p.y+26}px)`;D.u.el.style.zIndex=9999;
-  const h=hexAt(p.x,p.y),bi=benchAt(p.x,p.y),sell=p.y>672;
+  const h=hexAt(p.x,p.y),bi=benchAt(p.x,p.y),sell=false;
   hlHex=sell?null:bi>=0?{bench:bi,r:-1,c:-1}:(h&&h.r>=4&&G.phase!=='combat'?{r:h.r,c:h.c}:null);
   let occ=null;
   if(hlHex){const u0=D.u;
@@ -4814,7 +4814,7 @@ addEventListener('pointerup',e=>{
   if(!was)return;
   u.el.classList.remove('drag');unitsL.appendChild(u.el);document.body.classList.remove('dragging');dragOn=false;hlHex=null;setSwapTarget(null);{const sb=$('#sellbar');if(sb)sb.classList.remove('hot')}
   const p=toWorld(e);
-  if(p.y>672)sellUnit(u);
+  if(p.y>672||e.target.closest?.('.is-navigation,.is-quick,.is-supply-hud,.idle-window')||document.elementFromPoint(e.clientX,e.clientY)?.closest('.is-navigation,.is-quick,.is-supply-hud,.idle-window')){layoutAll();drawGrid();return}
   else{const bi=benchAt(p.x,p.y);
     if(bi>=0){moveToBench(u,bi);SND.click()}
     else{const h=hexAt(p.x,p.y);if(h&&h.r>=4&&G.phase!=='combat'){if(moveToBoard(u,h.r,h.c)){const hp=hexXY(h.r,h.c);FX.ring(hp.x,hp.y+14,'#ffffff',8,40,.35,2);FX.burst(hp.x,hp.y+14,7,{sp:[30,90],ang:[-3.14,0],life:[.3,.5],s:[3,6],c:'#e8ffd0',ay:90});SND.place()}}}}
@@ -6649,7 +6649,7 @@ function frame_(ts){
   FX.draw();tipTick(ts);window.LIVE_BATTLE_STATS?.update(ts)}
 
 /* ---------- pausa ---------- */
-function togglePause(force){if(!['plan','combat'].includes(G.phase))return;const next=typeof force==='boolean'?force:!G.paused;if(next===G.paused)return;G.paused=next;document.body.classList.toggle('game-paused',next);$('#pausedOverlay').classList.toggle('show',next);$('#pauseBtn').textContent=next?'▶':'⏸';$('#pauseBtn').setAttribute('aria-label',next?'Continuar jogo':'Pausar jogo');$('#pauseBtn').title=next?'Continuar (P)':'Pausar (P)';if(next)$('#resumeBtn').focus();else $('#pauseBtn').focus();SND.click()}
+function togglePause(force){if(document.body.classList.contains('idle-native-mode'))return;if(!['plan','combat'].includes(G.phase))return;const next=typeof force==='boolean'?force:!G.paused;if(next===G.paused)return;G.paused=next;document.body.classList.toggle('game-paused',next);$('#pausedOverlay').classList.toggle('show',next);$('#pauseBtn').textContent=next?'▶':'⏸';$('#pauseBtn').setAttribute('aria-label',next?'Continuar jogo':'Pausar jogo');$('#pauseBtn').title=next?'Continuar (P)':'Pausar (P)';if(next)$('#resumeBtn').focus();else $('#pauseBtn').focus();SND.click()}
 $('#pauseBtn').addEventListener('click',()=>togglePause());$('#resumeBtn').addEventListener('click',()=>togglePause(false));
 function toggleArenaView(){if(window.TEAM_VIEW?.isOpen)TEAM_VIEW.close();else window.TEAM_VIEW?.open()}
 $('#viewBtn').addEventListener('click',toggleArenaView);
@@ -6714,6 +6714,7 @@ restartBtn.onclick=()=>{
 };
 $('#again').onclick=restart;
 addEventListener('keydown',e=>{
+  if(document.body.classList.contains('idle-native-mode'))return;
   if(e.ctrlKey||e.metaKey||e.altKey||['INPUT','TEXTAREA','SELECT'].includes((document.activeElement||{}).tagName)||menuEl.classList.contains('show')||document.querySelector('#saleConfirm.show'))return;
   if(e.key.toLowerCase()===gameKey('mute')){e.preventDefault();toggleMute();return}
   if(e.key.toLowerCase()===gameKey('pause')&&['plan','combat'].includes(G.phase)){e.preventDefault();togglePause();return}
@@ -9096,4 +9097,4 @@ body #tip .ut .usec.its{padding-top:4px}
 <link rel="stylesheet" href="assets/rocket-dialogue.css?v=3">
 <script src="assets/rocket-dialogue.js?v=2"></script>
 <script src="assets/rocket-operation.js?v=18"></script>
-<script src="modes/idle/items-data.js"></script><script src="modes/idle/capture-rates.js"></script><script src="modes/idle/shiny.js"></script><script src="modes/idle/individuals.js"></script><script src="modes/idle/progression.js"></script><script src="modes/idle/world-data.js"></script><script src="modes/idle/evolution-data.js"></script><script src="modes/idle/systems.js"></script><script src="modes/idle/field-notes.js"></script><script src="modes/idle/capture-fx.js"></script><script src="modes/idle/capture.js"></script><script src="modes/idle/drops-data.js"></script><script src="modes/idle/hunt-areas.js"></script><script src="modes/idle/capture-history.js"></script><script src="modes/idle/hunts.js"></script><script src="modes/idle/pc.js"></script><script src="modes/idle/party.js"></script><script src="modes/idle/shop.js?v=legendary-equipment-only-2"></script><script src="modes/idle/screen.js"></script><script src="modes/idle/automation.js"></script><link rel="stylesheet" href="modes/idle/center-scene.css"><script src="modes/idle/center-scene.js"></script><link rel="stylesheet" href="modes/idle/trainer.css"><script src="modes/idle/trainer.js"></script><link rel="stylesheet" href="modes/idle/tutorial.css"><script src="modes/idle/tutorial.js"></script><script src="modes/idle/music-loops.js"></script><script src="modes/idle/music.js"></script><script src="modes/idle/idle.js"></script></body></html>
+<script src="modes/idle/items-data.js"></script><script src="modes/idle/capture-rates.js"></script><script src="modes/idle/shiny.js"></script><script src="modes/idle/individuals.js"></script><script src="modes/idle/progression.js"></script><script src="modes/idle/world-data.js"></script><script src="modes/idle/region-hunts.js"></script><script src="modes/idle/evolution-data.js"></script><script src="modes/idle/systems.js"></script><script src="modes/idle/field-notes.js"></script><script src="modes/idle/capture-fx.js"></script><script src="modes/idle/capture.js"></script><script src="modes/idle/drops-data.js"></script><script src="modes/idle/hunt-areas.js"></script><script src="modes/idle/capture-history.js"></script><script src="modes/idle/hunts.js"></script><script src="modes/idle/pc.js"></script><script src="modes/idle/party.js"></script><script src="modes/idle/shop.js?v=legendary-equipment-only-2"></script><script src="modes/idle/screen.js"></script><script src="modes/idle/automation.js"></script><link rel="stylesheet" href="modes/idle/center-scene.css"><script src="modes/idle/center-scene.js"></script><link rel="stylesheet" href="modes/idle/trainer.css"><script src="modes/idle/trainer.js"></script><link rel="stylesheet" href="modes/idle/tutorial.css"><script src="modes/idle/tutorial.js"></script><script src="modes/idle/music-loops.js"></script><script src="modes/idle/music.js"></script><script src="modes/idle/idle.js"></script></body></html>

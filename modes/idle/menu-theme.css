@@ -466,35 +466,35 @@ body.idle-native-mode #idle-shop .is-shop-content.is-history-content{display:fle
 #idle-shop .is-history-content>.is-pokemon-sale-tools{justify-content:center;gap:16px}
 @media(max-width:480px){#idle-shop .is-history-entry{grid-template-columns:34px minmax(0,1fr);gap:7px}#idle-shop .is-history-entry>b{grid-column:2;text-align:left}}
 /* Hunt report: balanced ledger and performance rows, without oversized metric cards. */
-#idle-hunts .ih-report-dashboard{display:flex;flex-direction:column;gap:11px}
-#idle-hunts .ih-report-heading{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:0 0 11px;border-bottom:1px solid #8ca4c22b}
-#idle-hunts .ih-report-heading small{font-size:8px;letter-spacing:1px;color:#a5b7ca}
-#idle-hunts .ih-report-heading h3{font-size:16px;color:#f0f5fb;margin:5px 0}
-#idle-hunts .ih-report-heading p{font-size:10px;color:#afc0d1;margin:0}
-#idle-hunts .ih-report-result{text-align:right;flex-shrink:0;padding:9px 12px;border:1px solid #7dc59a3a;border-radius:12px;background:#263c32}
-#idle-hunts .ih-report-result b{display:block;font-size:19px;color:#ade1bc;margin:3px 0}
-#idle-hunts .ih-report-result span{font-size:8px;color:#b4c9be}
-#idle-hunts .ih-report-result[data-sign=negative]{background:#3e2a31;border-color:#dc8e9d44}
-#idle-hunts .ih-report-result[data-sign=negative] b{color:#efacb6}
-#idle-hunts .ih-report-section{border:1px solid #8ba3bd26;background:#22303d80;border-radius:12px;padding:10px 12px;min-width:0}
-#idle-hunts .ih-report-section h4{font-size:10px;letter-spacing:.4px;color:#dbe7f3;margin:0 0 9px}
-#idle-hunts .ih-report-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0}
-#idle-hunts .ih-report-metrics>div{padding:7px 10px;border-right:1px solid #9aadc21a}
-#idle-hunts .ih-report-metrics>div:nth-child(4n){border-right:0}
-#idle-hunts .ih-report-metrics>div:nth-child(-n+4){border-bottom:1px solid #9aadc21a}
-#idle-hunts .ih-report-metrics small{font-size:9px;color:#a5b8cc;display:block}
-#idle-hunts .ih-report-metrics b{display:block;font-size:16px;color:#e3eefb;margin-top:3px}
-#idle-hunts .ih-report-columns{display:grid;grid-template-columns:1fr 1fr;gap:11px}
-#idle-hunts .ih-report-line{display:flex;align-items:center;gap:8px;min-height:30px;border-top:1px solid #8ba1bc15;font-size:10px;color:#bccddd}
-#idle-hunts .ih-report-line b{margin-left:auto;color:#dce9f6;font-size:11px}
-#idle-hunts .ih-report-line[data-kind=income] b{color:#9bd4ad}
-#idle-hunts .ih-report-line[data-kind=loot] b{color:#e4cc8e}
-#idle-hunts .ih-report-line[data-kind=expense] b{color:#eba0af}
-#idle-hunts .ih-report-line img{width:21px;height:21px;image-rendering:pixelated;object-fit:contain}
-#idle-hunts .ih-report-footer{display:flex;align-items:center;justify-content:space-between;gap:18px}
-#idle-hunts .ih-report-footer p{margin:0;max-width:480px;font-size:9px}
-#idle-hunts .ih-report-footer button{flex-shrink:0;padding:6px 11px!important;font-size:10px}
-@media(max-width:550px){#idle-hunts .ih-report-columns{grid-template-columns:1fr}#idle-hunts .ih-report-heading,#idle-hunts .ih-report-footer{flex-wrap:wrap}#idle-hunts .ih-report-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+:is(#idle-hunts,#idle-records) .ih-report-dashboard{display:flex;flex-direction:column;gap:11px}
+:is(#idle-hunts,#idle-records) .ih-report-heading{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:0 0 11px;border-bottom:1px solid #8ca4c22b}
+:is(#idle-hunts,#idle-records) .ih-report-heading small{font-size:8px;letter-spacing:1px;color:#a5b7ca}
+:is(#idle-hunts,#idle-records) .ih-report-heading h3{font-size:16px;color:#f0f5fb;margin:5px 0}
+:is(#idle-hunts,#idle-records) .ih-report-heading p{font-size:10px;color:#afc0d1;margin:0}
+:is(#idle-hunts,#idle-records) .ih-report-result{text-align:right;flex-shrink:0;padding:9px 12px;border:1px solid #7dc59a3a;border-radius:12px;background:#263c32}
+:is(#idle-hunts,#idle-records) .ih-report-result b{display:block;font-size:19px;color:#ade1bc;margin:3px 0}
+:is(#idle-hunts,#idle-records) .ih-report-result span{font-size:8px;color:#b4c9be}
+:is(#idle-hunts,#idle-records) .ih-report-result[data-sign=negative]{background:#3e2a31;border-color:#dc8e9d44}
+:is(#idle-hunts,#idle-records) .ih-report-result[data-sign=negative] b{color:#efacb6}
+:is(#idle-hunts,#idle-records) .ih-report-section{border:1px solid #8ba3bd26;background:#22303d80;border-radius:12px;padding:10px 12px;min-width:0}
+:is(#idle-hunts,#idle-records) .ih-report-section h4{font-size:10px;letter-spacing:.4px;color:#dbe7f3;margin:0 0 9px}
+:is(#idle-hunts,#idle-records) .ih-report-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0}
+:is(#idle-hunts,#idle-records) .ih-report-metrics>div{padding:7px 10px;border-right:1px solid #9aadc21a}
+:is(#idle-hunts,#idle-records) .ih-report-metrics>div:nth-child(4n){border-right:0}
+:is(#idle-hunts,#idle-records) .ih-report-metrics>div:nth-child(-n+4){border-bottom:1px solid #9aadc21a}
+:is(#idle-hunts,#idle-records) .ih-report-metrics small{font-size:9px;color:#a5b8cc;display:block}
+:is(#idle-hunts,#idle-records) .ih-report-metrics b{display:block;font-size:16px;color:#e3eefb;margin-top:3px}
+:is(#idle-hunts,#idle-records) .ih-report-columns{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+:is(#idle-hunts,#idle-records) .ih-report-line{display:flex;align-items:center;gap:8px;min-height:30px;border-top:1px solid #8ba1bc15;font-size:10px;color:#bccddd}
+:is(#idle-hunts,#idle-records) .ih-report-line b{margin-left:auto;color:#dce9f6;font-size:11px}
+:is(#idle-hunts,#idle-records) .ih-report-line[data-kind=income] b{color:#9bd4ad}
+:is(#idle-hunts,#idle-records) .ih-report-line[data-kind=loot] b{color:#e4cc8e}
+:is(#idle-hunts,#idle-records) .ih-report-line[data-kind=expense] b{color:#eba0af}
+:is(#idle-hunts,#idle-records) .ih-report-line img{width:21px;height:21px;image-rendering:pixelated;object-fit:contain}
+:is(#idle-hunts,#idle-records) .ih-report-footer{display:flex;align-items:center;justify-content:space-between;gap:18px}
+:is(#idle-hunts,#idle-records) .ih-report-footer p{margin:0;max-width:480px;font-size:9px}
+:is(#idle-hunts,#idle-records) .ih-report-footer button{flex-shrink:0;padding:6px 11px!important;font-size:10px}
+@media(max-width:550px){:is(#idle-hunts,#idle-records) .ih-report-columns{grid-template-columns:1fr}:is(#idle-hunts,#idle-records) .ih-report-heading,:is(#idle-hunts,#idle-records) .ih-report-footer{flex-wrap:wrap}:is(#idle-hunts,#idle-records) .ih-report-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
 /* Offline rewards: one collection action, compact partner roster and a separate receipt. */
 #idle-field-notes .ifn-offline-dashboard{display:flex;flex-direction:column;gap:12px}
 #idle-field-notes .ifn-offline-summary{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:13px 16px;border:1px solid #ceb36e3d;border-radius:14px;background:linear-gradient(120deg,#3b3525,#2b3032)}
@@ -647,36 +647,36 @@ body.idle-native-mode #idle-field-notes[data-view=dex]{width:940px}
 #idle-field-notes .ifn-dex-stones small{font-size:8px;display:block;margin-top:3px;color:#afbecd}
 #idle-field-notes .ifn-dex-stones strong{font-size:11px;color:#e3bf78}
 /* Capture ledger, scoped to hunt menus. */
-#idle-hunts .ich-ledger{display:flex;flex-direction:column;gap:10px}
-#idle-hunts .ich-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid #8aa4c32b;border-radius:12px;background:#243240;overflow:hidden}
-#idle-hunts .ich-summary>div{padding:9px 12px;border-right:1px solid #91a6c21b}
-#idle-hunts .ich-summary>div:last-child{border:0}
-#idle-hunts .ich-summary small{display:block;font-size:9px;color:#a9c0d5}
-#idle-hunts .ich-summary b{display:block;font-size:17px;margin-top:3px;color:#edf5fd}
-#idle-hunts .ich-tools{display:flex;gap:6px;flex-wrap:wrap}
-#idle-hunts .ich-tools input{width:145px;flex:1;min-width:100px}
-#idle-hunts .ich-tools select{max-width:180px;font-size:9px;padding:7px!important}
-#idle-hunts .ich-list h4{font-size:9px;letter-spacing:.6px;color:#9fb8cf;margin:7px 0 5px}
-#idle-hunts .ich-entry{display:grid;grid-template-columns:40px minmax(0,1fr) 80px 36px;gap:10px;align-items:center;padding:8px 10px;border-bottom:1px solid #91a6c21b;background:#26344280;border-left:2px solid #768aa23b}
-#idle-hunts .ich-entry[data-result=caught]{}
-#idle-hunts .ich-entry[data-result=escaped]{}
-#idle-hunts .ich-entry[data-shiny=true]{background:linear-gradient(100deg,#bda55016,#26344280);}
-#idle-hunts .ich-pokemon{width:38px;height:38px;object-fit:contain;image-rendering:pixelated}
-#idle-hunts .ich-entry-heading{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-#idle-hunts .ich-entry-heading b{font-size:11px;color:#e7f0fa}
-#idle-hunts .ich-entry-heading span{font-size:8px;border-radius:6px;background:#ffffff07;padding:2px 5px;color:#b5c6d8}
-#idle-hunts .ich-entry[data-shiny=true] .ich-entry-heading span{color:#efd58c;background:#c7a34417}
-#idle-hunts .ich-copy{min-width:0}
-#idle-hunts .ich-copy small{display:block;font-size:9px;color:#abc1d7;line-height:1.5;margin-top:3px}
-#idle-hunts .ich-copy p{font-size:9px;line-height:1.4;color:#cad8e7;margin:3px 0;overflow-wrap:anywhere}
-#idle-hunts .ich-ball{display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center}
-#idle-hunts .ich-ball img{width:24px;height:24px;object-fit:contain;image-rendering:pixelated}
-#idle-hunts .ich-ball small{font-size:8px;color:#c4d0df}
-#idle-hunts .ich-entry time{font-size:9px;color:#96acc2;text-align:right}
-#idle-hunts .ich-footer{display:flex;justify-content:center;gap:12px;align-items:center;font-size:10px;color:#b0c4da}
-#idle-hunts .ich-footer button{padding:6px 10px!important;font-size:9px}
-#idle-hunts .ich-ledger>.ip-help{font-size:9px;margin:0;line-height:1.5}
-@media(max-width:500px){#idle-hunts .ich-entry{grid-template-columns:32px minmax(0,1fr) 55px;gap:6px}#idle-hunts .ich-entry time{grid-column:2/4}#idle-hunts .ich-pokemon{width:30px;height:30px}}
+:is(#idle-hunts,#idle-records) .ich-ledger{display:flex;flex-direction:column;gap:10px}
+:is(#idle-hunts,#idle-records) .ich-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid #8aa4c32b;border-radius:12px;background:#243240;overflow:hidden}
+:is(#idle-hunts,#idle-records) .ich-summary>div{padding:9px 12px;border-right:1px solid #91a6c21b}
+:is(#idle-hunts,#idle-records) .ich-summary>div:last-child{border:0}
+:is(#idle-hunts,#idle-records) .ich-summary small{display:block;font-size:9px;color:#a9c0d5}
+:is(#idle-hunts,#idle-records) .ich-summary b{display:block;font-size:17px;margin-top:3px;color:#edf5fd}
+:is(#idle-hunts,#idle-records) .ich-tools{display:flex;gap:6px;flex-wrap:wrap}
+:is(#idle-hunts,#idle-records) .ich-tools input{width:145px;flex:1;min-width:100px}
+:is(#idle-hunts,#idle-records) .ich-tools select{max-width:180px;font-size:9px;padding:7px!important}
+:is(#idle-hunts,#idle-records) .ich-list h4{font-size:9px;letter-spacing:.6px;color:#9fb8cf;margin:7px 0 5px}
+:is(#idle-hunts,#idle-records) .ich-entry{display:grid;grid-template-columns:40px minmax(0,1fr) 80px 36px;gap:10px;align-items:center;padding:8px 10px;border-bottom:1px solid #91a6c21b;background:#26344280;border-left:2px solid #768aa23b}
+:is(#idle-hunts,#idle-records) .ich-entry[data-result=caught]{}
+:is(#idle-hunts,#idle-records) .ich-entry[data-result=escaped]{}
+:is(#idle-hunts,#idle-records) .ich-entry[data-shiny=true]{background:linear-gradient(100deg,#bda55016,#26344280);}
+:is(#idle-hunts,#idle-records) .ich-pokemon{width:38px;height:38px;object-fit:contain;image-rendering:pixelated}
+:is(#idle-hunts,#idle-records) .ich-entry-heading{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+:is(#idle-hunts,#idle-records) .ich-entry-heading b{font-size:11px;color:#e7f0fa}
+:is(#idle-hunts,#idle-records) .ich-entry-heading span{font-size:8px;border-radius:6px;background:#ffffff07;padding:2px 5px;color:#b5c6d8}
+:is(#idle-hunts,#idle-records) .ich-entry[data-shiny=true] .ich-entry-heading span{color:#efd58c;background:#c7a34417}
+:is(#idle-hunts,#idle-records) .ich-copy{min-width:0}
+:is(#idle-hunts,#idle-records) .ich-copy small{display:block;font-size:9px;color:#abc1d7;line-height:1.5;margin-top:3px}
+:is(#idle-hunts,#idle-records) .ich-copy p{font-size:9px;line-height:1.4;color:#cad8e7;margin:3px 0;overflow-wrap:anywhere}
+:is(#idle-hunts,#idle-records) .ich-ball{display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center}
+:is(#idle-hunts,#idle-records) .ich-ball img{width:24px;height:24px;object-fit:contain;image-rendering:pixelated}
+:is(#idle-hunts,#idle-records) .ich-ball small{font-size:8px;color:#c4d0df}
+:is(#idle-hunts,#idle-records) .ich-entry time{font-size:9px;color:#96acc2;text-align:right}
+:is(#idle-hunts,#idle-records) .ich-footer{display:flex;justify-content:center;gap:12px;align-items:center;font-size:10px;color:#b0c4da}
+:is(#idle-hunts,#idle-records) .ich-footer button{padding:6px 10px!important;font-size:9px}
+:is(#idle-hunts,#idle-records) .ich-ledger>.ip-help{font-size:9px;margin:0;line-height:1.5}
+@media(max-width:500px){:is(#idle-hunts,#idle-records) .ich-entry{grid-template-columns:32px minmax(0,1fr) 55px;gap:6px}:is(#idle-hunts,#idle-records) .ich-entry time{grid-column:2/4}:is(#idle-hunts,#idle-records) .ich-pokemon{width:30px;height:30px}}
 /* Shiny badges complement power colors without changing their meaning. */
 body.idle-native-mode :is(.ipc-cell,.ip-selection-card,.is-pokemon-sale)[data-shiny=true]{box-shadow:inset 0 2px var(--power-color),0 0 9px #e2c66a30!important}
 #idle-party .ip-hero[data-shiny=true] h3{color:#f3d98e}
@@ -772,44 +772,44 @@ body.idle-native-mode #idle-hunts[data-view=choose] .ih-content{max-height:none;
 #idle-hunts .ih-setup-boss>button{flex:none;font-size:10px;padding:8px 11px;margin:0}
 /* Session report aligns metrics and separates income from expenditure. */
 #idle-hunts[data-view=report] .ih-content{padding-top:14px;padding-bottom:15px}
-#idle-hunts .ih-report-dashboard{display:grid;gap:11px}
-#idle-hunts .ih-report-heading{margin:0;padding:0 0 11px;border-bottom:1px solid #8fa9bc25}
-#idle-hunts .ih-report-heading h3{margin:5px 0;color:#edf3f6;font-size:16px}
-#idle-hunts .ih-report-heading p{font-size:10px;color:#9db8c9;margin:3px 0}
-#idle-hunts .ih-report-result{min-width:140px;padding:10px 13px;border-radius:9px;background:#25443d;border:1px solid #81bf9e44}
-#idle-hunts .ih-report-result[data-sign=negative]{background:#47303a;border-color:#ce82994f}
-#idle-hunts .ih-report-result b{font-size:20px;line-height:1.3}
-#idle-hunts .ih-report-section{background:#20303c;border:1px solid #829db633;border-radius:10px;padding:11px 13px;margin:0}
-#idle-hunts .ih-report-section h4{font-size:11px;color:#e2edf4;margin:0 0 8px}
-#idle-hunts .ih-report-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0}
-#idle-hunts .ih-report-metrics>div{padding:8px 10px;min-height:49px;border-color:#7895a322}
-#idle-hunts .ih-report-metrics small{font-size:9px;color:#a0bacb}#idle-hunts .ih-report-metrics b{font-size:18px;color:#eef3f5}
-#idle-hunts .ih-report-columns{display:grid;grid-template-columns:1fr 1fr;gap:11px}
-#idle-hunts .ih-report-line{min-height:29px;font-size:10px;padding:6px 0;border-color:#8ca3b522}
-#idle-hunts .ih-report-footer{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:0;margin:0}
-#idle-hunts .ih-report-footer p{margin:0;font-size:9px;line-height:1.5;color:#95aebf;max-width:70%}
-#idle-hunts .ih-report-footer button{flex:none;font-size:10px;padding:8px 10px}
+:is(#idle-hunts,#idle-records) .ih-report-dashboard{display:grid;gap:11px}
+:is(#idle-hunts,#idle-records) .ih-report-heading{margin:0;padding:0 0 11px;border-bottom:1px solid #8fa9bc25}
+:is(#idle-hunts,#idle-records) .ih-report-heading h3{margin:5px 0;color:#edf3f6;font-size:16px}
+:is(#idle-hunts,#idle-records) .ih-report-heading p{font-size:10px;color:#9db8c9;margin:3px 0}
+:is(#idle-hunts,#idle-records) .ih-report-result{min-width:140px;padding:10px 13px;border-radius:9px;background:#25443d;border:1px solid #81bf9e44}
+:is(#idle-hunts,#idle-records) .ih-report-result[data-sign=negative]{background:#47303a;border-color:#ce82994f}
+:is(#idle-hunts,#idle-records) .ih-report-result b{font-size:20px;line-height:1.3}
+:is(#idle-hunts,#idle-records) .ih-report-section{background:#20303c;border:1px solid #829db633;border-radius:10px;padding:11px 13px;margin:0}
+:is(#idle-hunts,#idle-records) .ih-report-section h4{font-size:11px;color:#e2edf4;margin:0 0 8px}
+:is(#idle-hunts,#idle-records) .ih-report-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0}
+:is(#idle-hunts,#idle-records) .ih-report-metrics>div{padding:8px 10px;min-height:49px;border-color:#7895a322}
+:is(#idle-hunts,#idle-records) .ih-report-metrics small{font-size:9px;color:#a0bacb}:is(#idle-hunts,#idle-records) .ih-report-metrics b{font-size:18px;color:#eef3f5}
+:is(#idle-hunts,#idle-records) .ih-report-columns{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+:is(#idle-hunts,#idle-records) .ih-report-line{min-height:29px;font-size:10px;padding:6px 0;border-color:#8ca3b522}
+:is(#idle-hunts,#idle-records) .ih-report-footer{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:0;margin:0}
+:is(#idle-hunts,#idle-records) .ih-report-footer p{margin:0;font-size:9px;line-height:1.5;color:#95aebf;max-width:70%}
+:is(#idle-hunts,#idle-records) .ih-report-footer button{flex:none;font-size:10px;padding:8px 10px}
 /* Capture history: visible filter labels, bounded list and stable paging. */
-#idle-hunts .ich-ledger{display:grid;gap:11px}
-#idle-hunts .ich-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0}
-#idle-hunts .ich-summary>div{display:grid;gap:3px;padding:9px 12px;border:1px solid #7897b02b;border-radius:9px;background:#20313e}
-#idle-hunts .ich-summary small{font-size:9px;color:#a0baca}#idle-hunts .ich-summary b{font-size:20px;color:#e5f1f5}
-#idle-hunts .ich-tools{display:grid;grid-template-columns:1.25fr repeat(4,minmax(0,1fr));align-items:end;gap:7px;margin:0}
-#idle-hunts .ich-filter-field{display:flex;flex-direction:column;gap:4px;min-width:0;font-size:9px;color:#9ab5c6}
-#idle-hunts .ich-filter-field input,#idle-hunts .ich-filter-field select{width:100%;min-width:0;max-width:none;margin:0;padding:8px;border:1px solid #86a2b234;border-radius:7px;font-size:10px;background:#14232e;color:#dce9ef}
-#idle-hunts .ich-clear-filters{grid-column:1/-1;justify-self:end;margin:0;padding:4px 7px;font-size:9px;min-height:0}
-#idle-hunts .ich-list{max-height:235px;overflow-y:auto;padding:0 5px 0 0;scrollbar-width:thin;scrollbar-color:#66869b #19242e}
-#idle-hunts .ich-list h4{margin:7px 0;font-size:9px;letter-spacing:.4px;color:#93acbc}
-#idle-hunts .ich-entry{display:grid;grid-template-columns:44px minmax(0,1fr) 85px 38px;gap:10px;align-items:center;padding:9px 10px;margin:0 0 6px;border:1px solid #7794aa2b;border-radius:9px;background:#20303c}
-#idle-hunts .ich-entry[data-result=caught]{}#idle-hunts .ich-entry[data-result=escaped]{}
-#idle-hunts .ich-entry[data-shiny=true]{border-color:#d0ad5b77;background:linear-gradient(110deg,#403c2d,#22313d)}
-#idle-hunts .ich-pokemon{width:42px;height:42px;object-fit:contain;image-rendering:pixelated}
-#idle-hunts .ich-entry-heading b{font-size:12px;color:#e7eff4}#idle-hunts .ich-entry-heading span{font-size:8px;color:#b7c8d4}
-#idle-hunts .ich-copy small{font-size:9px;line-height:1.4;color:#9bb4c5}#idle-hunts .ich-copy p{font-size:10px;line-height:1.4;color:#c7d8e2;margin:3px 0}
-#idle-hunts .ich-ball{font-size:8px;text-align:center;color:#aec5d2}#idle-hunts .ich-ball img{width:24px;height:24px;object-fit:contain;image-rendering:pixelated}#idle-hunts .ich-ball small{display:block;font-size:8px}
-#idle-hunts .ich-entry time{font-size:9px;color:#9cb4c4;text-align:right}
-#idle-hunts .ich-footer{display:flex;align-items:center;justify-content:center;gap:12px;margin:0}#idle-hunts .ich-footer button{font-size:10px;padding:6px 9px}#idle-hunts .ich-footer span{font-size:10px;color:#acc1cf}
-#idle-hunts .ich-ledger>.ip-help{font-size:9px;margin:0;color:#8fa7b9}
+:is(#idle-hunts,#idle-records) .ich-ledger{display:grid;gap:11px}
+:is(#idle-hunts,#idle-records) .ich-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0}
+:is(#idle-hunts,#idle-records) .ich-summary>div{display:grid;gap:3px;padding:9px 12px;border:1px solid #7897b02b;border-radius:9px;background:#20313e}
+:is(#idle-hunts,#idle-records) .ich-summary small{font-size:9px;color:#a0baca}:is(#idle-hunts,#idle-records) .ich-summary b{font-size:20px;color:#e5f1f5}
+:is(#idle-hunts,#idle-records) .ich-tools{display:grid;grid-template-columns:1.25fr repeat(4,minmax(0,1fr));align-items:end;gap:7px;margin:0}
+:is(#idle-hunts,#idle-records) .ich-filter-field{display:flex;flex-direction:column;gap:4px;min-width:0;font-size:9px;color:#9ab5c6}
+:is(#idle-hunts,#idle-records) .ich-filter-field input,:is(#idle-hunts,#idle-records) .ich-filter-field select{width:100%;min-width:0;max-width:none;margin:0;padding:8px;border:1px solid #86a2b234;border-radius:7px;font-size:10px;background:#14232e;color:#dce9ef}
+:is(#idle-hunts,#idle-records) .ich-clear-filters{grid-column:1/-1;justify-self:end;margin:0;padding:4px 7px;font-size:9px;min-height:0}
+:is(#idle-hunts,#idle-records) .ich-list{max-height:235px;overflow-y:auto;padding:0 5px 0 0;scrollbar-width:thin;scrollbar-color:#66869b #19242e}
+:is(#idle-hunts,#idle-records) .ich-list h4{margin:7px 0;font-size:9px;letter-spacing:.4px;color:#93acbc}
+:is(#idle-hunts,#idle-records) .ich-entry{display:grid;grid-template-columns:44px minmax(0,1fr) 85px 38px;gap:10px;align-items:center;padding:9px 10px;margin:0 0 6px;border:1px solid #7794aa2b;border-radius:9px;background:#20303c}
+:is(#idle-hunts,#idle-records) .ich-entry[data-result=caught]{}:is(#idle-hunts,#idle-records) .ich-entry[data-result=escaped]{}
+:is(#idle-hunts,#idle-records) .ich-entry[data-shiny=true]{border-color:#d0ad5b77;background:linear-gradient(110deg,#403c2d,#22313d)}
+:is(#idle-hunts,#idle-records) .ich-pokemon{width:42px;height:42px;object-fit:contain;image-rendering:pixelated}
+:is(#idle-hunts,#idle-records) .ich-entry-heading b{font-size:12px;color:#e7eff4}:is(#idle-hunts,#idle-records) .ich-entry-heading span{font-size:8px;color:#b7c8d4}
+:is(#idle-hunts,#idle-records) .ich-copy small{font-size:9px;line-height:1.4;color:#9bb4c5}:is(#idle-hunts,#idle-records) .ich-copy p{font-size:10px;line-height:1.4;color:#c7d8e2;margin:3px 0}
+:is(#idle-hunts,#idle-records) .ich-ball{font-size:8px;text-align:center;color:#aec5d2}:is(#idle-hunts,#idle-records) .ich-ball img{width:24px;height:24px;object-fit:contain;image-rendering:pixelated}:is(#idle-hunts,#idle-records) .ich-ball small{display:block;font-size:8px}
+:is(#idle-hunts,#idle-records) .ich-entry time{font-size:9px;color:#9cb4c4;text-align:right}
+:is(#idle-hunts,#idle-records) .ich-footer{display:flex;align-items:center;justify-content:center;gap:12px;margin:0}:is(#idle-hunts,#idle-records) .ich-footer button{font-size:10px;padding:6px 9px}:is(#idle-hunts,#idle-records) .ich-footer span{font-size:10px;color:#acc1cf}
+:is(#idle-hunts,#idle-records) .ich-ledger>.ip-help{font-size:9px;margin:0;color:#8fa7b9}
 #idle-hunts .ih-setup-card input[type=number]{width:100%;padding:8px;border:1px solid #9cbbca33;border-radius:7px;background:#14232f;color:#e0ecf2;font-size:12px}
 /* Bottom navigation grouped by team, exploration, Center and the primary action. */
 body.idle-native-mode .is-navigation{display:flex;align-items:center;gap:4px;width:824px;padding:7px 8px;border-radius:10px;border:1px solid #8da7bb35;border-top:2px solid #ad4059;background:linear-gradient(#27323df5,#17222df5);box-shadow:0 5px 18px #0005}
@@ -1152,3 +1152,781 @@ body.idle-native-mode .is-synergies #traits .tr.on .ic img{filter:drop-shadow(0 
 @media(prefers-reduced-motion:reduce){body.idle-native-mode .is-synergies #traits .tr.on .ic{animation:none}}
 
 body.idle-native-mode #collectionShortcuts #idleLibraryLaunch{font:700 20px 'Trebuchet MS',sans-serif;color:#dcecf4;cursor:pointer}
+
+body.idle-native-mode #sellbar{display:none!important}
+
+
+body.idle-native-mode #pauseBtn,body.idle-native-mode #pausedOverlay{display:none!important}
+
+
+/* Destination preview: habitats, levels and real encounter sprites before travel. */
+.iw-region-preview{margin-top:12px;padding-top:11px;border-top:1px solid #ffffff12}
+.iw-region-preview>h4{font-size:8px;color:#bba6be;letter-spacing:1px;margin:0 0 8px}
+.iw-region-habitats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.iw-region-habitats>article{background:#17232c99;border:1px solid #8fa7bc22;border-radius:8px;padding:8px;min-width:0}
+.iw-region-habitats b{display:block;color:#dce9f1;font-size:10px;line-height:14px}
+.iw-region-habitats small{display:block;color:#e5c78d;font-size:9px;margin-top:3px}
+.iw-region-habitats article>div{display:flex;gap:4px;align-items:center;height:32px;margin:5px 0}
+.iw-region-habitats img{width:28px;height:28px;object-fit:contain;image-rendering:pixelated}
+.iw-region-habitats span{display:block;color:#9cabbc;font-size:8px;line-height:13px}
+.iw-region-preview>p{font-size:9px!important;line-height:15px;color:#b1bdcb;margin:7px 0}
+
+/* Hunt setup and records live in separate menus with two tabs each. */
+body.idle-native-mode #idle-records{width:770px;max-height:660px!important;top:350px!important}
+#idle-records .ih-content{max-height:510px;overflow:auto;padding:16px 20px;scrollbar-width:thin;scrollbar-color:#748da0 transparent}
+#idle-hunts>.ip-tabs,#idle-records>.ip-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+#idle-records>.ip-tabs button,#idle-hunts>.ip-tabs button{width:100%}
+
+/* Regional hunts: one tidy list and a wider, scannable encounter summary. */
+body.idle-native-mode #idle-hunts[data-view=choose]{width:770px}
+#idle-hunts[data-view=choose] .ih-content{padding:14px 18px;max-height:490px!important}
+#idle-hunts[data-view=choose] .ih-browser-tools{grid-template-columns:minmax(0,1fr) 135px auto;gap:8px;margin-bottom:11px}
+#idle-hunts[data-view=choose] .ih-browser{display:grid;grid-template-columns:255px minmax(0,1fr);gap:12px;height:355px;min-height:0}
+#idle-hunts[data-view=choose] .ih-browser-list{display:flex;flex-direction:column;gap:8px;overflow-y:auto;min-height:0;padding-right:3px;align-content:start}
+#idle-hunts[data-view=choose] .ih-browser-card{flex:none;min-height:103px;display:flex;flex-direction:column;gap:5px;padding:11px 12px;border-radius:9px}
+#idle-hunts[data-view=choose] .ih-browser-card-head b{font-size:11px;line-height:15px}
+#idle-hunts[data-view=choose] .ih-browser-profile{font-size:9px;line-height:13px;margin:0}
+#idle-hunts[data-view=choose] .ih-browser-portraits{height:30px;gap:7px}
+#idle-hunts[data-view=choose] .ih-browser-portraits img{width:29px;height:29px}
+#idle-hunts[data-view=choose] .ih-browser-detail{padding:13px 15px;gap:0;border-radius:10px;min-width:0;overflow-y:auto}
+#idle-hunts[data-view=choose] .ih-browser-detail h3{font-size:18px;margin:5px 0 3px}
+#idle-hunts[data-view=choose] .ih-browser-stats{margin-top:8px;padding:8px 0;grid-template-columns:1.3fr 1fr 1fr}
+#idle-hunts[data-view=choose] .ih-browser-detail h4{margin:10px 0 7px;font-size:10px}
+#idle-hunts[data-view=choose] .ih-browser-species{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+#idle-hunts[data-view=choose] .ih-browser-species>div{grid-template-columns:29px minmax(0,1fr);grid-template-rows:auto auto;gap:0 6px;background:#ffffff04;border:1px solid #ffffff09;border-radius:6px;padding:5px 6px;min-height:40px;box-sizing:border-box}
+#idle-hunts[data-view=choose] .ih-browser-species img{grid-column:1;grid-row:1/3;width:28px;height:28px}
+#idle-hunts[data-view=choose] .ih-browser-species b{grid-column:2;grid-row:1;font-size:9px;line-height:13px;overflow:hidden;text-overflow:ellipsis}
+#idle-hunts[data-view=choose] .ih-browser-species small{grid-column:2;grid-row:2;font-size:8px;line-height:11px}
+#idle-hunts[data-view=choose] .ih-browser-requirements{margin:9px 0 7px;font-size:9px}
+#idle-hunts[data-view=choose] .ih-browser-detail>button{position:sticky;bottom:0;z-index:1;background:#82384e!important;border:1px solid #c67890!important;box-shadow:0 -5px 10px #172630;font-size:10px;padding:8px}
+#idle-hunts[data-view=choose] .ih-browser-note{display:none}
+
+/* Full regional catalog without nested scrolling at the native stage size. */
+body.idle-native-mode #idle-hunts[data-view=choose]{width:820px;top:360px!important;max-height:700px!important}
+#idle-hunts[data-view=choose] .ih-content{max-height:none!important;overflow:visible;padding:15px 18px 18px}
+#idle-hunts[data-view=choose] .ih-browser{height:425px;grid-template-columns:265px minmax(0,1fr)}
+#idle-hunts[data-view=choose] .ih-browser-list{overflow:visible;padding-right:0}
+#idle-hunts[data-view=choose] .ih-browser-detail{overflow:visible;min-height:0}
+#idle-hunts[data-view=choose] .ih-browser-detail>button{position:static;margin-top:auto}
+#idle-hunts[data-view=choose] .ih-browser-card{min-height:100px}
+#idle-hunts[data-view=choose] .ih-browser-detail h4{margin-top:13px}
+
+/* Content-sized tabs and actions instead of full-width bars. */
+#idle-hunts>.ip-tabs{display:flex;justify-content:flex-start;gap:6px;padding:6px!important;background:#101820!important;border-radius:10px;margin-left:18px;margin-right:18px}
+#idle-hunts>.ip-tabs button{width:auto!important;flex:0 0 auto!important;min-width:115px;max-width:160px;padding:7px 18px!important;border-radius:7px!important}
+#idle-hunts[data-view=choose] .ih-browser-detail>button{width:auto!important;min-width:170px;max-width:240px;align-self:flex-end!important;padding:8px 16px!important;margin-top:auto;box-shadow:none}
+#idle-hunts[data-view=choose] .ih-browser-tools{grid-template-columns:minmax(190px,320px) 145px auto;justify-content:start}
+
+/* The dedicated records window shares the report/ledger styles and compact controls. */
+body.idle-native-mode #idle-records{width:820px;top:360px!important;max-height:700px!important}
+#idle-records>.ip-tabs{display:flex;justify-content:flex-start;gap:6px;padding:6px!important;background:#101820!important;border-radius:10px;margin-left:18px;margin-right:18px}
+#idle-records>.ip-tabs button{width:auto!important;flex:0 0 auto!important;min-width:115px;max-width:205px;padding:7px 18px!important;border-radius:7px!important}
+#idle-records .ih-content{padding:15px 18px 18px;max-height:525px;overflow-y:auto;scrollbar-width:thin}
+#idle-records .ih-report-dashboard{gap:10px}
+#idle-records .ih-report-heading{gap:12px}
+#idle-records .ih-report-heading h3{font-size:15px}
+#idle-records .ih-report-result{min-width:165px;padding:8px 11px}
+#idle-records .ih-report-section{padding:10px 12px}
+#idle-records .ih-report-metrics>div{padding:7px 9px}
+#idle-records .ih-report-metrics b{font-size:15px}
+#idle-records .ih-report-footer{align-items:center;gap:12px}
+#idle-records .ih-report-footer>button{width:auto;min-width:0}
+#idle-records .ich-tools{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:7px;align-items:end}
+#idle-records .ich-filter-field{display:flex;flex-direction:column;gap:4px;min-width:0}
+#idle-records .ich-filter-field>span{font-size:8px;color:#a9bdcd}
+#idle-records .ich-tools input,#idle-records .ich-tools select{width:100%!important;max-width:none!important;min-width:0!important;box-sizing:border-box;font-size:10px!important;padding:7px 9px!important}
+#idle-records .ich-tools>button{justify-self:start;width:auto!important;padding:7px 12px!important;font-size:10px;align-self:end}
+#idle-records .ich-list{display:flex;flex-direction:column;gap:7px}
+#idle-records .ich-entry{display:grid;grid-template-columns:40px minmax(0,1fr) 85px 38px;align-items:center;gap:10px;padding:9px 11px}
+#idle-records .ich-pokemon{width:36px;height:36px;object-fit:contain;image-rendering:pixelated}
+#idle-records .ich-copy{min-width:0}
+#idle-records .ich-copy p{font-size:10px;line-height:14px;margin:4px 0}
+#idle-records .ich-copy small{display:block;font-size:9px;line-height:14px}
+#idle-records .ich-ball img{width:23px;height:23px;object-fit:contain;image-rendering:pixelated}
+#idle-records .ich-footer button{width:auto!important;min-width:90px;padding:7px 12px!important}
+
+/* Capture history prioritizes the Pokémon list, with one scroll area. */
+body.idle-native-mode #idle-records[data-view=history]{width:960px;height:680px;max-height:680px!important;top:365px!important;display:flex;flex-direction:column}
+#idle-records[data-view=history]>header,#idle-records[data-view=history]>.ip-tabs{flex:none}
+#idle-records[data-view=history] .ih-content{flex:1;min-height:0;max-height:none;overflow:hidden;padding:12px 16px 14px}
+#idle-records[data-view=history] .ich-ledger{display:flex;flex-direction:column;height:100%;min-height:0;gap:9px}
+#idle-records[data-view=history] .ich-summary{flex:none}
+#idle-records[data-view=history] .ich-summary>div{padding:6px 10px}
+#idle-records[data-view=history] .ich-summary small{font-size:8px}
+#idle-records[data-view=history] .ich-summary b{font-size:16px;margin-top:2px}
+#idle-records[data-view=history] .ich-tools{display:grid;grid-template-columns:1.35fr repeat(4,minmax(0,1fr)) auto;gap:7px;flex:none;align-items:end}
+#idle-records[data-view=history] .ich-tools>button{padding:7px 9px!important;font-size:9px;white-space:nowrap}
+#idle-records[data-view=history] .ich-list{flex:1;min-height:0;max-height:none;overflow-y:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;align-content:start;padding-right:6px}
+#idle-records[data-view=history] .ich-list>h4,#idle-records[data-view=history] .ich-list>.ip-help{grid-column:1/-1;margin:1px 0 0}
+#idle-records[data-view=history] .ich-entry{grid-template-columns:50px minmax(0,1fr) 48px;gap:8px;padding:9px;margin:0;min-height:95px;box-sizing:border-box;position:relative}
+#idle-records[data-view=history] .ich-pokemon{width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 3px 2px #0006)}
+#idle-records[data-view=history] .ich-entry-heading b{font-size:12px}
+#idle-records[data-view=history] .ich-copy small{font-size:8px;line-height:12px}
+#idle-records[data-view=history] .ich-copy p{font-size:9px;line-height:13px;margin:3px 0}
+#idle-records[data-view=history] .ich-ball{text-align:center;align-self:center}
+#idle-records[data-view=history] .ich-ball small{font-size:8px;line-height:11px;display:block}
+#idle-records[data-view=history] .ich-entry time{position:absolute;right:8px;top:5px;font-size:8px}
+#idle-records[data-view=history] .ich-footer{flex:none;margin-top:0}
+#idle-records[data-view=history] .ich-ledger>.ip-help{flex:none;font-size:8px;line-height:11px}
+
+/* Remove the inherited 430px content cap that left most of history empty. */
+body.idle-native-mode #idle-records[data-view=history]{height:720px!important;max-height:720px!important;top:380px!important;overflow:hidden!important}
+body.idle-native-mode #idle-records[data-view=history]>.ih-content{display:flex;flex-direction:column;flex:1 1 0!important;height:auto!important;min-height:0!important;max-height:none!important;overflow:hidden!important}
+body.idle-native-mode #idle-records[data-view=history] .ich-ledger{display:flex!important;flex-direction:column;flex:1 1 0;height:auto!important;min-height:0!important;max-height:none!important}
+body.idle-native-mode #idle-records[data-view=history] .ich-list{flex:1 1 0!important;height:auto!important;min-height:0!important;max-height:none!important;overflow-y:auto!important;grid-auto-rows:minmax(80px,auto);align-content:start}
+body.idle-native-mode #idle-records[data-view=history] .ich-list>h4{min-height:14px;line-height:14px;grid-column:1/-1;align-self:start}
+body.idle-native-mode #idle-records[data-view=history] .ich-entry{min-height:80px;padding:7px 9px}
+body.idle-native-mode #idle-records[data-view=history] .ich-list{grid-auto-rows:auto}
+body.idle-native-mode #idle-records[data-view=history] .ich-summary>div{padding:5px 10px}
+
+/* Distinct information colors in the capture ledger. */
+#idle-records .ich-metadata{display:flex;flex-wrap:wrap;align-items:center;gap:3px 6px;margin-top:3px;font-size:8px;line-height:12px}
+#idle-records .ich-metadata>span{display:inline-block}
+#idle-records .ich-metadata .ich-meta-origin{color:#acbed0}
+#idle-records .ich-metadata .ich-meta-chance{color:#85d5ec}
+#idle-records .ich-metadata .ich-meta-power{color:#d4b0fa}
+#idle-records .ich-metadata .ich-meta-ivs{color:#edce87}
+#idle-records .ich-entry[data-result=caught] .ich-meta-status{color:#90deb0}
+#idle-records .ich-entry[data-result=escaped] .ich-meta-status{color:#f1ad8d}
+#idle-records .ich-entry[data-result=skipped] .ich-meta-status{color:#a9b7c6}
+#idle-records .ich-entry[data-result=caught] .ich-copy p{color:#b2e2c2}
+#idle-records .ich-entry[data-result=escaped] .ich-copy p{color:#eac0ac}
+#idle-records .ich-entry[data-result=skipped] .ich-copy p{color:#c9b8b0}
+#idle-records .ich-copy>small:last-child{color:#839dab!important}
+#idle-records .ich-entry-heading>b{color:#f1f6fc}
+#idle-records .ich-entry[data-shiny=true] .ich-entry-heading>span{color:#ffe092;background:#a5842a33}
+#idle-records .ich-entry .ich-ball small{color:#b8cad8}
+#idle-records .ich-entry time{color:#8499ac}
+
+/* Genetics colors follow the actual quality rather than a fixed label color. */
+#idle-records .ich-metadata :is(.ich-meta-power,.ich-meta-ivs)[data-quality="1"]{color:#aab9c6}
+#idle-records .ich-metadata :is(.ich-meta-power,.ich-meta-ivs)[data-quality="2"]{color:#8bd9a8}
+#idle-records .ich-metadata :is(.ich-meta-power,.ich-meta-ivs)[data-quality="3"]{color:#86c7ff}
+#idle-records .ich-metadata :is(.ich-meta-power,.ich-meta-ivs)[data-quality="4"]{color:#d4a1fa}
+#idle-records .ich-metadata :is(.ich-meta-power,.ich-meta-ivs)[data-quality="5"]{color:#ffe08a;text-shadow:0 0 5px #dfb34b44}
+body.idle-native-mode #idle-records[data-view=history] .ich-entry{min-height:63px;grid-template-columns:36px minmax(0,1fr) 42px;gap:7px;padding:6px 8px;border-radius:7px}
+body.idle-native-mode #idle-records[data-view=history] .ich-pokemon{width:35px;height:35px}
+body.idle-native-mode #idle-records[data-view=history] .ich-entry-heading b{font-size:11px;line-height:13px}
+body.idle-native-mode #idle-records[data-view=history] .ich-entry-heading span{font-size:7px;padding:1px 4px}
+body.idle-native-mode #idle-records[data-view=history] .ich-metadata{gap:2px 5px;margin-top:1px;font-size:8px;line-height:11px}
+body.idle-native-mode #idle-records[data-view=history] .ich-copy p{font-size:8px;line-height:11px;margin:2px 0}
+body.idle-native-mode #idle-records[data-view=history] .ich-copy>small:last-child{font-size:7px;line-height:10px}
+body.idle-native-mode #idle-records[data-view=history] .ich-list{gap:6px}
+body.idle-native-mode #idle-records[data-view=history] .ich-ball img{width:18px;height:18px}
+body.idle-native-mode #idle-records[data-view=history] .ich-ball small{font-size:7px;line-height:10px}
+
+/* Narrower capture cards: three columns with readable vertical spacing. */
+body.idle-native-mode #idle-records[data-view=history] .ich-list{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+body.idle-native-mode #idle-records[data-view=history] .ich-entry{min-height:96px;grid-template-columns:38px minmax(0,1fr);gap:6px 8px;padding:10px 9px;align-items:center}
+body.idle-native-mode #idle-records[data-view=history] .ich-pokemon{width:37px;height:37px;grid-column:1;grid-row:1}
+body.idle-native-mode #idle-records[data-view=history] .ich-copy{grid-column:2;grid-row:1;min-width:0}
+body.idle-native-mode #idle-records[data-view=history] .ich-entry-heading b{font-size:11px;line-height:15px}
+body.idle-native-mode #idle-records[data-view=history] .ich-metadata{font-size:8px;line-height:12px;gap:2px 5px;margin-top:3px}
+body.idle-native-mode #idle-records[data-view=history] .ich-copy p{font-size:9px;line-height:13px;margin:4px 0}
+body.idle-native-mode #idle-records[data-view=history] .ich-copy>small:last-child{font-size:8px;line-height:12px}
+body.idle-native-mode #idle-records[data-view=history] .ich-ball{grid-column:1;grid-row:2;display:flex;align-items:center;gap:4px;justify-content:center;min-width:0}
+body.idle-native-mode #idle-records[data-view=history] .ich-ball small{font-size:7px;line-height:10px}
+body.idle-native-mode #idle-records[data-view=history] .ich-entry time{top:5px;right:7px;font-size:7px}
+
+/* Session report fits all sections and actions within one larger panel. */
+body.idle-native-mode #idle-records[data-view=report]{width:900px;height:655px;max-height:655px!important;top:365px!important;display:flex;flex-direction:column;overflow:hidden!important}
+#idle-records[data-view=report]>header,#idle-records[data-view=report]>.ip-tabs{flex:none}
+body.idle-native-mode #idle-records[data-view=report]>.ih-content{flex:1;min-height:0;max-height:none!important;overflow:visible!important;padding:13px 18px 16px}
+#idle-records[data-view=report] .ih-report-dashboard{display:grid;grid-template-rows:auto auto auto auto;gap:10px;min-height:0}
+#idle-records[data-view=report] .ih-report-heading{padding-bottom:9px;gap:15px}
+#idle-records[data-view=report] .ih-report-heading h3{font-size:15px;margin:4px 0}
+#idle-records[data-view=report] .ih-report-heading p{font-size:10px}
+#idle-records[data-view=report] .ih-report-result{padding:7px 12px;min-width:165px;border-radius:8px}
+#idle-records[data-view=report] .ih-report-result b{font-size:19px;margin:2px 0}
+#idle-records[data-view=report] .ih-report-section{padding:10px 12px;border-radius:9px}
+#idle-records[data-view=report] .ih-report-section h4{margin:0 0 7px;font-size:10px}
+#idle-records[data-view=report] .ih-report-metrics{grid-template-columns:repeat(4,minmax(0,1fr));gap:0}
+#idle-records[data-view=report] .ih-report-metrics>div{padding:6px 9px}
+#idle-records[data-view=report] .ih-report-metrics small{font-size:9px;line-height:12px}
+#idle-records[data-view=report] .ih-report-metrics b{font-size:15px;margin-top:3px}
+#idle-records[data-view=report] .ih-report-columns{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#idle-records[data-view=report] .ih-report-line{min-height:28px;font-size:10px}
+#idle-records[data-view=report] .ih-report-footer{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-top:2px}
+#idle-records[data-view=report] .ih-report-footer p{font-size:9px;line-height:14px;max-width:560px}
+#idle-records[data-view=report] .ih-report-footer button{width:auto;flex:none;font-size:10px;padding:7px 12px!important}
+
+/* Shop categories in a dedicated sidebar, products in the main pane. */
+body.idle-native-mode #idle-shop{display:grid!important;grid-template-columns:166px minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);width:940px;height:650px;max-height:650px!important;top:365px!important;overflow:hidden!important}
+body.idle-native-mode #idle-shop[hidden]{display:none!important}
+#idle-shop>header{grid-column:1/-1;grid-row:1;min-height:78px!important;padding:12px 18px!important}
+#idle-shop>header h2{font-size:21px;margin:3px 0}
+#idle-shop>.ip-tabs{grid-column:1;grid-row:2;display:flex;flex-direction:column;flex-wrap:nowrap;align-items:stretch;gap:4px;margin:0;padding:12px 10px;border:0;border-right:1px solid #ffffff12;border-radius:0;background:#111b25;overflow-y:auto;scrollbar-width:thin}
+#idle-shop>.ip-tabs button{width:100%;flex:none;text-align:left;padding:9px 10px!important;font-size:10px!important;line-height:15px;border-radius:7px!important;min-width:0;white-space:normal}
+#idle-shop>.ip-tabs .is-shop-nav-label{font-size:8px;letter-spacing:1px;color:#859bae;margin:9px 8px 4px;display:block}
+#idle-shop>.ip-tabs .is-shop-nav-label:first-child{margin-top:0}
+#idle-shop>.is-shop-content{grid-column:2;grid-row:2;min-height:0;max-height:none!important;overflow-y:auto;padding:13px 15px;gap:10px;align-content:start}
+#idle-shop[data-render-tab=buy]>.is-shop-content,#idle-shop[data-render-tab=balls]>.is-shop-content,#idle-shop[data-render-tab=evo]>.is-shop-content,#idle-shop[data-render-tab=sell]>.is-shop-content,#idle-shop[data-render-tab=gear]>.is-shop-content{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+#idle-shop .is-shop-quantities{position:sticky;top:0;grid-column:1/-1;display:flex;align-items:center;gap:6px;background:#192631;z-index:2;padding:7px 9px;border:1px solid #ffffff0c;border-radius:7px;margin:0}
+#idle-shop .is-shop-quantities>span{margin-right:auto;font-size:10px;color:#b5c6d4}
+#idle-shop .is-shop-quantities button{padding:6px 10px!important;font-size:10px!important;min-width:30px}
+#idle-shop .is-shop-row{min-width:0;border-radius:9px;padding:10px}
+#idle-shop .is-shop-row h3{font-size:11px;line-height:15px}
+#idle-shop .is-shop-row button{font-size:9px!important;padding:6px 9px!important}
+#idle-shop .is-shop-notice{grid-column:1/-1}
+
+/* PC sales: readable compact cards, separate quality badges and pinned selection. */
+body.idle-native-mode #idle-shop[data-render-tab=pokemon]{height:690px;max-height:690px!important;top:365px!important}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon]>.is-sale-content{display:flex;flex-direction:column;min-height:0;max-height:none!important;overflow:hidden!important;padding:12px 14px;gap:9px}
+#idle-shop[data-render-tab=pokemon] .is-sale-controls{display:grid;grid-template-columns:minmax(120px,1fr) 125px 105px auto auto;align-items:center;gap:6px;flex:none}
+#idle-shop[data-render-tab=pokemon] .is-sale-controls input[type=search],#idle-shop[data-render-tab=pokemon] .is-sale-controls select{width:100%;min-width:0;font-size:10px;padding:7px 8px}
+#idle-shop[data-render-tab=pokemon] .is-sale-controls label{font-size:9px;white-space:nowrap;display:flex;align-items:center;gap:4px}
+#idle-shop[data-render-tab=pokemon] .is-sale-bar{flex:none;min-height:53px;border-radius:8px;padding:8px 10px;display:flex;gap:6px;align-items:center}
+#idle-shop[data-render-tab=pokemon] .is-sale-bar>div{flex:1;min-width:0}
+#idle-shop[data-render-tab=pokemon] .is-sale-bar b{display:block;font-size:11px;color:#f0d48f}
+#idle-shop[data-render-tab=pokemon] .is-sale-bar small{font-size:8px;line-height:12px;display:block;margin-top:3px;color:#aabfce}
+#idle-shop[data-render-tab=pokemon] .is-sale-bar button{font-size:9px;padding:6px 8px!important}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid{flex:1 1 0!important;min-height:0;overflow-y:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-content:start;align-items:stretch;padding:2px 5px 5px 1px;scrollbar-width:thin}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-pokemon-sale{display:grid;grid-template-columns:43px minmax(0,1fr);gap:5px 7px;position:relative;min-height:113px;height:auto;padding:12px 9px 8px;text-align:left;border-radius:8px!important;background:#21303d!important;border:1px solid #ffffff14!important;box-shadow:inset 0 2px var(--power-color)!important;box-sizing:border-box}
+#idle-shop[data-render-tab=pokemon] .is-pokemon-sale>input{position:absolute;top:6px;left:6px;width:12px;height:12px;margin:0;accent-color:#d080a3}
+#idle-shop[data-render-tab=pokemon] .is-pokemon-sale>img{width:41px;height:44px;object-fit:contain;image-rendering:pixelated;align-self:center;margin-top:4px}
+#idle-shop[data-render-tab=pokemon] .is-pokemon-sale>div:not(.is-sale-card-actions){min-width:0}
+#idle-shop[data-render-tab=pokemon] .is-pokemon-sale h3{font-size:11px;line-height:15px;margin:0 0 4px;text-align:left;color:#eaf2f8}
+#idle-shop[data-render-tab=pokemon] .is-sale-genetics{display:flex;flex-wrap:wrap;gap:3px 5px;font-size:8px;color:#abbdcd;line-height:12px}
+#idle-shop[data-render-tab=pokemon] .is-sale-genetics>span{padding:0!important;font-size:8px!important}
+#idle-shop[data-render-tab=pokemon] .is-sale-price{color:#f1d38b!important;font-weight:700;font-size:11px;margin:4px 0 0;line-height:14px}
+#idle-shop[data-render-tab=pokemon] .is-sale-equipment-note{display:block;font-size:7px;line-height:10px;color:#a7bdcd}
+#idle-shop[data-render-tab=pokemon] .is-sale-card-actions{grid-column:1/-1;display:flex;gap:5px;justify-content:flex-end;align-self:end;margin:3px 0 0}
+#idle-shop[data-render-tab=pokemon] .is-sale-card-actions button{padding:5px 9px!important;font-size:9px!important}
+#idle-shop[data-render-tab=pokemon] .is-pokemon-sale[data-selected=true]{border-color:#db8aab!important;background:#3f2b3b!important}
+#idle-shop[data-render-tab=pokemon] .is-sale-genetics [data-quality="1"]{color:#aebcc8}
+#idle-shop[data-render-tab=pokemon] .is-sale-genetics [data-quality="2"]{color:#8bd9a8}
+#idle-shop[data-render-tab=pokemon] .is-sale-genetics [data-quality="3"]{color:#86c7ff}
+#idle-shop[data-render-tab=pokemon] .is-sale-genetics [data-quality="4"]{color:#d4a1fa}
+#idle-shop[data-render-tab=pokemon] .is-sale-genetics [data-quality="5"]{color:#ffe08a}
+#idle-shop[data-render-tab=pokemon] .is-sale-content>.ip-help{font-size:8px;line-height:12px;margin:0;flex:none}
+
+/* Sales cards use a soft portrait well and quality chips, never a colored top line. */
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-pokemon-sale{border:1px solid #839aaf26!important;box-shadow:none!important;background:linear-gradient(135deg,#253441,#1b2834)!important;border-radius:10px!important;padding:12px 10px 9px;gap:6px 9px}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-pokemon-sale:before,body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-pokemon-sale:after{display:none!important}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-pokemon-sale>img{width:43px;height:48px;background:radial-gradient(ellipse,#90b4c31c,transparent 75%);border-radius:8px;filter:drop-shadow(0 3px 2px #0004)}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-pokemon-sale:hover{border-color:#b6cfdf66!important;background:linear-gradient(135deg,#2d4050,#20303e)!important}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-pokemon-sale[data-selected=true]{border-color:#d28ba5!important;background:linear-gradient(135deg,#493042,#302a39)!important;box-shadow:none!important}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-pokemon-sale[data-shiny=true]{box-shadow:none!important;background:linear-gradient(135deg,#37382d,#1b2834)!important}
+#idle-shop[data-render-tab=pokemon] .is-sale-genetics{gap:4px}
+#idle-shop[data-render-tab=pokemon] .is-sale-genetics :is(.is-sale-power,.is-sale-iv){background:#0c18277a;border:1px solid currentColor;border-radius:4px;padding:1px 4px!important;font-size:8px!important;line-height:11px}
+#idle-shop[data-render-tab=pokemon] .is-sale-card-actions{border-top:0!important;padding-top:0}
+#idle-shop[data-render-tab=pokemon] .is-sale-card-actions button{border-radius:6px!important;background:#314354!important;border:1px solid #8ba2b333!important}
+#idle-shop[data-render-tab=pokemon] .is-sale-card-actions button:last-child:not(:disabled){background:#71394e!important;border-color:#ba718b55!important}
+
+#idle-shop[data-render-tab=pokemon] .is-sale-types{display:flex;flex-wrap:wrap;gap:4px;margin:3px 0 5px}
+#idle-shop[data-render-tab=pokemon] .is-sale-types>span{display:inline-flex;align-items:center;gap:3px;border:1px solid color-mix(in srgb,var(--type-color) 55%,transparent);background:color-mix(in srgb,var(--type-color) 17%,#172431);border-radius:4px;padding:2px 5px;font-size:8px;line-height:11px;color:#e6eff6}
+#idle-shop[data-render-tab=pokemon] .is-sale-types img{width:12px;height:12px;object-fit:contain;image-rendering:pixelated}
+
+/* Let the added type badges participate in card height; keep actions inside. */
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid{grid-auto-rows:max-content!important;align-items:stretch;row-gap:10px}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-pokemon-sale{height:auto!important;min-height:145px!important;max-height:none!important;grid-template-columns:43px minmax(0,1fr);grid-template-rows:minmax(80px,max-content) max-content;align-content:start;align-items:start;overflow:hidden;box-sizing:border-box;padding:12px 10px 10px!important}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-pokemon-sale>img{grid-column:1;grid-row:1;align-self:center;margin:0}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-pokemon-sale>div:not(.is-sale-card-actions){grid-column:2;grid-row:1;align-self:start}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-sale-card-actions{grid-column:1/-1;grid-row:2;position:static;align-self:end;margin:5px 0 0!important;padding:0!important;min-height:26px;display:flex;justify-content:flex-end;gap:6px}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-sale-card-actions button{position:static;min-height:26px;padding:5px 9px!important;margin:0!important;line-height:14px}
+
+/* Natural card height: no reserved empty band above the actions. */
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-pokemon-sale{min-height:0!important;height:auto!important;grid-template-rows:auto auto;gap:5px 8px;padding:10px 9px 8px!important;align-content:start}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-pokemon-sale h3{margin-bottom:3px;line-height:14px}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-sale-types{margin:2px 0 4px}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-sale-price{margin-top:3px;line-height:13px;text-align:left}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-sale-card-actions{margin:2px 0 0!important;min-height:24px;justify-content:flex-end}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-sale-card-actions button{min-height:24px;padding:4px 8px!important;line-height:13px}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-pokemon-sale>img{height:42px;width:40px}
+
+/* Dense PC sale cards: use the full footprint, with no empty right-hand column. */
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-pokemon-sale{grid-template-columns:30px minmax(0,1fr);grid-template-rows:auto auto;gap:4px 6px;padding:8px!important;border-radius:8px!important;min-height:0!important}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-pokemon-sale>img{width:30px;height:34px;align-self:center}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-pokemon-sale>input{width:11px;height:11px;top:5px;left:5px}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-pokemon-sale>div:not(.is-sale-card-actions){display:flex;align-items:center;flex-wrap:wrap;gap:3px 5px}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-pokemon-sale h3{flex:1 1 auto;margin:0!important;font-size:10px;line-height:14px}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-sale-types{flex:0 1 auto;justify-content:flex-end;margin:0!important;gap:3px}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-sale-types>span{padding:1px 3px;font-size:7px;line-height:10px}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-sale-types img{width:10px;height:10px}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-sale-genetics{flex:1 1 100%;margin:0;gap:3px 5px}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-sale-price{position:absolute;left:9px;bottom:11px;margin:0!important;font-size:10px;line-height:14px}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-sale-card-actions{grid-column:1/-1;margin:3px 0 0!important;min-height:23px;gap:4px;padding-left:48px!important}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-sale-card-actions button{padding:4px 7px!important;font-size:8px!important;min-height:23px;line-height:12px}
+
+/* Balanced compact tiles: narrower footprint, enough height for legible content. */
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-pokemon-sale{display:grid;grid-template-columns:36px minmax(0,1fr);grid-template-rows:auto auto;gap:7px 6px;min-height:118px!important;padding:11px 8px 8px!important;align-content:start}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-pokemon-sale>img{width:36px;height:42px;grid-column:1;grid-row:1;align-self:center}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-pokemon-sale>div:not(.is-sale-card-actions){display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:0}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-pokemon-sale h3{flex:none;font-size:10px;line-height:14px;max-width:100%;margin:0!important}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-sale-types{flex:none;justify-content:flex-start;gap:3px}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-sale-genetics{flex:none;display:flex;flex-wrap:wrap;gap:3px;font-size:8px;line-height:12px}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-sale-price{position:static;flex:none;font-size:10px;line-height:14px;margin:0!important}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-sale-card-actions{grid-column:1/-1;grid-row:2;display:flex;justify-content:center;align-self:end;padding:0!important;margin:1px 0 0!important;min-height:24px;gap:5px}
+body.idle-native-mode #idle-shop[data-render-tab=pokemon] .is-sale-grid .is-sale-card-actions button{font-size:9px!important;line-height:13px;padding:4px 8px!important;min-height:24px}
+
+
+/* Visible individual protection controls, separate from the card's open action. */
+body.idle-native-mode .idle-protection-tools{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+body.idle-native-mode .idle-protection-tools>.ip-button{min-width:0!important;min-height:28px!important;padding:6px 9px!important;margin:0!important;font-size:10px!important;border:1px solid #ffffff20!important;background:#293641!important;color:#b8c5cf!important;box-shadow:none!important}
+body.idle-native-mode .idle-protection-tools>[data-kind=favorite][aria-pressed=true]{background:#514425!important;border-color:#d8b85b!important;color:#ffe08b!important}
+body.idle-native-mode .idle-protection-tools>[data-kind=locked][aria-pressed=true]{background:#244942!important;border-color:#64b89e!important;color:#a7ecd6!important}
+body.idle-native-mode .idle-protection-tools>.ip-button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+body.idle-native-mode .ip-selection-entry{position:relative;min-width:0}
+body.idle-native-mode .ip-selection-entry>.ip-selection-card{width:100%;height:100%;padding-right:64px!important}
+body.idle-native-mode .ip-selection-entry .ip-selection-number{display:none}
+body.idle-native-mode .ip-selection-entry>.idle-protection-tools{position:absolute;right:9px;top:9px;gap:4px}
+body.idle-native-mode .idle-protection-tools.is-compact>.ip-button{width:24px!important;height:25px!important;min-height:25px!important;padding:0!important;font-size:13px!important;border-radius:7px!important}
+body.idle-native-mode .ipc-detail>.idle-protection-tools{margin:10px 0;display:grid;grid-template-columns:1fr 1fr;gap:5px}
+body.idle-native-mode #idle-party .ip-sheet-identity>.idle-protection-tools{flex-shrink:0}
+
+/* Team and inventory share the shop's sidebar and compact card vocabulary. */
+body.idle-native-mode #idle-party[data-view=overview]{width:940px;height:560px;max-height:560px!important;top:365px!important;display:flex;flex-direction:column;overflow:hidden!important}
+body.idle-native-mode #idle-party[data-view=overview][hidden]{display:none!important}
+body.idle-native-mode #idle-party[data-view=overview]>header{flex:none;padding:14px 20px!important}
+body.idle-native-mode #idle-party[data-view=overview] #ip-party-detail{display:grid;grid-template-columns:145px minmax(0,1fr);grid-template-rows:54px minmax(0,1fr);height:auto!important;flex:1;min-height:0;padding:0!important;overflow:hidden}
+#idle-party[data-view=overview] .ip-selection-tools{display:contents}
+body.idle-native-mode #idle-party[data-view=overview] .ip-selection-tools>nav{grid-column:1;grid-row:1/3;display:flex;flex-direction:column;align-items:stretch;gap:5px;padding:14px 10px;margin:0;border:0;border-right:1px solid #ffffff12;border-radius:0;background:#111b25}
+body.idle-native-mode #idle-party[data-view=overview] .ip-selection-tools>nav button{flex:none;width:100%;text-align:left;padding:9px 10px!important;border-radius:7px!important;font-size:10px!important}
+body.idle-native-mode #idle-party[data-view=overview] .ip-selection-tools>input{grid-column:2;grid-row:1;width:calc(100% - 28px);max-width:none;margin:12px 14px 8px;box-sizing:border-box;min-height:30px}
+body.idle-native-mode #idle-party[data-view=overview] .ip-selection-grid{grid-column:2;grid-row:2;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:5px 14px 14px;align-content:start;min-height:0}
+body.idle-native-mode #idle-party .ip-selection-entry>.ip-selection-card{min-height:142px;padding:14px 10px 12px!important;align-items:center;border:1px solid #ffffff13!important;border-radius:10px!important;background:#20313d!important;box-shadow:none!important;gap:8px}
+body.idle-native-mode #idle-party .ip-selection-sprite{width:44px;height:54px}
+body.idle-native-mode #idle-party .ip-selection-name{padding-top:18px;gap:3px}
+body.idle-native-mode #idle-party .ip-selection-name b{font-size:11px}
+body.idle-native-mode #idle-party .ip-selection-name>span{color:#adbfcb;font-size:9px}
+body.idle-native-mode #idle-party .ip-selection-entry>.idle-protection-tools{top:7px;right:7px}
+body.idle-native-mode .ip-team-types{display:flex;flex-wrap:wrap;gap:4px;margin:5px 0}
+body.idle-native-mode .ip-team-types>span{display:inline-flex;align-items:center;gap:3px;padding:2px 4px;border-radius:4px;background:color-mix(in srgb,var(--type-color) 24%,#192631);border:1px solid color-mix(in srgb,var(--type-color) 65%,transparent);color:#f1f4f7;font-size:8px;line-height:11px}
+body.idle-native-mode .ip-team-types img{width:11px;height:11px;object-fit:contain}
+body.idle-native-mode .ip-team-genetics{display:flex;flex-wrap:wrap;gap:4px;margin:5px 0 8px}
+body.idle-native-mode .ip-team-genetics>span{font-size:8px;padding:2px 4px;border:1px solid currentColor;border-radius:3px;color:#b2bec8}
+body.idle-native-mode .ip-team-genetics>[data-quality='2']{color:#76c6a0}
+body.idle-native-mode .ip-team-genetics>[data-quality='3']{color:#7fbeef}
+body.idle-native-mode .ip-team-genetics>[data-quality='4']{color:#c6a0ef}
+body.idle-native-mode .ip-team-genetics>[data-quality='5']{color:#f1ce72}
+body.idle-native-mode #idle-inventory{display:grid!important;grid-template-columns:154px minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);width:940px;height:560px;max-height:560px!important;top:365px!important;overflow:hidden!important}
+body.idle-native-mode #idle-inventory[hidden]{display:none!important}
+body.idle-native-mode #idle-inventory>header{grid-column:1/-1;grid-row:1;padding:14px 20px!important;min-height:78px}
+body.idle-native-mode #idle-inventory>.ip-tabs{grid-column:1;grid-row:2;display:flex;flex-direction:column;align-items:stretch;gap:5px;margin:0;padding:14px 10px;border:0;border-right:1px solid #ffffff12;border-radius:0;background:#111b25}
+body.idle-native-mode #idle-inventory>.ip-tabs button{flex:none;width:100%;min-width:0;text-align:left;padding:9px 10px!important;font-size:10px!important;border-radius:7px!important}
+body.idle-native-mode #idle-inventory #ip-bag-content{grid-column:2;grid-row:2;min-height:0;max-height:none!important;height:auto!important;overflow-y:auto;padding:14px;box-sizing:border-box}
+#idle-inventory .ip-inventory-layout{display:grid;grid-template-columns:minmax(0,1fr) 235px;gap:14px;align-items:start}
+#idle-inventory .ip-item-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-content:start}
+body.idle-native-mode #idle-inventory .ip-item-grid>.ip-button{min-height:94px;border:1px solid #ffffff14!important;border-radius:9px!important;background:#20313d!important;box-shadow:none!important;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:10px!important;font-size:10px!important}
+#idle-inventory .ip-item-grid>.ip-button>img{width:30px;height:30px;object-fit:contain;image-rendering:pixelated}
+#idle-inventory .ip-item-grid>.ip-empty{grid-column:1/-1;padding:25px 16px;border:1px dashed #ffffff20;border-radius:9px;text-align:center;line-height:19px;background:#17242e}
+#idle-inventory .ip-item-detail{padding:14px;border-radius:10px;background:#20313d;border:1px solid #ffffff14;min-width:0}
+#idle-inventory .ip-stock-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+body.idle-native-mode #idle-inventory .ip-stock-card{border-radius:9px;background:#20313d;border:1px solid #ffffff14;box-shadow:none;min-width:0}
+#idle-inventory .ip-resource-card{border-radius:10px;background:#20313d}
+#idle-inventory .ip-stock-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+body.idle-native-mode #idle-party[data-view=overview] .ip-selection-tools>nav button[aria-pressed=true]{background:#923a4c!important;color:#fff4f6!important;border-color:#b45c70!important}
+#idle-inventory #ip-bag-content[data-tab=supplies]>.ip-resource-card:first-of-type{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 10px;padding:12px}
+#idle-inventory #ip-bag-content[data-tab=supplies]>.ip-resource-card:first-of-type>h3{grid-column:1/-1;margin:0 0 5px;font-size:12px}
+#idle-inventory #ip-bag-content[data-tab=supplies]>.ip-resource-card:first-of-type>.ip-resource-row{grid-column:auto;min-width:0;padding:6px 8px;border:1px solid #ffffff0b;border-radius:6px;gap:8px}
+#idle-inventory #ip-bag-content[data-tab=supplies]>.ip-resource-card:first-of-type>.ip-resource-row img{width:24px;height:24px}
+#idle-inventory #ip-bag-content[data-tab=supplies]>.ip-resource-card:first-of-type>.ip-resource-row b{font-size:10px}
+#idle-inventory #ip-bag-content[data-tab=supplies]>.ip-resource-card:first-of-type>.ip-button{grid-column:auto;justify-self:start;font-size:9px!important}
+#idle-inventory #ip-bag-content[data-tab=supplies]>.ip-recovery-stock{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 10px;padding:12px}
+#idle-inventory .ip-recovery-stock>h3{grid-column:1/-1;margin:0 0 5px;font-size:12px}
+#idle-inventory .ip-recovery-stock>.ip-resource-row{grid-column:auto;min-width:0;padding:6px 8px;border:1px solid #ffffff0b;border-radius:6px;gap:8px}
+#idle-inventory .ip-recovery-stock>.ip-resource-row img{width:24px;height:24px}
+#idle-inventory .ip-recovery-stock>.ip-resource-row b{font-size:10px}
+/* Materials: clear stock summary, compact sales, separate journey resources. */
+#idle-inventory #ip-bag-content[data-tab=materials] .ip-stock-toolbar{padding:11px 12px;margin:0 0 14px;border:1px solid #ffffff12;border-radius:9px;background:#172631}
+#idle-inventory .ip-material-summary{display:flex;align-items:center;gap:26px}
+#idle-inventory .ip-material-summary>div{display:flex;flex-direction:column;gap:3px}
+#idle-inventory .ip-material-summary small{color:#93aabb;font-size:9px}
+#idle-inventory .ip-material-summary strong{color:#eef4f7;font-size:15px;line-height:20px}
+#idle-inventory .ip-material-summary>div:last-child strong{color:#f1ce72}
+body.idle-native-mode #idle-inventory #ip-bag-content[data-tab=materials] .ip-stock-toolbar>.ip-button{flex:none;width:auto;min-width:0;background:#71394c!important;border:1px solid #a45b73!important;font-size:10px!important;padding:8px 10px!important}
+body.idle-native-mode #idle-inventory .ip-loot-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+body.idle-native-mode #idle-inventory .ip-loot-grid>.ip-stock-card{display:flex;flex-direction:column;align-items:stretch;gap:12px;padding:12px;min-height:0;background:linear-gradient(140deg,#243947,#1b2b36);border:1px solid #ffffff13!important;border-radius:10px}
+#idle-inventory .ip-loot-identity{display:flex;align-items:center;gap:9px;min-width:0}
+#idle-inventory .ip-loot-identity>.idle-item-icon{width:30px;height:34px;object-fit:contain;flex:none;image-rendering:pixelated}
+#idle-inventory .ip-loot-identity>div{display:flex;flex:1;flex-direction:column;gap:5px;min-width:0}
+#idle-inventory .ip-loot-identity b{color:#eef4f7;font-size:10px;line-height:14px}
+#idle-inventory .ip-loot-identity small{color:#91a9ba;font-size:8px}
+#idle-inventory .ip-loot-count{align-self:flex-start;color:#c3dae7;background:#344c5c;border-radius:5px;padding:3px 5px;font-size:10px;font-weight:bold;white-space:nowrap}
+#idle-inventory .ip-loot-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid #ffffff0b;padding-top:9px}
+#idle-inventory .ip-loot-footer>div{display:flex;flex-direction:column;gap:3px}
+#idle-inventory .ip-loot-footer small{font-size:8px;color:#93aabb}
+#idle-inventory .ip-loot-footer strong{font-size:12px;color:#f1ce72}
+body.idle-native-mode #idle-inventory .ip-loot-footer>.ip-button{width:auto;flex:none;min-width:0;padding:6px 9px!important;font-size:9px!important;border-radius:6px!important}
+#idle-inventory .ip-resource-heading{display:flex;align-items:baseline;gap:12px;margin:18px 0 9px;padding-top:12px;border-top:1px solid #ffffff10}
+#idle-inventory .ip-resource-heading h3{font-size:12px;color:#dce9ef;margin:0}
+#idle-inventory .ip-resource-heading small{font-size:9px;color:#8fa7b7}
+body.idle-native-mode #idle-inventory .ip-stock-resources{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:0}
+body.idle-native-mode #idle-inventory .ip-stock-resource{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:6px 9px;align-items:center;border-radius:9px;padding:12px;background:#1b2934;border:1px solid #ffffff13}
+#idle-inventory .ip-stock-resource>.idle-item-icon{width:26px;height:30px;grid-column:1;grid-row:1/3}
+#idle-inventory .ip-stock-resource>b{grid-column:2;grid-row:1;color:#dce9ef;font-size:10px}
+#idle-inventory .ip-stock-resource>strong{grid-column:3;grid-row:1;font-size:19px;color:#98d3c1}
+#idle-inventory .ip-stock-resource>small{grid-column:2/4;grid-row:2;font-size:8px;color:#91a9ba}
+body.idle-native-mode #idle-inventory .ip-stock-resource>.ip-button{grid-column:2/4;grid-row:3;justify-self:start;width:auto;margin-top:3px;padding:5px 9px!important;font-size:9px!important}
+/* Route inhabitants now belong to hunts, with the history in Records. */
+body.idle-native-mode #idle-hunts[data-view=habitat]{width:900px;height:640px;max-height:640px!important;top:365px!important;display:flex;flex-direction:column;overflow:hidden!important}
+body.idle-native-mode #idle-hunts[data-view=habitat][hidden]{display:none!important}
+#idle-hunts[data-view=habitat]>header,#idle-hunts[data-view=habitat]>.ip-tabs{flex:none}
+body.idle-native-mode #idle-hunts[data-view=habitat]>.ih-content{flex:1;min-height:0;max-height:none!important;overflow-y:auto;padding:12px 18px 16px}
+#idle-hunts[data-view=habitat] .ih-content>p{font-size:10px;line-height:16px;margin:0 0 12px;color:#acbfcc}
+#idle-hunts .idle-habitat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+body.idle-native-mode #idle-hunts .idle-habitat-card{display:flex;flex-direction:column;align-items:center;gap:6px;min-height:0;padding:12px;border:1px solid #ffffff14;border-radius:10px;background:#20313d;box-shadow:none}
+#idle-hunts .idle-habitat-card>img{width:48px;height:48px;object-fit:contain;image-rendering:pixelated}
+#idle-hunts .idle-habitat-card>b{font-size:12px;color:#edf3f7}
+#idle-hunts .idle-habitat-card>small{font-size:8px;letter-spacing:1px;color:#aebfc9}
+#idle-hunts .idle-habitat-card>span{font-size:9px;color:#9cb3c2}
+#idle-hunts .idle-habitat-card>details{width:100%;font-size:9px;line-height:16px;margin-top:4px;text-align:center}
+#idle-hunts .idle-habitat-card summary{cursor:pointer;color:#df9db6}
+#idle-hunts .idle-habitat-card details>span{display:block;font-size:9px;color:#accbbb}
+#idle-hunts .idle-habitat-card details>button{margin-top:6px;font-size:9px;padding:5px 9px}
+#idle-hunts .idle-research{margin-top:12px;padding:10px 12px;border:1px solid #ffffff10;border-radius:8px;background:#17252f;font-size:9px;line-height:16px;color:#a9bfce}
+/* Evolution: persistent selection sidebar and a focused detail pane. */
+body.idle-native-mode #idle-evolution{width:960px;height:620px;max-height:620px!important;top:365px!important;display:flex;flex-direction:column;overflow:hidden!important}
+body.idle-native-mode #idle-evolution[hidden]{display:none!important}
+#idle-evolution>header{flex:none;padding:14px 20px!important}
+#idle-evolution .is-evo-shell{display:grid;grid-template-columns:235px minmax(0,1fr);flex:1;min-height:0}
+#idle-evolution .is-evo-sidebar{display:flex;flex-direction:column;min-height:0;background:#111b25;padding:12px 10px;border-right:1px solid #ffffff12;gap:10px}
+#idle-evolution .is-evo-sidebar>input{width:100%;box-sizing:border-box;min-height:32px;padding:7px 9px;font-size:10px}
+#idle-evolution .is-evo-sidebar>nav{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+body.idle-native-mode #idle-evolution .is-evo-sidebar>nav>button{padding:6px!important;font-size:9px!important;min-width:0;border-radius:6px!important}
+body.idle-native-mode #idle-evolution .is-evo-sidebar button[aria-pressed=true]{background:#653449!important;border-color:#be6987!important;color:#fff!important}
+#idle-evolution .is-evo-members{display:flex;flex-direction:column;gap:7px;overflow-y:auto;min-height:0;scrollbar-width:thin;scrollbar-color:#71394e transparent;padding:2px}
+body.idle-native-mode #idle-evolution .is-evo-members>button{display:flex;align-items:center;gap:9px;text-align:left;padding:8px!important;border:1px solid #ffffff12!important;border-radius:8px!important;background:#20313d!important;flex:none}
+body.idle-native-mode #idle-evolution .is-evo-members>button[aria-pressed=true]{border-color:#be6987!important;background:#3a2939!important}
+#idle-evolution .is-evo-members img{width:38px;height:42px;object-fit:contain;image-rendering:pixelated;flex:none}
+#idle-evolution .is-evo-members button>div{display:flex;flex-direction:column;gap:4px;min-width:0}
+#idle-evolution .is-evo-members b{font-size:11px;color:#edf3f7}
+#idle-evolution .is-evo-members small{font-size:8px;color:#9eb4c2}
+#idle-evolution .is-evo-members span{font-size:8px;color:#e3c083}
+#idle-evolution .is-evo-members [data-status=ready]{color:#8cdbb6}
+#idle-evolution .is-evo-members [data-status=final]{color:#9bafc1}
+#idle-evolution .is-evo-main{display:flex;flex-direction:column;gap:12px;min-height:0;overflow-y:auto;padding:16px;scrollbar-width:thin}
+body.idle-native-mode #idle-evolution .is-evo-identity{margin:0;padding:12px;background:#20313d;border:1px solid #ffffff13;border-radius:10px;gap:12px}
+#idle-evolution .is-evo-identity>img{width:45px;height:48px;object-fit:contain;image-rendering:pixelated}
+#idle-evolution .is-evo-identity>div{display:flex;flex-direction:column;gap:5px;min-width:0}
+#idle-evolution .is-evo-badges{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-top:2px}
+#idle-evolution .is-evo-badges>span{display:inline-flex;align-items:center;gap:3px;font-size:9px;line-height:13px;padding:2px 5px;border:1px solid #91a7b34d;border-radius:4px;color:#b5c5cf}
+#idle-evolution .is-evo-badges>.is-evo-type{background:color-mix(in srgb,var(--type-color) 25%,#182732);border-color:color-mix(in srgb,var(--type-color) 65%,transparent);color:#f2f5f7}
+#idle-evolution .is-evo-type>img{width:12px;height:12px;object-fit:contain}
+#idle-evolution .is-evo-badges>[data-quality='2']{color:#76c6a0;border-color:currentColor}
+#idle-evolution .is-evo-badges>[data-quality='3']{color:#7fbeef;border-color:currentColor}
+#idle-evolution .is-evo-badges>[data-quality='4']{color:#c6a0ef;border-color:currentColor}
+#idle-evolution .is-evo-badges>[data-quality='5']{color:#f1ce72;border-color:currentColor}
+body.idle-native-mode #idle-evolution .is-evo-layout{display:flex;flex-direction:column;gap:12px;margin:0;border:0;background:transparent;border-radius:0;overflow:visible}
+#idle-evolution .is-evo-pair{display:flex;align-items:center;justify-content:center;gap:30px;padding:16px;background:linear-gradient(120deg,#253c38,#21323f);border:1px solid #ffffff12;border-radius:10px}
+#idle-evolution .is-evo-pair>div{display:flex;flex-direction:column;align-items:center;gap:5px}
+#idle-evolution .is-evo-pair img{width:72px;height:72px;object-fit:contain;image-rendering:pixelated}
+#idle-evolution .is-evo-pair b{font-size:12px;color:#f0f5f7}
+#idle-evolution .is-evo-pair small{font-size:9px;color:#afc2ce}
+#idle-evolution .is-evo-pair>strong{font-size:22px;color:#e0bb71}
+body.idle-native-mode #idle-evolution .is-evo-requirements{padding:12px;border:1px solid #ffffff12;border-radius:10px;background:#20313d}
+#idle-evolution .is-evo-requirements h3{font-size:12px;margin:0 0 5px}
+#idle-evolution .is-requirements{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+body.idle-native-mode #idle-evolution .is-requirements li{margin:0;padding:8px;font-size:9px;border-radius:6px;background:#393326;color:#ebc68b}
+body.idle-native-mode #idle-evolution .is-requirements li[data-ready=true]{background:#234337;color:#9cdfb9}
+#idle-evolution .is-evo-progress{margin-top:9px}
+#idle-evolution .is-evo-progress>small{font-size:8px;color:#aabecb}
+#idle-evolution .is-evo-progress>div{height:5px;background:#111c24;border-radius:5px;overflow:hidden;margin-top:4px}
+#idle-evolution .is-evo-progress i{height:100%;display:block;background:#75bca4;border-radius:inherit}
+#idle-evolution .is-evo-branch{display:flex;align-items:center;gap:12px;font-size:10px;color:#b6c8d2}
+#idle-evolution .is-evo-branch select{flex:1;min-height:30px}
+body.idle-native-mode #idle-evolution .is-evo-actions{position:sticky;bottom:-16px;background:#18232e;display:flex;align-items:center;gap:8px;margin:auto -16px 0;padding:12px 16px;border-top:1px solid #ffffff12;z-index:1;order:10}
+body.idle-native-mode #idle-evolution .is-evo-actions>button{width:auto;padding:8px 12px!important;font-size:10px!important;border-radius:7px!important}
+#idle-evolution .is-evo-main>.is-help{font-size:9px;line-height:15px;color:#94abba;margin:0}
+#idle-evolution .is-evo-pair{gap:18px;flex-wrap:wrap}
+#idle-evolution .is-evo-future{opacity:.65}
+#idle-evolution .is-evo-future img{width:60px;height:60px}
+body.idle-native-mode #idle-evolution .is-evo-actions>button:disabled{opacity:.45;cursor:not-allowed}
+#idle-evolution .is-evo-members>button:focus-visible,#idle-evolution .is-evo-sidebar>nav>button:focus-visible{outline:2px solid #e0a5bb;outline-offset:2px}
+/* PC uses the shop layout: sidebar, readable cards, focused transfer details. */
+body.idle-native-mode #idle-pc{display:grid!important;grid-template-columns:126px minmax(0,1fr);grid-template-rows:auto auto auto minmax(0,1fr) auto;width:1040px;height:680px;max-height:680px!important;top:365px!important;overflow:hidden!important}
+body.idle-native-mode #idle-pc[hidden]{display:none!important}
+body.idle-native-mode #idle-pc>header{grid-column:1/-1;grid-row:1;padding:12px 18px!important;min-height:70px!important}
+#idle-pc>.ip-tabs{grid-column:1;grid-row:2/6;display:flex;flex-direction:column;align-items:stretch;gap:5px;margin:0;padding:14px 9px;border:0;border-right:1px solid #ffffff12;background:#111b25;border-radius:0}
+body.idle-native-mode #idle-pc>.ip-tabs button{width:100%;flex:none;min-width:0;text-align:left;padding:9px 8px!important;font-size:10px!important;border-radius:7px!important}
+body.idle-native-mode #idle-pc>.ipc-tools{grid-column:2;grid-row:2;display:grid;grid-template-columns:minmax(0,1fr) 135px 125px;gap:8px;padding:12px 14px;margin:0}
+#idle-pc>.ipc-tools input,#idle-pc>.ipc-tools select{width:100%;min-width:0;box-sizing:border-box;font-size:10px;min-height:31px}
+#idle-pc>.ip-notice{grid-column:2;grid-row:3;margin:0 14px 8px;font-size:10px}
+body.idle-native-mode #idle-pc>.ipc-layout{grid-column:2;grid-row:4;display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:12px;min-height:0;padding:0 14px;margin:0;overflow:hidden}
+body.idle-native-mode #idle-pc .ipc-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:minmax(100px,1fr);gap:8px;min-height:0;max-height:none;overflow-y:auto;padding:2px;align-content:start;scrollbar-width:thin}
+body.idle-native-mode #idle-pc .ipc-cell[data-potency]{display:flex;align-items:center;gap:7px;position:relative;min-width:0;min-height:100px;margin:0;padding:12px 8px 8px;text-align:left;border:1px solid #ffffff14!important;border-radius:9px!important;background:#20313d!important;box-shadow:none!important}
+body.idle-native-mode #idle-pc .ipc-cell[data-potency][aria-pressed=true]{border-color:#c47792!important;background:#352c3b!important;outline:0;box-shadow:0 0 0 1px #c4779244!important}
+body.idle-native-mode #idle-pc .ipc-cell>img{width:35px;height:43px;object-fit:contain;image-rendering:pixelated;flex:none;margin:0}
+#idle-pc .ipc-card-copy{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1}
+body.idle-native-mode #idle-pc .ipc-card-copy>b{font-size:10px;color:#eff4f7;line-height:14px;white-space:normal}
+body.idle-native-mode #idle-pc .ipc-card-copy>small{font-size:8px;color:#a5bdcb}
+#idle-pc .ipc-flags{position:absolute;right:6px;top:4px;font-size:9px;color:#f1ce72}
+#idle-pc .ipc-badges{display:flex;flex-wrap:wrap;gap:3px;align-items:center}
+body.idle-native-mode #idle-pc .ipc-badges>span{display:inline-flex;align-items:center;gap:2px;padding:2px 3px;font-size:7px;line-height:10px;border:1px solid #9aafbd66;border-radius:3px;color:#b9c9d2;white-space:nowrap}
+body.idle-native-mode #idle-pc .ipc-badges>.ipc-type{background:color-mix(in srgb,var(--type-color) 24%,#192631);border-color:color-mix(in srgb,var(--type-color) 65%,transparent);color:#f4f6f8}
+body.idle-native-mode #idle-pc .ipc-type>img{width:10px;height:10px;object-fit:contain;margin:0}
+body.idle-native-mode #idle-pc .ipc-badges>[data-quality='2']{color:#76c6a0;border-color:currentColor}
+body.idle-native-mode #idle-pc .ipc-badges>[data-quality='3']{color:#7fbeef;border-color:currentColor}
+body.idle-native-mode #idle-pc .ipc-badges>[data-quality='4']{color:#c6a0ef;border-color:currentColor}
+body.idle-native-mode #idle-pc .ipc-badges>[data-quality='5']{color:#f1ce72;border-color:currentColor}
+body.idle-native-mode #idle-pc .ipc-detail[data-potency]{display:flex;flex-direction:column;align-items:stretch;gap:8px;min-height:0;max-height:none;overflow-y:auto;padding:12px;border:1px solid #ffffff16;border-radius:10px;background:#1a2934;scrollbar-width:thin;scrollbar-color:#71394e transparent}
+body.idle-native-mode #idle-pc .ipc-detail>img{width:60px;height:60px;object-fit:contain;image-rendering:pixelated;align-self:center;margin:0}
+#idle-pc .ipc-detail>h3{font-size:16px;text-align:center;margin:0 0 2px;color:#eef4f7}
+#idle-pc .ipc-detail>.ipc-badges{justify-content:center;margin-bottom:3px}
+body.idle-native-mode #idle-pc .ipc-detail>.ipc-badges>span{font-size:8px;padding:2px 4px}
+body.idle-native-mode #idle-pc .ipc-detail>:is(p,small){font-size:9px;line-height:14px;color:#adbfcb;margin:0}
+body.idle-native-mode #idle-pc .ipc-detail>.ip-button{align-self:flex-start;width:auto;max-width:100%;padding:6px 9px!important;font-size:9px!important;min-height:28px;border-radius:6px!important;margin:0}
+body.idle-native-mode #idle-pc .ipc-detail>.idle-protection-tools{margin:2px 0;padding:9px 0;border-top:1px solid #ffffff10;border-bottom:1px solid #ffffff10}
+body.idle-native-mode #idle-pc .ipc-detail>.idle-protection-tools>.ip-button{font-size:9px!important;padding:5px!important;min-height:28px!important}
+#idle-pc .ipc-detail>select{width:100%;min-height:30px;box-sizing:border-box;font-size:9px;margin:0}
+body.idle-native-mode #idle-pc .ipc-detail>.ip-help{font-size:8px;line-height:13px;margin-top:auto;padding-top:8px;color:#8fa8b8}
+body.idle-native-mode #idle-pc>.ipc-footer{grid-column:2;grid-row:5;display:flex;align-items:center;justify-content:center;gap:16px;margin:0;padding:11px 14px;border-top:1px solid #ffffff0b;font-size:10px}
+body.idle-native-mode #idle-pc>.ipc-footer>.ip-button{padding:6px 11px!important;font-size:9px!important;width:auto;min-width:0}
+#idle-pc .ipc-cell:focus-visible{outline:2px solid #e6a5bc!important;outline-offset:1px}
+/* Partner tasks are a dedicated service, independent of the Base menus. */
+body.idle-native-mode #idle-world[data-family=activities]{width:960px;height:600px;max-height:600px!important;top:365px!important;display:flex;flex-direction:column;overflow:hidden!important}
+body.idle-native-mode #idle-world[data-family=activities][hidden]{display:none!important}
+#idle-world[data-family=activities]>header{flex:none;padding:14px 20px!important}
+body.idle-native-mode #idle-world[data-family=activities]>.iw-shell{display:flex;flex:1;min-height:0;padding:0;overflow:hidden}
+body.idle-native-mode #idle-world[data-family=activities] .iw-shell>nav{display:none!important}
+body.idle-native-mode #idle-world[data-family=activities] .iw-content{flex:1;min-width:0;min-height:0;padding:0!important;max-height:none!important;overflow:hidden}
+#idle-world .iw-tasks-layout{display:grid;grid-template-columns:160px minmax(0,1fr);height:100%;min-height:0}
+#idle-world .iw-tasks-nav{display:flex;flex-direction:column;gap:6px;background:#111b25;border-right:1px solid #ffffff12;padding:14px 10px}
+body.idle-native-mode #idle-world .iw-tasks-nav>button{width:100%;min-width:0;text-align:left;padding:9px!important;font-size:10px!important;border-radius:7px!important}
+body.idle-native-mode #idle-world .iw-tasks-nav>button[aria-pressed=true]{background:#923a4c!important;color:#fff!important;border-color:#b85e77!important}
+#idle-world .iw-tasks-main{padding:16px;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#71394e transparent}
+#idle-world .iw-tasks-heading{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+#idle-world .iw-tasks-heading h3{font-size:15px;color:#eff4f7;margin:0;flex:1}
+#idle-world .iw-tasks-heading>small{color:#9db4c3;font-size:10px}
+#idle-world .iw-tasks-main>.ip-help{font-size:10px;line-height:16px;color:#9db4c3;margin:0 0 14px}
+#idle-world .iw-task-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#idle-world .iw-task-card{display:flex;flex-direction:column;align-items:flex-start;gap:9px;min-width:0;background:#20313d;border:1px solid #ffffff13;border-radius:10px;padding:14px}
+#idle-world .iw-task-card h4{font-size:13px;color:#eef4f7;margin:0}
+#idle-world .iw-task-card>small{font-size:9px;color:#92aab9;line-height:14px}
+#idle-world .iw-task-duration{font-size:10px;color:#9ec6de}
+#idle-world .iw-task-reward{font-size:11px;line-height:17px;color:#e6c779;margin:0}
+body.idle-native-mode #idle-world .iw-task-card>.iw-button{width:auto;padding:6px 10px!important;font-size:10px!important;border-radius:6px!important;margin-top:auto}
+#idle-world .iw-task-worker{display:flex;align-items:center;gap:9px}
+#idle-world .iw-task-worker img{width:36px;height:40px;image-rendering:pixelated;object-fit:contain}
+#idle-world .iw-task-worker b{font-size:12px;color:#b6d8cb}
+#idle-world .iw-task-track{height:5px;width:100%;background:#111c24;border-radius:5px;overflow:hidden}
+#idle-world .iw-task-track>i{height:100%;display:block;background:#7dc7aa;border-radius:inherit}
+#idle-world .iw-task-empty{grid-column:1/-1;border:1px dashed #ffffff22;border-radius:9px;padding:24px 16px;text-align:center;color:#a5bdca;font-size:11px;line-height:18px}
+#idle-world .iw-tasks-main>input{width:100%;box-sizing:border-box;padding:9px;margin:10px 0;min-height:32px;font-size:10px}
+#idle-world .iw-task-partners{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+body.idle-native-mode #idle-world .iw-task-partners>.iw-button{display:flex;align-items:center;gap:9px;min-width:0;padding:10px!important;text-align:left;border:1px solid #ffffff15!important;background:#20313d!important;border-radius:9px!important}
+#idle-world .iw-task-partners img{width:36px;height:46px;object-fit:contain;image-rendering:pixelated;flex:none}
+#idle-world .iw-task-partners button>div{display:flex;flex-direction:column;gap:5px;min-width:0}
+#idle-world .iw-task-partners b{font-size:11px;color:#edf4f7}
+#idle-world .iw-task-partners small{font-size:8px;color:#9db5c4}
+#idle-world .iw-task-partners span{font-size:8px;color:#94cdb6}
+#idle-world .iw-task-partners>.ip-help{grid-column:1/-1;font-size:11px;color:#a4bac8}
+body.idle-native-mode #idle-world .iw-tasks-heading>.iw-button{width:auto;padding:6px 10px!important;font-size:10px!important}
+/* Dedicated nursery, sharing the service layout used by partner tasks. */
+body.idle-native-mode #idle-world[data-family=nursery]{width:940px;height:610px;max-height:610px!important;top:365px!important;display:flex;flex-direction:column;overflow:hidden!important}
+body.idle-native-mode #idle-world[data-family=nursery][hidden]{display:none!important}
+#idle-world[data-family=nursery]>header{flex:none;padding:14px 20px!important}
+body.idle-native-mode #idle-world[data-family=nursery]>.iw-shell{display:flex;flex:1;min-height:0;overflow:hidden}
+body.idle-native-mode #idle-world[data-family=nursery] .iw-shell>nav{display:none!important}
+body.idle-native-mode #idle-world[data-family=nursery] .iw-content{flex:1;min-width:0;min-height:0;padding:0!important;max-height:none!important;overflow:hidden}
+#idle-world .iw-nursery-layout{display:grid;grid-template-columns:173px minmax(0,1fr);height:100%;min-height:0}
+#idle-world .iw-nursery-nav{display:flex;flex-direction:column;gap:6px;background:#111b25;border-right:1px solid #ffffff12;padding:14px 10px}
+body.idle-native-mode #idle-world .iw-nursery-nav>.iw-button{width:100%;min-width:0;text-align:left;padding:9px!important;font-size:10px!important;border-radius:7px!important;white-space:normal}
+body.idle-native-mode #idle-world .iw-nursery-nav>.iw-button[aria-pressed=true]{background:#923a4c!important;color:#fff!important;border-color:#b85e77!important}
+#idle-world .iw-nursery-main{padding:16px;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#71394e transparent}
+#idle-world .iw-nursery-slots{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:17px}
+#idle-world .iw-nursery-slots>div{display:flex;flex-direction:column;gap:6px;padding:12px;border:1px dashed #68829155;border-radius:9px;background:#172731}
+#idle-world .iw-nursery-slots>[data-occupied=true]{border:1px solid #6fae9766;background:#213b36}
+#idle-world .iw-nursery-slots small{font-size:8px;letter-spacing:1px;color:#95b4bd}
+#idle-world .iw-nursery-slots b{font-size:12px;color:#e3f2eb}
+#idle-world .iw-nursery-slots span{font-size:9px;color:#a4c1b6}
+#idle-world .iw-nursery-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+#idle-world .iw-nursery-heading h3{font-size:14px;color:#edf4f7;margin:0}
+body.idle-native-mode #idle-world .iw-nursery-heading>.iw-button{width:auto;padding:6px 10px!important;font-size:10px!important}
+#idle-world .iw-egg-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+#idle-world .iw-egg-card{display:flex;flex-direction:column;align-items:center;gap:8px;padding:13px 12px;border:1px solid #ffffff14;border-radius:10px;background:#20313d;min-width:0}
+#idle-world .iw-egg-card>img{width:42px;height:48px;object-fit:contain;image-rendering:pixelated}
+#idle-world .iw-egg-card h4{font-size:12px;color:#edf4f7;margin:0}
+#idle-world .iw-egg-card>span{font-size:9px;color:#9dd5b9}
+#idle-world .iw-egg-card>small{font-size:9px;color:#9bb5c5}
+#idle-world .iw-egg-track{width:100%;height:5px;border-radius:5px;background:#111c24;overflow:hidden}
+#idle-world .iw-egg-track>i{display:block;height:100%;border-radius:inherit;background:#82c7aa}
+body.idle-native-mode #idle-world .iw-egg-card>.iw-button{width:auto;margin-top:3px;padding:6px 10px!important;font-size:10px!important;border-radius:6px!important}
+#idle-world .iw-egg-empty{grid-column:1/-1;text-align:center;border:1px dashed #ffffff22;border-radius:9px;padding:24px 16px;color:#a5bdca;font-size:11px;line-height:18px}
+#idle-world .iw-nursery-help{margin-top:16px;padding:12px;border:1px solid #ffffff0d;border-radius:8px;background:#17252f}
+#idle-world .iw-nursery-help>b{font-size:10px;color:#bfd5df}
+#idle-world .iw-nursery-help>p{font-size:10px;color:#a2b8c5;line-height:16px;margin:6px 0}
+#idle-world .iw-nursery-help>small{font-size:9px;color:#8ba4b4;line-height:15px}
+/* Egg hatching announces each result, including batch hatches. */
+body.idle-native-mode .iw-hatch-notice{position:absolute;left:50%;top:85px;transform:translateX(-50%);z-index:240;display:flex;align-items:center;gap:13px;width:380px;max-width:calc(100% - 40px);box-sizing:border-box;padding:13px 14px;border:1px solid #8bd4b5;border-radius:13px;background:linear-gradient(115deg,#254b3f,#1a2935 75%);box-shadow:0 12px 35px #0008;animation:idle-hatch-arrival .3s ease-out}
+.iw-hatch-portrait{display:flex;align-items:center;justify-content:center;width:67px;height:70px;flex:none;border-radius:10px;background:#a8dbad12}
+.iw-hatch-portrait>img{width:62px;height:62px;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 4px 3px #0006)}
+.iw-hatch-copy{min-width:0;flex:1;display:flex;flex-direction:column;gap:5px}
+.iw-hatch-copy>small{font-size:9px;letter-spacing:1px;color:#a1e1be}
+.iw-hatch-copy>b{font-size:19px;color:#fff4cb}
+.iw-hatch-copy>p{font-size:10px;line-height:15px;color:#b8d0d6;margin:0}
+body.idle-native-mode .iw-hatch-notice>.iw-button{align-self:flex-start;flex:none;min-width:24px;width:24px;height:24px;padding:0!important;border-radius:50%!important;font-size:12px!important}
+@keyframes idle-hatch-arrival{from{opacity:0;translate:0 -10px}to{opacity:1;translate:0 0}}
+@media(prefers-reduced-motion:reduce){body.idle-native-mode .iw-hatch-notice{animation:none}}
+body.reduce-fx .iw-hatch-notice{animation:none}
+/* Saved formations show their actual roster rather than only a name. */
+body.idle-native-mode #idle-world[data-family=forms]{width:980px;height:640px;max-height:640px!important;top:365px!important;display:flex;flex-direction:column;overflow:hidden!important}
+body.idle-native-mode #idle-world[data-family=forms][hidden]{display:none!important}
+#idle-world[data-family=forms]>header{flex:none;padding:14px 20px!important}
+body.idle-native-mode #idle-world[data-family=forms]>.iw-shell{display:flex;flex:1;min-height:0;overflow:hidden}
+body.idle-native-mode #idle-world[data-family=forms] .iw-shell>nav{display:none!important}
+body.idle-native-mode #idle-world[data-family=forms] .iw-content{flex:1;min-width:0;min-height:0;padding:0!important;max-height:none!important;overflow:hidden}
+#idle-world .iw-formations-layout{display:grid;grid-template-columns:164px minmax(0,1fr);height:100%;min-height:0}
+#idle-world .iw-formations-nav{display:flex;flex-direction:column;gap:6px;background:#111b25;border-right:1px solid #ffffff12;padding:14px 10px}
+body.idle-native-mode #idle-world .iw-formations-nav>.iw-button{width:100%;min-width:0;text-align:left;padding:9px!important;font-size:10px!important;border-radius:7px!important}
+body.idle-native-mode #idle-world .iw-formations-nav>.iw-button[aria-pressed=true]{background:#923a4c!important;color:#fff!important;border-color:#b85e77!important}
+#idle-world .iw-formations-main{padding:16px;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#71394e transparent}
+body.idle-native-mode #idle-world .iw-formations-main>.iw-section{background:transparent;border:0;padding:0;margin:0}
+#idle-world .iw-formations-main h3{font-size:15px;color:#edf4f7;margin:0 0 8px}
+#idle-world .iw-formations-main .iw-section>p{font-size:10px;color:#a3b9c7;line-height:16px;margin:0 0 12px}
+#idle-world .iw-formation-save{display:flex;align-items:center;gap:8px;padding:11px;background:#172630;border:1px solid #ffffff10;border-radius:9px;margin-bottom:14px}
+#idle-world .iw-formation-save input{flex:1;min-width:0;min-height:32px;padding:7px 9px;box-sizing:border-box;font-size:10px}
+body.idle-native-mode #idle-world .iw-formation-save>.iw-button{flex:none;width:auto;font-size:10px!important;padding:7px 11px!important}
+body.idle-native-mode #idle-world .iw-saved-formation{display:block;padding:13px;border:1px solid #ffffff14;background:#1b2b36;border-radius:10px;margin:0 0 12px}
+#idle-world .iw-saved-formation>b{display:block;font-size:14px;color:#edf4f7;margin-bottom:10px}
+#idle-world .iw-formation-preview{display:flex;flex-direction:column;gap:12px;margin:10px 0 12px}
+#idle-world .iw-formation-preview h4{font-size:10px;letter-spacing:.4px;color:#a5bfcf;margin:0 0 7px}
+#idle-world .iw-formation-members{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+#idle-world .iw-formation-member{display:flex;align-items:center;gap:8px;min-width:0;padding:8px;background:#243946;border:1px solid #ffffff0d;border-radius:7px}
+#idle-world .iw-formation-member>img{width:36px;height:43px;object-fit:contain;image-rendering:pixelated;flex:none}
+#idle-world .iw-formation-member>div{display:flex;flex-direction:column;gap:4px;min-width:0}
+#idle-world .iw-formation-member b{font-size:10px;color:#edf4f7}
+#idle-world .iw-formation-member small{font-size:8px;color:#a3bfce}
+#idle-world .iw-formation-member span{font-size:8px;color:#8cb5a6}
+#idle-world .iw-formation-member[data-unavailable=true]{border-color:#c68d5866;background:#3a3028}
+#idle-world .iw-formation-member[data-unavailable=true] small:last-child{color:#e2bb87}
+body.idle-native-mode #idle-world .iw-saved-formation>.iw-button{width:auto;padding:6px 11px!important;font-size:10px!important;margin-right:6px;border-radius:6px!important}
+/* Idle trainer profile uses only this journey's progress and identity. */
+body.idle-native-mode #idle-world[data-family=profile]{width:850px;height:650px;max-height:650px!important;top:365px!important;display:flex;flex-direction:column;overflow:hidden!important}
+body.idle-native-mode #idle-world[data-family=profile][hidden]{display:none!important}
+#idle-world[data-family=profile]>header{flex:none}
+body.idle-native-mode #idle-world[data-family=profile]>.iw-shell{display:flex;flex:1;min-height:0}
+body.idle-native-mode #idle-world[data-family=profile] .iw-shell>nav{display:none!important}
+body.idle-native-mode #idle-world[data-family=profile] .iw-content{flex:1;min-height:0;max-height:none!important;padding:16px!important;overflow-y:auto;scrollbar-width:thin}
+.iw-profile-hero{display:flex;align-items:center;gap:18px;padding:16px;border:1px solid #ffffff15;border-radius:11px;background:linear-gradient(110deg,#25423e,#20313d);margin-bottom:14px}
+.iw-profile-hero>img{width:75px;height:90px;object-fit:contain;image-rendering:pixelated}
+.iw-profile-hero>div:not(.iw-profile-partner){flex:1;min-width:0}
+.iw-profile-hero h3{font-size:23px;margin:5px 0;color:#f1f5f7}
+.iw-profile-hero p{font-size:11px;color:#b0c9d4;margin:6px 0}
+.iw-profile-hero small{font-size:9px;color:#99c5b7}
+.iw-profile-xp{height:5px;background:#111f28;border-radius:5px;margin:10px 0 5px;overflow:hidden}
+.iw-profile-xp>i{display:block;height:100%;background:#83d1b1}
+.iw-profile-partner{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:105px}
+.iw-profile-partner img{width:58px;height:60px;object-fit:contain;image-rendering:pixelated}
+.iw-profile-partner b{font-size:11px;color:#f1df9e}
+.iw-profile-badges{padding:12px;background:#1b2b36;border:1px solid #ffffff11;border-radius:9px;margin-bottom:12px}
+.iw-profile-badges h3{font-size:12px;color:#dceaf1;margin:0 0 9px}
+.iw-profile-badges>div{display:flex;flex-wrap:wrap;gap:7px}
+.iw-profile-badges span{font-size:10px;padding:6px 9px;border-radius:6px;background:#24343f;color:#6c8291;border:1px solid #ffffff0a}
+.iw-profile-badges [data-earned=true]{background:#334b39;border-color:#85c39366;color:#c0e1ab}
+.iw-profile-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-bottom:14px}
+.iw-profile-metrics>div{display:flex;flex-direction:column;gap:7px;background:#20313d;border:1px solid #ffffff12;border-radius:8px;padding:12px}
+.iw-profile-metrics small{font-size:9px;color:#9eb8c8}
+.iw-profile-metrics b{font-size:20px;color:#edf4f7}
+#idle-world[data-family=profile] .iw-section{padding:12px;background:#1c2c37;border:1px solid #ffffff10;border-radius:9px}
+#idle-world[data-family=profile] .iw-section h3{font-size:12px;margin:0 0 10px}
+#idle-world[data-family=profile] .iw-section>input{padding:7px;font-size:11px;margin-right:8px}
+#idle-world[data-family=profile] .iw-content>.ip-help{font-size:9px;line-height:15px;color:#8fa9b8}
+/* Visual profile editor replaces long native select menus. */
+#idle-world .iw-profile-editor .iw-profile-name-row{display:flex;align-items:flex-end;gap:9px;padding-bottom:14px;border-bottom:1px solid #ffffff10;margin-bottom:14px}
+#idle-world .iw-profile-name-row>label{display:flex;flex:1;flex-direction:column;gap:7px;font-size:10px;color:#a7bfce}
+#idle-world .iw-profile-name-row input{width:100%;box-sizing:border-box;min-height:34px;padding:8px 10px;font-size:11px}
+body.idle-native-mode #idle-world .iw-profile-name-row>.iw-button{width:auto;flex:none;padding:8px 12px!important;font-size:10px!important;min-height:34px;border-radius:7px!important}
+#idle-world .iw-profile-editor-columns{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+#idle-world .iw-profile-editor h4{font-size:11px;color:#d7e7ef;margin:0 0 9px}
+#idle-world .iw-profile-trainers{display:flex;gap:8px}
+body.idle-native-mode #idle-world .iw-profile-trainers>.iw-button{display:flex;align-items:center;justify-content:center;gap:9px;flex:1;width:auto;padding:10px!important;border:1px solid #ffffff18!important;background:#20333f!important;border-radius:8px!important}
+#idle-world .iw-profile-trainers img{width:35px;height:48px;object-fit:contain;image-rendering:pixelated}
+#idle-world .iw-profile-trainers b{font-size:11px}
+body.idle-native-mode #idle-world .iw-profile-trainers>.iw-button[aria-pressed=true]{border-color:#d086a0!important;background:#513344!important;color:#ffeaf2}
+body.idle-native-mode #idle-world .iw-profile-partner-selected{display:flex;align-items:center;gap:12px;width:100%;min-height:70px;padding:10px!important;background:#20333f!important;border:1px solid #ffffff18!important;border-radius:8px!important;text-align:left}
+#idle-world .iw-profile-partner-selected>img{width:43px;height:48px;object-fit:contain;image-rendering:pixelated}
+#idle-world .iw-profile-partner-selected>div{display:flex;flex-direction:column;gap:5px}
+#idle-world .iw-profile-partner-selected b{font-size:12px;color:#f0e0a6}
+#idle-world .iw-profile-partner-selected small{font-size:9px;color:#a0b9c8}
+#idle-world .iw-profile-partner-selected span{font-size:9px;color:#dfa0b7}
+#idle-world .iw-profile-partner-picker{margin-top:15px;padding:13px;border:1px solid #95627766;border-radius:9px;background:#14232e}
+#idle-world .iw-profile-picker-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+#idle-world .iw-profile-picker-top h4{margin:0}
+#idle-world .iw-profile-partner-picker>input{width:100%;box-sizing:border-box;min-height:33px;padding:8px 10px;font-size:10px;margin-bottom:9px}
+#idle-world .iw-profile-partner-picker>nav{display:flex;gap:6px;margin-bottom:11px}
+body.idle-native-mode #idle-world .iw-profile-partner-picker .iw-button{width:auto;padding:6px 10px!important;font-size:9px!important;border-radius:6px!important}
+body.idle-native-mode #idle-world .iw-profile-partner-picker button[aria-pressed=true]{background:#633b4d!important;border-color:#c27b96!important}
+#idle-world .iw-profile-partner-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+body.idle-native-mode #idle-world .iw-profile-partner-options>.iw-button{display:flex;align-items:center;gap:8px;padding:9px!important;min-width:0;width:100%;text-align:left;background:#20333f!important;border:1px solid #ffffff13!important;border-radius:8px!important}
+#idle-world .iw-profile-partner-options img{width:34px;height:42px;object-fit:contain;image-rendering:pixelated;flex:none}
+#idle-world .iw-profile-partner-options button>div{display:flex;flex-direction:column;gap:4px;min-width:0}
+#idle-world .iw-profile-partner-options b{font-size:10px;color:#eef5f8}
+#idle-world .iw-profile-partner-options small{font-size:8px;color:#9db6c5}
+#idle-world .iw-profile-partner-options span{font-size:8px;color:#afc1ca}
+#idle-world .iw-profile-partner-options [data-quality='2']{color:#76c6a0}
+#idle-world .iw-profile-partner-options [data-quality='3']{color:#7fbeef}
+#idle-world .iw-profile-partner-options [data-quality='4']{color:#c6a0ef}
+#idle-world .iw-profile-partner-options [data-quality='5']{color:#f1ce72}
+#idle-world .iw-profile-partner-options>.ip-help{grid-column:1/-1;font-size:10px;color:#a2bac9}
+#idle-world .iw-profile-partner-pages{display:flex;justify-content:center;align-items:center;gap:12px;margin-top:12px;font-size:9px;color:#a9bfcc}
+/* Journey keeps regional progression, missions and optional challenges. */
+body.idle-native-mode #idle-world[data-family=journey]{width:1000px;height:660px;max-height:660px!important;top:365px!important;display:flex;flex-direction:column;overflow:hidden!important}
+body.idle-native-mode #idle-world[data-family=journey][hidden]{display:none!important}
+#idle-world[data-family=journey]>header{flex:none;padding:14px 20px!important}
+body.idle-native-mode #idle-world[data-family=journey]>.iw-shell{display:grid;grid-template-columns:151px minmax(0,1fr);flex:1;min-height:0;padding:0;overflow:hidden}
+body.idle-native-mode #idle-world[data-family=journey] .iw-shell>nav{display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:5px;margin:0;padding:14px 10px;border:0;border-right:1px solid #ffffff12;border-radius:0;background:#111b25;overflow:auto}
+body.idle-native-mode #idle-world[data-family=journey] .iw-shell>nav>button{flex:none;min-width:0;width:100%;padding:9px!important;text-align:left;border-radius:7px!important;font-size:10px!important}
+body.idle-native-mode #idle-world[data-family=journey] .iw-shell>nav>button[hidden]{display:none!important}
+body.idle-native-mode #idle-world[data-family=journey] .iw-shell>nav>button[aria-pressed=true]{background:#923a4c!important;color:#fff!important}
+body.idle-native-mode #idle-world[data-family=journey] .iw-content{min-height:0;min-width:0;max-height:none!important;overflow-y:auto;padding:15px!important;scrollbar-width:thin}
+body.idle-native-mode #idle-world[data-family=journey] .iw-section{background:transparent;border:0;padding:0;margin:0}
+#idle-world[data-family=journey] .iw-section>h3{font-size:15px;color:#edf4f7;margin:0 0 7px}
+#idle-world[data-family=journey] .iw-section>p{font-size:10px;line-height:16px;color:#a3bac9;margin:0 0 13px}
+#idle-world[data-family=journey] .iw-section:has(.iw-quest-card){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#idle-world[data-family=journey] .iw-section:has(.iw-quest-card)>h3,#idle-world[data-family=journey] .iw-section:has(.iw-quest-card)>p{grid-column:1/-1;margin-bottom:0}
+body.idle-native-mode #idle-world .iw-quest-card{display:flex;flex-direction:column;align-items:flex-start;gap:9px;min-width:0;margin:0;padding:13px;border:1px solid #ffffff14;border-radius:10px;background:#20313d}
+#idle-world .iw-quest-card>b{font-size:12px;color:#edf4f7;line-height:17px}
+#idle-world .iw-quest-card>small{font-size:9px;line-height:15px;color:#a6bfcd}
+#idle-world .iw-quest-card>small:nth-of-type(2){color:#e3c57e}
+#idle-world .iw-quest-progress{height:5px;width:100%;background:#111c24;border-radius:5px;overflow:hidden;margin-top:auto}
+#idle-world .iw-quest-progress>i{height:100%;display:block;background:#8ebda9}
+body.idle-native-mode #idle-world .iw-quest-card>.iw-button{width:auto;font-size:10px!important;padding:6px 10px!important;border-radius:6px!important}
+body.idle-native-mode #idle-world .iw-quest-card[data-status=ready]{border-color:#79c49e88;background:#203a34}
+#idle-world .iw-quest-card[data-status=ready]>.iw-button{background:#326b50;color:#d4f3df}
+#idle-world .iw-quest-card[data-status=claimed]{opacity:.65}
+#idle-world[data-family=journey] .iw-section:not(:has(.iw-quest-card)):has(>.iw-button){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#idle-world[data-family=journey] .iw-section:not(:has(.iw-quest-card)):has(>.iw-button)>h3,#idle-world[data-family=journey] .iw-section:not(:has(.iw-quest-card)):has(>.iw-button)>p{grid-column:1/-1}
+body.idle-native-mode #idle-world[data-family=journey] .iw-section:not(:has(.iw-quest-card))>.iw-button{min-height:68px;width:100%;white-space:normal;text-align:left;padding:13px!important;background:#20313d!important;border:1px solid #ffffff14!important;border-radius:9px!important;font-size:11px!important;line-height:17px}
+#idle-world .iw-region-preview>summary{cursor:pointer;color:#a7ccdb;font-size:10px;padding:8px 0}
+#idle-hunts .ih-route-options{margin-top:12px;padding:10px 12px;border:1px solid #ffffff13;border-radius:8px;background:#192b36}
+#idle-hunts .ih-route-options>summary{font-size:10px;color:#d5a1b7;cursor:pointer}
+#idle-hunts .ih-route-options .iw-section{border:0;background:transparent;padding:10px 0 0;margin:0}
+#idle-hunts .ih-route-options .iw-field{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px;background:#14232e;border-radius:6px;margin:6px 0;font-size:10px}
+#idle-hunts .ih-route-options select{max-width:65%;font-size:10px}
+#idle-hunts .ih-route-options p{font-size:9px;line-height:15px;color:#a2bac9}
+/* Optional challenges explain their rules before the player commits. */
+body.idle-native-mode #idle-world[data-family=journey] .iw-challenges{display:block}
+#idle-world .iw-challenge-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+#idle-world .iw-challenge-card{display:flex;flex-direction:column;align-items:flex-start;gap:9px;min-width:0;padding:15px;background:#20313d;border:1px solid #ffffff14;border-radius:10px}
+#idle-world .iw-challenge-card>small{font-size:8px;letter-spacing:.7px;text-transform:uppercase;color:#b59db8}
+#idle-world .iw-challenge-card h4{font-size:14px;color:#edf4f7;margin:0}
+#idle-world .iw-challenge-card>p{font-size:10px;line-height:16px;color:#a6bfce;margin:0}
+#idle-world .iw-challenge-status{font-size:9px;line-height:15px;padding:5px 7px;border-radius:5px;background:#443925;color:#e7c88c}
+#idle-world .iw-challenge-card[data-ready=true] .iw-challenge-status{background:#264737;color:#a2dabc}
+#idle-world .iw-challenge-foes{display:flex;align-items:center;gap:10px;padding:5px 0}
+#idle-world .iw-challenge-foes img{width:35px;height:38px;object-fit:contain;image-rendering:pixelated}
+#idle-world .iw-challenge-card>.iw-challenge-reward{font-size:10px;color:#e7ce86;margin-top:auto;line-height:16px}
+body.idle-native-mode #idle-world .iw-challenge-card>.iw-button{width:auto;max-width:100%;min-height:30px;padding:7px 11px!important;font-size:10px!important;border-radius:6px!important;white-space:normal;text-align:left;background:#74394d!important;border:1px solid #a9617b!important}
+body.idle-native-mode #idle-world .iw-challenge-card>.iw-button:disabled{background:#2e3e47!important;border-color:#ffffff13!important;color:#93a7b3;opacity:.75;cursor:not-allowed}
+/* Idle settings keep functional audio/visual controls and mode-specific help. */
+body.idle-native-mode #menu.idle-settings{width:520px;max-height:620px;padding:0;border:1px solid #855568;border-radius:14px;background:#1b2833;color:#d8e6ef;box-shadow:0 15px 40px #0008;overflow:hidden}
+body.idle-native-mode #menu.idle-settings .mhead{background:#243540;border:0;padding:15px}
+body.idle-native-mode #menu.idle-settings .mhead h3{font:700 18px 'Trebuchet MS';color:#f1f5f7}
+body.idle-native-mode #menu.idle-settings .mtabs{display:flex;gap:5px;padding:10px;background:#111c25}
+body.idle-native-mode #menu.idle-settings .mtab{flex:1;border:1px solid #ffffff16;border-radius:6px;background:#2b3d49;color:#b6cbd8;font-size:11px;padding:8px}
+body.idle-native-mode #menu.idle-settings .mtab.on{background:#923a4c;color:#fff}
+body.idle-native-mode #menu.idle-settings .mpanes{max-height:420px;overflow-y:auto;scrollbar-width:thin;padding:12px}
+body.idle-native-mode #menu.idle-settings .mrow{background:#233641;border:1px solid #ffffff10;border-radius:8px;padding:9px;margin:7px 0;color:#c7dbe7}
+body.idle-native-mode #menu.idle-settings .mgroup{background:transparent;border:0}
+body.idle-native-mode #menu.idle-settings .help{font:11px/1.9 'Trebuchet MS';background:#20333e;border:1px solid #ffffff13;border-radius:9px;padding:14px;color:#c0d5e2}
+body.idle-native-mode #menu.idle-settings .credit{font-size:9px;color:#89a4b5;line-height:15px;padding:12px 3px}
+body.idle-native-mode #menu.idle-settings .mfoot{padding:12px;border-top:1px solid #ffffff12;display:flex;gap:7px}
+body.idle-native-mode #menu.idle-settings .mbtn{background:#304854;border:1px solid #ffffff22;border-radius:6px;color:#e4eef4;padding:8px 10px;font:10px 'Trebuchet MS';width:auto;min-height:30px}
+body.idle-native-mode #menu.idle-settings [hidden]{display:none!important}
+#menu .idle-settings-data h4{font-size:14px;margin:0 0 10px;color:#edf4f7}
+#menu .idle-settings-data p{font:11px/1.6 'Trebuchet MS';color:#b5cbd8}
+#menu .idle-settings-data>.mbtn{margin:0 6px 8px 0}
+#menu .idle-settings-data>div:not(:empty){padding:12px;border:1px solid #b3775d;border-radius:8px;background:#3b3028;margin-top:10px}
