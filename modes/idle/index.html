@@ -6624,7 +6624,7 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden)saveNow()})
 let lastT=performance.now(),lastTick=-1;
 function frame(ts){try{frame_(ts)}catch(e){reportErr(e)}requestAnimationFrame(frame)}
 function frame_(ts){
-  const dt=Math.min(.05,(ts-lastT)/1000);lastT=ts;
+  const dt=Math.min(.05,(ts-lastT)/1000);lastT=ts;if(window.OAK_IDLE_MODE&&(document.hidden||window.IDLE_BACKGROUND_BUSY))return;
   if(document.body.classList.contains('tower-entry-open')||document.body.classList.contains('rocket-entry-open'))return;
   const sdt=G.paused?0:((G.phase==='combat'||G.phase==='result')?dt*CFG.speed:dt);
   tickApprovedArenas(dt);

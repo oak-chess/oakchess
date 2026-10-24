@@ -32,7 +32,7 @@ window.createIdleCaptureFX=function(ctx){
   }
   raf=requestAnimationFrame(frame);
  })}
- function enqueue(event){queued++;const token=generation,task=tail.then(()=>Promise.all([asset(event.ballSprite).ready,asset(event.pokemonSprite).ready])).then(()=>token===generation?run(event):undefined).catch(error=>console.warn('Animação de captura:',error)).finally(()=>queued--);tail=task;return task}
+ function enqueue(event){if(document.hidden||window.IDLE_BACKGROUND_BUSY)return Promise.resolve();queued++;const token=generation,task=tail.then(()=>Promise.all([asset(event.ballSprite).ready,asset(event.pokemonSprite).ready])).then(()=>token===generation?run(event):undefined).catch(error=>console.warn('Animação de captura:',error)).finally(()=>queued--);tail=task;return task}
  function clear(){generation++;active?.finish(false);clearTimeout(noticeTimer);if(notice)notice.hidden=true;g?.clearRect(0,0,canvas.width,canvas.height)}
  function mount(target){stage=target;layer=el('div','idle-capture-fx');layer.setAttribute('aria-hidden','true');canvas=el('canvas');canvas.id='idleCaptureCanvas';canvas.width=stage.offsetWidth;canvas.height=stage.offsetHeight;g=canvas.getContext('2d');layer.append(canvas);notice=el('aside','idle-capture-notice');notice.hidden=true;notice.setAttribute('role','status');notice.setAttribute('aria-live','polite');stage.append(layer,notice)}
  return {mount,play:enqueue,clear,pending:()=>queued?tail:null,busy:()=>queued>0};

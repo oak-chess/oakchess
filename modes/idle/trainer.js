@@ -14,7 +14,7 @@ window.createIdleTrainer=function(ctx){
  function point(element){if(!element)return null;const r=element.getBoundingClientRect(),base=stage.getBoundingClientRect(),scale=base.width/stage.offsetWidth;return{x:(r.left+r.width/2-base.left)/scale,y:(r.top+r.height/2-base.top)/scale}}
  function unitPoint(u){if(!u||!Number.isFinite(u.x)||!Number.isFinite(u.y))return null;const marker=document.createElement('i');marker.style.cssText='position:absolute;left:'+u.x+'px;top:'+(u.y-34)+'px;width:1px;height:1px;pointer-events:none';document.getElementById('arenaView').append(marker);const p=point(marker);marker.remove();return p}
  function throwBall(){capturePoseUntil=performance.now()+1850;window.TRAINER_DUO?.react('recall')}
- function begin(u){
+ function begin(u){if(document.hidden||window.IDLE_BACKGROUND_BUSY)return false;
   if((u.side!==0&&!(u.side===1&&ctx.challenge?.()?.kind==='rocket'))||seen.has(u)||!actor||!u.el)return false;
   const node=u.el.querySelector('canvas.pmdc')||u.el.querySelector('.spr img');if(!node)return false;
   try{
@@ -60,5 +60,5 @@ window.createIdleTrainer=function(ctx){
   launch=document.createElement('button');launch.id='idleTrainerLaunch';launch.type='button';launch.title='Meu treinador';launch.setAttribute('aria-label','Abrir perfil do treinador');const icon=document.createElement('img');icon.alt='';icon.onerror=()=>{icon.onerror=null;icon.src='assets/showdown/trainers/red.png'};icon.className='idle-trainer-launch-sprite';launch.append(icon);launch.onclick=open;const dex=document.getElementById('collectionPokedex')||document.getElementById('pokedexLaunch');if(dex)dex.after(launch);
   window.IDLE_TRAINER={recall:begin};window.TRAINER_RECALL={begin,tick(){},clear};addEventListener('trainer-profile-change',refresh);addEventListener('idle-profile-change',refresh);addEventListener('pagehide',()=>{cancelAnimationFrame(raf);clear()},{once:true});refresh();raf=requestAnimationFrame(loop);
  }
- return {mount,refresh,unitPoint,throwBall,hand:()=>hand,recallDefeated:units=>{for(const u of units)if(!u.alive&&(u.side===0||ctx.challenge?.()?.kind==='rocket'))begin(u)},pending:()=>jobs.length?Promise.all(jobs.map(j=>j.promise)):null};
+ return {mount,refresh,clear,unitPoint,throwBall,hand:()=>hand,recallDefeated:units=>{for(const u of units)if(!u.alive&&(u.side===0||ctx.challenge?.()?.kind==='rocket'))begin(u)},pending:()=>jobs.length?Promise.all(jobs.map(j=>j.promise)):null};
 };
