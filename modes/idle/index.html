@@ -5789,7 +5789,7 @@ function cast(u){
   if(t&&((mv.t==='electric'&&['chain','storm'].includes(mv.k))||(mv.t==='grass'&&mv.k==='storm')))schedule(.28,()=>setArenaField(mv.t,t.r,t.c,1,2.6,u));
   const deal=(e,dm,pw)=>{if(!e.alive)return 0;const crit=Math.random()<u.crit*.5;const d=hurt(u,e,dm*(crit?1.3:1),kind,{spell:true,crit,type:mv.t});if(d>0)window.ARENA_INTERACTIONS?.hit(u,e,mv);if(d>0&&mv.st&&e.alive&&(mv.statusChance==null||Math.random()<mv.statusChance))applyStatus(e,mv.st,mv.d,u);
     if(u.L.passive.id==='haunt'&&e.alive)applyStatus(e,'slow',.55,u);
-    if(!window.EMERALD_MOVES?.hit(mv,e.x,cyOf(e),pw||1)){FX.impact(mv.t,e.x,cyOf(e),pw||1);if(rc.hit)FX.fx(rc.hit,e.x,cyOf(e),mv.t,Math.max(.55,Math.min(1.2,pw||1)))}return d};
+    if(!window.EMERALD_MOVES?.hit(mv,e.x,cyOf(e),pw||1,{x:u.x,y:cyOf(u)})){FX.impact(mv.t,e.x,cyOf(e),pw||1);if(rc.hit)FX.fx(rc.hit,e.x,cyOf(e),mv.t,Math.max(.55,Math.min(1.2,pw||1)))}return d};
   const preview=window.HEX_ATTACKS?.prepare(u,t,mv,rc),projectileOptions={...rc.proj,move:{...rc.proj.move,r:mv.r,p:mv.p,_variant:mv._variant},castToken:u.skillToken,preview};
   const shot=(e,spd,sz,cb)=>FX.shoot(u.x,cyOf(u),e,mv.t,rc.spd||spd,(rc.sz||1)*sz,cb,projectileOptions);
   const R=mv.r||(mv.k==='meteor'?1:mv.p>=1.8?2:1);
@@ -9139,6 +9139,8 @@ body #tip .ut .usec.its{padding-top:4px}
 <script src="assets/move-fx/aliases.js"></script>
 <script src="assets/emerald-moves.js?v=on-demand-8"></script>
 <script src="assets/emerald-sequences.js?v=nine-4"></script>
+<script src="modes/idle/move-effects/catalog.js?v=1"></script>
+<script src="modes/idle/move-effects/renderer.js?v=1"></script>
 <script src="assets/move-fx/emerald-audio.js"></script>
 <script src="assets/move-fx/emerald-instruments.js"></script>
 <script src="assets/move-fx/emerald-backgrounds.js"></script>
