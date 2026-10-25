@@ -47,9 +47,9 @@ window.createIdleScreen=function(ctx){
  });
  if(synergies&&!synergies.classList.contains('is-synergies-floating')&&team.lastElementChild!==synergies)team.append(synergies);
  const wave=s.hunts.wave||1,done=Math.min(3,s.hunts.waves[s.area+':'+s.hunts.kind+':'+wave]||0),label=(ctx.huntLabel?.()||'Escolha sua caçada').split(' · onda ')[0];
- const atCenter=ctx.isCenter?.();
- hunt.replaceChildren(el('small',atCenter?'CENTRO POKÉMON':ctx.isRunning()?'CAÇADA AUTOMÁTICA':s.world.location==='center'?'CENTRO POKÉMON':'PREPARAÇÃO'),el('b',atCenter?'Centro Pokémon':label));
- const progress=el('div',undefined,'is-hunt-progress');progress.append(el('span','Onda '+wave+'/10'));const dots=el('div',undefined,'is-hunt-dots');dots.setAttribute('aria-label',done+' de 3 vitórias');for(let i=0;i<3;i++){const dot=el('i');dot.className=i<done?'complete':'';dots.append(dot)}progress.append(dots,el('span',done+'/3 vitórias'));if(!atCenter)hunt.append(progress);else hunt.append(el('span','Cura · PC · Loja · Evolução','is-hunt-progress')); 
+ const atCenter=ctx.isCenter?.(),tower=ctx.challenge?.()?.kind==='tower'?ctx.challenge():null;
+ hunt.replaceChildren(el('small',tower?(s.world.towerAuto?'SUBIDA AUTOMÁTICA':'TORRE DE TREINAMENTO'):atCenter?'CENTRO POKÉMON':ctx.isRunning()?'CAÇADA AUTOMÁTICA':s.world.location==='center'?'CENTRO POKÉMON':'PREPARAÇÃO'),el('b',tower?'Torre · andar '+tower.floor:atCenter?'Centro Pokémon':label));
+ const progress=el('div',undefined,'is-hunt-progress');progress.append(el('span','Onda '+wave+'/10'));const dots=el('div',undefined,'is-hunt-dots');dots.setAttribute('aria-label',done+' de 3 vitórias');for(let i=0;i<3;i++){const dot=el('i');dot.className=i<done?'complete':'';dots.append(dot)}progress.append(dots,el('span',done+'/3 vitórias'));if(tower)hunt.append(el('span',(tower.guardian?'Guardião · ':'')+'Nível '+tower.level,'is-hunt-progress'));else if(!atCenter)hunt.append(progress);else hunt.append(el('span','Cura · PC · Loja · Evolução','is-hunt-progress')); 
  if(!ctx.isRunning()&&notice.startsWith('Caçada pausada:'))hunt.append(el('span','Recuperação necessária · abra a Mochila','is-hunt-warning'));
  hunt.title=notice;
 

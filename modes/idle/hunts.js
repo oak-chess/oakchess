@@ -36,7 +36,7 @@ function session(){if(!q.session||q.session.key!==key())q.session={key:key(),sec
 function commit(rebuild=false){if(rebuild)ctx.pause();ctx.save();ctx.refresh(rebuild);render()}
 function requirements(kind){const d=types[kind];if(!d)return ['Caçada não encontrada'];const missing=[];if(s.trainerLevel<areaLevel(kind))missing.push('Treinador nível '+areaLevel(kind));if((s.world.badges?.length||0)<(d.badges||0))missing.push(d.badges+' insígnia(s)');if(d.field&&!s.world.field[d.field])missing.push(d.field==='rod'?'Vara de pescar':'Silph Scope');return missing}
 function allowed(kind){return requirements(kind).length===0}
-function entries(){sync();const list=habitat();return list.map(([name,rarity])=>({line:ctx.lines.find(l=>!l.boss&&l.names.includes(name)),speciesName:name,level:Math.max(level()+q.wave-1,speciesLevel(name)),rarity,weight:name===q.target?12:name===ctx.swarm()?6:rarity==='common'?6:rarity==='uncommon'?2:1})).filter(e=>e.line).filter((e,i,a)=>a.findIndex(x=>x.speciesName===e.speciesName)===i)}
+function entries(){sync();const list=habitat();return list.map(([name,rarity])=>({line:ctx.lines.find(l=>!l.boss&&l.names.includes(name)),speciesName:name,level:Math.max(level()+q.wave-1,speciesLevel(name)),rarity,weight:(name===q.target?12:rarity==='common'?6:rarity==='uncommon'?2:1)*(name===ctx.swarm()?3:1)})).filter(e=>e.line).filter((e,i,a)=>a.findIndex(x=>x.speciesName===e.speciesName)===i)}
 function choose(kind){ctx.pause();sync();if(!allowed(kind))return ctx.notify('Caçada bloqueada: '+requirements(kind).join(' · '));ctx.onSelect?.();q.waveByArea[key()]=q.wave;q.kind=kind;q.wave=q.waveByArea[s.area+':'+kind]||1;q.routeKey=s.area+':'+kind;q.target=null;s.world.activity=kind==='forest'?'route':kind==='lake'?'fish':kind==='cave'?'cave':kind==='ghost'?'ghost':'hunt:'+kind;s.encounter=null;s.encounterGenes=null;q.session=null;commit(true)}
 function start(){q.supplies.used=0;session()}
 function preflight(){sync();if(!ctx.challenge()&&!allowed(q.kind))return 'Caçada bloqueada: '+requirements(q.kind).join(' · ')+'. Abra Caçadas para escolher uma área disponível.';
@@ -89,7 +89,7 @@ function expeditionPanel(container){const label=h('label'),input=h('input');inpu
 function close(){if(huntRoot)huntRoot.hidden=true;if(recordRoot)recordRoot.hidden=true}
 function open(which='choose'){ctx.capturePositions();ctx.closePanels();root=['report','history'].includes(which)?recordRoot:huntRoot;tab=which;focusHunt=null;root.hidden=false;render();root.querySelector('.ih-content').scrollTop=0}
 let catalogQuery='',catalogFilter='all';
-function renderCatalog(content){sync();
+function renderCatalog(content){sync();window.IDLE_LIFE_UI.outbreak(content,s.area);
  const normalizeText=text=>text.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
  const namesFor=id=>habitat(id);
  const spriteFor=name=>{const L=ctx.lines.find(l=>l.names.includes(name));if(!L)return null;const img=h('img');img.src=ctx.sprite(L.ids[Math.max(0,L.names.indexOf(name))]||L.ids[0]);img.alt=name;img.title=name;return img};
