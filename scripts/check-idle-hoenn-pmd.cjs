@@ -1,0 +1,9 @@
+const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict'),base='assets/pmd/',box={window:{}};
+for(const f of ['anim-data.js','bounds-data.js'])vm.runInNewContext(fs.readFileSync(base+f,'utf8'),box);
+const info=JSON.parse(fs.readFileSync(base+'hoenn-source.json','utf8')),tag=(s,key)=>s.match(new RegExp('<'+key+'>([^<]+)</'+key+'>'))?.[1];let sheets=0;
+assert.equal(info.variants.length,282);
+for(const dir of info.variants){const key=dir.replace('/0000/0001','s').replace(/\/(000[123])\/0001$/,'/$1s'),xml=box.window.PMD_ANIM_DATA[key];assert(xml,'No runtime data '+key);assert.equal(xml,fs.readFileSync(base+'sprite/'+dir+'/AnimData.xml','utf8'));assert(fs.existsSync(base+'sprite/'+dir+'/credits.txt'));const nodes=new Map([...xml.matchAll(/<Anim>([\s\S]*?)<\/Anim>/g)].map(m=>[tag(m[1],'Name'),m[1]]));assert(nodes.has('Idle')||nodes.has('Walk'));
+ for(const [name,anim]of nodes){if(tag(anim,'CopyOf')){let cur=name;const seen=new Set();while(tag(nodes.get(cur),'CopyOf')){assert(!seen.has(cur));seen.add(cur);cur=tag(nodes.get(cur),'CopyOf');assert(nodes.has(cur))}continue}const fw=+tag(anim,'FrameWidth'),fh=+tag(anim,'FrameHeight'),frames=[...anim.matchAll(/<Duration>\d+<\/Duration>/g)].length,p=dir+'/'+name+'-Anim.png',png=fs.readFileSync(base+'sprite/'+p);assert.equal(png.readUInt32BE(16),fw*frames,p);assert([1,8].includes(png.readUInt32BE(20)/fh),p);const bounds=box.window.PMD_BOUNDS_DATA[p];assert(bounds,'No bounds '+p);assert.equal(bounds.fw,fw);assert.equal(bounds.fh,fh);sheets++}
+}
+assert.equal(sheets,info.sheets);for(let id=1;id<=251;id++)assert(box.window.PMD_ANIM_DATA[String(id).padStart(4,'0')],'Previous region removed '+id);
+console.log('Hoenn PMD: 282 complete normal/shiny/form sets, '+sheets+' sheets, aliases/geometry/bounds/credits and previous regions verified.');

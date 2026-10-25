@@ -1977,6 +1977,12 @@ body.idle-native-mode #idle-world[data-family=badges] .iw-content{flex:1;min-hei
 .iw-badge-case-intro h3{font-size:16px;color:#edf4f7;margin:0 0 6px}
 .iw-badge-case-intro p{font-size:10px;color:#a5bdcb;margin:0 0 15px}
 .iw-badge-case-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+.iw-badge-continent{grid-column:1/-1;margin:8px 0 0;color:#d9b5c7}
+.iw-continents{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.iw-gym-scene.iw-gym-duo{display:flex;align-items:flex-end;justify-content:center;gap:0}
+.iw-gym-scene.iw-gym-duo img{width:50%;max-width:50%;height:100px;object-fit:contain;position:relative}
+body.idle-native-mode .idle-window .iw-continents button{width:auto;min-width:120px;flex:0 0 auto}
+body.idle-native-mode .idle-window .iw-continents button[aria-pressed=true]{background:#873c54!important;color:#fff}
 .iw-badge-case-card{display:flex;flex-direction:column;align-items:center;gap:7px;padding:13px 9px;border:1px solid #ffffff12;border-radius:10px;background:#20313d;text-align:center}
 .iw-badge-case-card>img{width:48px;height:48px;object-fit:contain;image-rendering:pixelated}
 .iw-badge-case-card[data-earned=false]>img{filter:grayscale(1);opacity:.4}

@@ -9,7 +9,7 @@ const html=fs.readFileSync(idleOnly?'modes/idle/index.html':'index.html','utf8')
 const extract=html.slice(html.indexOf('const LINES=[];'),html.indexOf('/* ---------- Itens ---------- */'));
 // Read the explicit line declarations without executing game startup.
 for(const match of extract.matchAll(/^ln\((\d+),(\[[^\n]+?\]),(\[[^\n]+?\]),/gm))lines.push({cost:+match[1],ids:JSON.parse(match[2]),names:vm.runInNewContext(match[3])});
-if(idleOnly){const ids=new Set([236,237,239,440,466]);for(let i=lines.length-1;i>=0;i--)if(!lines[i].ids.some(id=>ids.has(id)))lines.splice(i,1)}
+if(idleOnly){const ids=new Set([236,237,239,440,466,...Array.from({length:235},(_,i)=>152+i)]);for(let i=lines.length-1;i>=0;i--)if(!lines[i].ids.some(id=>ids.has(id)))lines.splice(i,1)}
 const translations={};
 for(const [name,key] of Object.entries(box.window.EMERALD_ALIASES))if(!translations[key])translations[key]=name;
 Object.assign(translations,{MACH_PUNCH:'Soco Rápido',TRIPLE_KICK:'Chute Triplo',LOW_KICK:'Rasteira',THUNDER_SHOCK:'Choque do Trovão',SHOCK_WAVE:'Onda de Choque',THUNDER_PUNCH:'Soco do Trovão',ICE_PUNCH:'Soco de Gelo',LIGHT_SCREEN:'Tela de Luz',PROTECT:'Proteção',TACKLE:'Investida',EMBER:'Brasas',FLAMETHROWER:'Lança-chamas',FIRE_BLAST:'Explosão de Fogo',WATER_GUN:'Jato de Água',HYDRO_PUMP:'Hidrobomba',WHIRLWIND:'Redemoinho de Vento',WHIRLPOOL:'Redemoinho de Água',GUST:'Rajada',SWIFT:'Estrelas Cadentes',SWEET_KISS:'Beijo Doce',SILVER_WIND:'Vento Prateado',LEECH_LIFE:'Sanguessuga',ROCK_TOMB:'Tumba de Rochas',LUSTER_PURGE:'Expurgo de Luz',MIST_BALL:'Bola de Névoa',TRANSFORM:'Transformação',BODY_SLAM:'Pancada Corporal',SLASH:'Talho',AIR_CUTTER:'Corte Aéreo',MUD_SLAP:'Tapa de Lama',DISCHARGE:'Descarga',DOUBLE_EDGE:'Dois Gumes',STOMP:'Pisotear',VICE_GRIP:'Aperto de Garra',TELEPORT:'Teleporte',NIGHT_SHADE:'Sombra Noturna',SPARK:'Faísca',FIRE_PUNCH:'Soco de Fogo',ROCK_THROW:'Arremesso de Pedra',ROCK_BLAST:'Rajada de Rochas',SACRED_FIRE:'Fogo Sagrado',HEAT_WAVE:'Onda de Calor',FAINT_ATTACK:'Ataque Furtivo',FLASH_CANNON:'Canhão de Flash',AURA_SPHERE:'Esfera de Aura',X_SCISSOR:'Tesoura X',AIR_SLASH:'Corte de Ar',DRAGON_PULSE:'Pulso do Dragão',DARK_PULSE:'Pulso Sombrio',BUG_BUZZ:'Zumbido',DAZZLING_GLEAM:'Brilho Mágico',FAIRY_WIND:'Vento Feérico',DRAINING_KISS:'Beijo Drenante',ROOST:'Poleiro',SLACK_OFF:'Relaxar',HARDEN:'Endurecer',POUND:'Pancada',SCRATCH:'Arranhão',PECK:'Bicada',BITE:'Mordida',HEADBUTT:'Cabeçada',RAZOR_LEAF:'Folha Navalha',ABSORB:'Absorver',MEGA_DRAIN:'Mega Dreno',GIGA_DRAIN:'Giga Dreno',BUBBLE_BEAM:'Raio de Bolhas',CONFUSION:'Confusão',METAL_CLAW:'Garra de Metal',THUNDERBOLT:'Raio',TACKLE:'Investida',STRING_SHOT:'Disparo de Seda',POISON_STING:'Ferrão Venenoso',IRON_HEAD:'Cabeça de Ferro',FIRE_FANG:'Presas de Fogo',SPLASH:'Splash',TWISTER:'Tornado',DRAGON_RAGE:'Fúria do Dragão'});
@@ -29,7 +29,17 @@ const groups={
  splash:'SPLASH',
 };
 const behaviours=new Map(Object.entries(groups).flatMap(([kind,keys])=>keys.split(' ').map(key=>[key,kind])));
+// Johto specialists: damaging counters use the Idle direct-hit adaptation;
+// Sketch remains a non-damaging buff until a copying mechanic is available.
+for(const [key,kind]of [['HIDDEN_POWER','bolt'],['COUNTER','rush'],['MIRROR_COAT','bolt'],['SAFEGUARD','barrier'],['AMNESIA','barrier'],['SKETCH','buff']])behaviours.set(key,kind);
+Object.assign(translations,{HIDDEN_POWER:'Poder Oculto',COUNTER:'Contra-ataque',MIRROR_COAT:'Manto Espelhado',SAFEGUARD:'Salvaguarda',AMNESIA:'Amnésia',SKETCH:'Esboço'});
+Object.assign(translations,{IRON_TAIL:'Cauda de Ferro',FURY_CUTTER:'Corte de Fúria',TAKE_DOWN:'Derrubada'});
+behaviours.set('WEATHER_BALL','bolt');Object.assign(translations,{WEATHER_BALL:'Bola Climática',MUDDY_WATER:'Água Barrenta',LEAF_BLADE:'Lâmina de Folha'});
+behaviours.set('LEAF_BLADE','rush');behaviours.set('MUDDY_WATER','blast');
+behaviours.set('BLAZE_KICK','rush');behaviours.set('METEOR_MASH','rush');behaviours.set('PSYCHO_BOOST','blast');
+Object.assign(translations,{BLAZE_KICK:'Chute Flamejante',METEOR_MASH:'Soco Meteoro',PSYCHO_BOOST:'Impulso Psíquico'});
 const preference={
+ 252:'ABSORB QUICK_ATTACK',253:'LEAF_BLADE MEGA_DRAIN',254:'LEAF_BLADE GIGA_DRAIN',255:'EMBER PECK',256:'DOUBLE_KICK FLAME_WHEEL',257:'BLAZE_KICK FLAMETHROWER',258:'WATER_GUN MUD_SLAP',259:'MUD_SHOT WATER_PULSE',260:'MUDDY_WATER EARTHQUAKE',290:'SCRATCH ABSORB',291:'FURY_CUTTER X_SCISSOR',292:'SHADOW_BALL SHADOW_SNEAK',351:'WEATHER_BALL WATER_GUN EMBER POWDER_SNOW',376:'METEOR_MASH PSYCHIC',386:'PSYCHO_BOOST PSYCHIC',
  236:'TACKLE MACH_PUNCH LOW_KICK PROTECT',237:'TRIPLE_KICK MACH_PUNCH LOW_KICK PROTECT',239:'THUNDER_SHOCK SHOCK_WAVE THUNDER_PUNCH LIGHT_SCREEN',440:'POUND LIGHT_SCREEN PROTECT',466:'THUNDER_PUNCH DISCHARGE THUNDERBOLT ICE_PUNCH',
  1:'VINE_WHIP RAZOR_LEAF',2:'RAZOR_LEAF MEGA_DRAIN',3:'SOLAR_BEAM GIGA_DRAIN',4:'EMBER SCRATCH',5:'FLAME_WHEEL FLAMETHROWER',6:'FLAMETHROWER AIR_SLASH',
  7:'WATER_GUN WITHDRAW',8:'WATER_PULSE BITE',9:'HYDRO_PUMP FLASH_CANNON',10:'TACKLE STRING_SHOT',11:'HARDEN',12:'GUST BUG_BUZZ',13:'POISON_STING STRING_SHOT',14:'HARDEN',15:'TWINEEDLE X_SCISSOR',

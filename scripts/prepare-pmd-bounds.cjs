@@ -5,7 +5,7 @@ const root=path.resolve(__dirname,'..'),base=path.join(root,'assets/pmd/sprite')
 vm.runInNewContext(fs.readFileSync(path.join(root,'assets/pmd/anim-data.js'),'utf8'),context);
 const jobs=[],result={};
 for(const [key,xml] of Object.entries(context.window.PMD_ANIM_DATA)){
- const dir=key.endsWith('s')?key.slice(0,-1)+'/0000/0001/':key+'/';
+ const bare=key.endsWith('s')?key.slice(0,-1):key;const dir=key.endsWith('s')?bare+(bare.includes('/')?'/0001/':'/0000/0001/'):bare+'/';
  for(const match of xml.matchAll(/<Anim>([\s\S]*?)<\/Anim>/g)){
   const get=tag=>match[1].match(new RegExp('<'+tag+'>([^<]+)</'+tag+'>'))?.[1];
   const fw=+get('FrameWidth'),fh=+get('FrameHeight'),name=get('Name'),file=dir+name+'-Anim.png';
