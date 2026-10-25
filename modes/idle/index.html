@@ -2336,6 +2336,12 @@ const TRAITS={
  steel:{tiers:[2,3],v:[.12,.22],pc:1,s:'-{v} dano recebido',d:'Pokémon Aço reduzem {v} de todo dano recebido.'},
  fairy:{tiers:[2,3],v:[.20,.40],pc:1,s:'Escudo de {v} do PS máx.',d:'Pokémon Fada começam com um escudo de {v} do PS máximo.'}
 };
+/* Idle: extend established bonuses to a complete six-partner composition.
+ * Existing breakpoints stay intact. Families, rather than duplicates, count. */
+if(window.OAK_IDLE_MODE){
+ const extra={electric:[[6],[.8]],ice:[[6],[.4]],fighting:[[6],[.6]],poison:[[6],[.55]],ground:[[6],[.65]],flying:[[6],[.5]],bug:[[6],[.45]],rock:[[6],[110]],ghost:[[4,6],[.38,.45]],dragon:[[4,6],[.75,.9]],dark:[[4,6],[.4,.55]],steel:[[4,6],[.28,.35]],fairy:[[4,6],[.5,.65]]};
+ for(const [type,[tiers,values]]of Object.entries(extra)){TRAITS[type].tiers.push(...tiers);TRAITS[type].v.push(...values)}
+}
 const TID={normal:1,fighting:2,flying:3,poison:4,ground:5,rock:6,bug:7,ghost:8,steel:9,fire:10,water:11,grass:12,electric:13,psychic:14,ice:15,dragon:16,dark:17,fairy:18};
 const tyIcon=t=>`<img class="tyimg" src="${SPR}types/generation-ix/scarlet-violet/small/${TID[t]}.png" onerror="this.outerHTML='${TYPES[t].e}'" alt="${TYPES[t].n}">`;
 const tyi=t=>`<span class="tyi">${tyIcon(t)}</span>`;
@@ -5087,7 +5093,7 @@ function updateTraitsUI(){
   for(const t of ks){const tier=tierOf(t,cnt[t]),T=TRAITS[t],next=T.tiers.find(x=>x>cnt[t]);
     const d=mk('div','tr'+(tier>=0?' on':''));d.style.setProperty('--c',TYPES[t].c);
     d.innerHTML=`<div class="ic">${tyIcon(t)}</div><div class="nm">${TYPES[t].n}</div><div class="ct">${cnt[t]}${next?' / '+next:''}</div>`;
-    d.style.setProperty('--p',(next?Math.min(100,cnt[t]/next*100):100)+'%');d.dataset.trait=t;d.dataset.n=cnt[t];cur[t]=tier;if(prev&&tier>=0&&tier>(prev[t]==null?-1:prev[t])){fl=true}const slot=mk('div','trait-slot');slot.appendChild(d);box.appendChild(slot);paintTraitPulse(d,TRAIT_PULSES.get(t))}
+    d.title=TYPES[t].n+' · '+cnt[t]+' famílias diferentes · etapas '+T.tiers.join(' / ')+(next?' · próxima com '+next:' · bônus máximo');d.style.setProperty('--p',(next?Math.min(100,cnt[t]/next*100):100)+'%');d.dataset.trait=t;d.dataset.n=cnt[t];cur[t]=tier;if(prev&&tier>=0&&tier>(prev[t]==null?-1:prev[t])){fl=true}const slot=mk('div','trait-slot');slot.appendChild(d);box.appendChild(slot);paintTraitPulse(d,TRAIT_PULSES.get(t))}
   G._tt=cur;G._traitCounts={...cnt};if(fl)SND.synergy();
   if(oldCount&&G.phase==='plan'&&!stage.classList.contains('tdemo'))for(const t of ks){
     const newcomer=entered.find(u=>typesOf(LINES[u.line],u.star).includes(t));
