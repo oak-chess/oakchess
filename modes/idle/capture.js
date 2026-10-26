@@ -1,3 +1,8 @@
+/* Group size respects the six-unit arena and unique available families. */
+window.IDLE_HUNT_ENCOUNTER_COUNT=function(level,wave,families=6){
+ const difficulty=Math.max(1,Number(level)||1),step=Math.max(1,Math.min(10,Number(wave)||1));
+ return Math.min(Math.max(0,Math.floor(families)),6,3+(difficulty>=30?1:0)+(difficulty>=60?1:0)+Math.floor((step-1)/3));
+};
 /* Route encounters and capture management for the isolated idle prototype. */
 window.createIdleCapture = function ({state, lines, sprite, save, changed, notify, reserveSlot, maxHpFor, onAttempt, maxRoster, openPC}) {
  const captureInbox=window.IDLE_CAPTURE_INBOX={events:[],total:0};
@@ -20,7 +25,7 @@ window.createIdleCapture = function ({state, lines, sprite, save, changed, notif
   ];
   const routes=specs.map(entries=>entries.map(([name,rarity])=>({line:lines.find(l=>!l.boss&&l.names.includes(name)),rarity})).filter(e=>e.line).filter((e,i,a)=>a.findIndex(x=>x.line.i===e.line.i)===i));
   const rarityName={common:'Comum',uncommon:'Incomum',rare:'Raro'};
-  let activeTab='habitat',root,habitatProvider,objectiveProvider;const poolFor=()=>habitatProvider?habitatProvider():routes[state.area]||routes[0];
+  let activeTab='habitat',root,habitatProvider,objectiveProvider,countProvider;const poolFor=()=>habitatProvider?habitatProvider():routes[state.area]||routes[0];
   const known=(name,shiny=false)=>[...state.team,...state.collection].some(m=>m.name===name&&(m.shiny===true)===shiny);
   function owned(name){return state.team.find(m=>m.name===name)||state.collection.find(m=>m.name===name)}
   const favorite=name=>state.captureFavorites.includes(name);
@@ -58,9 +63,9 @@ window.createIdleCapture = function ({state, lines, sprite, save, changed, notif
   }
   function encounterWeight(e){return (objectiveProvider?.().name==='Busca de espécies'&&favorite(e.line.names[0])?8*((e.speciesName||e.line.names[0])===window.IDLE_LIFE?.outbreakName(state.area,state.hunts?.kind)?3:1):e.weight)||(e.rarity==='common'?6:e.rarity==='uncommon'?2:1)}
   function encounter(){
-    const pool=poolFor(),chosen=[],rare=pool.find(e=>e.rarity==='rare');
-    if(state.captureResearch[state.area]>=8&&rare)chosen.push(rare);
-    while(chosen.length<3){const available=pool.filter(e=>!chosen.some(p=>p.line.i===e.line.i));if(!available.length)break;const weighted=available.flatMap(e=>Array(encounterWeight(e)).fill(e));chosen.push(weighted[Math.floor(Math.random()*weighted.length)]||available[0])}
+    const pool=poolFor(),chosen=[],rare=pool.find(e=>e.rarity==='rare'),families=new Set(pool.map(e=>e.line.i)).size,count=Math.min(families,countProvider?countProvider():3);
+    if(count>0&&state.captureResearch[state.area]>=8&&rare)chosen.push(rare);
+    while(chosen.length<count){const available=pool.filter(e=>!chosen.some(p=>p.line.i===e.line.i));if(!available.length)break;const weighted=available.flatMap(e=>Array(encounterWeight(e)).fill(e));chosen.push(weighted[Math.floor(Math.random()*weighted.length)]||available[0])}
     state.encounterGenes=chosen.map(e=>window.IDLE_INDIVIDUALS.roll(e.line));const shinyIndex=state.encounterGenes.findIndex(g=>g.shiny);if(shinyIndex>=0)notify('✦ Shiny encontrado: '+(chosen[shinyIndex].speciesName||chosen[shinyIndex].line.names[0])+'!');return chosen.map(e=>e.speciesName||e.line.names[0]);
   }
   function defeated(unit,targetPoint){
@@ -132,5 +137,5 @@ window.createIdleCapture = function ({state, lines, sprite, save, changed, notif
       if(state.collection.length)content.append(button('Abrir PC · '+state.collection.length+' Pokémon guardados',()=>openPC()));
     }
   }
-  return {setHabitat(provider,objectives){habitatProvider=provider;objectiveProvider=objectives},mount,render,renderHabitat,renderSettings,renderProtection,encounter,victory,defeated,offline,start(){state.capture.used=0;state.captureShiny.used=0;state.capture.lastSpent=0;state.capture.lastAttempts=0;state.capture.lastCaught=0},routes};
+  return {setHabitat(provider,objectives,count){habitatProvider=provider;objectiveProvider=objectives;countProvider=count},mount,render,renderHabitat,renderSettings,renderProtection,encounter,victory,defeated,offline,start(){state.capture.used=0;state.captureShiny.used=0;state.capture.lastSpent=0;state.capture.lastAttempts=0;state.capture.lastCaught=0},routes};
 };
