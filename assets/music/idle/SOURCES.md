@@ -26,4 +26,4 @@ As faixas Rocket existentes continuam no evento Rocket. Aves e Mew/Mewtwo usam t
 
 Músicas originais pertencem a seus titulares (Game Freak/Nintendo/The Pokémon Company e compositores). A biblioteca é uma fonte de arquivos preparados para loop; não é atribuída licença aberta às gravações. O roteiro de download e nomes originais estão em scripts/download-idle-music.ps1 e tracks-source.json.
 
-Não foram executados testes de jogo ou audição nesta alteração.
+As 15 faixas acima são o pacote original de HGSS. O pacote adicional de 20 faixas RSE e suas validações estão em [HOENN-SOURCES.md](HOENN-SOURCES.md).
