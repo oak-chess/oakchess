@@ -1,0 +1,75 @@
+/* Shared Rocket palette for Idle menus. Layout, species colors and numerical charts stay independent. */
+body.idle-native-mode{--rocket-bg:#1e1b25;--rocket-panel:#302630;--rocket-raised:#3c2b39;--rocket-edge:#805064;--rocket-red:#d72e56;--rocket-magenta:#a13c7b;--rocket-yellow:#ffd364;--rocket-text:#f6e6ef;--rocket-muted:#c9abbc}
+body.idle-native-mode .idle-window:not(#idle-safari){--menu-surface:var(--rocket-panel);--menu-muted:var(--rocket-muted);--menu-accent:#ff658b;background:var(--rocket-bg)!important;border-color:#b34d6b!important;border-top-color:#ed718f!important;color:var(--rocket-text)!important;box-shadow:0 15px 45px #0008,inset 0 1px #ffffff0b!important}
+body.idle-native-mode .idle-window:not(#idle-safari)>:is(header,.mhead){background:#181720!important;border-bottom-color:#c33a60!important}
+body.idle-native-mode .idle-window:not(#idle-safari)>header h2{color:#fff0f6!important}
+body.idle-native-mode .idle-window:not(#idle-safari)>header small{color:#ff6c8f!important}
+body.idle-native-mode .idle-window:not(#idle-safari)>header p{color:#d1afc0!important}
+body.idle-native-mode .idle-window:not(#idle-safari) :is(.ip-help,.is-help,.iw-subtitle,.ip-empty,.ih-setup-help,.ip-analysis-caption){color:var(--rocket-muted)!important}
+/* Controls keep their existing sizes and click targets. */
+body.idle-native-mode .idle-window:not(#idle-safari) button{background:#6f2945!important;border-color:#b75878!important;color:#fff0f6!important;border-radius:4px!important;box-shadow:inset 0 1px #ffffff1f,inset 0 -2px #0004!important;transition:filter .12s}
+body.idle-native-mode .idle-window:not(#idle-safari) button:hover:not(:disabled){filter:brightness(1.13)}
+body.idle-native-mode .idle-window:not(#idle-safari) button:active:not(:disabled){box-shadow:inset 0 2px #0004!important}
+body.idle-native-mode .idle-window:not(#idle-safari)>header>button{background:#40232f!important;border-color:#865064!important;color:#fce3ee!important;box-shadow:none!important}
+body.idle-native-mode .idle-window:not(#idle-safari) :is(input:not([type=checkbox]):not([type=range]),select,textarea){background:#211923!important;border-color:#89516d!important;color:#f5e2ee!important;caret-color:#ffc9db}
+body.idle-native-mode .idle-window:not(#idle-safari) input::placeholder{color:#b99aaa;opacity:1}
+body.idle-native-mode .idle-window:not(#idle-safari) input[type=checkbox]{accent-color:#e44871}
+body.idle-native-mode .idle-window:not(#idle-safari) :is(button,input,select,summary):focus-visible{outline:2px solid var(--rocket-yellow)!important;outline-offset:2px}
+body.idle-native-mode .idle-window:not(#idle-safari) :is(.ip-tabs,.idle-capture-tabs,.iw-shell>nav,.iw-tasks-nav,.iw-nursery-nav,.iw-formations-nav,.is-evo-sidebar,.ie-sidebar,.il-dex-nav,.il-collection-nav){background:#201922!important;border-color:#654052!important}
+body.idle-native-mode .idle-window:not(#idle-safari) :is(.ip-tabs,.idle-capture-tabs,.iw-shell>nav,.iw-tasks-nav,.iw-nursery-nav,.iw-formations-nav,.is-evo-sidebar,.ie-sidebar,.il-dex-nav,.il-collection-nav) button{background:#3c2536!important;border-color:#754358!important;color:#ecc7d8!important;box-shadow:none!important}
+/* Neutral cards: semantic badges, condition meters and IV colors are not recolored. */
+body.idle-native-mode .idle-window:not(#idle-safari) :is(.ip-analysis-card,.ip-analysis-traits>section,.ip-analysis-skills,.ip-analysis-next,.ip-stat-group,.ip-genetics-summary,.ip-genetic-cards>section,.ip-profile-preview,.ip-item-detail,.ip-resource-card,.ip-stock-card,.ip-equipment-slot,.ip-management,.ip-training-card,.ip-inventory-layout>.ip-empty,.ipc-detail,.ipc-comparison,.ipc-comparison-columns>article,.is-evo-identity,.is-evo-pair,.is-evo-requirements,.is-shop-card,.is-automation-settings,.ih-area-detail,.ih-hunt-detail,.ih-setup-card,.ih-report-section,.ih-wave,.ich-entry,.ich-summary>div,.iw-section,.iw-region,.iw-quest-card,.iw-service-card,.iw-task-card,.iw-task-empty,.iw-task-worker,.iw-egg-card,.iw-egg-empty,.iw-nursery-slots>div,.iw-saved-formation,.iw-formation-preview,.iw-profile-hero,.iw-profile-editor,.iw-profile-metrics>div,.iw-profile-badges,.iw-badge-case-card,.iw-gym-detail,.iw-gym-hero,.iw-gym-prize,.iw-gym-node,.iw-challenge-card,.ie-detail,.il-breeding,.il-selected-pair>button,.il-parent-pair>article,.il-skills-grid>article,.il-goals>article){background:var(--rocket-panel)!important;border-color:#714859!important;color:var(--rocket-text)!important;box-shadow:none!important}
+body.idle-native-mode .idle-window:not(#idle-safari) :is(.ip-selection-entry>.ip-selection-card,.ipc-grid>.ipc-cell,.is-evo-members>button,.is-shop-grid>.is-shop-card,.ip-item-grid>.ip-button,.ih-selection-grid>.ih-selection-card,.ie-grid>button,.ie-card,.iw-map-nodes>button,.iw-gym-nodes>button,.iw-task-partners>button,.iw-profile-partner-options>button,.il-breeding-options>button){background:#392a36!important;border-color:#805468!important;box-shadow:none!important;color:#fae9f1!important}
+body.idle-native-mode .idle-window:not(#idle-safari) :is(.ip-selection-tools>nav,.ipc-tools,.is-shop-sidebar,.ip-inventory-sidebar,.is-shop-layout>nav){background:#211a23!important;border-color:#674153!important}
+body.idle-native-mode .idle-window:not(#idle-safari) :is(.ip-selection-tools>nav,.is-shop-sidebar,.is-shop-layout>nav) button{background:#44263a!important;color:#edc9d8!important}
+body.idle-native-mode .idle-window:not(#idle-safari) :is(.ip-detail-body,.ih-content,.iw-content,.is-shop-content,.ie-main){color:#ead5e1}
+body.idle-native-mode .idle-window:not(#idle-safari) :is(.ip-sheet-identity,.is-evo-actions,.iw-profile-partner-selected,.iw-profile-trainers,.iw-gym-identity){background:#38212e!important;border-color:#88516b!important}
+body.idle-native-mode .idle-window:not(#idle-safari) :is(.ip-analysis-stat-grid>div,.ip-stat-grid>div,.ip-analysis-modifiers,.ipc-iv-comparison>div,.iw-formation-member,.iw-profile-name-row,.iw-field,.ih-report-metrics>div,.ih-report-rows>div){background:#251e28!important;border-color:#5c3c4d!important}
+body.idle-native-mode .idle-window:not(#idle-safari) :is(.ip-analysis-heading h4,.is-evo-requirements h3,.iw-section h3,.ih-report-section h4,.is-shop-card h3,.iw-task-card h3,.iw-egg-card h3,.iw-saved-formation h4,.ie-detail h3){color:#ffe092!important}
+body.idle-native-mode .idle-window:not(#idle-safari) :is(.ip-selection-name>span,.ipc-card-copy>small,.is-evo-members small,.is-evo-pair small,.is-evo-identity small,.iw-task-card small,.iw-egg-card small,.ip-analysis-heading>small,.ip-analysis-stat-grid span){color:#d4b7c5!important}
+/* Selection and primary actions are red; supporting actions remain magenta. */
+body.idle-native-mode .idle-window:not(#idle-safari) :is(.is-shop-row,.is-pokemon-sale,.is-sale-bar,.is-history-entry,.is-history-summary>div,.ifn-dex-detail,.ifn-dex-tile,.ifn-dex-stones,.ifn-contract,.ifn-offline-section,.ifn-offline-summary>div,.ifn-offline-member,.ie-card,.iw-tasks-heading,.iw-nursery-help){background:var(--rocket-panel)!important;border-color:#714859!important;color:var(--rocket-text)!important}
+body.idle-native-mode .idle-window:not(#idle-safari) :is(.is-shop-row h3,.ifn-dex-detail h3,.ifn-dex-detail h4,.ifn-contract h3){color:#ffe093!important}
+body.idle-native-mode .idle-window:not(#idle-safari) :is(.is-shop-row p,.is-shop-row small,.ifn-dex-detail p,.ifn-dex-detail small,.ifn-dex-tile small,.ifn-dex-tile>span){color:#d0b5c4!important}
+body.idle-native-mode .idle-window:not(#idle-safari) :is(.ip-analysis-traits>div,.is-shop-quantities,.is-sale-controls,.iw-profile-metrics>article){background:#302630!important;border-color:#714859!important}
+body.idle-native-mode #idle-party[data-view=detail] .ip-analysis-moves>div{background:#251f2b!important}
+body.idle-native-mode #idle-party[data-view=detail] .ip-tabs>.ip-button:is([aria-pressed=true],[aria-selected=true]){background:#d72e56!important;border-color:#ff8aa6!important;color:#fff2f7!important}
+body.idle-native-mode .idle-window:not(#idle-safari) .ifn-dex-tile[aria-pressed=true]{background:#692940!important;border-color:#ff7a9c!important}
+body.idle-native-mode .idle-window:not(#idle-safari) :is(button[aria-pressed=true],button[aria-selected=true],.ip-primary,.is-primary,.idle-capture-button,.iw-button.primary,.iw-challenge-start){background:var(--rocket-red)!important;border-color:#ff8aa6!important;color:#fff2f7!important}
+body.idle-native-mode .idle-window:not(#idle-safari) :is(.ip-tabs,.iw-shell>nav,.iw-tasks-nav,.iw-nursery-nav,.iw-formations-nav,.ie-sidebar,.ip-selection-tools>nav,.is-shop-sidebar,.is-shop-layout>nav,.is-evo-sidebar) button:is([aria-pressed=true],[aria-selected=true]){background:#d72e56!important;border-color:#ff8aa6!important;color:#fff2f7!important}
+body.idle-native-mode .idle-window:not(#idle-safari) :is(.ipc-grid>.ipc-cell,.is-evo-members>button,.ih-selection-grid>.ih-selection-card,.iw-gym-nodes>button,.iw-map-nodes>button,.ie-grid>button,.ie-card,.il-breeding-options>button)[aria-pressed=true]{background:#692940!important;border-color:#ff7a9c!important;box-shadow:inset 3px 0 #ff658b!important}
+body.idle-native-mode .idle-window:not(#idle-safari) :is(.ip-group-count,.ih-selection-tag,.iw-task-duration,.ie-chip){background:#563046!important;color:#f9cade!important}
+/* Favorite/lock and requirement states retain their meanings. */
+body.idle-native-mode .idle-window:not(#idle-safari) .idle-protection-tools button[aria-pressed=true]{background:#695126!important;border-color:#e9c471!important;color:#ffe99e!important}
+body.idle-native-mode .idle-window:not(#idle-safari) .is-requirements li{background:#543d2c!important;border-color:#ac7c4b!important;color:#ffe1a0!important}
+body.idle-native-mode .idle-window:not(#idle-safari) .is-requirements li[data-ready=true]{background:#214735!important;border-color:#54856b!important;color:#ace7c0!important}
+body.idle-native-mode .idle-window:not(#idle-safari) :is(.ip-notice,.iw-notice,.is-notice){background:#512b3b!important;border-color:#a45773!important;color:#ffd3e3!important}
+body.idle-native-mode .idle-window:not(#idle-safari)>footer{background:#1a1720!important;border-color:#724153!important;color:#dcbacc}
+/* Settings is a native menu rather than an idle-window. */
+body.idle-native-mode #stage #menu.idle-settings{background:#211c27!important;border-color:#b34d6b!important;color:#f4e6ef!important}
+body.idle-native-mode #stage #menu.idle-settings :is(.mhead,.mtabs,.mfoot){background:#191720!important;border-color:#75465c!important}
+body.idle-native-mode #stage #menu.idle-settings :is(.mrow,.help,.idle-settings-data>div:not(:empty)){background:#342632!important;border-color:#7d4d64!important;color:#e4cad8!important}
+body.idle-native-mode #stage #menu.idle-settings :is(button,.mbtn){background:#7b2c49!important;border-color:#d06b88!important;color:#fff0f6!important;border-radius:4px!important}
+body.idle-native-mode #stage #menu.idle-settings :is(button.on,button[aria-selected=true],button[aria-pressed=true]){background:#d72e56!important;border-color:#ff8aa6!important}
+body.idle-native-mode #stage #menu.idle-settings :is(h2,h3,h4){color:#ffe093!important}
+body.idle-native-mode #stage #menu.idle-settings :is(p,label,.credit){color:#d1b2c3!important}
+body.idle-native-mode #stage #menu.idle-settings :is(input:not([type=range]),select){background:#211923!important;border-color:#87506a!important;color:#f2dce9!important}
+body.idle-native-mode #stage #menu.idle-settings{box-shadow:inset 0 1px #ffffff12,0 0 0 2px #50263b,0 12px 35px #0008!important;scrollbar-color:#a6567b #211923}
+body.idle-native-mode #stage #menu.idle-settings :is(.mgroup,.help,kbd){background:#342632!important;border-color:#7d4d64!important;color:#e4cad8!important}
+body.idle-native-mode #stage #menu.idle-settings :is(.ml,.mt,.comfort-choice,.key-setting,.mv,.video-setup>b){color:#f1d6e5!important}
+body.idle-native-mode #stage #menu.idle-settings :is(.ms,.credit,.video-setup p){color:#c6a6b9!important}
+body.idle-native-mode #stage #menu.idle-settings :is(button,.mbtn,.mbtn.soft,.mtab,select,[data-bind-key]){box-shadow:inset 0 1px #ffffff20,inset 0 -2px #0004!important}
+body.idle-native-mode #stage #menu.idle-settings .sw span{background:#513343!important;border-color:#95627c!important}
+body.idle-native-mode #stage #menu.idle-settings .sw input:checked+span{background:#cf375f!important;border-color:#f185a4!important}
+body.idle-native-mode #stage #menu.idle-settings .sw span:after{background:#f5d7e4!important;box-shadow:inset 0 1px #fff8,0 1px 2px #0004!important}
+body.idle-native-mode #stage #menu.idle-settings #mclose{background:#713147!important;border-color:#c47793!important;color:#ffe3ee!important;box-shadow:none!important}
+body.idle-native-mode .is-supply-picker{background:#27212d!important;border-color:#b35a7d!important;color:#f5dfeb!important}
+body.idle-native-mode .is-supply-picker .is-caught-card{background:#392a36!important;border-color:#89556d!important}
+body.idle-native-mode .is-supply-picker :is(header,p,small){color:#d7b9cb}
+/* The arena quick card uses the same surfaces without changing its battle data. */
+body.idle-native-mode #tip:has(.idle-tip-compact){background:#251d2a!important;border-color:#ac5679!important;box-shadow:0 10px 30px #0008!important}
+body.idle-native-mode #tip .idle-tip-compact .um{background:#382735!important;border-color:#87546b!important}
+body.idle-native-mode #tip .idle-tip-compact .sts>div{background:#362936!important;border-color:#654456!important}
+body.idle-native-mode #tip .idle-tip-passive{background:#463127!important;border-color:#9c754444!important}
+body.idle-native-mode #tip .idle-tip-moves>div{background:#30232f!important}
+@media(prefers-reduced-motion:reduce){body.idle-native-mode .idle-window:not(#idle-safari) button{transition:none!important}}

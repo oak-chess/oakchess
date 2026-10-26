@@ -33,3 +33,12 @@ Testes determinísticos de custos, chances, alimento/aproximação, fuga/captura
 - `scripts/check-idle-safari.cjs`: regras determinísticas, bloqueios e retomada.
 - `scripts/check-idle-safari-browser.cjs`: jogo real com save isolado, capturas, registros, recursos, encerramento, pausa ao trocar de aba/menu e larguras 1440, 1366, 900 e 600.
 - Regressões verificadas: painéis de equipe/evolução/PC e cartão rápido do Pokémon.
+
+## Organização visual
+Setores no topo, com duas colunas na entrada: regras e acesso à esquerda; grade de Pokémon com nomes e raridade à direita. A indicação de bloqueio fica acima do botão de entrada. O rodapé reúne a garantia shiny e a navegação; durante a expedição inclui o encerramento.
+
+A paleta usa preto/grafite, vermelho vivo e magenta, inspirada na Equipe Rocket, com amarelo nos avisos e sem fundos brancos. Botões têm bordas em pixels, relevo discreto e estado pressionado; os ícones usam sprites de Pokémon e itens. Textos maiores e contraste reforçado. O encontro mantém uma varredura digital discreta, respeitando a redução de movimento. As quatro ações são verificadas para caber inteiras no painel. Automação, acontecimentos e capturas recentes continuam organizados; rolagem e lista de habitantes são preservadas nas atualizações.
+
+Testes de interface: `scripts/check-idle-safari-terminal.cjs` (entrada bloqueada, grade com nomes, setores no topo e larguras diferentes) e `scripts/check-idle-safari-browser.cjs` (capturas, recursos, automação, retomada, resumo e controles visíveis).
+
+Sprite da Safari Ball: PokeAPI/sprites, https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/safari-ball.png. Arquivo local: modes/idle/assets/menu-icons/safari-ball.png.
