@@ -19,13 +19,13 @@ Revelar IVs e potência somente após capturar. Sempre guardar no PC (máximo 30
 Mapa de setores na lateral, encontro no centro e chances/ações abaixo. Navegação por mouse e teclado, botões de tamanho moderado, resumo ao concluir. Automação com alvos: todos, espécies ainda não capturadas ou espécie escolhida; shiny sempre recebe tentativa. Usa Safari Balls diretamente, com os mesmos custos e probabilidades do manual. Não troca de setor sozinha.
 
 ## Salvamento e interrupções
-Salvar recursos, genes do encontro e resultados após cada ação. Reabrir ou recarregar não rerrola o encontro nem concede uma nova entrada. Fechar o painel, trocar de aba ou abrir outro menu interrompe a automação; a expedição fica suspensa e pode ser retomada. Não simular Safari offline. Entrar pausa a caçada comum; desafios e animações de captura bloqueiam a entrada.
+Salvar recursos, genes do encontro e resultados após cada ação. Reabrir ou recarregar não rerrola o encontro nem concede uma nova entrada. Fechar o painel, trocar de aba ou abrir outro menu interrompe a automação; a expedição fica suspensa e pode ser retomada. Não simular Safari offline. A caçada comum continua enquanto o Safari está aberto. Os recursos e resultados são independentes; desafios opcionais bloqueiam a entrada.
 
 ## Verificação
 Testes determinísticos de custos, chances, alimento/aproximação, fuga/captura, passos/bolas esgotados, PC cheio, acesso, troca de dia e salvamento. Testes no navegador com save isolado para navegação, captura e registros, qualidade oculta, retomada, automação e limites visuais.
 
 ## Implementação concluída
-- Acesso: **Caçadas → Safari**. Os setores ficam no painel próprio; a caçada comum pausa ao entrar na expedição.
+- Acesso: **Caçadas → Safari**. Os setores ficam no painel próprio; a caçada comum continua durante a expedição.
 - `safari.js`: regras e estado salvos em `state.safari`, com probabilidades e recursos independentes.
 - `safari-ui.js` / `safari.css`: entrada, encontro, automação e resumo com capturas. Há confirmação antes de encerrar e descartar recursos restantes.
 - Integração com `capture.js`: capturas mantidas no PC, proteção automática, Pokédex, coleção, histórico e caixa de capturados. Tentativas que falham não revelam IVs/potência.
