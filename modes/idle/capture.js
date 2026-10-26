@@ -38,14 +38,15 @@ window.createIdleCapture = function ({state, lines, sprite, save, changed, notif
   state.captureProtection={shiny:false,power:false,minPower:4,ivs:false,minIV:150,...state.captureProtection};
   function autoProtect(m){const r=state.captureProtection;return !!(r.shiny&&m.shiny||r.power&&m.potency>=r.minPower||r.ivs&&window.IDLE_INDIVIDUALS.total(m)>=r.minIV)}
   function renderProtection(content){const rules=state.captureProtection;const intro=document.createElement('p');intro.textContent='Protege novas capturas online e offline quando qualquer regra ativa for atendida. Elas recebem cadeado e são guardadas mesmo se repetidos estiverem configurados para virar doces. Pokémon já existentes não são alterados.';content.append(intro);for(const [key,label]of [['shiny','Proteger Pokémon shiny'],['power','Proteger por potência'],['ivs','Proteger por IV total']]){const row=document.createElement('label'),check=document.createElement('input');check.type='checkbox';check.checked=!!rules[key];check.onchange=()=>{rules[key]=check.checked;commit()};row.append(check,document.createTextNode(label));content.append(row);if(key==='power'){const select=document.createElement('select');select.setAttribute('aria-label','Potência mínima para proteger');for(const [v,label]of [[4,'P4 e P5'],[5,'Somente P5']]){const o=document.createElement('option');o.value=v;o.textContent=label;o.selected=rules.minPower===v;select.append(o)}select.onchange=()=>{rules.minPower=Number(select.value);commit()};content.append(select)}if(key==='ivs'){const input=document.createElement('input');input.type='number';input.min='0';input.max='186';input.step='1';input.value=rules.minIV;input.setAttribute('aria-label','IV total mínimo, de 0 a 186');input.onchange=()=>{rules.minIV=Math.max(0,Math.min(186,Math.round(Number(input.value)||0)));commit()};content.append(input)}}}
-  function grant(name,offline,genes,caughtLevel){
+  function grant(name,offline,genes,caughtLevel,options={}){
     const speciesLine=lines.find(l=>l.names.includes(name)),baseName=speciesLine?.names[0]||name,caughtStar=Math.max(1,(speciesLine?.names.indexOf(name)??0)+1);
     state.fieldNotes=state.fieldNotes||{defeated:{},captured:{},contract:null,claims:0};state.fieldNotes.captured[name]=(state.fieldNotes.captured[name]||0)+1;window.IDLE_LIFE?.record(name);
     genes=genes||window.IDLE_INDIVIDUALS.roll(speciesLine,Date.now()+':capture:'+Math.random(),false);const protectedCapture=autoProtect(genes);const existing=owned(baseName);
-    if(existing&&!genes?.shiny&&!protectedCapture&&state.capture.duplicates==='candies'){existing.candy=(existing.candy||0)+1;record(name,'+1 doce',offline);return name+': +1 doce.'}
+    if(!options.keep&&existing&&!genes?.shiny&&!protectedCapture&&state.capture.duplicates==='candies'){existing.candy=(existing.candy||0)+1;record(name,'+1 doce',offline);return name+': +1 doce.'}
     const member={name:baseName,level:Math.max(1,Math.floor(caughtLevel||state.trainerLevel)),star:caughtStar,xp:0,candy:0,items:[],condition:1,quality:Math.round((.95+Math.random()*.1)*100)/100,caughtAt:Date.now()};
     Object.assign(member,genes||window.IDLE_INDIVIDUALS.roll(speciesLine,Date.now()+':capture:'+Math.random(),false));member.ivs={...member.ivs};member.locked=protectedCapture;
-    const slot=offline?-1:availableSlot();
+    if(options.source)member.originSource=options.source;
+    const slot=offline||options.toPC?-1:availableSlot();
     if(state.team.length<(maxRoster?.()||15)&&slot>=0){member.pos={z:'n',i:slot};state.team.push(member);record(name,'Novo parceiro · banco',offline)}
     else{state.collection.push(member);record(name,'Novo parceiro · PC',offline)}
     return name+' capturado!'+(member.pos?' Foi para o banco.':' Foi para o PC do Centro Pokémon, sem ocupar a arena.');
@@ -67,6 +68,9 @@ window.createIdleCapture = function ({state, lines, sprite, save, changed, notif
     if(count>0&&state.captureResearch[state.area]>=8&&rare)chosen.push(rare);
     while(chosen.length<count){const available=pool.filter(e=>!chosen.some(p=>p.line.i===e.line.i));if(!available.length)break;const weighted=available.flatMap(e=>Array(encounterWeight(e)).fill(e));chosen.push(weighted[Math.floor(Math.random()*weighted.length)]||available[0])}
     state.encounterGenes=chosen.map(e=>window.IDLE_INDIVIDUALS.roll(e.line));const shinyIndex=state.encounterGenes.findIndex(g=>g.shiny);if(shinyIndex>=0)notify('✦ Shiny encontrado: '+(chosen[shinyIndex].speciesName||chosen[shinyIndex].line.names[0])+'!');return chosen.map(e=>e.speciesName||e.line.names[0]);
+  }
+  function registerEncounter(){
+    for(const [i,name]of (state.encounter||[]).entries()){const L=lines.find(l=>l.names.includes(name));if(!L||L.boss)continue;state.encounterGenes=state.encounterGenes||[];const genes=state.encounterGenes[i]||(state.encounterGenes[i]=window.IDLE_INDIVIDUALS.roll(L));const counted=genes.shinyEncounterCounted;window.IDLE_SHINY.register(state,genes,L);if(!counted&&genes.shinyOrigin==='guarantee')notify('✦ Shiny garantido encontrado: '+name+'!');}
   }
   function defeated(unit,targetPoint){
     if(!unit||unit.side!==1||unit.alive||attemptedUnits.has(unit))return null;attemptedUnits.add(unit);
@@ -106,10 +110,11 @@ window.createIdleCapture = function ({state, lines, sprite, save, changed, notif
     const label=document.createElement('label');label.textContent=shiny?'Bola selecionada para shiny':'Bola selecionada para normais';const select=document.createElement('select');for(const [key,item]of Object.entries(window.IDLE_ITEMS.balls)){const o=document.createElement('option');o.value=key;o.disabled=!!item.locked;o.selected=config.ball===key;o.textContent=item.name+' ×'+window.IDLE_ITEMS.stock(state,key)+(item.locked?' · bloqueada':'');select.append(o)}select.onchange=()=>{if(window.IDLE_ITEMS.balls[select.value]?.locked)return;config.ball=select.value;commit()};label.append(select);form.append(label);
     const fallback=document.createElement('p');fallback.textContent='Usa somente a bola selecionada para normal ou shiny. Sem estoque, a tentativa não acontece e nenhuma outra bola é consumida. A Master Ball permanece bloqueada para eventos.';form.append(fallback);
     if(!shiny){const row=document.createElement('label');row.textContent='Capturas repetidas';const duplicate=document.createElement('select');for(const [key,text]of [['keep','Guardar no PC ou banco'],['candies','Converter em doces']]){const o=document.createElement('option');o.value=key;o.textContent=text;o.selected=config.duplicates===key;duplicate.append(o)}duplicate.onchange=()=>{config.duplicates=duplicate.value;commit()};row.append(duplicate);form.append(row);const offline=document.createElement('label'),check=document.createElement('input');check.type='checkbox';check.checked=config.offline;check.onchange=()=>{config.offline=check.checked;commit()};offline.append(check,document.createTextNode('Permitir capturas offline'));form.append(offline)}
-    const note=document.createElement('p');note.textContent=shiny?'Shiny: 0,0122% por aparição online; captura com ¼ da chance normal, limitada a 25%. Nunca é convertido em doces.':'Captura simula o alvo com 1 PS e sem status, com a fórmula da Geração III. Offline continua limitado ao período simulado de até 8 horas.';form.append(note);
+    const note=document.createElement('p');note.textContent=shiny?window.IDLE_SHINY.progressText(state)+' A contagem é compartilhada entre selvagens enfrentados e encontros do Safari. Qualquer shiny reinicia a contagem, mesmo se não for capturado. Captura com ¼ da chance normal, limitada a 25%. Nunca vira doce.':'Captura simula o alvo com 1 PS e sem status, com a fórmula da Geração III. Offline continua limitado ao período simulado de até 8 horas.';form.append(note);
   }
   function renderHabitat(content){
       const intro=document.createElement('p');intro.textContent='Os Pokémon abaixo habitam esta região. Vença encontros para descobri-los; cada selvagem derrotado recebe uma tentativa enquanto houver estoque da bola selecionada.';content.append(intro);
+      const shinyProgress=document.createElement('p');shinyProgress.className='idle-shiny-progress';shinyProgress.textContent=window.IDLE_SHINY.progressText(state);content.append(shinyProgress);
       const grid=document.createElement('div');grid.className='idle-habitat-grid';content.append(grid);
       for(const entry of poolFor()){
         const family=entry.line.names[0],name=entry.speciesName||family,form=Math.max(0,entry.line.names.indexOf(name)),seen=state.discovered.includes(family),have=known(family);
@@ -137,5 +142,15 @@ window.createIdleCapture = function ({state, lines, sprite, save, changed, notif
       if(state.collection.length)content.append(button('Abrir PC · '+state.collection.length+' Pokémon guardados',()=>openPC()));
     }
   }
-  return {setHabitat(provider,objectives,count){habitatProvider=provider;objectiveProvider=objectives;countProvider=count},mount,render,renderHabitat,renderSettings,renderProtection,encounter,victory,defeated,offline,start(){state.capture.used=0;state.captureShiny.used=0;state.capture.lastSpent=0;state.capture.lastAttempts=0;state.capture.lastCaught=0},routes};
+  function safariCatch(entry){
+    const L=lines.find(l=>l.names.includes(entry.name));if(!L||state.collection.length>=300)return {ok:false,reason:'O PC está cheio ou a espécie está indisponível.'};
+    grant(entry.name,false,entry.genes,entry.level,{keep:true,toPC:true,source:'safari'});
+    const member=state.collection[state.collection.length-1];
+    if(!state.discovered.includes(entry.name))state.discovered.push(entry.name);
+    const event=state.captureLog[0];Object.assign(event,{status:'caught',attempted:true,source:'safari',place:'Safari de Fuchsia',sector:entry.sector,speciesId:entry.speciesId,shiny:entry.genes.shiny===true,potency:entry.genes.potency,ivTotal:window.IDLE_INDIVIDUALS.total(entry.genes),ball:'safari',chance:entry.chance,destination:'pc',converted:false,area:4,hunt:null,wave:null,level:entry.level});
+    captureInbox.total++;captureInbox.events.unshift({...event});captureInbox.events=captureInbox.events.slice(0,20);
+    return {ok:true,member,event};
+  }
+  function safariFailedAttempt(entry){record(entry.name,entry.fled?'Escapou no Safari':'A Safari Ball falhou; o Pokémon continuou por perto.',false,{status:entry.fled?'escaped':'failed',attempted:true,source:'safari',place:'Safari de Fuchsia',sector:entry.sector,speciesId:entry.speciesId,shiny:entry.shiny,ball:'safari',chance:entry.chance,area:4,hunt:null,wave:null,potency:null,ivTotal:null})}
+  return {registerEncounter,safariCatch,safariFailedAttempt,setHabitat(provider,objectives,count){habitatProvider=provider;objectiveProvider=objectives;countProvider=count},mount,render,renderHabitat,renderSettings,renderProtection,encounter,victory,defeated,offline,start(){state.capture.used=0;state.captureShiny.used=0;state.capture.lastSpent=0;state.capture.lastAttempts=0;state.capture.lastCaught=0},routes};
 };
