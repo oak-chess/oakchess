@@ -3515,7 +3515,7 @@ function aBannerT(g,x,top,w,h,T){const B=T.banner;
 
 function paintThemed(g,layer,T){
   const A=arGeo(),{WL,WR,WT,WB,CX}=A;
-  if(layer!=='arena'){T.scene(g,A);
+  if(layer!=='arena'){if(!window.OAK_ARENA_ART?.paint(g,A,T))T.scene(g,A);
     const v=g.createRadialGradient(CX,340,330,CX,340,980);v.addColorStop(0,'rgba(0,0,0,0)');v.addColorStop(1,T.vig);g.fillStyle=v;g.fillRect(-640,0,2560,H);
     const sun=g.createRadialGradient(CX,120,10,CX,120,560);sun.addColorStop(0,T.glow);sun.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=sun;g.fillRect(-640,0,2560,H)}
   if(layer!=='scene'){
@@ -9074,4 +9074,4 @@ body #tip .ut .usec.its{padding-top:4px}
 <link rel="stylesheet" href="assets/rocket-dialogue.css?v=3">
 <script src="assets/rocket-dialogue.js?v=2"></script>
 <script src="assets/rocket-operation.js?v=18"></script>
-</body></html>
+<script src="assets/illustrated-arenas.js?v=shared-1"></script></body></html>
