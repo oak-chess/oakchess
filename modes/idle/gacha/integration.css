@@ -316,3 +316,11 @@ body.idle-native-mode #idle-gachapon .ig-catalog-open{padding:3px 8px!important;
 @media(max-width:520px){#idle-world .iw-nursery-layout[data-origin=gacha] .iw-nursery-slots{grid-template-columns:repeat(2,minmax(0,1fr))}#idle-world .nursery-chamber{width:60px}}
 @media(prefers-reduced-motion:reduce){#idle-world .nursery-chamber::after{animation:none!important}}
 #idle-world .iw-egg-card .nursery-sell{grid-column:2/-1;justify-self:end;font-size:9px!important;padding:4px 8px!important;background:#593044!important}
+#idle-gachapon .ig-history-list{display:grid;gap:7px}
+#idle-gachapon .ig-history-list article{background:#2e2234;border:1px solid #61425d;border-radius:8px;padding:9px 11px}
+#idle-gachapon .ig-history-summary{display:flex;justify-content:space-between;gap:10px;font-size:12px;color:#f8deed}
+#idle-gachapon .ig-history-summary span{color:#ffd477}
+#idle-gachapon .ig-history-list article>small{font-size:9px;color:#bca4bc}
+#idle-gachapon .ig-history-eggs{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+#idle-gachapon .ig-history-eggs>span{display:flex;align-items:center;gap:4px;background:#191621;border:1px solid var(--rarity);border-radius:5px;padding:3px 5px;color:var(--rarity);font-size:9px}
+#idle-gachapon .ig-history-eggs .egg-svg{width:16px;height:21px}
