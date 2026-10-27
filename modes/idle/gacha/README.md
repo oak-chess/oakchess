@@ -8,7 +8,7 @@ O catálogo usa o elenco real e os metadados de famílias: 73 famílias de Kanto
 
 ## Compra e garantias
 
-1x: 2.000 ouro; 5x: 10.000; 10x: 20.000. A reserva é a mesma da incubadora, com dez vagas, incluindo ovos ativos/antigos. O lote inteiro precisa caber e ter saldo antes da cobrança. A incubadora normal tem duas vagas e a do gachapon cinco vagas independentes.
+1x: 5.000 ouro; 5x: 25.000; 10x: 50.000. A reserva do gachapon é separada e sem limite de ovos. O lote inteiro precisa ter saldo antes da cobrança. A incubadora normal tem duas vagas e a do gachapon cinco vagas independentes.
 
 Comum/P1: 50%; Incomum/P2: 30%; Raro/P3: 15%; Épico/P4: 4%; Lendário/P5: 1%. Após dez resultados consecutivos abaixo de P3, o próximo garante no mínimo P3; após cem sem P5, o próximo garante P5. P5 tem prioridade e reinicia os dois contadores. Cada ovo do lote atualiza as garantias, compartilhadas entre as regiões.
 
@@ -31,3 +31,6 @@ Efeitos da máquina sintetizados localmente. A música do painel é Goldenrod Ga
 `../gacha.js`: catálogo, transação e persistência. `view.js`, `template.js`, `view.css`, `integration.css`: painel isolado. `mixer.js` e `sound.js`: efeitos. `eggs.js`: apresentação dos ovos na incubadora. O estado fica em `world.gacha`; os ovos ficam em `world.eggs`.
 
 Testes: `scripts/check-idle-gacha.cjs`, `check-idle-gacha-rules.cjs`, `check-idle-gacha-view.cjs`, além dos testes existentes de life/berçário e Wiki. O protótipo em `prototypes/egg-gacha` permanece separado.
+
+
+Venda de ovos do gachapon inativos, com confirmação: P1 200, P2 400, P3 800, P4 1.600 e P5 3.000 ouro. Venda conjunta de P1/P2 disponível na reserva. Ovos em incubação são preservados.
