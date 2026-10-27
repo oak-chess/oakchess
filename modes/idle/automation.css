@@ -5,6 +5,10 @@ body.idle-native-mode #idle-automation[hidden]{display:none!important}
 body.idle-native-mode #idle-automation .ia-card{min-width:0;padding:14px;background:#302630;border:1px solid #835168;border-radius:10px;color:#f6e6ef}
 #idle-automation .ia-card>header{display:flex;align-items:center;gap:9px;margin:0 0 13px}
 #idle-automation .ia-card>header>img{width:31px;height:31px;object-fit:contain;image-rendering:pixelated;flex:none}
+#idle-automation .ia-card>header>div{flex:1;min-width:0}
+body.idle-native-mode #idle-automation .ia-capture-enable{flex:none;padding:6px 7px;font-size:10px;gap:6px;white-space:nowrap}
+body.idle-native-mode #idle-automation [data-capture-enabled=false] .ia-capture-enable{border-color:#ec7ba2;color:#ffb5c9}
+@media(max-width:600px){#idle-automation .ia-card>header{flex-wrap:wrap}}
 #idle-automation .ia-card h3{font:700 15px/19px 'Trebuchet MS',Arial,sans-serif;color:#ffe093;margin:0 0 4px}
 body.idle-native-mode #idle-automation .ia-card>header p{font:11px/16px 'Trebuchet MS',Arial,sans-serif;color:#d5b8c8!important;letter-spacing:0;margin:0}
 #idle-automation .ia-capture-grid,#idle-automation .ia-item-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}

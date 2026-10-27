@@ -31,7 +31,8 @@ window.createIdleCapture = function ({state, lines, sprite, save, changed, notif
   const favorite=name=>state.captureFavorites.includes(name);
   const eligible=(name,config=state.capture)=>config.mode==='all'||(config.mode==='new'&&!known(name,config===state.captureShiny))||(config.mode==='favorites'&&favorite(name));
   const budget=(config=state.capture)=>window.IDLE_ITEMS.balls[config.ball]?.locked?0:Math.max(0,window.IDLE_ITEMS.stock(state,config.ball)||0);
-  for(const config of [state.capture,state.captureShiny]){config.enabled=true;config.mode='all';config.reserve=0}
+  state.capture.enabled=state.capture.enabled!==false;state.captureShiny.enabled=state.capture.enabled;
+  for(const config of [state.capture,state.captureShiny]){config.mode='all';config.reserve=0}
   const attemptedUnits=new WeakSet();
   function record(name,result,offline=false,details={}){const event={name,result,offline,time:Date.now(),...details};state.captureLog.unshift(event);state.captureLog=state.captureLog.slice(0,200);return event}
   function availableSlot(){const occupied=new Set(state.team.filter(m=>m.pos?.z==='n').map(m=>m.pos.i));for(let i=0;i<9;i++)if(!occupied.has(i))return i;return -1}
@@ -54,6 +55,7 @@ window.createIdleCapture = function ({state, lines, sprite, save, changed, notif
   function attempt(entry,offline=false){
     const name=entry.speciesName||entry.line.names[0],isShiny=entry.genes?.shiny===true,settings=isShiny?state.captureShiny:state.capture,chosen=budget(settings)>0?settings.ball:null,config={...settings,ball:chosen||settings.ball},history={speciesId:entry.line.ids[Math.max(0,entry.line.names.indexOf(name))],shiny:entry.genes?.shiny===true,area:state.area,hunt:state.hunts?.kind,wave:state.hunts?.wave,potency:entry.genes?.potency??null,ivTotal:entry.genes?.ivs?window.IDLE_INDIVIDUALS.total(entry.genes):null};
     if(!state.discovered.includes(name))state.discovered.push(name);
+    if(!state.capture.enabled)return null;
     if(state.capture.targetSpecies&&name!==state.capture.targetSpecies&&!(isShiny&&state.capture.targetAnyShiny)){record(name,'Fora do foco de captura · nenhuma bola usada',offline,{...history,status:'skipped',attempted:false});return null}
     if(!chosen){record(name,'Sem tentativa · bola selecionada indisponível',offline,{...history,status:'skipped',attempted:false});return name+' derrotado. A bola selecionada está sem estoque ou bloqueada. Nenhuma outra bola foi consumida.'}
     const chance=window.IDLE_SHINY.chance(state,entry.line,maxHpFor?.(entry.line,entry.line.names.indexOf(name)+1)||100,isShiny,config,history.speciesId);if(chance===null){record(name,'Taxa não cadastrada · sem consumo de bola',offline,{...history,status:'skipped',attempted:false});return 'Taxa de captura desta espécie não cadastrada; nenhuma bola foi usada.';}
@@ -110,6 +112,7 @@ window.createIdleCapture = function ({state, lines, sprite, save, changed, notif
   }
   function renderSettings(content,shiny=false,{compact=false}={}){
     const config=shiny?state.captureShiny:state.capture,form=document.createElement('div');form.className='idle-capture-settings';content.append(form);
+    if(!shiny){const enabled=document.createElement('label'),check=document.createElement('input');enabled.dataset.captureField='enabled';check.type='checkbox';check.checked=state.capture.enabled;check.setAttribute('aria-label','Ativar captura automática');check.onchange=()=>{state.capture.enabled=check.checked;state.captureShiny.enabled=check.checked;commit()};enabled.append(check,document.createTextNode('Captura automática'));form.append(enabled)}
     const intro=document.createElement('p');intro.textContent='Uma tentativa por Pokémon selvagem derrotado que corresponda ao foco de captura. Cada tentativa consome uma bola; a captura depende da chance da espécie.';if(!compact)form.append(intro);
     const label=document.createElement('label');label.textContent=compact?(shiny?'Pokémon shiny':'Pokémon normais'):(shiny?'Bola selecionada para shiny':'Bola selecionada para normais');label.dataset.captureField=shiny?'shinyBall':'normalBall';const select=document.createElement('select');for(const [key,item]of Object.entries(window.IDLE_ITEMS.balls)){const o=document.createElement('option');o.value=key;o.disabled=!!item.locked;o.selected=config.ball===key;o.textContent=item.name+' ×'+window.IDLE_ITEMS.stock(state,key)+(item.locked?' · bloqueada':'');select.append(o)}select.onchange=()=>{if(window.IDLE_ITEMS.balls[select.value]?.locked)return;config.ball=select.value;commit()};label.append(select);form.append(label);
     if(!shiny)renderTarget(form);

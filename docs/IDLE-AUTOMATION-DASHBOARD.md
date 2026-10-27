@@ -17,3 +17,8 @@ Não existe botão de aplicar. Os controles mantêm os handlers de captura e sup
 
 ## Validação
 `scripts/check-idle-automation-dashboard.cjs`: todas as opções persistem, incluindo bolas separadas, repetidos, offline, proteção/limiares, itens de recuperação, reservas, limite, cura, Revive, avanço e continuidade após derrota. Confere recarregamento, atalhos antigos, preservação da rolagem e larguras 1440/1366/900/600, com progresso isolado.
+
+## Controle geral de captura
+O cabeçalho Capturar Pokémon inclui a caixa Captura automática. Desativada, bloqueia tentativas normais, shiny e offline sem consumir bolas, gerar efeitos ou preencher o histórico com tentativas desativadas. As descobertas e recompensas de combate continuam. A escolha é salva e não é mais sobrescrita ao carregar o jogo. O Safari mantém seus controles próprios.
+
+Validação adicional: scripts/check-idle-capture-toggle.cjs verifica os dois estoques, efeitos, histórico, recompensas, persistência e reativação.
