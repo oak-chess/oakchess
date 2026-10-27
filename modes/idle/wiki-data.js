@@ -23,7 +23,7 @@ window.IDLE_WIKI_DATA=()=>{
  ['Encontros',['A quantidade de adversários varia com a dificuldade, a onda e as famílias disponíveis, até seis por encontro. Os detalhes da área mostram a quantidade.','Rastrear uma espécie na Expedição favorece encontros dela. Isso é diferente de focar captura, que decide em quem gastar bolas.']]],'hunts'),
  topic('waves','Exploração','Ondas e Fronteira sem fim','Avanço, repetição e dificuldade da expedição.',[
  ['Ondas',['Cada caçada tem dez ondas. Três vitórias liberam a próxima; a Automação pode avançar sozinha ou repetir a onda atual.','A onda 10 pode ser repetida. Derrotas não avançam. O progresso fica guardado por região e habitat.','A Fronteira sem fim permite escolher dificuldade crescente, a partir do mínimo exibido e com o nível exigido do treinador. Alterar o nível reinicia as ondas dessa caçada.']],
- ['Recuo',['O recuo automático usa a rota segura e o número de derrotas configurados. Esse retorno é intencional e continua valendo após recarregar.']]],'expedition'),
+ ['Recuo',['O recuo automático começa desligado. Em Formações, ative Ativar recuo automático por derrotas somente se quiser retornar à rota segura após o número de derrotas configurado. Desligado, a caçada permanece na mesma região.']]],'expedition'),
  topic('outbreaks','Exploração','Surtos de Pokémon','Mais encontros de uma espécie por tempo limitado.',[
  ['Como funciona',['O aviso nas Caçadas mostra a espécie em surto, a área e o tempo restante. Durante o surto, ela ganha mais peso nos encontros daquela área.','O surto dura 20 minutos e uma nova seleção pode surgir a cada hora. IVs e chance de shiny não recebem bônus pelo surto.']]],'hunts'),
  topic('capture','Captura','Captura automática','Ligar, desligar e escolher as bolas.',[
