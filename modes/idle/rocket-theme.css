@@ -66,6 +66,16 @@ body.idle-native-mode #stage #menu.idle-settings #mclose{background:#713147!impo
 body.idle-native-mode .is-supply-picker{background:#27212d!important;border-color:#b35a7d!important;color:#f5dfeb!important}
 body.idle-native-mode .is-supply-picker .is-caught-card{background:#392a36!important;border-color:#89556d!important}
 body.idle-native-mode .is-supply-picker :is(header,p,small){color:#d7b9cb}
+/* Quick audio belongs to the Idle palette, including its native range controls. */
+body.idle-native-mode #stage #quickVolumePanel{background:#211c27!important;border-color:#bd567c!important;color:#ffe0ed!important;box-shadow:inset 1px 1px #f493b530,inset -1px -1px #100e16,0 0 0 3px #15121c,5px 6px #0006!important;border-radius:5px}
+body.idle-native-mode #stage #quickVolumePanel label{color:#ffe0ed!important}
+body.idle-native-mode #stage #quickVolumePanel output{color:#ffcf68!important}
+body.idle-native-mode #stage #quickVolumePanel input{background:linear-gradient(90deg,#ec386b var(--volume),#503447 var(--volume))!important;box-shadow:0 2px #100d18!important;accent-color:#ec386b}
+body.idle-native-mode #stage #quickVolumePanel input::-webkit-slider-thumb{background:#ffcf68!important;border-color:#ffe5a0!important;box-shadow:inset 1px 1px #fff2bc,1px 2px #100d18!important}
+body.idle-native-mode #stage #quickVolumePanel input::-moz-range-thumb{background:#ffcf68!important;border-color:#ffe5a0!important;box-shadow:1px 2px #100d18!important}
+body.idle-native-mode #stage #quickVolumePanel .quick-volume-mute{background:#d72e56!important;border-color:#ff7fa0!important;color:#fff0f5!important;border-radius:4px!important;box-shadow:inset 0 1px #ffffff30,inset 0 -2px #0004!important}
+body.idle-native-mode #stage #quickVolumePanel .quick-volume-mute:hover{background:#ed3d6b!important}
+body.idle-native-mode #stage #quickVolumePanel :is(input,button):focus-visible{outline:2px solid #ffcf68!important}
 /* The arena quick card uses the same surfaces without changing its battle data. */
 body.idle-native-mode #tip:has(.idle-tip-compact){background:#251d2a!important;border-color:#ac5679!important;box-shadow:0 10px 30px #0008!important}
 body.idle-native-mode #tip .idle-tip-compact .um{background:#382735!important;border-color:#87546b!important}
