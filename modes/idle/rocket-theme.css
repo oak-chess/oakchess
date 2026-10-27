@@ -66,6 +66,17 @@ body.idle-native-mode #stage #menu.idle-settings #mclose{background:#713147!impo
 body.idle-native-mode .is-supply-picker{background:#27212d!important;border-color:#b35a7d!important;color:#f5dfeb!important}
 body.idle-native-mode .is-supply-picker .is-caught-card{background:#392a36!important;border-color:#89556d!important}
 body.idle-native-mode .is-supply-picker :is(header,p,small){color:#d7b9cb}
+/* A typed quantity and one compact receipt keep bulk trading readable. */
+body.idle-native-mode #idle-shop .is-shop-auto-loot{grid-column:1/-1;display:flex;align-items:center;gap:12px;background:#302630;border:1px solid #a65b7b;border-radius:6px;padding:12px;margin:0}
+body.idle-native-mode #idle-shop .is-shop-auto-loot input{flex:none;width:18px;height:18px;accent-color:#ec386b}
+body.idle-native-mode #idle-shop .is-shop-auto-loot span{display:grid;gap:5px;min-width:0}
+body.idle-native-mode #idle-shop .is-shop-auto-loot b{font-size:12px;color:#ffcf68}
+body.idle-native-mode #idle-shop .is-shop-auto-loot small{font-size:10px;line-height:1.5;color:#e1c9d6}
+body.idle-native-mode #idle-shop .is-shop-quantities{flex-wrap:wrap}
+body.idle-native-mode #idle-shop .is-shop-quantities input{width:105px;min-width:75px;box-sizing:border-box;padding:7px 9px!important;text-align:center;font-size:12px}
+body.idle-native-mode #idle-shop .is-shop-notice{display:flex;align-items:center;gap:12px;padding:9px 12px;margin:0;border:1px solid #65ad8b;border-radius:6px;background:#223c32;color:#c2f3d7;min-width:0}
+body.idle-native-mode #idle-shop .is-shop-notice>span{flex:1;min-width:0;font-size:11px;line-height:1.5;overflow-wrap:anywhere;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+body.idle-native-mode #idle-shop .is-shop-notice>button{flex:none;padding:4px 7px!important;margin:0!important;font-size:11px!important}
 /* Quick audio belongs to the Idle palette, including its native range controls. */
 body.idle-native-mode #stage #quickVolumePanel{background:#211c27!important;border-color:#bd567c!important;color:#ffe0ed!important;box-shadow:inset 1px 1px #f493b530,inset -1px -1px #100e16,0 0 0 3px #15121c,5px 6px #0006!important;border-radius:5px}
 body.idle-native-mode #stage #quickVolumePanel label{color:#ffe0ed!important}

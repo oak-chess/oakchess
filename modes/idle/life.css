@@ -14,3 +14,17 @@ body.idle-native-mode #idle-hunts[data-view=choose] .ih-browser{height:auto;min-
 body.idle-native-mode #idle-hunts[data-view=choose] .ih-browser-tools{flex:none}
 body.idle-native-mode #idle-field-notes :is(.il-dex-nav,.il-collection-nav) [aria-pressed=true]{background:#8e3a54!important;color:#fff!important}
 body.idle-native-mode #idle-world .il-breeding-options [aria-pressed=true]{border-color:#92d6b7!important;background:#284a41!important}
+/* Keep every hunt reachable inside the panel, including the fourth/endless area. */
+body.idle-native-mode #idle-hunts[data-view=choose]{display:flex;flex-direction:column;height:700px;max-height:calc(100% - 28px)!important;top:50%!important;overflow:hidden}
+body.idle-native-mode #idle-hunts[data-view=choose][hidden]{display:none}
+body.idle-native-mode #idle-hunts[data-view=choose]>header,body.idle-native-mode #idle-hunts[data-view=choose]>.ip-tabs{flex:none}
+body.idle-native-mode #idle-hunts[data-view=choose]>.ih-content{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden;max-height:none!important;padding:12px 16px}
+body.idle-native-mode #idle-hunts[data-view=choose] .ih-browser{min-height:0;flex:1;height:auto;align-items:stretch}
+body.idle-native-mode #idle-hunts[data-view=choose] .ih-browser-list{min-height:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:#bc577a #211c27;padding:0 5px 3px 0;gap:7px}
+body.idle-native-mode #idle-hunts[data-view=choose] .ih-browser-card{height:94px;min-height:94px;padding:8px 10px;gap:3px;box-sizing:border-box;white-space:normal}
+body.idle-native-mode #idle-hunts[data-view=choose] .ih-browser-card-head{align-items:start}
+body.idle-native-mode #idle-hunts[data-view=choose] .ih-browser-card-head b{overflow-wrap:anywhere}
+body.idle-native-mode #idle-hunts[data-view=choose] .ih-browser-portraits{height:26px;flex:none}
+body.idle-native-mode #idle-hunts[data-view=choose] .ih-browser-portraits img{width:26px;height:26px}
+body.idle-native-mode #idle-hunts[data-view=choose] .ih-browser-detail{min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#bc577a #211c27}
+body.idle-native-mode #idle-hunts[data-view=choose] .ih-browser-tools{flex:none}

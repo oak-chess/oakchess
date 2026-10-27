@@ -1,7 +1,7 @@
 /* Hunts, supplies and expedition accounting for the isolated OakChess idle mode. */
 window.createIdleHunts=function(ctx){
 const {state:s}=ctx;const captureHistory=window.createIdleCaptureHistory({state:s,lines:ctx.lines,sprite:ctx.sprite,regions:ctx.regions,hunts:()=>Object.entries(types).map(([id,d])=>({id,name:d.name}))});
-const defaults={version:1,kind:'forest',wave:1,autoAdvance:true,waveByArea:{},levelByArea:{},bosses:{},target:null,waves:{},loot:{},supplies:{},session:null,pendingXp:0,pendingMembers:{},specialization:'balanced',lastSafe:null};
+const defaults={version:1,kind:'forest',wave:1,autoAdvance:true,autoSellLoot:false,waveByArea:{},levelByArea:{},bosses:{},target:null,waves:{},loot:{},supplies:{},session:null,pendingXp:0,pendingMembers:{},specialization:'balanced',lastSafe:null};
 s.hunts={...defaults,...s.hunts};const q=s.hunts;if(q.encounterSizeVersion!==1){s.encounter=null;s.encounterGenes=null;q.encounterSizeVersion=1}if(q.habitatVersion!==2){s.encounter=null;s.encounterGenes=null;q.target=null;q.habitatVersion=2}
 q.supplies={healItem:'potions',reviveItem:'revives',superPotions:0,hyperPotions:0,maxPotions:0,fullRestores:0,maxRevives:0,potions:10,revives:3,heal:true,revive:true,afterDefeat:true,threshold:50,reserve:2,reserveRevive:1,limit:20,used:0,...q.supplies};
 if(!window.IDLE_ITEMS.healing[q.supplies.healItem])q.supplies.healItem='potions';if(!window.IDLE_ITEMS.reviving[q.supplies.reviveItem])q.supplies.reviveItem='revives';
@@ -53,7 +53,7 @@ function onDefeat(u,units){if(u._idleRewarded)return;u._idleRewarded=true;ctx.de
  const coins=Math.round((2+u.L.c+s.area)*current().gold*ctx.objective().gold);
  ctx.trainerXp(xp);for(const ally of units.filter(x=>x.side===0&&x.alive)){const m=s.team.find(m=>m.id===ally._idleMember);if(m)ctx.gainXp(m,xp)}
  s.gold+=coins;st.xp+=xp;st.coins+=coins;st.defeated++;totals.xp+=xp;totals.coins+=coins;totals.defeated++;
- const drops=window.IDLE_DROPS.roll(u.L,u.star||1);for(const drop of drops){q.loot[drop.key]=(q.loot[drop.key]||0)+drop.count;st.loot+=drop.count*lootTypes[drop.key].price}q.dropLog=q.dropLog||[];if(drops.length){q.dropLog.unshift({name:u.L.names[(u.star||1)-1],drops,at:Date.now()});q.dropLog=q.dropLog.slice(0,20)}
+ const drops=window.IDLE_DROPS.roll(u.L,u.star||1);for(const drop of drops){const value=drop.count*lootTypes[drop.key].price;if(q.autoSellLoot){s.gold+=value;totals.coins+=value;st.autoSoldLoot=(st.autoSoldLoot||0)+value}else q.loot[drop.key]=(q.loot[drop.key]||0)+drop.count;st.loot+=value}q.dropLog=q.dropLog||[];if(drops.length){q.dropLog.unshift({name:u.L.names[(u.star||1)-1],drops,autoSold:!!q.autoSellLoot,at:Date.now()});q.dropLog=q.dropLog.slice(0,20)}
  const stone=window.IDLE_DROPS.rollStone(u.L,u.star||1);if(stone){s.world.stones[stone.key]=(s.world.stones[stone.key]||0)+1;q.dropLog.unshift({name:u.L.names[(u.star||1)-1],stone:stone.key,at:Date.now()});q.dropLog=q.dropLog.slice(0,20);ctx.rareDrop?.(window.IDLE_WORLD_DATA.stones[stone.key]||stone.key)}
 
  q.lastKill={name:u.L.names[(u.star||1)-1]||u.L.names[0],xp,at:Date.now()};
