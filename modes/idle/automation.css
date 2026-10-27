@@ -1,7 +1,7 @@
 /* One-page automation: compact essential controls, optional advanced sections. */
 body.idle-native-mode #idle-automation{display:flex!important;flex-direction:column;width:1100px;height:700px;max-width:calc(100% - 34px)!important;max-height:calc(100% - 34px)!important;top:50%!important;padding:0!important;overflow:hidden!important}
 body.idle-native-mode #idle-automation[hidden]{display:none!important}
-#idle-automation .ia-dashboard{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:13px;padding:16px;flex:1;min-height:0;overflow-y:auto;align-content:start;scrollbar-width:thin;scrollbar-color:#955275 #211c27}
+#idle-automation .ia-dashboard{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:11px;padding:12px;flex:1;min-height:0;overflow-y:auto;align-content:start;scrollbar-width:thin;scrollbar-color:#955275 #211c27}
 body.idle-native-mode #idle-automation .ia-card{min-width:0;padding:14px;background:#302630;border:1px solid #835168;border-radius:10px;color:#f6e6ef}
 #idle-automation .ia-card>header{display:flex;align-items:center;gap:9px;margin:0 0 13px}
 #idle-automation .ia-card>header>img{width:31px;height:31px;object-fit:contain;image-rendering:pixelated;flex:none}
@@ -14,8 +14,8 @@ body.idle-native-mode #idle-automation .ia-field select{max-width:100%;width:100
 #idle-automation .ia-field input[type=checkbox]{width:15px;height:15px;flex:none;margin:0;accent-color:#e34b75}
 #idle-automation .ia-field input[type=number]{width:80px;max-width:100%;box-sizing:border-box}
 #idle-automation .ia-note{font:10px/16px 'Trebuchet MS',Arial,sans-serif;color:#c5a9ba;margin:9px 0 0}
-#idle-automation .ia-details{border-top:1px solid #82506966;border-radius:0!important;margin-top:13px;padding-top:6px}
-body.idle-native-mode #idle-automation .ia-details>summary{color:#efb6cd;font:700 11px/18px 'Trebuchet MS',Arial,sans-serif;padding:6px 0;cursor:pointer}
+#idle-automation .ia-details{border-top:1px solid #82506966;border-radius:0!important;margin-top:8px;padding-top:0}
+body.idle-native-mode #idle-automation .ia-details>summary{color:#efb6cd;font:700 11px/18px 'Trebuchet MS',Arial,sans-serif;padding:4px 0;cursor:pointer}
 #idle-automation .ia-recovery-toggles{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:9px}
 #idle-automation .ia-recovery-toggles .ia-field{font-size:10px;line-height:15px}
 #idle-automation [data-supply-field=threshold]{flex-direction:row;justify-content:space-between;align-items:center;margin-top:9px}

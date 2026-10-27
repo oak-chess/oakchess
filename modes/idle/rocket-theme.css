@@ -66,6 +66,67 @@ body.idle-native-mode #stage #menu.idle-settings #mclose{background:#713147!impo
 body.idle-native-mode .is-supply-picker{background:#27212d!important;border-color:#b35a7d!important;color:#f5dfeb!important}
 body.idle-native-mode .is-supply-picker .is-caught-card{background:#392a36!important;border-color:#89556d!important}
 body.idle-native-mode .is-supply-picker :is(header,p,small){color:#d7b9cb}
+/* Arena navigation and synergy HUD share the Rocket surfaces. Type hues remain semantic. */
+body.idle-native-mode #stage .idle-capture-focus-settings{display:grid;gap:9px;padding:10px 0;min-width:0}
+body.idle-native-mode #stage .idle-capture-focus-settings>label{display:flex;gap:7px;align-items:center;font-size:10px;line-height:1.5;margin:0}
+body.idle-native-mode #stage .idle-capture-focus-settings>label:first-child{align-items:stretch;flex-direction:column}
+body.idle-native-mode #stage .idle-capture-focus-settings select{min-width:0;width:100%;box-sizing:border-box;background:#17131e;color:#ffe0ed;border:1px solid #995573;border-radius:4px;padding:7px;font:11px 'Trebuchet MS'}
+body.idle-native-mode #stage .idle-capture-focus-settings input{accent-color:#ec386b;flex:none}
+body.idle-native-mode #stage .idle-capture-focus-settings small{font-size:9px;color:#d9b9cc;line-height:1.5}
+body.idle-native-mode #stage .is-caught-filter{width:100%;box-sizing:border-box;margin:0 0 8px;padding:7px;background:#17131e;border:1px solid #995573;border-radius:4px;color:#ffe0ed;font:11px 'Trebuchet MS'}
+body.idle-native-mode #stage .is-caught-list{max-height:min(300px,36vh)}
+body.idle-native-mode #stage #idle-quick-supplies:has(.is-caught-list){max-height:calc(100vh - 120px);overflow-y:auto;scrollbar-width:thin}
+body.idle-native-mode #stage .is-caught-card time{font-size:8px;color:#d8a7bf}
+body.idle-native-mode #stage .is-caught-card[data-shiny=true]{border-color:#ffcf68!important;background:#443528!important}
+body.idle-native-mode #stage .is-caught-card[role=button]{cursor:pointer}
+body.idle-native-mode #stage .is-caught-card[role=button]:hover{background:#613047!important;border-color:#ec7ba2!important}
+body.idle-native-mode #stage .is-caught-card[role=button]:focus-visible{outline:2px solid #ffcf68;outline-offset:-2px}
+body.idle-native-mode #stage .is-caught-empty{padding:12px 4px;color:#f5dfeb;font-size:11px;line-height:1.5}
+body.idle-native-mode #stage .is-caught-empty b{color:#ffcf68}
+body.idle-native-mode #stage .is-caught-empty p{font-size:10px;color:#d9b9cc;margin:5px 0}
+body.idle-native-mode #stage .is-caught-focus{border-top:1px solid #785069;margin-top:8px;padding-top:8px}
+body.idle-native-mode #stage .is-caught-focus summary{font-size:10px;color:#ffcf68;cursor:pointer;line-height:1.5}
+body.idle-native-mode #stage .is-caught-records{width:100%;margin-top:8px;padding:7px;background:#71304e;color:#ffe0ed;border:1px solid #bd567c;border-radius:4px;font:10px 'Trebuchet MS'}
+body.idle-native-mode #stage .is-supply-hud{background:#211c27!important;border-color:#934662!important;box-shadow:inset 0 1px #f493b523,0 4px 14px #0007!important;border-radius:8px}
+body.idle-native-mode #stage .is-supply-chip{background:#392635!important;border-color:#785069!important;color:#ffe0ed!important;border-radius:5px}
+body.idle-native-mode #stage .is-supply-chip b{color:#ffcf68}
+body.idle-native-mode #stage .is-supply-chip:hover,body.idle-native-mode #stage .is-supply-chip[aria-expanded=true]{background:#71304e!important;border-color:#ef82a6!important}
+body.idle-native-mode #stage .is-caught-chip{background:#922847!important;border-color:#f26c97!important}
+body.idle-native-mode #stage .is-supply-chip[data-empty=true]{border-color:#f07585!important;color:#ffadb9!important}
+body.idle-native-mode #stage .is-supply-chip[data-empty=true] b{color:#ffadb9}
+body.idle-native-mode #stage .is-supply-picker{background:#211c27!important;border-color:#bd567c!important;border-radius:8px;color:#f5dfeb!important}
+body.idle-native-mode #stage .is-supply-picker header>b{color:#ffcf68}
+body.idle-native-mode #stage .is-supply-picker header button{background:#513044!important;border-color:#ad5d7f!important;color:#ffdaeb!important;border-radius:4px}
+body.idle-native-mode #stage .is-supply-picker>nav{background:#17131e!important}
+body.idle-native-mode #stage .is-supply-picker>nav button[aria-pressed=true]{background:#d72e56!important;color:#fff0f5!important}
+body.idle-native-mode #stage .is-supply-picker-list>button,body.idle-native-mode #stage .is-caught-card{background:#362532!important;border-color:#80506a!important}
+body.idle-native-mode #stage .is-supply-picker-list>button:hover:not(:disabled),body.idle-native-mode #stage .is-supply-picker-list>button[aria-pressed=true]{background:#613047!important;border-color:#ec7ba2!important}
+body.idle-native-mode #stage .is-supply-picker-list b,body.idle-native-mode #stage .is-caught-card b{color:#fff0f6}
+body.idle-native-mode #stage .is-supply-picker-list span small,body.idle-native-mode #stage .is-caught-card small,body.idle-native-mode #stage .is-supply-picker .is-supply-picker-help{color:#d9b9cc}
+body.idle-native-mode #stage .is-supply-picker-list>button>small{color:#ffcf68}
+body.idle-native-mode #stage :is(.is-supply-picker-list,.is-caught-list){scrollbar-color:#c15d88 #211c27}
+body.idle-native-mode #stage .is-synergies header{gap:5px}
+body.idle-native-mode #stage .is-synergies header h3{flex:1;min-width:0}
+body.idle-native-mode #stage .is-synergies-collapse{width:21px;height:21px;flex:none;padding:0!important;font:16px/1 Arial!important;background:#513044!important;border:1px solid #ad5d7f!important;border-radius:4px;color:#ffdaeb!important;cursor:pointer}
+body.idle-native-mode #stage .is-synergies :is(.is-synergies-collapse,.is-synergies-reset):focus-visible{outline:2px solid #ffcf68;outline-offset:2px}
+body.idle-native-mode #stage .is-synergies.is-synergies-collapsed{min-height:0!important}
+body.idle-native-mode #stage .is-synergies.is-synergies-collapsed header{margin-bottom:0!important}
+body.idle-native-mode #stage .is-synergies.is-synergies-collapsed #traits{display:none!important}
+body.idle-native-mode #stage .is-navigation{background:#211c27!important;border-color:#934662!important;border-top-color:#ef386a!important;box-shadow:inset 0 1px #f493b523,0 4px 14px #0007!important}
+body.idle-native-mode #stage .is-navigation>button{background:transparent!important;border-color:transparent!important;color:#ebd5e1!important}
+body.idle-native-mode #stage .is-navigation>button:hover{background:#4b293d!important;border-color:#a35a7a!important;color:#ffe3a0!important}
+body.idle-native-mode #stage .is-navigation>button[aria-pressed=true]{background:#d72e56!important;border-color:#ff83a4!important;color:#fff0f5!important;box-shadow:inset 0 1px #fff3,inset 0 -2px #0004}
+body.idle-native-mode #stage .is-navigation .is-action #combatbtn{background:#d72e56!important;border-color:#ff83a4!important;color:#fff0f5!important;box-shadow:inset 0 1px #fff3,inset 0 -2px #0004!important;text-shadow:0 1px #681b35!important}
+body.idle-native-mode #stage .is-navigation .is-action #combatbtn:hover{background:#ed3d6b!important}
+body.idle-native-mode #stage .is-synergies{background:#211c27!important;border-color:#934662!important;box-shadow:inset 0 1px #f493b523,0 4px 12px #0005!important;color:#f3dce8!important}
+body.idle-native-mode #stage .is-synergies h3{color:#ffcf68!important}
+body.idle-native-mode #stage .is-synergies-reset{background:#513044!important;border:1px solid #ad5d7f!important;color:#ffdaeb!important}
+body.idle-native-mode #stage .is-synergies #traits .tr{background:#302630!important;border-color:#70465e!important;color:#e4cbd9!important}
+body.idle-native-mode #stage .is-synergies #traits .tr.on{background:color-mix(in srgb,var(--c) 20%,#302630)!important;border-color:#ffcf68!important}
+body.idle-native-mode #stage .is-synergies #traits .tr .nm{color:#ead3e0!important}
+body.idle-native-mode #stage .is-synergies #traits .tr .ct{color:#bda3b5!important}
+body.idle-native-mode #stage .is-synergies #traits .tr.on .ct{color:#ffcf68!important}
+body.idle-native-mode #stage .is-synergies #traits .tr:hover{background:#503043!important;border-color:#eb80a5!important}
 /* A typed quantity and one compact receipt keep bulk trading readable. */
 body.idle-native-mode #idle-shop .is-shop-auto-loot{grid-column:1/-1;display:flex;align-items:center;gap:12px;background:#302630;border:1px solid #a65b7b;border-radius:6px;padding:12px;margin:0}
 body.idle-native-mode #idle-shop .is-shop-auto-loot input{flex:none;width:18px;height:18px;accent-color:#ec386b}
