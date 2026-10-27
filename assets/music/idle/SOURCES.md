@@ -27,3 +27,8 @@ As faixas Rocket existentes continuam no evento Rocket. Aves e Mew/Mewtwo usam t
 Músicas originais pertencem a seus titulares (Game Freak/Nintendo/The Pokémon Company e compositores). A biblioteca é uma fonte de arquivos preparados para loop; não é atribuída licença aberta às gravações. O roteiro de download e nomes originais estão em scripts/download-idle-music.ps1 e tracks-source.json.
 
 As 15 faixas acima são o pacote original de HGSS. O pacote adicional de 20 faixas RSE e suas validações estão em [HOENN-SOURCES.md](HOENN-SOURCES.md).
+
+## Gachapon
+- `gacha-game-corner.ogg`: HGSS 149 Goldenrod Game Corner, Pokémon HeartGold & SoulSilver.
+- Fonte: https://www.enls.eu/prelooped/downloads/HGSS/HGSS%20149%20Goldenrod%20Game%20Corner.ogg
+- Música do painel do gachapon; respeita volume e mute, pausa ao fechar e preserva os efeitos da máquina.

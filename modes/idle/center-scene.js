@@ -46,7 +46,7 @@ window.createIdleCenterScene=function(ctx){
    ['shop','Suprimentos','mart_employee',ctx.shop,1085,172,'Atendente da loja · comprar suprimentos e vender itens'],
    ['evolution','Evolução',242,ctx.evolution,245,400,'Blissey · apoio à evolução'],
    ['tasks','Tarefas','bill',ctx.tasks,1130,392,'Responsável pelas tarefas · consultar atividades da reserva'],
-   ['nursery','Incubadora','daycare_lady',ctx.nursery,1168,279,'Cuidadora do Day Care · incubação e cuidados com os ovos']
+   ['nursery','Incubadora','daycare_lady',ctx.nursery,1168,279,'Cuidadora do Day Care · incubação e cuidados com os ovos'],['gacha','Gachapon','scientist',ctx.gacha,1170,510,'Gachapon regional · ovos de Kanto, Johto e Hoenn']
   ];
   for(const [id,label,sprite,fn,x,y,description]of services){
    const b=btn('',fn,'ic-station ic-station-'+id);b.title=description;b.setAttribute('aria-label',label+' · '+description);
