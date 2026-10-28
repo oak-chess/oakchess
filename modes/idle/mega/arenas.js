@@ -25,7 +25,12 @@
  const nativePaint=paintThemed;
  paintThemed=function(g,layer,T){if(!registry.has(T.id))return nativePaint(g,layer,T);const A=arGeo();if(layer!=='arena')T.scene(g,A);if(layer==='scene')return;
   // Keep the deck solid: scenery must never show through the fighting surface.
-  g.save();g.globalAlpha=1;aWallT(g,A,T);for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++)aHexT(g,r,c,r>=4,T);aEmblemT(g,T);arWell(g,A);g.restore();
+  g.save();g.globalAlpha=1;aWallT(g,A,T);
+  // Fade only the grid, using the same transition as the other themed arenas.
+  // The opaque deck, emblem and bench must remain solid throughout combat.
+  g.save();g.globalAlpha*=1-LEGACY_HEX_SOFTNESS*.88;
+  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++)aHexT(g,r,c,r>=4,T);
+  g.restore();aEmblemT(g,T);arWell(g,A);g.restore();
  };
  window.IDLE_MEGA_ARENA_ART={loaded:key=>cache.get(key)?.loaded===true};
 })();
