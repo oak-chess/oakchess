@@ -20,3 +20,9 @@ Painel Mega no Centro Pokémon: missão, tokens, catálogo dos seis bosses, requ
 
 ## Persistência e testes
 Estado versionado em world.mega; transações com rollback em falha de salvamento. Recompensas idempotentes por identificador de encontro/desafio. IDs de desafio monotônicos. Migração sem apagar dados. Testes de missão única, elegibilidade, cobrança, derrota/treino, limites RNG, primeira vitória, fabricação/equipagem, recarga e preservação dos membros. Navegador: PMD normal/shiny, fluxo real, combate, retorno à forma base, regressão de eventos e caçadas. Publicação só após solicitação.
+
+## Expansão PAdventures
+Mega Blastoise, Mega Lucario e Mega Swampert foram integrados posteriormente. Veja `TRIO-EXPANSION.md` para regras, limitações das direções/animações, versão shiny e testes. O elenco atual tem nove bosses; os seis PMD originais foram preservados.
+
+## Ampliação do catálogo
+Mais 22 formas aprovadas foram adicionadas, totalizando 31. Regras, fontes, sprites, Charizard Y e testes: `EXPANDED-ROSTER.md`. Os nove bosses anteriores foram preservados.

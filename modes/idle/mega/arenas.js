@@ -8,8 +8,11 @@
   ['mawile','Santuário do Ferro Florido','blue','metal','#40313b','#94717b','#ffa4cb'],
   ['alakazam','Biblioteca do Horizonte Psíquico','psychic','marble','#443049','#b19367','#edc3ff'],
   ['houndoom','Fortaleza das Brasas Negras','fire','rock','#35262c','#79514a','#ff8967'],
-  ['gardevoir','Jardim do Véu Lunar','garden','marble','#29434a','#819f9d','#b2f7e0']
- ];
+  ['gardevoir','Jardim do Véu Lunar','garden','marble','#29434a','#819f9d','#b2f7e0'],
+  ['blastoise','Fortaleza das Marés','blue','rock','#183e59','#6597ad','#6acfff'],
+  ['lucario','Santuário da Aura','psychic','marble','#344761','#a48c6c','#73bdff'],
+  ['swampert','Manguezal do Abalo Profundo','garden','rock','#284a47','#7a9475','#86d7ad']
+ ].concat(window.IDLE_MEGA_EXTRA_ARENAS||[]);
  const registry=new Map();
  window.IDLE_MEGA_ARENAS=rows.map(([key,name,base,tex,dark,light,accent])=>{
   const parent=ARENA_THEMES.find(t=>t.id===base),T={...parent,id:'mega-'+key,name,tex,tile:JSON.parse(JSON.stringify(parent.tile)),wall:{...parent.wall,a:light,b:dark,tex:'rock',trim:accent+'80',moss:null},floor:[dark,dark],disc:dark,glow:accent+'16',vig:'rgba(9,9,19,.25)'};

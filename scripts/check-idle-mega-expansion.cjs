@@ -4,7 +4,7 @@ const fixture={gold:50000,wins:5,balls:100,items:[],area:0,trainerLevel:350,last
 
 const variants=await p.evaluate(async()=>{const rows=[];for(const id of [6,94,303,65,229,282])for(const shiny of [false,true]){const d=await PMD.get(id,shiny,1);rows.push({id,shiny,idle:!!d?.Idle,attack:!!d?.Attack,rows:d?.Walk?.rows})}return rows});assert(variants.every(v=>v.idle&&v.attack&&v.rows===8),JSON.stringify(variants));
 await p.evaluate(()=>{testMega.intro()});const initial=await p.evaluate(()=>({area:megaCtx.state.area,theme:ARENA_T?.id??null}));
-await p.locator('#idle-mega-portal').click();const panel=p.locator('#idle-mega');assert.equal(await panel.locator('.im-bosses button').count(),6);await panel.getByRole('button',{name:'Fechar Mega Evolução',exact:true}).click();
+await p.locator('#idle-mega-portal').click();const panel=p.locator('#idle-mega');assert.equal(await panel.locator('.im-bosses button').count(),31);await panel.getByRole('button',{name:'Fechar Mega Evolução',exact:true}).click();
 for(const key of ['alakazam','houndoom','gardevoir']){
  await p.locator('#idle-mega-portal').click();await panel.locator('.im-bosses button').filter({hasText:'Mega '+key[0].toUpperCase()+key.slice(1)}).click();
  assert(!(await panel.locator('.im-hero p').innerText()).includes('undefined'));
@@ -22,5 +22,5 @@ for(const key of ['alakazam','houndoom','gardevoir']){
  await p.evaluate(()=>{B.on=false;B.over=true;B.done=true;B.winner=0;demoNext()});await p.waitForTimeout(500);assert.equal(await p.evaluate(()=>ARENA_T?.id??null),initial.theme);assert.equal(await p.evaluate(()=>megaCtx.state.area),initial.area);assert.equal(await p.evaluate(key=>testMega.data.wins[key],key),1);assert((await p.evaluate(key=>testMega.data.fragments[key],key))>=8);assert.equal(await p.locator('.idle-mega-unit').count(),0);
 }
 assert.equal(await p.evaluate(()=>testMega.data.tokens),0);assert.deepEqual(errors,[]);assert.deepEqual(missing,[]);
-await p.reload();await p.waitForTimeout(2500);assert.equal(await p.evaluate(()=>testMega.defs.length),6);assert.equal(await p.evaluate(()=>testMega.data.selected.key),'gardevoir');for(const key of ['alakazam','houndoom','gardevoir'])assert(await p.evaluate(key=>testMega.data.stones[key],key));
-console.log('Passed: 12 PMD variants, six-boss navigation, three item icons/crafting/compatible partners, paid entries and rewards, three exclusive arenas, mechanics, temporary shiny transformation, capped shield, return to hunt and persisted stones/selection.');}finally{await browser.close()}})().catch(e=>{console.error(e.stack);process.exitCode=1});
+await p.reload();await p.waitForTimeout(2500);assert.equal(await p.evaluate(()=>testMega.defs.length),31);assert.equal(await p.evaluate(()=>testMega.data.selected.key),'gardevoir');for(const key of ['alakazam','houndoom','gardevoir'])assert(await p.evaluate(key=>testMega.data.stones[key],key));
+console.log('Passed: 12 PMD variants, 31-boss navigation, three item icons/crafting/compatible partners, paid entries and rewards, three exclusive arenas, mechanics, temporary shiny transformation, capped shield, return to hunt and persisted stones/selection.');}finally{await browser.close()}})().catch(e=>{console.error(e.stack);process.exitCode=1});

@@ -54,3 +54,13 @@ Mega Gardevoir habitat: secluded moonlit white stone garden sanctuary with refle
 As mecânicas extras das Fendas são adaptações do Idle, separadas dos golpes reais já cadastrados. Alakazam atordoa por 0,8s a cada 8s; Houndoom gera fogo e queimadura; Gardevoir recebe escudo de 8% dos PS máximos, limitado a 16%, a cada 8s. Atributos Mega usam razões entre os atributos-base da forma Mega e da forma normal. Nenhum movimento genérico substitui o repertório da espécie.
 
 Teste da expansão: scripts/check-idle-mega-expansion.cjs.
+
+## Novas arenas PAdventures
+- Mega Blastoise: Fortaleza das Marés (`assets/arena-blastoise.webp`).
+- Mega Lucario: Santuário da Aura (`assets/arena-lucario.webp`).
+- Mega Swampert: Manguezal do Abalo Profundo (`assets/arena-swampert.webp`).
+
+Criadas com image_gen integrado. Prompts completos e fontes: `padventures/ART-SOURCES.json`. Tabuleiro nativo opaco e cores próprias para cada habitat.
+
+## Catálogo ampliado
+As 22 novas arenas têm imagens próprias em `assets/arena-<key>.webp`, listadas em `expansion-specs.json` e registradas em `padventures/ART-SOURCES.json`. O catálogo atual tem 31 habitats Mega, sem reutilizar os cenários anteriores para os novos bosses.
