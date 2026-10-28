@@ -1,7 +1,21 @@
 /* Center arena: native hex geometry and perspective, isolated to Jornada Idle. */
 window.createIdleCenterScene=function(ctx){
  const s=ctx.state;let root,layer,team,last='',focus,staffFrame=0,lastStaffTick=0,dialogue,dialogueText,dialogueActions,healingTimer=0,dialogueFocus;
- const staff=[];
+ const staff=[];let evolutionEffect=null,evolutionTimer=0;
+ function clearEvolution(){clearTimeout(evolutionTimer);evolutionTimer=0;evolutionEffect?.remove();evolutionEffect=null}
+ function celebrateEvolution(event){
+  if(!root||root.hidden)open();clearEvolution();refresh();
+  const fx=el('section',undefined,'ic-evolution-effect');evolutionEffect=fx;fx.setAttribute('role','status');fx.setAttribute('aria-live','polite');fx.dataset.memberId=event.member.id;
+  const reduced=!!CFG.reduceFx||matchMedia('(prefers-reduced-motion: reduce)').matches;fx.dataset.reduced=String(reduced);
+  const copy=el('div',undefined,'ic-evolution-copy'),caption=el('small','EVOLUÇÃO NO CENTRO POKÉMON'),title=el('h2',event.fromName+' está evoluindo!'),sprites=el('div',undefined,'ic-evolution-sprites');
+  const sprite=(id,label,cls)=>{const img=el('img',undefined,cls);img.src=window.IDLE_SHINY.sprite(ctx.sprite(id),event.member.shiny===true);img.alt=label;return img};
+  sprites.append(sprite(event.fromId,event.fromName,'ic-evolution-before'),sprite(event.toId,event.toName,'ic-evolution-after'));
+  const particles=el('div',undefined,'ic-evolution-particles');particles.setAttribute('aria-hidden','true');for(let i=0;i<16;i++){const spark=el('i');spark.style.setProperty('--angle',i*22.5+'deg');particles.append(spark)}sprites.append(particles);
+  copy.append(caption,title,sprites,el('p','Nível, IVs, potência e identidade preservados.'));fx.append(copy);stage.append(fx);SND.evolve();
+  const reveal=()=>{if(evolutionEffect!==fx)return;fx.dataset.revealed='true';title.textContent=event.fromName+' evoluiu para '+event.toName+'!';SND.cry(event.toId,1);SND.star();evolutionTimer=setTimeout(clearEvolution,reduced?1800:2400)};
+  evolutionTimer=setTimeout(reveal,reduced?150:2000);
+ }
+
  const interior=new Image();interior.src='modes/idle/assets/center/interior-pixel-v2.png';interior.onload=()=>{if(root&&!root.hidden)repaintArena()};
  function staffSprite(id,label,shiny=false){
   const cv=document.createElement('canvas');cv.width=80;cv.height=88;cv.className='ic-staff-pokemon';cv.setAttribute('role','img');cv.setAttribute('aria-label',label);const item={cv,data:null};staff.push(item);
@@ -35,7 +49,7 @@ window.createIdleCenterScene=function(ctx){
    healingTimer=setTimeout(()=>{healingTimer=0;layer.classList.remove('ic-healing');dialogueText.textContent=result.message;const done=btn('Obrigado!',dismissDialogue);dialogueActions.append(done);done.focus();refresh()},1100);
   });dialogueActions.append(confirm,btn('Agora não',dismissDialogue));confirm.focus();
  }
- function close(){if(!root||root.hidden)return;dismissDialogue();ctx.closePanels();root.hidden=true;layer.hidden=true;document.body.classList.remove('idle-center-view');cancelAnimationFrame(staffFrame);staffFrame=0;repaintArena();const action=document.getElementById('in-auto-label');if(action)action.textContent=ctx.isRunning()?'PAUSAR':'EXPLORAR';if(!ctx.isRunning()){s.world.location='field';ctx.save()}focus?.focus()}
+ function close(){clearEvolution();if(!root||root.hidden)return;dismissDialogue();ctx.closePanels();root.hidden=true;layer.hidden=true;document.body.classList.remove('idle-center-view');cancelAnimationFrame(staffFrame);staffFrame=0;repaintArena();const action=document.getElementById('in-auto-label');if(action)action.textContent=ctx.isRunning()?'PAUSAR':'EXPLORAR';if(!ctx.isRunning()){s.world.location='field';ctx.save()}focus?.focus()}
  function open(){if(root&&!root.hidden){close();return}focus=document.activeElement;ctx.closePanels();if(!ctx.isRunning()){s.world.location='center';ctx.save()}root.hidden=false;layer.hidden=false;document.body.classList.add('idle-center-view');last='';repaintArena();refresh();if(!staffFrame)staffFrame=requestAnimationFrame(animateStaff)}
  function refresh(){if(!root||root.hidden)return;const action=document.getElementById('in-auto-label');if(action)action.textContent='VOLTAR À CAÇADA';const members=s.team.filter(m=>m.pos),key=JSON.stringify(members.map(m=>[m.id,m.pos,m.star,m.level,m.shiny]));if(key===last)return;last=key;team.replaceChildren();members.forEach((m,i)=>{const L=ctx.lines.find(l=>l.names[0]===m.name);if(!L)return;const p=m.pos.z==='b'?hexXY(m.pos.r,m.pos.c):benchXY(m.pos.i??i),b=btn('',()=>ctx.party(m.id),'ic-partner'),img=staffSprite(L.ids[m.star-1],L.names[m.star-1],m.shiny===true);b.style.left=p.x+'px';b.style.top=p.y+'px';b.title=L.names[m.star-1]+' · Nv. '+m.level;b.setAttribute('aria-label','Abrir ficha de '+L.names[m.star-1]);b.append(img,el('b',(m.shiny?'✦ ':'')+L.names[m.star-1]),el('small','Nv. '+m.level+' · PS '+Math.round((ctx.health(m.id)??m.condition??1)*100)+'%'));team.append(b)})}
  function mount(stage){
@@ -61,5 +75,5 @@ window.createIdleCenterScene=function(ctx){
   dialogue=el('aside',undefined,'ic-dialogue');dialogue.hidden=true;dialogue.setAttribute('role','dialog');dialogue.setAttribute('aria-label','Conversa com a enfermeira');const portrait=el('span',undefined,'ic-dialogue-portrait');portrait.setAttribute('aria-hidden','true');const copy=el('div',undefined,'ic-dialogue-copy');dialogueText=el('p');dialogueText.setAttribute('aria-live','polite');dialogueActions=el('div',undefined,'ic-dialogue-actions');copy.append(el('b','Enfermeira'),dialogueText,dialogueActions);dialogue.append(portrait,copy);stage.append(dialogue);
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!root.hidden&&!document.querySelector('.idle-window:not([hidden])')){e.preventDefault();e.stopImmediatePropagation();if(!dialogue.hidden)dismissDialogue();else close()}},true);
  }
- return {mount,open,close,refresh,openRecovery(){if(!root||root.hidden)open();talkToNurse()},isOpen:()=>!!root&&!root.hidden};
+ return {mount,open,close,refresh,celebrateEvolution,openRecovery(){if(!root||root.hidden)open();talkToNurse()},isOpen:()=>!!root&&!root.hidden};
 };

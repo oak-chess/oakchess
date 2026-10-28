@@ -39,3 +39,25 @@ body.idle-center-view .is-hunt{top:10px;left:calc(50% + 400px);width:190px;min-h
 @media(prefers-reduced-motion:no-preference){#idle-center-scene.ic-healing .ic-partner canvas{animation:ic-care-glow 1.1s ease-in-out}@keyframes ic-care-glow{0%,100%{filter:drop-shadow(0 0 2px #80ffd244)}50%{filter:drop-shadow(0 0 12px #80ffd2) brightness(1.18)}}}
 #idle-center-scene .ic-service-assistant{position:absolute;transform:translate(-50%,-70%);display:block;width:48px;height:96px;padding:0;margin:0;border:0;border-radius:8px;background:transparent;z-index:2}
 #idle-center-scene .ic-service-assistant:hover{background:#ffffff25}
+/* Evolution celebration stays above the Center, after ordinary panels close. */
+.ic-evolution-effect{position:absolute;inset:0;z-index:210;display:grid;place-items:center;background:radial-gradient(ellipse at center,#16152e38,#080a1b99);pointer-events:auto;font-family:'Trebuchet MS',sans-serif;color:#fff2fc;text-align:center}
+.ic-evolution-copy{max-width:90%;text-shadow:0 2px 5px #08091d}
+.ic-evolution-copy>small{font-size:10px;letter-spacing:2px;color:#ffdc83}
+.ic-evolution-copy h2{margin:10px 0;font-size:25px}
+.ic-evolution-copy p{font-size:12px;color:#e9dcf5}
+.ic-evolution-sprites{position:relative;width:230px;height:210px;margin:0 auto;background:radial-gradient(ellipse at 50% 75%,#82d8ff66,transparent 60%)}
+.ic-evolution-sprites>img{position:absolute;left:50%;top:50%;width:155px;height:155px;object-fit:contain;image-rendering:pixelated;transform:translate(-50%,-50%);filter:drop-shadow(0 0 12px #c9f0ff)}
+.ic-evolution-before{animation:ic-evolution-gather .65s ease-in-out infinite alternate}
+.ic-evolution-after{opacity:0}
+.ic-evolution-effect[data-revealed=true] .ic-evolution-before{display:none}
+.ic-evolution-effect[data-revealed=true] .ic-evolution-after{opacity:1;animation:ic-evolution-reveal .8s ease-out both}
+.ic-evolution-particles{position:absolute;inset:0;pointer-events:none}
+.ic-evolution-particles i{position:absolute;left:50%;top:50%;width:4px;height:8px;background:#d5f3ff;box-shadow:0 0 8px #fff;transform:rotate(var(--angle)) translateY(-88px);animation:ic-evolution-orbit 1.2s ease-in infinite}
+.ic-evolution-effect[data-revealed=true] .ic-evolution-particles i{background:#ffe08b;animation:ic-evolution-burst .9s ease-out both}
+@keyframes ic-evolution-gather{from{filter:brightness(1) drop-shadow(0 0 10px #93d9ff);transform:translate(-50%,-50%) scale(.95)}to{filter:brightness(0) invert(1) drop-shadow(0 0 23px #fff);transform:translate(-50%,-50%) scale(1.08)}}
+@keyframes ic-evolution-reveal{from{filter:brightness(0) invert(1) drop-shadow(0 0 32px #fff);transform:translate(-50%,-50%) scale(.65)}to{filter:drop-shadow(0 0 12px #c9f0ff);transform:translate(-50%,-50%) scale(1)}}
+@keyframes ic-evolution-orbit{from{opacity:0;transform:rotate(var(--angle)) translateY(-110px)}40%{opacity:1}to{opacity:0;transform:rotate(calc(var(--angle) + 35deg)) translateY(-25px)}}
+@keyframes ic-evolution-burst{from{opacity:1;transform:rotate(var(--angle)) translateY(-25px)}to{opacity:0;transform:rotate(var(--angle)) translateY(-120px)}}
+.ic-evolution-effect[data-reduced=true] *{animation:none!important}
+.ic-evolution-effect[data-reduced=true] .ic-evolution-particles{display:none}
+@media(prefers-reduced-motion:reduce){.ic-evolution-effect *{animation:none!important}.ic-evolution-particles{display:none}}
