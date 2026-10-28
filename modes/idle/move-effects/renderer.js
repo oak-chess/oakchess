@@ -29,20 +29,24 @@
  base.warmMoves=moves=>Promise.all([original.warmMoves(moves),...moves.map(resource).filter(Boolean).map(r=>r.promise)]);
  base.start=(mv,x,y)=>{
   const r=resource(mv);if(!r?.loaded)return original.start(mv,x,y);
-  return r.mode==='self'?emit(r,x,y):true;
+  return r.mode==='self'||(r.mode==='area'&&mv.k==='burst'&&r.key!=='SURF')?emit(r,x,y):true;
  };
  base.hit=(mv,x,y,scale=1,source)=>{
   const r=resource(mv);if(!r?.loaded)return original.hit(mv,x,y,scale);
-  if(r.mode==='self')return true;
+  if(r.mode==='self'||mv.k==='beam'||mv.k==='chain'||(r.mode==='area'&&mv.k==='burst'))return true;
   if(r.key==='VINE_WHIP'&&source)return emit(r,source.x,source.y,{x2:x,y2:y,beam:true});
   return emit(r,x,y,{scale:Math.max(.65,Math.min(1.35,scale))});
  };
  base.beam=(mv,x,y,x2,y2,width)=>{
   const r=resource(mv);if(!r?.loaded)return original.beam(mv,x,y,x2,y2,width);
-  return emit(r,x,y,{x2,y2,beam:true,life:Math.min(.85,r.phases/r.fps)});
+  if(r.key==='VINE_WHIP')return emit(r,x,y,{x2,y2,beam:true});
+  if(r.mode==='beam'||r.key==='SURF')return emit(r,x,y,{x2,y2,travel:true,life:Math.max(.55,r.phases/r.fps)});
+  return emit(r,x2,y2);
  };
  base.projectile=(g,p)=>{
   const r=resource(p.o?.move);if(!r?.loaded)return original.projectile(g,p);
+  // Impact/area sheets belong at arrival, never on the projectile as well.
+  if(r.mode!=='projectile')return true;
   // Follow the real projectile, never start a second independent flight.
   const size=Math.min(48,30*(p.size||1))/Math.max(r.w,r.h);
   return frame(g,r,p.x+(p.ox||0),p.y+(p.oy||0),p.age||0,size,true);
@@ -55,7 +59,9 @@
   original.draw(g);
   for(const e of effects){
    const r=e.r;
-   if(e.beam){
+   if(e.travel){
+    const q=Math.min(1,e.t/e.life);frame(g,r,e.x+(e.x2-e.x)*q,e.y+(e.y2-e.y)*q,e.t,1);
+   }else if(e.beam){
     const dx=e.x2-e.x,dy=e.y2-e.y,length=Math.hypot(dx,dy);if(!length)continue;
     if(r.key==='VINE_WHIP'){
      // One horizontal whip, rotated toward the target; no repeated upright vines.
@@ -72,5 +78,7 @@
  base.clear=()=>{original.clear();effects.length=0};
  const active=Object.getOwnPropertyDescriptor(base,'active').get;
  Object.defineProperty(base,'active',{get(){return effects.length>0||active.call(base)},configurable:true});
- window.IDLE_MOVE_EFFECTS={keys:Object.keys(specs),ready:mv=>resource(mv)?.promise||Promise.resolve(false)};
+ window.IDLE_MOVE_EFFECTS={keys:Object.keys(specs),owns:mv=>!!resource(mv)?.loaded,ready:mv=>resource(mv)?.promise||Promise.resolve(false)};
+ // Start loading before the first cast; missing sheets still use the old fallback.
+ Object.keys(specs).forEach(resource);
 })();

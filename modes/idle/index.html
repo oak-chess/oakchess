@@ -5856,10 +5856,13 @@ function cast(u){
   const mobility=!['splash','teleport','transform'].includes(mv.k)&&u.L.passive.mobility,mobilityCD={teleport:8,shadow:7,fireDash:8,bladeDash:7,burrow:8,waterRush:8,electricDash:7,dive:9,iceSlide:8,stampede:8,quakeCharge:9,guardianRush:8,airSwoop:8,kickRush:7,punchRush:7,bodySlam:9,hornRush:8,waterLunge:8,shellTorpedo:8,supportHop:9,flameDive:9,wingFeint:7,doubleDash:7,powerRush:8,stingDash:7,sandBurrow:8,fireGallop:8,dragonDive:9,frostDive:9,vineSling:8};
   const mobilityTarget=mobility==='supportHop'?B.units.filter(a=>a.alive&&a.side===u.side&&a!==u&&a.hp/a.maxHp<.8).sort((a,b)=>a.hp/a.maxHp-b.hp/b.maxHp)[0]:t;
   if(mobility&&u.mobilityCd<=0&&mobilityTarget&&useMobility(u,mobilityTarget,mobility))u.mobilityCd=mobilityCD[mobility]||8;
+  const approved=!!window.IDLE_MOVE_EFFECTS?.owns(mv);
+  // Only decorative legacy effects are suppressed; projectile callbacks and damage stay native.
+  const visual=approved?new Proxy(FX,{get:(fx,key)=>['aoe','fx','glow','ring','charge','healFx','impact','buffFx','shieldFx','zone'].includes(key)?()=>{}:typeof fx[key]==='function'?fx[key].bind(fx):fx[key]}):FX;
   const col=(PAL[mv.t]||PAL.normal)[1];
-  FX.text(u.x,u.y-72,mv.n+'!',col,17);if(!window.MOVE_PRESENTATION?.cast(u,t,mv))SND.cast(mv.t);SND.cry(u.id,.9);
-  const rc=recipe(mv);window.EMERALD_MOVES?.pose(mv,u.spr);if(mv.emerald==='SURF'&&t)window.EMERALD_MOVES?.beam(mv,u.x,cyOf(u),t.x,cyOf(t),85);faceTo(u,t);castMotion(u,t,mv,col,rc);u._pmdSp=performance.now();PMD.playNames(u.el,rc.pose||PMD.SP[mv.k]);if(!window.EMERALD_MOVES?.start(mv,u.x,cyOf(u))&&rc.start)FX.fx(rc.start,u.x,cyOf(u),mv.t,1);
-  FX.glow(u.x,cyOf(u),46,col,.5,.7);FX.ring(u.x,u.y,col,6,48,.5,3);FX.charge(mv.t,u.x,cyOf(u));
+  visual.text(u.x,u.y-72,mv.n+'!',col,17);if(!window.MOVE_PRESENTATION?.cast(u,t,mv))SND.cast(mv.t);SND.cry(u.id,.9);
+  const rc=recipe(mv);window.EMERALD_MOVES?.pose(mv,u.spr);if(mv.emerald==='SURF'&&t)window.EMERALD_MOVES?.beam(mv,u.x,cyOf(u),t.x,cyOf(t),85);faceTo(u,t);if(!approved)castMotion(u,t,mv,col,rc);u._pmdSp=performance.now();PMD.playNames(u.el,rc.pose||PMD.SP[mv.k]);if(!window.EMERALD_MOVES?.start(mv,u.x,cyOf(u))&&rc.start)visual.fx(rc.start,u.x,cyOf(u),mv.t,1);
+  visual.glow(u.x,cyOf(u),46,col,.5,.7);visual.ring(u.x,u.y,col,6,48,.5,3);visual.charge(mv.t,u.x,cyOf(u));
   const S=u.spell*(1+u.ap)*(1+u.dmgAmp+passiveAmp(u,t))*mv.p,kind=mv.damageClass||(u.spec?'spec':'phys');if(window.OAK_IDLE_MODE)window.IDLE_HOENN_RULES?.afterCast(u,mv);
   const foes=B.units.filter(e=>e.alive&&e.side!==u.side),allies=B.units.filter(e=>e.alive&&e.side===u.side);
   if(u.L.passive.id==='tailwind'){const a=allies.filter(x=>x!==u).sort((x,y)=>hdist(u.r,u.c,x.r,x.c)-hdist(u.r,u.c,y.r,y.c))[0];if(a){a.buffAS=Math.max(a.buffAS,.18);a.buffT=Math.max(a.buffT,3);FX.buffFx(a.x,cyOf(a),'flying');FX.text(a.x,a.y-58,'Vento Favorável!','#d9f4ff',11)}}
@@ -5874,36 +5877,36 @@ function cast(u){
   if(t&&((mv.t==='electric'&&['chain','storm'].includes(mv.k))||(mv.t==='grass'&&mv.k==='storm')))schedule(.28,()=>setArenaField(mv.t,t.r,t.c,1,2.6,u));
   const deal=(e,dm,pw)=>{if(!e.alive)return 0;const crit=Math.random()<u.crit*.5;const d=hurt(u,e,dm*(crit?1.3:1),kind,{spell:true,crit,type:mv.t});if(d>0)window.ARENA_INTERACTIONS?.hit(u,e,mv);if(d>0&&mv.st&&e.alive&&(mv.statusChance==null||Math.random()<mv.statusChance))applyStatus(e,mv.st,mv.d,u);
     if(u.L.passive.id==='haunt'&&e.alive)applyStatus(e,'slow',.55,u);
-    if(!window.EMERALD_MOVES?.hit(mv,e.x,cyOf(e),pw||1,{x:u.x,y:cyOf(u)})){FX.impact(mv.t,e.x,cyOf(e),pw||1);if(rc.hit)FX.fx(rc.hit,e.x,cyOf(e),mv.t,Math.max(.55,Math.min(1.2,pw||1)))}return d};
+    if(!window.EMERALD_MOVES?.hit(mv,e.x,cyOf(e),pw||1,{x:u.x,y:cyOf(u)})){visual.impact(mv.t,e.x,cyOf(e),pw||1);if(rc.hit)visual.fx(rc.hit,e.x,cyOf(e),mv.t,Math.max(.55,Math.min(1.2,pw||1)))}return d};
   const preview=window.HEX_ATTACKS?.prepare(u,t,mv,rc),projectileOptions={...rc.proj,move:{...rc.proj.move,r:mv.r,p:mv.p,_variant:mv._variant},castToken:u.skillToken,preview};
-  const shot=(e,spd,sz,cb)=>FX.shoot(u.x,cyOf(u),e,mv.t,rc.spd||spd,(rc.sz||1)*sz,cb,projectileOptions);
+  const shot=(e,spd,sz,cb)=>visual.shoot(u.x,cyOf(u),e,mv.t,rc.spd||spd,(rc.sz||1)*sz,cb,projectileOptions);
   const R=mv.r||(mv.k==='meteor'?1:mv.p>=1.8?2:1);
   switch(mv.k){
    case'splash':break;
    case'teleport':schedule(.2,()=>{if(u.alive&&t?.alive)useMobility(u,t,'teleport')});break;
    case'transform':if(t?.moves?.length)schedule(.2,()=>{if(!u.alive||!t.alive)return;u.moves=t.moves.filter(m=>m.k!=='transform').map(m=>({...m}));if(!u.moves.length)u.moves=[{id:165,n:'Luta',emerald:'STRUGGLE',t:'normal',k:'rush',p:.8,damageClass:'phys'}];u.mi=0});break;
    case'debuff':schedule(.25,()=>{if(t?.alive){applyStatus(t,mv.st,mv.d,u);window.EMERALD_MOVES?.hit(mv,t.x,cyOf(t),1)}});break;
-   case'bolt':schedule(.25,()=>shot(t,620,1.7,()=>{deal(t,S,1.4);SND.hit(mv.t,1.4);FX.shake(2)}));break;
-   case'blast':schedule(.3,()=>shot(t,560,1.8,()=>{const cx=t.x,cy=cyOf(t),tr=t.r,tc=t.c;FX.aoe(mv.t,cx,cy,R*HW*.9+12);if(rc.area)FX.fx(rc.area,cx,cy,mv.t,R*.8);SND.hit(mv.t,1.6);
+   case'bolt':schedule(.25,()=>shot(t,620,1.7,()=>{deal(t,S,1.4);SND.hit(mv.t,1.4);visual.shake(2)}));break;
+   case'blast':schedule(.3,()=>shot(t,560,1.8,()=>{const cx=t.x,cy=cyOf(t),tr=t.r,tc=t.c;visual.aoe(mv.t,cx,cy,R*HW*.9+12);if(rc.area)visual.fx(rc.area,cx,cy,mv.t,R*.8);SND.hit(mv.t,1.6);
       B.units.forEach(e=>{if(e.alive&&e.side!==u.side&&hdist(tr,tc,e.r,e.c)<=R)deal(e,S,.9)})}));break;
-   case'burst':schedule(.2,()=>{FX.aoe(mv.t,u.x,cyOf(u),R*HW+22);if(rc.area)FX.fx(rc.area,u.x,cyOf(u),mv.t,R*.9);SND.hit(mv.t,1.5);B.units.forEach(e=>{if(e.alive&&e.side!==u.side&&hdist(u.r,u.c,e.r,e.c)<=R)deal(e,S,.9)})});break;
+   case'burst':schedule(.2,()=>{visual.aoe(mv.t,u.x,cyOf(u),R*HW+22);if(rc.area)visual.fx(rc.area,u.x,cyOf(u),mv.t,R*.9);SND.hit(mv.t,1.5);B.units.forEach(e=>{if(e.alive&&e.side!==u.side&&hdist(u.r,u.c,e.r,e.c)<=R)deal(e,S,.9)})});break;
    case'beam':if(t)schedule(.25,()=>{const x1=u.x,y1=cyOf(u);let dx=t.x-x1,dy=cyOf(t)-y1;const L=Math.hypot(dx,dy)||1;dx/=L;dy/=L;const ex=x1+dx*HW*8,ey=y1+dy*HW*8;
-      window.HEX_ATTACKS?.beam(preview,x1,y1,ex,ey);if(!window.EMERALD_MOVES?.beam(mv,x1,y1,ex,ey,rc.bw))FX.beam(x1,y1,ex,ey,mv.t,rc.bw,rc.wave?{wave:rc.wave}:null);SND.hit(mv.t,1.5);B.units.forEach(e=>{if(e.alive&&e.side!==u.side&&distSeg(e.x,cyOf(e),x1,y1,ex,ey)<=HW*.55)deal(e,S,.9)})});break;
-   case'drain':schedule(.2,()=>shot(t,640,1.3,()=>{const d=deal(t,S,1.2);SND.hit(mv.t,1.2);healUnit(u,d*.6);FX.healFx(u.x,cyOf(u))}));break;
-   case'rush':rushFx(u,t,rc);schedule({dive:.34,dig:.38,roll:.3,spin:.3,flyby:.2,claw:.24,head:.24}[rc.rush]||.22,()=>{deal(t,S,1.4);SND.hit(mv.t,1.5);FX.shake(3)});break;
+      window.HEX_ATTACKS?.beam(preview,x1,y1,ex,ey);if(!window.EMERALD_MOVES?.beam(mv,x1,y1,approved?t.x:ex,approved?cyOf(t):ey,rc.bw))visual.beam(x1,y1,ex,ey,mv.t,rc.bw,rc.wave?{wave:rc.wave}:null);SND.hit(mv.t,1.5);B.units.forEach(e=>{if(e.alive&&e.side!==u.side&&distSeg(e.x,cyOf(e),x1,y1,ex,ey)<=HW*.55)deal(e,S,.9)})});break;
+   case'drain':schedule(.2,()=>shot(t,640,1.3,()=>{const d=deal(t,S,1.2);SND.hit(mv.t,1.2);healUnit(u,d*.6);visual.healFx(u.x,cyOf(u))}));break;
+   case'rush':if(!approved)rushFx(u,t,rc);schedule({dive:.34,dig:.38,roll:.3,spin:.3,flyby:.2,claw:.24,head:.24}[rc.rush]||.22,()=>{deal(t,S,1.4);SND.hit(mv.t,1.5);visual.shake(3)});break;
    case'multi':{const tg=[t].concat(shuffle(foes.filter(e=>e!==t)).slice(0,2));tg.forEach((e,i)=>{window.HEX_ATTACKS?.target(e,mv,.2+i*.14);schedule(.2+i*.14,()=>shot(e,640,1.1,()=>{deal(e,S,.9);SND.hit(mv.t,1)}))});break}
    case'chain':{const list=[t];while(list.length<4){const last=list[list.length-1];let nx=null,bd=1e9;foes.forEach(e=>{if(list.includes(e))return;const d=hdist(last.r,last.c,e.r,e.c);if(d<bd){bd=d;nx=e}});if(!nx||bd>3)break;list.push(nx)}
       list.forEach((e,i)=>window.HEX_ATTACKS?.link(i?list[i-1]:u,e,mv,.2+i*.14));
-      list.forEach((e,i)=>schedule(.2+i*.14,()=>{const f=i?list[i-1]:u;if(e.alive||true){if(!window.EMERALD_MOVES?.beam(mv,f.x,cyOf(f),e.x,cyOf(e),12))FX.lightning(f.x,cyOf(f),e.x,cyOf(e));if(rc.sky)FX.rain('electric',e.x,cyOf(e),()=>{},rc.proj);SND.hit('electric',1.1);deal(e,S*Math.pow(.75,i),1)}}));break}
-   case'storm':for(let i=0;i<5;i++)schedule(.3+i*.2,()=>{const c=B.units.filter(e=>e.alive&&e.side!==u.side);if(!c.length)return;const e=pick(c);FX.rain(mv.t,e.x,cyOf(e),()=>{deal(e,S,1);SND.hit(mv.t,.9)},rc.proj)});break;
-   case'heal':{const a=mv.targetId===7?u:allies.slice().sort((x,y)=>x.hp/x.maxHp-y.hp/y.maxHp)[0];if(a)schedule(.3,()=>{healUnit(a,S*1.4,false,u);FX.healFx(a.x,cyOf(a));if(rc.area)FX.fx(rc.area,a.x,cyOf(a),mv.t,1);allies.forEach(o=>{if(mv.targetId!==7&&o!==a&&hdist(a.r,a.c,o.r,o.c)<=1){healUnit(o,S*.5,false,u);FX.healFx(o.x,cyOf(o))}})});break}
+      list.forEach((e,i)=>schedule(.2+i*.14,()=>{const f=i?list[i-1]:u;if(e.alive||true){if(!window.EMERALD_MOVES?.beam(mv,f.x,cyOf(f),e.x,cyOf(e),12))visual.lightning(f.x,cyOf(f),e.x,cyOf(e));if(rc.sky)visual.rain('electric',e.x,cyOf(e),()=>{},rc.proj);SND.hit('electric',1.1);deal(e,S*Math.pow(.75,i),1)}}));break}
+   case'storm':for(let i=0;i<5;i++)schedule(.3+i*.2,()=>{const c=B.units.filter(e=>e.alive&&e.side!==u.side);if(!c.length)return;const e=pick(c);visual.rain(mv.t,e.x,cyOf(e),()=>{deal(e,S,1);SND.hit(mv.t,.9)},rc.proj)});break;
+   case'heal':{const a=mv.targetId===7?u:allies.slice().sort((x,y)=>x.hp/x.maxHp-y.hp/y.maxHp)[0];if(a)schedule(.3,()=>{healUnit(a,S*1.4,false,u);visual.healFx(a.x,cyOf(a));if(rc.area)visual.fx(rc.area,a.x,cyOf(a),mv.t,1);allies.forEach(o=>{if(mv.targetId!==7&&o!==a&&hdist(a.r,a.c,o.r,o.c)<=1){healUnit(o,S*.5,false,u);visual.healFx(o.x,cyOf(o))}})});break}
    case'field':{const cx=t.x,cy=t.y,tr=t.r,tc=t.c;schedule(.25,()=>{setArenaField(mv.t,tr,tc,Math.max(1,R),3.2,u,rc.zfx);SND.hit(mv.t,1.1)});
-      for(let i=0;i<6;i++)schedule(.3+i*.5,()=>{FX.impact(mv.t,cx+rnd(-HW*.8,HW*.8),cy+rnd(-12,12),.5);B.units.forEach(e=>{if(e.alive&&e.side!==u.side&&hdist(tr,tc,e.r,e.c)<=1)deal(e,S*.8,.35)});if(i%2===0)SND.hit(mv.t,.5)});break}
+      for(let i=0;i<6;i++)schedule(.3+i*.5,()=>{visual.impact(mv.t,cx+rnd(-HW*.8,HW*.8),cy+rnd(-12,12),.5);B.units.forEach(e=>{if(e.alive&&e.side!==u.side&&hdist(tr,tc,e.r,e.c)<=1)deal(e,S*.8,.35)});if(i%2===0)SND.hit(mv.t,.5)});break}
    case'barrage':for(let i=0;i<(rc.n||5);i++)schedule(.2+i*(rc.n>5?.08:.1),()=>{let e=t.alive?t:nearest(u);if(!e)return;shot(e,780,.75,()=>{deal(e,S,.45);SND.hit(mv.t,.6)})});break;
-   case'meteor':schedule(.25,()=>{const px=t.x,py=cyOf(t),tr=t.r,tc=t.c;window.HEX_ATTACKS?.lock(preview,tr,tc);FX.ring(px,t.y+14,col,70,18,.8,3);FX.zone(mv.t,px,t.y,HW*.9,.8);
-      schedule(.5,()=>FX.shootO(px+rnd(-70,70),py-460,{x:px,y:py},mv.t,820,3.4*(rc.sz||1),projectileOptions,()=>{FX.aoe(mv.t,px,py,HW*1.6);if(rc.area)FX.fx(rc.area,px,py,mv.t,1.4);FX.shake(7);SND.hit(mv.t,2);B.units.forEach(e=>{if(e.alive&&e.side!==u.side&&hdist(tr,tc,e.r,e.c)<=R)deal(e,S,1)})}))});break;
-   case'buff':schedule(.2,()=>{allies.forEach(a=>{if(a===u||(mv.targetId!==7&&hdist(u.r,u.c,a.r,a.c)<=2)){a.buffAS=.35;a.buffAtk=.2;a.buffT=5;FX.buffFx(a.x,cyOf(a),mv.t);if(rc.area)FX.fx(rc.area,a.x,cyOf(a),mv.t,.8)}})});break;
-   case'barrier':{const radius=u.L.passive.id==='barrierweaver'?2:1,mult=u.L.passive.id==='barrierweaver'?1.35:1.1;schedule(.2,()=>{allies.forEach(a=>{if(a===u||(mv.targetId!==7&&hdist(u.r,u.c,a.r,a.c)<=radius)){a.shield+=S*mult;a.shieldT=5;FX.shieldFx(a.x,cyOf(a));if(rc.area)FX.fx(rc.area,a.x,cyOf(a),mv.t,.8)}})});break}}
+   case'meteor':schedule(.25,()=>{const px=t.x,py=cyOf(t),tr=t.r,tc=t.c;window.HEX_ATTACKS?.lock(preview,tr,tc);visual.ring(px,t.y+14,col,70,18,.8,3);visual.zone(mv.t,px,t.y,HW*.9,.8);
+      schedule(.5,()=>visual.shootO(px+rnd(-70,70),py-460,{x:px,y:py},mv.t,820,3.4*(rc.sz||1),projectileOptions,()=>{visual.aoe(mv.t,px,py,HW*1.6);if(rc.area)visual.fx(rc.area,px,py,mv.t,1.4);visual.shake(7);SND.hit(mv.t,2);B.units.forEach(e=>{if(e.alive&&e.side!==u.side&&hdist(tr,tc,e.r,e.c)<=R)deal(e,S,1)})}))});break;
+   case'buff':schedule(.2,()=>{allies.forEach(a=>{if(a===u||(mv.targetId!==7&&hdist(u.r,u.c,a.r,a.c)<=2)){a.buffAS=.35;a.buffAtk=.2;a.buffT=5;visual.buffFx(a.x,cyOf(a),mv.t);if(rc.area)visual.fx(rc.area,a.x,cyOf(a),mv.t,.8)}})});break;
+   case'barrier':{const radius=u.L.passive.id==='barrierweaver'?2:1,mult=u.L.passive.id==='barrierweaver'?1.35:1.1;schedule(.2,()=>{allies.forEach(a=>{if(a===u||(mv.targetId!==7&&hdist(u.r,u.c,a.r,a.c)<=radius)){a.shield+=S*mult;a.shieldT=5;visual.shieldFx(a.x,cyOf(a));if(rc.area)visual.fx(rc.area,a.x,cyOf(a),mv.t,.8)}})});break}}
 }
 
 /* ---------- loop de cada unidade ---------- */
@@ -9225,7 +9228,7 @@ body #tip .ut .usec.its{padding-top:4px}
 <script src="assets/emerald-moves.js?v=on-demand-8"></script>
 <script src="assets/emerald-sequences.js?v=nine-4"></script>
 <script src="modes/idle/move-effects/catalog.js?v=1"></script>
-<script src="modes/idle/move-effects/renderer.js?v=1"></script>
+<script src="modes/idle/move-effects/renderer.js?v=approved-native-2"></script>
 <script src="assets/move-fx/emerald-audio.js"></script>
 <script src="assets/move-fx/emerald-instruments.js"></script>
 <script src="assets/move-fx/emerald-backgrounds.js"></script>
