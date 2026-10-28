@@ -1,10 +1,10 @@
 /* Fuchsia Safari: isolated resources, saved encounters, no battle/offline simulation. */
 window.IDLE_SAFARI_DATA={balls:20,steps:100,searchCost:5,extraPrice:200,sectors:[
- {id:'field',name:'Pradaria',description:'Gramados abertos e trilhas de observação.',tone:'grass',min:25,max:30,species:[['Doduo',30],['Nidorino',25],['Nidorina',25],['Tauros',12],['Kangaskhan',6],['Chansey',2],['Ponyta',12],['Miltank',8]]},
+ {id:'field',name:'Pradaria',description:'Gramados abertos e trilhas de observação.',tone:'grass',min:25,max:30,species:[['Starly',12],['Bidoof',12],['Shinx',8],['Doduo',30],['Nidorino',25],['Nidorina',25],['Tauros',12],['Kangaskhan',6],['Chansey',2],['Ponyta',12],['Miltank',8]]},
  {id:'woods',name:'Bosque',description:'Folhagens densas e parceiros entre as árvores.',tone:'forest',min:27,max:32,species:[['Exeggcute',35],['Venonat',25],['Paras',20],['Scyther',10],['Pinsir',10],['Heracross',8],['Aipom',12],['Hoothoot',15]]},
  {id:'lake',name:'Lago',description:'Pesca nas margens calmas da reserva.',tone:'water',min:25,max:35,rod:true,species:[['Psyduck',35],['Goldeen',35],['Slowpoke',25],['Dratini',5],['Marill',15],['Wooper',15],['Surskit',10]]},
  {id:'rocks',name:'Rochedos',description:'Pedras aquecidas pelo sol e caminhos secos.',tone:'rock',min:28,max:35,species:[['Rhyhorn',40],['Geodude',30],['Sandshrew',25],['Kangaskhan',5],['Phanpy',15],['Shuckle',8],['Aron',12]]},
- {id:'marsh',name:'Brejo',description:'Juncos, poças e passarelas sobre a água.',tone:'marsh',min:28,max:35,species:[['Yanma',25],['Wooper',25],['Barboach',20],['Lotad',20],['Shroomish',15],['Surskit',15]]},
+ {id:'marsh',name:'Brejo',description:'Juncos, poças e passarelas sobre a água.',tone:'marsh',min:28,max:35,species:[['Carnivine',7],['Croagunk',12],['Skorupi',10],['Yanma',25],['Wooper',25],['Barboach',20],['Lotad',20],['Shroomish',15],['Surskit',15]]},
  {id:'coast',name:'Costa',description:'Faixa de areia, marés e pequenas lagoas salgadas.',tone:'coast',min:30,max:38,species:[['Krabby',30],['Corphish',25],['Wingull',25],['Spheal',15],['Clamperl',12],['Corsola',8]]},
  {id:'savanna',name:'Savana',description:'Capim dourado, sol quente e grandes clareiras.',tone:'savanna',min:32,max:40,species:[['Girafarig',25],['Stantler',25],['Dodrio',20],['Donphan',15],['Torkoal',10],['Trapinch',15]]},
  {id:'canopy',name:'Selva',description:'Trilhas úmidas entre árvores altas e raízes antigas.',tone:'canopy',min:30,max:38,species:[['Tropius',15],['Kecleon',12],['Slakoth',25],['Seedot',25],['Nuzleaf',15],['Beautifly',15],['Skitty',15]]}

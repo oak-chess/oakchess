@@ -1,0 +1,2786 @@
+[
+  {
+    "ids": [
+      4,
+      5,
+      6
+    ],
+    "names": [
+      "Charmander",
+      "Charmeleon",
+      "Charizard"
+    ]
+  },
+  {
+    "ids": [
+      7,
+      8,
+      9
+    ],
+    "names": [
+      "Squirtle",
+      "Wartortle",
+      "Blastoise"
+    ]
+  },
+  {
+    "ids": [
+      1,
+      2,
+      3
+    ],
+    "names": [
+      "Bulbasaur",
+      "Ivysaur",
+      "Venusaur"
+    ]
+  },
+  {
+    "ids": [
+      16,
+      17,
+      18
+    ],
+    "names": [
+      "Pidgey",
+      "Pidgeotto",
+      "Pidgeot"
+    ]
+  },
+  {
+    "ids": [
+      10,
+      11,
+      12
+    ],
+    "names": [
+      "Caterpie",
+      "Metapod",
+      "Butterfree"
+    ]
+  },
+  {
+    "ids": [
+      74,
+      75,
+      76
+    ],
+    "names": [
+      "Geodude",
+      "Graveler",
+      "Golem"
+    ]
+  },
+  {
+    "ids": [
+      129,
+      129,
+      130
+    ],
+    "names": [
+      "Magikarp",
+      "Magikarp",
+      "Gyarados"
+    ]
+  },
+  {
+    "ids": [
+      41,
+      42,
+      169
+    ],
+    "names": [
+      "Zubat",
+      "Golbat",
+      "Crobat"
+    ]
+  },
+  {
+    "ids": [
+      66,
+      67,
+      68
+    ],
+    "names": [
+      "Machop",
+      "Machoke",
+      "Machamp"
+    ]
+  },
+  {
+    "ids": [
+      63,
+      64,
+      65
+    ],
+    "names": [
+      "Abra",
+      "Kadabra",
+      "Alakazam"
+    ]
+  },
+  {
+    "ids": [
+      92,
+      93,
+      94
+    ],
+    "names": [
+      "Gastly",
+      "Haunter",
+      "Gengar"
+    ]
+  },
+  {
+    "ids": [
+      13,
+      14,
+      15
+    ],
+    "names": [
+      "Weedle",
+      "Kakuna",
+      "Beedrill"
+    ]
+  },
+  {
+    "ids": [
+      172,
+      25,
+      26
+    ],
+    "names": [
+      "Pichu",
+      "Pikachu",
+      "Raichu"
+    ]
+  },
+  {
+    "ids": [
+      35,
+      36,
+      36
+    ],
+    "names": [
+      "Clefairy",
+      "Clefable",
+      "Clefable"
+    ]
+  },
+  {
+    "ids": [
+      86,
+      87,
+      87
+    ],
+    "names": [
+      "Seel",
+      "Dewgong",
+      "Dewgong"
+    ]
+  },
+  {
+    "ids": [
+      27,
+      28,
+      28
+    ],
+    "names": [
+      "Sandshrew",
+      "Sandslash",
+      "Sandslash"
+    ]
+  },
+  {
+    "ids": [
+      43,
+      44,
+      45
+    ],
+    "names": [
+      "Oddish",
+      "Gloom",
+      "Vileplume"
+    ]
+  },
+  {
+    "ids": [
+      56,
+      57,
+      57
+    ],
+    "names": [
+      "Mankey",
+      "Primeape",
+      "Primeape"
+    ]
+  },
+  {
+    "ids": [
+      77,
+      78,
+      78
+    ],
+    "names": [
+      "Ponyta",
+      "Rapidash",
+      "Rapidash"
+    ]
+  },
+  {
+    "ids": [
+      133,
+      133,
+      133
+    ],
+    "names": [
+      "Eevee",
+      "Eevee",
+      "Eevee"
+    ]
+  },
+  {
+    "ids": [
+      81,
+      82,
+      462
+    ],
+    "names": [
+      "Magnemite",
+      "Magneton",
+      "Magnezone"
+    ]
+  },
+  {
+    "ids": [
+      123,
+      212,
+      212
+    ],
+    "names": [
+      "Scyther",
+      "Scizor",
+      "Scizor"
+    ]
+  },
+  {
+    "ids": [
+      58,
+      59,
+      59
+    ],
+    "names": [
+      "Growlithe",
+      "Arcanine",
+      "Arcanine"
+    ]
+  },
+  {
+    "ids": [
+      95,
+      208,
+      208
+    ],
+    "names": [
+      "Onix",
+      "Steelix",
+      "Steelix"
+    ]
+  },
+  {
+    "ids": [
+      147,
+      148,
+      149
+    ],
+    "names": [
+      "Dratini",
+      "Dragonair",
+      "Dragonite"
+    ]
+  },
+  {
+    "ids": [
+      131,
+      131,
+      131
+    ],
+    "names": [
+      "Lapras",
+      "Lapras",
+      "Lapras"
+    ]
+  },
+  {
+    "ids": [
+      143,
+      143,
+      143
+    ],
+    "names": [
+      "Snorlax",
+      "Snorlax",
+      "Snorlax"
+    ]
+  },
+  {
+    "ids": [
+      113,
+      242,
+      242
+    ],
+    "names": [
+      "Chansey",
+      "Blissey",
+      "Blissey"
+    ]
+  },
+  {
+    "ids": [
+      150,
+      150,
+      150
+    ],
+    "names": [
+      "Mewtwo",
+      "Mewtwo",
+      "Mewtwo"
+    ]
+  },
+  {
+    "ids": [
+      144,
+      144,
+      144
+    ],
+    "names": [
+      "Articuno",
+      "Articuno",
+      "Articuno"
+    ]
+  },
+  {
+    "ids": [
+      145,
+      145,
+      145
+    ],
+    "names": [
+      "Zapdos",
+      "Zapdos",
+      "Zapdos"
+    ]
+  },
+  {
+    "ids": [
+      146,
+      146,
+      146
+    ],
+    "names": [
+      "Moltres",
+      "Moltres",
+      "Moltres"
+    ]
+  },
+  {
+    "ids": [
+      100,
+      101,
+      101
+    ],
+    "names": [
+      "Voltorb",
+      "Electrode",
+      "Electrode"
+    ]
+  },
+  {
+    "ids": [
+      109,
+      110,
+      110
+    ],
+    "names": [
+      "Koffing",
+      "Weezing",
+      "Weezing"
+    ]
+  },
+  {
+    "ids": [
+      50,
+      51,
+      51
+    ],
+    "names": [
+      "Diglett",
+      "Dugtrio",
+      "Dugtrio"
+    ]
+  },
+  {
+    "ids": [
+      69,
+      70,
+      71
+    ],
+    "names": [
+      "Bellsprout",
+      "Weepinbell",
+      "Victreebel"
+    ]
+  },
+  {
+    "ids": [
+      120,
+      121,
+      121
+    ],
+    "names": [
+      "Staryu",
+      "Starmie",
+      "Starmie"
+    ]
+  },
+  {
+    "ids": [
+      88,
+      89,
+      89
+    ],
+    "names": [
+      "Grimer",
+      "Muk",
+      "Muk"
+    ]
+  },
+  {
+    "ids": [
+      48,
+      49,
+      49
+    ],
+    "names": [
+      "Venonat",
+      "Venomoth",
+      "Venomoth"
+    ]
+  },
+  {
+    "ids": [
+      90,
+      91,
+      91
+    ],
+    "names": [
+      "Shellder",
+      "Cloyster",
+      "Cloyster"
+    ]
+  },
+  {
+    "ids": [
+      79,
+      80,
+      80
+    ],
+    "names": [
+      "Slowpoke",
+      "Slowbro",
+      "Slowbro"
+    ]
+  },
+  {
+    "ids": [
+      124,
+      124,
+      124
+    ],
+    "names": [
+      "Jynx",
+      "Jynx",
+      "Jynx"
+    ]
+  },
+  {
+    "ids": [
+      106,
+      106,
+      106
+    ],
+    "names": [
+      "Hitmonlee",
+      "Hitmonlee",
+      "Hitmonlee"
+    ]
+  },
+  {
+    "ids": [
+      107,
+      107,
+      107
+    ],
+    "names": [
+      "Hitmonchan",
+      "Hitmonchan",
+      "Hitmonchan"
+    ]
+  },
+  {
+    "ids": [
+      23,
+      24,
+      24
+    ],
+    "names": [
+      "Ekans",
+      "Arbok",
+      "Arbok"
+    ]
+  },
+  {
+    "ids": [
+      116,
+      117,
+      230
+    ],
+    "names": [
+      "Horsea",
+      "Seadra",
+      "Kingdra"
+    ]
+  },
+  {
+    "ids": [
+      200,
+      429,
+      429
+    ],
+    "names": [
+      "Misdreavus",
+      "Mismagius",
+      "Mismagius"
+    ]
+  },
+  {
+    "ids": [
+      39,
+      40,
+      40
+    ],
+    "names": [
+      "Jigglypuff",
+      "Wigglytuff",
+      "Wigglytuff"
+    ]
+  },
+  {
+    "ids": [
+      37,
+      38,
+      38
+    ],
+    "names": [
+      "Vulpix",
+      "Ninetales",
+      "Ninetales"
+    ]
+  },
+  {
+    "ids": [
+      46,
+      47,
+      47
+    ],
+    "names": [
+      "Paras",
+      "Parasect",
+      "Parasect"
+    ]
+  },
+  {
+    "ids": [
+      228,
+      229,
+      229
+    ],
+    "names": [
+      "Houndour",
+      "Houndoom",
+      "Houndoom"
+    ]
+  },
+  {
+    "ids": [
+      198,
+      430,
+      430
+    ],
+    "names": [
+      "Murkrow",
+      "Honchkrow",
+      "Honchkrow"
+    ]
+  },
+  {
+    "ids": [
+      29,
+      30,
+      31
+    ],
+    "names": [
+      "Nidoran♀",
+      "Nidorina",
+      "Nidoqueen"
+    ]
+  },
+  {
+    "ids": [
+      32,
+      33,
+      34
+    ],
+    "names": [
+      "Nidoran♂",
+      "Nidorino",
+      "Nidoking"
+    ]
+  },
+  {
+    "ids": [
+      122,
+      122,
+      122
+    ],
+    "names": [
+      "Mr. Mime",
+      "Mr. Mime",
+      "Mr. Mime"
+    ]
+  },
+  {
+    "ids": [
+      111,
+      112,
+      112
+    ],
+    "names": [
+      "Rhyhorn",
+      "Rhydon",
+      "Rhydon"
+    ]
+  },
+  {
+    "ids": [
+      114,
+      114,
+      114
+    ],
+    "names": [
+      "Tangela",
+      "Tangela",
+      "Tangela"
+    ]
+  },
+  {
+    "ids": [
+      102,
+      103,
+      103
+    ],
+    "names": [
+      "Exeggcute",
+      "Exeggutor",
+      "Exeggutor"
+    ]
+  },
+  {
+    "ids": [
+      142,
+      142,
+      142
+    ],
+    "names": [
+      "Aerodactyl",
+      "Aerodactyl",
+      "Aerodactyl"
+    ]
+  },
+  {
+    "ids": [
+      115,
+      115,
+      115
+    ],
+    "names": [
+      "Kangaskhan",
+      "Kangaskhan",
+      "Kangaskhan"
+    ]
+  },
+  {
+    "ids": [
+      151,
+      151,
+      151
+    ],
+    "names": [
+      "Mew",
+      "Mew",
+      "Mew"
+    ]
+  },
+  {
+    "ids": [
+      134,
+      134,
+      134
+    ],
+    "names": [
+      "Vaporeon",
+      "Vaporeon",
+      "Vaporeon"
+    ]
+  },
+  {
+    "ids": [
+      135,
+      135,
+      135
+    ],
+    "names": [
+      "Jolteon",
+      "Jolteon",
+      "Jolteon"
+    ]
+  },
+  {
+    "ids": [
+      136,
+      136,
+      136
+    ],
+    "names": [
+      "Flareon",
+      "Flareon",
+      "Flareon"
+    ]
+  },
+  {
+    "ids": [
+      151,
+      151,
+      151
+    ],
+    "names": [
+      "Mew",
+      "Mew",
+      "Mew"
+    ]
+  },
+  {
+    "ids": [
+      144,
+      144,
+      144
+    ],
+    "names": [
+      "Articuno",
+      "Articuno",
+      "Articuno"
+    ]
+  },
+  {
+    "ids": [
+      145,
+      145,
+      145
+    ],
+    "names": [
+      "Zapdos",
+      "Zapdos",
+      "Zapdos"
+    ]
+  },
+  {
+    "ids": [
+      146,
+      146,
+      146
+    ],
+    "names": [
+      "Moltres",
+      "Moltres",
+      "Moltres"
+    ]
+  },
+  {
+    "ids": [
+      19,
+      20,
+      20
+    ],
+    "names": [
+      "Rattata",
+      "Raticate",
+      "Raticate"
+    ]
+  },
+  {
+    "ids": [
+      21,
+      22,
+      22
+    ],
+    "names": [
+      "Spearow",
+      "Fearow",
+      "Fearow"
+    ]
+  },
+  {
+    "ids": [
+      52,
+      53,
+      53
+    ],
+    "names": [
+      "Meowth",
+      "Persian",
+      "Persian"
+    ]
+  },
+  {
+    "ids": [
+      118,
+      119,
+      119
+    ],
+    "names": [
+      "Goldeen",
+      "Seaking",
+      "Seaking"
+    ]
+  },
+  {
+    "ids": [
+      54,
+      55,
+      55
+    ],
+    "names": [
+      "Psyduck",
+      "Golduck",
+      "Golduck"
+    ]
+  },
+  {
+    "ids": [
+      60,
+      61,
+      62
+    ],
+    "names": [
+      "Poliwag",
+      "Poliwhirl",
+      "Poliwrath"
+    ]
+  },
+  {
+    "ids": [
+      72,
+      73,
+      73
+    ],
+    "names": [
+      "Tentacool",
+      "Tentacruel",
+      "Tentacruel"
+    ]
+  },
+  {
+    "ids": [
+      84,
+      85,
+      85
+    ],
+    "names": [
+      "Doduo",
+      "Dodrio",
+      "Dodrio"
+    ]
+  },
+  {
+    "ids": [
+      96,
+      97,
+      97
+    ],
+    "names": [
+      "Drowzee",
+      "Hypno",
+      "Hypno"
+    ]
+  },
+  {
+    "ids": [
+      98,
+      99,
+      99
+    ],
+    "names": [
+      "Krabby",
+      "Kingler",
+      "Kingler"
+    ]
+  },
+  {
+    "ids": [
+      104,
+      105,
+      105
+    ],
+    "names": [
+      "Cubone",
+      "Marowak",
+      "Marowak"
+    ]
+  },
+  {
+    "ids": [
+      83,
+      83,
+      83
+    ],
+    "names": [
+      "Farfetch'd",
+      "Farfetch'd",
+      "Farfetch'd"
+    ]
+  },
+  {
+    "ids": [
+      108,
+      108,
+      108
+    ],
+    "names": [
+      "Lickitung",
+      "Lickitung",
+      "Lickitung"
+    ]
+  },
+  {
+    "ids": [
+      125,
+      125,
+      125
+    ],
+    "names": [
+      "Electabuzz",
+      "Electabuzz",
+      "Electabuzz"
+    ]
+  },
+  {
+    "ids": [
+      126,
+      126,
+      126
+    ],
+    "names": [
+      "Magmar",
+      "Magmar",
+      "Magmar"
+    ]
+  },
+  {
+    "ids": [
+      127,
+      127,
+      127
+    ],
+    "names": [
+      "Pinsir",
+      "Pinsir",
+      "Pinsir"
+    ]
+  },
+  {
+    "ids": [
+      128,
+      128,
+      128
+    ],
+    "names": [
+      "Tauros",
+      "Tauros",
+      "Tauros"
+    ]
+  },
+  {
+    "ids": [
+      132,
+      132,
+      132
+    ],
+    "names": [
+      "Ditto",
+      "Ditto",
+      "Ditto"
+    ]
+  },
+  {
+    "ids": [
+      137,
+      137,
+      137
+    ],
+    "names": [
+      "Porygon",
+      "Porygon",
+      "Porygon"
+    ]
+  },
+  {
+    "ids": [
+      138,
+      139,
+      139
+    ],
+    "names": [
+      "Omanyte",
+      "Omastar",
+      "Omastar"
+    ]
+  },
+  {
+    "ids": [
+      140,
+      141,
+      141
+    ],
+    "names": [
+      "Kabuto",
+      "Kabutops",
+      "Kabutops"
+    ]
+  },
+  {
+    "ids": [
+      236,
+      236,
+      236
+    ],
+    "names": [
+      "Tyrogue",
+      "Tyrogue",
+      "Tyrogue"
+    ]
+  },
+  {
+    "ids": [
+      237,
+      237,
+      237
+    ],
+    "names": [
+      "Hitmontop",
+      "Hitmontop",
+      "Hitmontop"
+    ]
+  },
+  {
+    "ids": [
+      239,
+      239,
+      239
+    ],
+    "names": [
+      "Elekid",
+      "Elekid",
+      "Elekid"
+    ]
+  },
+  {
+    "ids": [
+      466,
+      466,
+      466
+    ],
+    "names": [
+      "Electivire",
+      "Electivire",
+      "Electivire"
+    ]
+  },
+  {
+    "ids": [
+      440,
+      440,
+      440
+    ],
+    "names": [
+      "Happiny",
+      "Happiny",
+      "Happiny"
+    ]
+  },
+  {
+    "ids": [
+      152,
+      153,
+      154
+    ],
+    "names": [
+      "Chikorita",
+      "Bayleef",
+      "Meganium"
+    ]
+  },
+  {
+    "ids": [
+      155,
+      156,
+      157
+    ],
+    "names": [
+      "Cyndaquil",
+      "Quilava",
+      "Typhlosion"
+    ]
+  },
+  {
+    "ids": [
+      158,
+      159,
+      160
+    ],
+    "names": [
+      "Totodile",
+      "Croconaw",
+      "Feraligatr"
+    ]
+  },
+  {
+    "ids": [
+      161,
+      162,
+      162
+    ],
+    "names": [
+      "Sentret",
+      "Furret",
+      "Furret"
+    ]
+  },
+  {
+    "ids": [
+      163,
+      164,
+      164
+    ],
+    "names": [
+      "Hoothoot",
+      "Noctowl",
+      "Noctowl"
+    ]
+  },
+  {
+    "ids": [
+      165,
+      166,
+      166
+    ],
+    "names": [
+      "Ledyba",
+      "Ledian",
+      "Ledian"
+    ]
+  },
+  {
+    "ids": [
+      167,
+      168,
+      168
+    ],
+    "names": [
+      "Spinarak",
+      "Ariados",
+      "Ariados"
+    ]
+  },
+  {
+    "ids": [
+      170,
+      171,
+      171
+    ],
+    "names": [
+      "Chinchou",
+      "Lanturn",
+      "Lanturn"
+    ]
+  },
+  {
+    "ids": [
+      173,
+      173,
+      173
+    ],
+    "names": [
+      "Cleffa",
+      "Cleffa",
+      "Cleffa"
+    ]
+  },
+  {
+    "ids": [
+      174,
+      174,
+      174
+    ],
+    "names": [
+      "Igglybuff",
+      "Igglybuff",
+      "Igglybuff"
+    ]
+  },
+  {
+    "ids": [
+      175,
+      176,
+      176
+    ],
+    "names": [
+      "Togepi",
+      "Togetic",
+      "Togetic"
+    ]
+  },
+  {
+    "ids": [
+      177,
+      178,
+      178
+    ],
+    "names": [
+      "Natu",
+      "Xatu",
+      "Xatu"
+    ]
+  },
+  {
+    "ids": [
+      179,
+      180,
+      181
+    ],
+    "names": [
+      "Mareep",
+      "Flaaffy",
+      "Ampharos"
+    ]
+  },
+  {
+    "ids": [
+      182,
+      182,
+      182
+    ],
+    "names": [
+      "Bellossom",
+      "Bellossom",
+      "Bellossom"
+    ]
+  },
+  {
+    "ids": [
+      183,
+      184,
+      184
+    ],
+    "names": [
+      "Marill",
+      "Azumarill",
+      "Azumarill"
+    ]
+  },
+  {
+    "ids": [
+      185,
+      185,
+      185
+    ],
+    "names": [
+      "Sudowoodo",
+      "Sudowoodo",
+      "Sudowoodo"
+    ]
+  },
+  {
+    "ids": [
+      186,
+      186,
+      186
+    ],
+    "names": [
+      "Politoed",
+      "Politoed",
+      "Politoed"
+    ]
+  },
+  {
+    "ids": [
+      187,
+      188,
+      189
+    ],
+    "names": [
+      "Hoppip",
+      "Skiploom",
+      "Jumpluff"
+    ]
+  },
+  {
+    "ids": [
+      190,
+      190,
+      190
+    ],
+    "names": [
+      "Aipom",
+      "Aipom",
+      "Aipom"
+    ]
+  },
+  {
+    "ids": [
+      191,
+      192,
+      192
+    ],
+    "names": [
+      "Sunkern",
+      "Sunflora",
+      "Sunflora"
+    ]
+  },
+  {
+    "ids": [
+      193,
+      193,
+      193
+    ],
+    "names": [
+      "Yanma",
+      "Yanma",
+      "Yanma"
+    ]
+  },
+  {
+    "ids": [
+      194,
+      195,
+      195
+    ],
+    "names": [
+      "Wooper",
+      "Quagsire",
+      "Quagsire"
+    ]
+  },
+  {
+    "ids": [
+      196,
+      196,
+      196
+    ],
+    "names": [
+      "Espeon",
+      "Espeon",
+      "Espeon"
+    ]
+  },
+  {
+    "ids": [
+      197,
+      197,
+      197
+    ],
+    "names": [
+      "Umbreon",
+      "Umbreon",
+      "Umbreon"
+    ]
+  },
+  {
+    "ids": [
+      199,
+      199,
+      199
+    ],
+    "names": [
+      "Slowking",
+      "Slowking",
+      "Slowking"
+    ]
+  },
+  {
+    "ids": [
+      201,
+      201,
+      201
+    ],
+    "names": [
+      "Unown",
+      "Unown",
+      "Unown"
+    ]
+  },
+  {
+    "ids": [
+      202,
+      202,
+      202
+    ],
+    "names": [
+      "Wobbuffet",
+      "Wobbuffet",
+      "Wobbuffet"
+    ]
+  },
+  {
+    "ids": [
+      203,
+      203,
+      203
+    ],
+    "names": [
+      "Girafarig",
+      "Girafarig",
+      "Girafarig"
+    ]
+  },
+  {
+    "ids": [
+      204,
+      205,
+      205
+    ],
+    "names": [
+      "Pineco",
+      "Forretress",
+      "Forretress"
+    ]
+  },
+  {
+    "ids": [
+      206,
+      206,
+      206
+    ],
+    "names": [
+      "Dunsparce",
+      "Dunsparce",
+      "Dunsparce"
+    ]
+  },
+  {
+    "ids": [
+      207,
+      207,
+      207
+    ],
+    "names": [
+      "Gligar",
+      "Gligar",
+      "Gligar"
+    ]
+  },
+  {
+    "ids": [
+      209,
+      210,
+      210
+    ],
+    "names": [
+      "Snubbull",
+      "Granbull",
+      "Granbull"
+    ]
+  },
+  {
+    "ids": [
+      211,
+      211,
+      211
+    ],
+    "names": [
+      "Qwilfish",
+      "Qwilfish",
+      "Qwilfish"
+    ]
+  },
+  {
+    "ids": [
+      213,
+      213,
+      213
+    ],
+    "names": [
+      "Shuckle",
+      "Shuckle",
+      "Shuckle"
+    ]
+  },
+  {
+    "ids": [
+      214,
+      214,
+      214
+    ],
+    "names": [
+      "Heracross",
+      "Heracross",
+      "Heracross"
+    ]
+  },
+  {
+    "ids": [
+      215,
+      215,
+      215
+    ],
+    "names": [
+      "Sneasel",
+      "Sneasel",
+      "Sneasel"
+    ]
+  },
+  {
+    "ids": [
+      216,
+      217,
+      217
+    ],
+    "names": [
+      "Teddiursa",
+      "Ursaring",
+      "Ursaring"
+    ]
+  },
+  {
+    "ids": [
+      218,
+      219,
+      219
+    ],
+    "names": [
+      "Slugma",
+      "Magcargo",
+      "Magcargo"
+    ]
+  },
+  {
+    "ids": [
+      220,
+      221,
+      221
+    ],
+    "names": [
+      "Swinub",
+      "Piloswine",
+      "Piloswine"
+    ]
+  },
+  {
+    "ids": [
+      222,
+      222,
+      222
+    ],
+    "names": [
+      "Corsola",
+      "Corsola",
+      "Corsola"
+    ]
+  },
+  {
+    "ids": [
+      223,
+      224,
+      224
+    ],
+    "names": [
+      "Remoraid",
+      "Octillery",
+      "Octillery"
+    ]
+  },
+  {
+    "ids": [
+      225,
+      225,
+      225
+    ],
+    "names": [
+      "Delibird",
+      "Delibird",
+      "Delibird"
+    ]
+  },
+  {
+    "ids": [
+      226,
+      226,
+      226
+    ],
+    "names": [
+      "Mantine",
+      "Mantine",
+      "Mantine"
+    ]
+  },
+  {
+    "ids": [
+      227,
+      227,
+      227
+    ],
+    "names": [
+      "Skarmory",
+      "Skarmory",
+      "Skarmory"
+    ]
+  },
+  {
+    "ids": [
+      231,
+      232,
+      232
+    ],
+    "names": [
+      "Phanpy",
+      "Donphan",
+      "Donphan"
+    ]
+  },
+  {
+    "ids": [
+      233,
+      233,
+      233
+    ],
+    "names": [
+      "Porygon2",
+      "Porygon2",
+      "Porygon2"
+    ]
+  },
+  {
+    "ids": [
+      234,
+      234,
+      234
+    ],
+    "names": [
+      "Stantler",
+      "Stantler",
+      "Stantler"
+    ]
+  },
+  {
+    "ids": [
+      235,
+      235,
+      235
+    ],
+    "names": [
+      "Smeargle",
+      "Smeargle",
+      "Smeargle"
+    ]
+  },
+  {
+    "ids": [
+      238,
+      238,
+      238
+    ],
+    "names": [
+      "Smoochum",
+      "Smoochum",
+      "Smoochum"
+    ]
+  },
+  {
+    "ids": [
+      240,
+      240,
+      240
+    ],
+    "names": [
+      "Magby",
+      "Magby",
+      "Magby"
+    ]
+  },
+  {
+    "ids": [
+      241,
+      241,
+      241
+    ],
+    "names": [
+      "Miltank",
+      "Miltank",
+      "Miltank"
+    ]
+  },
+  {
+    "ids": [
+      243,
+      243,
+      243
+    ],
+    "names": [
+      "Raikou",
+      "Raikou",
+      "Raikou"
+    ]
+  },
+  {
+    "ids": [
+      244,
+      244,
+      244
+    ],
+    "names": [
+      "Entei",
+      "Entei",
+      "Entei"
+    ]
+  },
+  {
+    "ids": [
+      245,
+      245,
+      245
+    ],
+    "names": [
+      "Suicune",
+      "Suicune",
+      "Suicune"
+    ]
+  },
+  {
+    "ids": [
+      246,
+      247,
+      248
+    ],
+    "names": [
+      "Larvitar",
+      "Pupitar",
+      "Tyranitar"
+    ]
+  },
+  {
+    "ids": [
+      249,
+      249,
+      249
+    ],
+    "names": [
+      "Lugia",
+      "Lugia",
+      "Lugia"
+    ]
+  },
+  {
+    "ids": [
+      250,
+      250,
+      250
+    ],
+    "names": [
+      "Ho-Oh",
+      "Ho-Oh",
+      "Ho-Oh"
+    ]
+  },
+  {
+    "ids": [
+      251,
+      251,
+      251
+    ],
+    "names": [
+      "Celebi",
+      "Celebi",
+      "Celebi"
+    ]
+  },
+  {
+    "ids": [
+      252,
+      253,
+      254
+    ],
+    "names": [
+      "Treecko",
+      "Grovyle",
+      "Sceptile"
+    ]
+  },
+  {
+    "ids": [
+      255,
+      256,
+      257
+    ],
+    "names": [
+      "Torchic",
+      "Combusken",
+      "Blaziken"
+    ]
+  },
+  {
+    "ids": [
+      258,
+      259,
+      260
+    ],
+    "names": [
+      "Mudkip",
+      "Marshtomp",
+      "Swampert"
+    ]
+  },
+  {
+    "ids": [
+      261,
+      262,
+      262
+    ],
+    "names": [
+      "Poochyena",
+      "Mightyena",
+      "Mightyena"
+    ]
+  },
+  {
+    "ids": [
+      263,
+      264,
+      264
+    ],
+    "names": [
+      "Zigzagoon",
+      "Linoone",
+      "Linoone"
+    ]
+  },
+  {
+    "ids": [
+      265,
+      265,
+      265
+    ],
+    "names": [
+      "Wurmple",
+      "Wurmple",
+      "Wurmple"
+    ]
+  },
+  {
+    "ids": [
+      266,
+      267,
+      267
+    ],
+    "names": [
+      "Silcoon",
+      "Beautifly",
+      "Beautifly"
+    ]
+  },
+  {
+    "ids": [
+      268,
+      269,
+      269
+    ],
+    "names": [
+      "Cascoon",
+      "Dustox",
+      "Dustox"
+    ]
+  },
+  {
+    "ids": [
+      270,
+      271,
+      272
+    ],
+    "names": [
+      "Lotad",
+      "Lombre",
+      "Ludicolo"
+    ]
+  },
+  {
+    "ids": [
+      273,
+      274,
+      275
+    ],
+    "names": [
+      "Seedot",
+      "Nuzleaf",
+      "Shiftry"
+    ]
+  },
+  {
+    "ids": [
+      276,
+      277,
+      277
+    ],
+    "names": [
+      "Taillow",
+      "Swellow",
+      "Swellow"
+    ]
+  },
+  {
+    "ids": [
+      278,
+      279,
+      279
+    ],
+    "names": [
+      "Wingull",
+      "Pelipper",
+      "Pelipper"
+    ]
+  },
+  {
+    "ids": [
+      280,
+      281,
+      282
+    ],
+    "names": [
+      "Ralts",
+      "Kirlia",
+      "Gardevoir"
+    ]
+  },
+  {
+    "ids": [
+      283,
+      284,
+      284
+    ],
+    "names": [
+      "Surskit",
+      "Masquerain",
+      "Masquerain"
+    ]
+  },
+  {
+    "ids": [
+      285,
+      286,
+      286
+    ],
+    "names": [
+      "Shroomish",
+      "Breloom",
+      "Breloom"
+    ]
+  },
+  {
+    "ids": [
+      287,
+      288,
+      289
+    ],
+    "names": [
+      "Slakoth",
+      "Vigoroth",
+      "Slaking"
+    ]
+  },
+  {
+    "ids": [
+      290,
+      291,
+      291
+    ],
+    "names": [
+      "Nincada",
+      "Ninjask",
+      "Ninjask"
+    ]
+  },
+  {
+    "ids": [
+      292,
+      292,
+      292
+    ],
+    "names": [
+      "Shedinja",
+      "Shedinja",
+      "Shedinja"
+    ]
+  },
+  {
+    "ids": [
+      293,
+      294,
+      295
+    ],
+    "names": [
+      "Whismur",
+      "Loudred",
+      "Exploud"
+    ]
+  },
+  {
+    "ids": [
+      296,
+      297,
+      297
+    ],
+    "names": [
+      "Makuhita",
+      "Hariyama",
+      "Hariyama"
+    ]
+  },
+  {
+    "ids": [
+      298,
+      298,
+      298
+    ],
+    "names": [
+      "Azurill",
+      "Azurill",
+      "Azurill"
+    ]
+  },
+  {
+    "ids": [
+      299,
+      299,
+      299
+    ],
+    "names": [
+      "Nosepass",
+      "Nosepass",
+      "Nosepass"
+    ]
+  },
+  {
+    "ids": [
+      300,
+      301,
+      301
+    ],
+    "names": [
+      "Skitty",
+      "Delcatty",
+      "Delcatty"
+    ]
+  },
+  {
+    "ids": [
+      302,
+      302,
+      302
+    ],
+    "names": [
+      "Sableye",
+      "Sableye",
+      "Sableye"
+    ]
+  },
+  {
+    "ids": [
+      303,
+      303,
+      303
+    ],
+    "names": [
+      "Mawile",
+      "Mawile",
+      "Mawile"
+    ]
+  },
+  {
+    "ids": [
+      304,
+      305,
+      306
+    ],
+    "names": [
+      "Aron",
+      "Lairon",
+      "Aggron"
+    ]
+  },
+  {
+    "ids": [
+      307,
+      308,
+      308
+    ],
+    "names": [
+      "Meditite",
+      "Medicham",
+      "Medicham"
+    ]
+  },
+  {
+    "ids": [
+      309,
+      310,
+      310
+    ],
+    "names": [
+      "Electrike",
+      "Manectric",
+      "Manectric"
+    ]
+  },
+  {
+    "ids": [
+      311,
+      311,
+      311
+    ],
+    "names": [
+      "Plusle",
+      "Plusle",
+      "Plusle"
+    ]
+  },
+  {
+    "ids": [
+      312,
+      312,
+      312
+    ],
+    "names": [
+      "Minun",
+      "Minun",
+      "Minun"
+    ]
+  },
+  {
+    "ids": [
+      313,
+      313,
+      313
+    ],
+    "names": [
+      "Volbeat",
+      "Volbeat",
+      "Volbeat"
+    ]
+  },
+  {
+    "ids": [
+      314,
+      314,
+      314
+    ],
+    "names": [
+      "Illumise",
+      "Illumise",
+      "Illumise"
+    ]
+  },
+  {
+    "ids": [
+      315,
+      315,
+      315
+    ],
+    "names": [
+      "Roselia",
+      "Roselia",
+      "Roselia"
+    ]
+  },
+  {
+    "ids": [
+      316,
+      317,
+      317
+    ],
+    "names": [
+      "Gulpin",
+      "Swalot",
+      "Swalot"
+    ]
+  },
+  {
+    "ids": [
+      318,
+      319,
+      319
+    ],
+    "names": [
+      "Carvanha",
+      "Sharpedo",
+      "Sharpedo"
+    ]
+  },
+  {
+    "ids": [
+      320,
+      321,
+      321
+    ],
+    "names": [
+      "Wailmer",
+      "Wailord",
+      "Wailord"
+    ]
+  },
+  {
+    "ids": [
+      322,
+      323,
+      323
+    ],
+    "names": [
+      "Numel",
+      "Camerupt",
+      "Camerupt"
+    ]
+  },
+  {
+    "ids": [
+      324,
+      324,
+      324
+    ],
+    "names": [
+      "Torkoal",
+      "Torkoal",
+      "Torkoal"
+    ]
+  },
+  {
+    "ids": [
+      325,
+      326,
+      326
+    ],
+    "names": [
+      "Spoink",
+      "Grumpig",
+      "Grumpig"
+    ]
+  },
+  {
+    "ids": [
+      327,
+      327,
+      327
+    ],
+    "names": [
+      "Spinda",
+      "Spinda",
+      "Spinda"
+    ]
+  },
+  {
+    "ids": [
+      328,
+      329,
+      330
+    ],
+    "names": [
+      "Trapinch",
+      "Vibrava",
+      "Flygon"
+    ]
+  },
+  {
+    "ids": [
+      331,
+      332,
+      332
+    ],
+    "names": [
+      "Cacnea",
+      "Cacturne",
+      "Cacturne"
+    ]
+  },
+  {
+    "ids": [
+      333,
+      334,
+      334
+    ],
+    "names": [
+      "Swablu",
+      "Altaria",
+      "Altaria"
+    ]
+  },
+  {
+    "ids": [
+      335,
+      335,
+      335
+    ],
+    "names": [
+      "Zangoose",
+      "Zangoose",
+      "Zangoose"
+    ]
+  },
+  {
+    "ids": [
+      336,
+      336,
+      336
+    ],
+    "names": [
+      "Seviper",
+      "Seviper",
+      "Seviper"
+    ]
+  },
+  {
+    "ids": [
+      337,
+      337,
+      337
+    ],
+    "names": [
+      "Lunatone",
+      "Lunatone",
+      "Lunatone"
+    ]
+  },
+  {
+    "ids": [
+      338,
+      338,
+      338
+    ],
+    "names": [
+      "Solrock",
+      "Solrock",
+      "Solrock"
+    ]
+  },
+  {
+    "ids": [
+      339,
+      340,
+      340
+    ],
+    "names": [
+      "Barboach",
+      "Whiscash",
+      "Whiscash"
+    ]
+  },
+  {
+    "ids": [
+      341,
+      342,
+      342
+    ],
+    "names": [
+      "Corphish",
+      "Crawdaunt",
+      "Crawdaunt"
+    ]
+  },
+  {
+    "ids": [
+      343,
+      344,
+      344
+    ],
+    "names": [
+      "Baltoy",
+      "Claydol",
+      "Claydol"
+    ]
+  },
+  {
+    "ids": [
+      345,
+      346,
+      346
+    ],
+    "names": [
+      "Lileep",
+      "Cradily",
+      "Cradily"
+    ]
+  },
+  {
+    "ids": [
+      347,
+      348,
+      348
+    ],
+    "names": [
+      "Anorith",
+      "Armaldo",
+      "Armaldo"
+    ]
+  },
+  {
+    "ids": [
+      349,
+      350,
+      350
+    ],
+    "names": [
+      "Feebas",
+      "Milotic",
+      "Milotic"
+    ]
+  },
+  {
+    "ids": [
+      351,
+      351,
+      351
+    ],
+    "names": [
+      "Castform",
+      "Castform",
+      "Castform"
+    ]
+  },
+  {
+    "ids": [
+      352,
+      352,
+      352
+    ],
+    "names": [
+      "Kecleon",
+      "Kecleon",
+      "Kecleon"
+    ]
+  },
+  {
+    "ids": [
+      353,
+      354,
+      354
+    ],
+    "names": [
+      "Shuppet",
+      "Banette",
+      "Banette"
+    ]
+  },
+  {
+    "ids": [
+      355,
+      356,
+      356
+    ],
+    "names": [
+      "Duskull",
+      "Dusclops",
+      "Dusclops"
+    ]
+  },
+  {
+    "ids": [
+      357,
+      357,
+      357
+    ],
+    "names": [
+      "Tropius",
+      "Tropius",
+      "Tropius"
+    ]
+  },
+  {
+    "ids": [
+      358,
+      358,
+      358
+    ],
+    "names": [
+      "Chimecho",
+      "Chimecho",
+      "Chimecho"
+    ]
+  },
+  {
+    "ids": [
+      359,
+      359,
+      359
+    ],
+    "names": [
+      "Absol",
+      "Absol",
+      "Absol"
+    ]
+  },
+  {
+    "ids": [
+      360,
+      360,
+      360
+    ],
+    "names": [
+      "Wynaut",
+      "Wynaut",
+      "Wynaut"
+    ]
+  },
+  {
+    "ids": [
+      361,
+      362,
+      362
+    ],
+    "names": [
+      "Snorunt",
+      "Glalie",
+      "Glalie"
+    ]
+  },
+  {
+    "ids": [
+      363,
+      364,
+      365
+    ],
+    "names": [
+      "Spheal",
+      "Sealeo",
+      "Walrein"
+    ]
+  },
+  {
+    "ids": [
+      366,
+      366,
+      366
+    ],
+    "names": [
+      "Clamperl",
+      "Clamperl",
+      "Clamperl"
+    ]
+  },
+  {
+    "ids": [
+      367,
+      367,
+      367
+    ],
+    "names": [
+      "Huntail",
+      "Huntail",
+      "Huntail"
+    ]
+  },
+  {
+    "ids": [
+      368,
+      368,
+      368
+    ],
+    "names": [
+      "Gorebyss",
+      "Gorebyss",
+      "Gorebyss"
+    ]
+  },
+  {
+    "ids": [
+      369,
+      369,
+      369
+    ],
+    "names": [
+      "Relicanth",
+      "Relicanth",
+      "Relicanth"
+    ]
+  },
+  {
+    "ids": [
+      370,
+      370,
+      370
+    ],
+    "names": [
+      "Luvdisc",
+      "Luvdisc",
+      "Luvdisc"
+    ]
+  },
+  {
+    "ids": [
+      371,
+      372,
+      373
+    ],
+    "names": [
+      "Bagon",
+      "Shelgon",
+      "Salamence"
+    ]
+  },
+  {
+    "ids": [
+      374,
+      375,
+      376
+    ],
+    "names": [
+      "Beldum",
+      "Metang",
+      "Metagross"
+    ]
+  },
+  {
+    "ids": [
+      377,
+      377,
+      377
+    ],
+    "names": [
+      "Regirock",
+      "Regirock",
+      "Regirock"
+    ]
+  },
+  {
+    "ids": [
+      378,
+      378,
+      378
+    ],
+    "names": [
+      "Regice",
+      "Regice",
+      "Regice"
+    ]
+  },
+  {
+    "ids": [
+      379,
+      379,
+      379
+    ],
+    "names": [
+      "Registeel",
+      "Registeel",
+      "Registeel"
+    ]
+  },
+  {
+    "ids": [
+      380,
+      380,
+      380
+    ],
+    "names": [
+      "Latias",
+      "Latias",
+      "Latias"
+    ]
+  },
+  {
+    "ids": [
+      381,
+      381,
+      381
+    ],
+    "names": [
+      "Latios",
+      "Latios",
+      "Latios"
+    ]
+  },
+  {
+    "ids": [
+      382,
+      382,
+      382
+    ],
+    "names": [
+      "Kyogre",
+      "Kyogre",
+      "Kyogre"
+    ]
+  },
+  {
+    "ids": [
+      383,
+      383,
+      383
+    ],
+    "names": [
+      "Groudon",
+      "Groudon",
+      "Groudon"
+    ]
+  },
+  {
+    "ids": [
+      384,
+      384,
+      384
+    ],
+    "names": [
+      "Rayquaza",
+      "Rayquaza",
+      "Rayquaza"
+    ]
+  },
+  {
+    "ids": [
+      385,
+      385,
+      385
+    ],
+    "names": [
+      "Jirachi",
+      "Jirachi",
+      "Jirachi"
+    ]
+  },
+  {
+    "ids": [
+      386,
+      386,
+      386
+    ],
+    "names": [
+      "Deoxys",
+      "Deoxys",
+      "Deoxys"
+    ]
+  }
+]

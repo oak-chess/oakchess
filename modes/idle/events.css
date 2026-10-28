@@ -29,3 +29,7 @@ body.idle-native-mode #idle-legendary-event[role=button][data-available]>button:
 body.idle-native-mode #idle-legendary-event[role=button][data-available]>.idle-event-rocket-duo{position:absolute;left:4px;top:10px;display:flex;justify-content:center;align-items:center;width:48px;height:32px;gap:0;overflow:hidden;background:transparent;border:0;box-shadow:none;padding:0}
 body.idle-native-mode #idle-legendary-event[role=button]>.idle-event-rocket-duo>span{width:24px;height:24px;flex:none;background-size:24px auto;background-position:0 -48px}
 @media(prefers-reduced-motion:reduce){body.idle-native-mode #idle-legendary-event[role=button][data-available]{transition:none}}
+.ie-attempts{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px;padding:9px 12px;border:1px solid #a85c80;border-radius:8px;background:linear-gradient(115deg,#44233c,#241b30);color:#ffe9f5}
+.ie-attempts b{color:#ffdf81;font-size:14px}.ie-attempts span{font-size:11px;color:#b9e9dc}.ie-attempts small{font-size:9px;color:#ddbdd4}
+.ie-training{display:block;width:100%;margin-top:8px;padding:9px;border:1px solid #9376ac;border-radius:8px;background:#372d4a;color:#e8d8ff;cursor:pointer;font:700 11px 'Trebuchet MS',sans-serif}.ie-training:disabled{opacity:.5;cursor:default}
+.ie-status[data-status=available]{color:#a7efcb!important}.ie-status[data-status=recharge]{color:#edca85!important}

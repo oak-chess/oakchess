@@ -1,0 +1,1 @@
+const fs=require('fs');(async()=>{for(const file of ['pokemon_evolution.csv','pokemon_species.csv']){const r=await fetch('https://raw.githubusercontent.com/PokeAPI/pokeapi/master/data/v2/csv/'+file);if(!r.ok)throw Error(r.status);fs.writeFileSync('tmp/'+file,await r.text())}console.log('Evolution/species CSV sources saved.');})();
