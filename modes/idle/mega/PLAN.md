@@ -1,7 +1,7 @@
 # Mega Evolução — plano e critérios de aceitação
 
 ## Escopo inicial
-Charizard X (Charizardite X), Gengar (Gengarite), Mawile (Mawilite). Somente formas com Idle, Walk e Attack PMD verificados. Variantes normais e shiny e créditos preservados. Não altera as espécies, os IDs ou as linhas evolutivas existentes.
+Charizard X (Charizardite X), Gengar (Gengarite), Mawile (Mawilite), Alakazam (Alakazite), Houndoom (Houndoominite), Gardevoir (Gardevoirite). Somente formas com Idle, Walk e Attack PMD verificados. Variantes normais e shiny e créditos preservados. Não altera as espécies, os IDs ou as linhas evolutivas existentes.
 
 ## Progressão
 Após cinco vitórias de exploração, a missão do Professor Carvalho entrega uma Pedra-Chave permanente e três Bronze Boss Tokens, uma única vez. Cada vitória válida em lendário/mítico de evento entrega um token; Rocket, exploração, torre, offline e treino não entregam tokens. Não existe recompensa retroativa.
@@ -16,7 +16,7 @@ Vitória paga: 3–5 fragmentos da espécie, +5 na primeira vitória paga, chanc
 Pedra-Chave + pedra específica + forma final compatível. Slot exclusivo, separado dos equipamentos; um único parceiro designado por vez, selecionado no laboratório Mega ou por atalho na ficha. Transformação no início do combate, encerra junto do combate, sem modificar o membro salvo. Identidade, nível, genes, favorito/cadeado e itens preservados. Compatibilidade revalidada em cada luta. Forma normal durante preparação. Shiny continua shiny.
 
 ## Interface
-Painel Mega no Centro Pokémon: missão, tokens, catálogo dos três bosses, requisitos, recompensas, treino e entrada paga, fragmentos/fabricação, escolha de parceiro, remoção da designação. Ficha e Wiki com atalhos e explicações. Estilo Rocket existente com acentos de energia/cristal, suporte a telas menores e movimento reduzido.
+Painel Mega no Centro Pokémon: missão, tokens, catálogo dos seis bosses, requisitos, recompensas, treino e entrada paga, fragmentos/fabricação, escolha de parceiro, remoção da designação. Ficha e Wiki com atalhos e explicações. Estilo Rocket existente com acentos de energia/cristal, suporte a telas menores e movimento reduzido.
 
 ## Persistência e testes
 Estado versionado em world.mega; transações com rollback em falha de salvamento. Recompensas idempotentes por identificador de encontro/desafio. IDs de desafio monotônicos. Migração sem apagar dados. Testes de missão única, elegibilidade, cobrança, derrota/treino, limites RNG, primeira vitória, fabricação/equipagem, recarga e preservação dos membros. Navegador: PMD normal/shiny, fluxo real, combate, retorno à forma base, regressão de eventos e caçadas. Publicação só após solicitação.

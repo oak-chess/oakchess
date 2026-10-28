@@ -4,7 +4,7 @@ let sharp;try{sharp=require('sharp')}catch{sharp=require('C:/Users/os_ap/.cache/
 const root=path.resolve(__dirname,'..'),base=path.join(root,'assets/pmd/sprite'),context={window:{}};
 vm.runInNewContext(fs.readFileSync(path.join(root,'assets/pmd/anim-data.js'),'utf8'),context);
 vm.runInNewContext(fs.readFileSync(path.join(root,'modes/idle/mega/pmd-data.js'),'utf8'),context);const jobs=[],result={};
-for(const [key,xml] of Object.entries(context.window.PMD_ANIM_DATA)){if(!['0006/0001','0006/0001s','0094/0001','0094/0001s','0303/0001','0303/0001s'].includes(key))continue;
+for(const [key,xml] of Object.entries(context.window.PMD_ANIM_DATA)){if(!['0006/0001','0006/0001s','0094/0001','0094/0001s','0303/0001','0303/0001s','0065/0001','0065/0001s','0229/0001','0229/0001s','0282/0001','0282/0001s'].includes(key))continue;
  const bare=key.endsWith('s')?key.slice(0,-1):key;const dir=key.endsWith('s')?bare+(bare.includes('/')?'/0001/':'/0000/0001/'):bare+'/';
  for(const match of xml.matchAll(/<Anim>([\s\S]*?)<\/Anim>/g)){
   const get=tag=>match[1].match(new RegExp('<'+tag+'>([^<]+)</'+tag+'>'))?.[1];

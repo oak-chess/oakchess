@@ -12,3 +12,8 @@ body.idle-native-mode #idle-mega{position:absolute;z-index:192;top:50%;left:50%;
 #idle-mega .im-stone[data-obtained=false] h4 .im-item-icon{filter:grayscale(.7);opacity:.65}
 #idle-mega .im-rewards>div{position:relative}
 #idle-mega .im-rewards>div>.im-item-icon{position:absolute;right:5px;top:5px;width:24px;height:24px}
+/* Six bosses fit in the existing navigation without enlarging the panel. */
+#idle-mega .im-bosses{align-self:start;gap:6px}
+#idle-mega .im-bosses button{min-height:62px;padding:6px 8px}
+#idle-mega .im-bosses img{width:44px;height:44px}
+@media(max-width:650px){#idle-mega .im-bosses{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}#idle-mega .im-bosses button{min-width:0;font-size:10px;padding:5px;gap:3px}#idle-mega .im-bosses img{width:36px;height:36px}}

@@ -2,7 +2,10 @@
 window.IDLE_MEGA_DEFS=[
  {key:'charizard-x',id:6,name:'Charizard',label:'Mega Charizard X',stone:'Charizardite X',stoneIcon:'charizardite-x',form:1,sprite:10034,types:['fire','dragon'],color:'#56bbef',stats:{atk:130/84,spell:130/109,armor:111/78,mr:1,as:1},mechanic:'Chamas da fenda: a cada 8s, cria fogo sob um parceiro por 3s.'},
  {key:'gengar',id:94,name:'Gengar',label:'Mega Gengar',stone:'Gengarite',stoneIcon:'gengarite',form:1,sprite:10038,types:['ghost','poison'],color:'#c18bff',stats:{atk:1,spell:170/130,armor:80/60,mr:95/75,as:130/110},mechanic:'Emboscada sombria: a cada 8s, reaparece atrás de um parceiro e drena 15 de mana.'},
- {key:'mawile',id:303,name:'Mawile',label:'Mega Mawile',stone:'Mawilite',stoneIcon:'mawilite',form:1,sprite:10052,types:['steel','fairy'],color:'#ff96bc',stats:{atk:1.5,spell:1,armor:125/85,mr:95/55,as:1},mechanic:'Mandíbula da fenda: a cada 8s, atinge parceiros a até um hexágono e os desacelera por 2s.'}
+ {key:'mawile',id:303,name:'Mawile',label:'Mega Mawile',stone:'Mawilite',stoneIcon:'mawilite',form:1,sprite:10052,types:['steel','fairy'],color:'#ff96bc',stats:{atk:1.5,spell:1,armor:125/85,mr:95/55,as:1},mechanic:'Mandíbula da fenda: a cada 8s, atinge parceiros a até um hexágono e os desacelera por 2s.'},
+ {key:'alakazam',id:65,name:'Alakazam',label:'Mega Alakazam',stone:'Alakazite',stoneIcon:'alakazite',form:1,sprite:10037,types:['psychic'],color:'#e5baff',stats:{atk:1,spell:175/135,armor:65/45,mr:105/95,as:150/120},mechanic:'Pulso psíquico da fenda: a cada 8s, atordoa o parceiro mais próximo por 0,8s.'},
+ {key:'houndoom',id:229,name:'Houndoom',label:'Mega Houndoom',stone:'Houndoominite',stoneIcon:'houndoominite',form:1,sprite:10048,types:['dark','fire'],color:'#ff795b',stats:{atk:1,spell:140/110,armor:90/50,mr:90/80,as:115/95},mechanic:'Brasas da fenda: a cada 8s, cria fogo sob o parceiro mais próximo e o queima por 4s.'},
+ {key:'gardevoir',id:282,name:'Gardevoir',label:'Mega Gardevoir',stone:'Gardevoirite',stoneIcon:'gardevoirite',form:1,sprite:10051,types:['psychic','fairy'],color:'#a6f0dc',stats:{atk:85/65,spell:165/125,armor:1,mr:135/115,as:100/80},mechanic:'Véu da fenda: a cada 8s, recebe um escudo de 8% dos PS máximos, acumulando até 16%.'}
 ];
 window.createIdleMega=function(ctx){
  const s=ctx.state,w=s.world,defs=window.IDLE_MEGA_DEFS,random=ctx.random||Math.random;
