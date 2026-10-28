@@ -1,0 +1,10 @@
+const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict');const c={window:{}};vm.runInNewContext(fs.readFileSync('modes/idle/combat-continuity.js','utf8'),c);const api=c.window.IDLE_COMBAT_CONTINUITY;
+const moves=[1,2,3,4].map(id=>({id,n:'Move '+id})),member={id:'partner'},u={moves,mi:2,mana:37,maxMana:65,alive:true};
+assert(api.capture(member,u));assert.equal(member.combatCarry.next,'id:3');const restored={moves,mana:0,maxMana:65};assert(api.restore(member,restored));assert.equal(restored.mi,2);assert.equal(restored.mana,37);
+restored.mi=3;restored.mana=200;assert(api.capture(member,restored));const smaller={moves,maxMana:40};assert(api.restore(member,smaller));assert.equal(smaller.mi,3);assert.equal(smaller.mana,80);
+assert.equal(api.restore({...member,id:'offspring'},{moves,maxMana:65}),false);assert.equal(api.restore({id:'old-save'},{moves,maxMana:65}),false);
+assert(api.capture(member,{moves,mi:4,mana:80,maxMana:65,alive:false}));assert.equal(member.combatCarry.mana,0);assert.equal(member.combatCarry.next,'id:1');
+member.combatCarry.mana=-3;member.combatCarry.next='removed-move';const changed={moves:moves.slice(0,2),maxMana:65};assert(api.restore(member,changed));assert.equal(changed.mi,0);assert.equal(changed.mana,0);
+assert(api.capture(member,{moves,mi:NaN,mana:NaN,maxMana:65,alive:true}));assert.equal(member.combatCarry.mana,0);assert.equal(member.combatCarry.next,'id:1');
+const translated={id:'translated'};api.capture(translated,{moves:[{emerald:'PSYCHIC',n:'Nome antigo'}],mi:1,mana:15,maxMana:60,alive:true});const afterName={moves:[{emerald:'PSYCHIC',n:'Psíquico'}],maxMana:60};assert(api.restore(translated,afterName));assert.equal(afterName.mana,15);
+console.log('Passed: next-move identity, energy carry, capacity clamp, fainted energy reset, old saves, malformed values, changed profiles and no inheritance by another partner.');
