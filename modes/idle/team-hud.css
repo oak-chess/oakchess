@@ -13,5 +13,5 @@ body.idle-native-mode #stage .is-team .is-team-card[data-health=low]{border-colo
 @media(prefers-reduced-motion:reduce){.is-card-xp-gain{animation:none;bottom:5px}}
 
 /* Visible XP percentage beside the compact progress bar. */
-body.idle-native-mode #stage .is-card-xp-track{position:relative;margin-right:48px}
+body.idle-native-mode #stage .is-card-xp-track{position:relative;overflow:visible;margin-right:48px}
 body.idle-native-mode #stage .is-card-xp-track::after{content:attr(data-xp);position:absolute;left:calc(100% + 5px);top:50%;transform:translateY(-50%);width:44px;white-space:nowrap;color:#bce5ff;font:700 8px/1.2 "Trebuchet MS",sans-serif;font-variant-numeric:tabular-nums}
