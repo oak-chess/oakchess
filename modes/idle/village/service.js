@@ -4,13 +4,13 @@ window.createIdleVillageService=function(ctx){
  const names=['Magikarp','Goldeen','Poliwag','Psyduck','Wooper','Barboach','Tentacool','Krabby','Horsea','Remoraid','Slowpoke','Chinchou','Corsola','Staryu','Feebas','Poliwhirl','Seaking','Whiscash','Gyarados','Dratini','Lapras'],ids=[129,118,60,54,194,339,72,98,116,223,79,170,222,120,349,61,119,340,130,147,131],rank={129:1,118:1,60:1,54:1,79:2,119:2,130:3,147:3,339:1,194:1,61:2,340:3,349:2,72:1,98:1,120:2,116:1,222:2,170:2,223:1,131:3};
  const pools=[[129,118,60,54,79,119,130,147],[129,60,339,194,61,340,349,130],[129,72,98,116,120,222,170,223,131]],unlock=Object.fromEntries(ids.map((id,i)=>[id,i?i*10:1])),orders=[{id:'magikarp',species:129,count:3,gold:60,xp:30},{id:'goldeen',species:118,count:2,gold:90,xp:45},{id:'poliwag',species:60,count:2,gold:120,xp:60}];
  const clone=x=>JSON.parse(JSON.stringify(x)),line=id=>ctx.lines.find(l=>l.ids.includes(id)),uid=()=>crypto.randomUUID(),v=()=>s.village;
- function init(){if(!s.village||s.village.version!==1)s.village={version:1,gold:s.gold,tier:null,metFisher:false,metFarmer:false,questClaimed:false,roster:[],history:[],lastRoll:[],rolling:null,materials:0};P.init(v());v().fishing??={ownedRods:[],fishingLevel:1,fishingXP:0,lastXP:0,catches:[],totalCaught:0,attempts:0,missed:0,completedOrders:[],activeCast:null};refreshRoster()}
+ function init(){if(!s.village||s.village.version!==1)s.village={version:1,gold:s.gold,tier:null,metFisher:false,metFarmer:false,questClaimed:false,roster:[],history:[],lastRoll:[],rolling:null,materials:0};P.economy(v());v().fishing??={ownedRods:[],fishingLevel:1,fishingXP:0,lastXP:0,catches:[],totalCaught:0,attempts:0,missed:0,completedOrders:[],activeCast:null};refreshRoster()}
  function refreshRoster(){const old=new Map((v().roster||[]).map(p=>[p.key,p]));v().roster=s.collection.map(m=>{const L=ctx.lines.find(l=>l.names[0]===m.name);if(!L)return null;const prior=old.get(m.id),reserved=!!prior?.houseId&&v().houses.some(h=>h.id===prior.houseId);return {key:m.id,species:L.ids[m.star-1],name:L.names[m.star-1],level:m.level,xp:m.xp||0,ivs:keys.map(k=>m.ivs?.[k]||0),potency:m.potency||1,favorite:!!m.favorite,locked:!!m.locked,shiny:!!m.shiny,place:reserved?'farm':ctx.busy?.(m)?'busy':'pc',houseId:reserved?prior.houseId:undefined,trainingCarry:prior?.trainingCarry||0,trained:prior?.trained||0}}).filter(Boolean);v().gold=s.gold}
  function snapshot(){init();const copy=clone(v());copy.activityVolume=typeof CFG!=='undefined'?(CFG.mute?0:CFG.sfx):1;copy.gold=s.gold;copy.fishing.gold=s.gold;copy.fishing.catalog={};for(const id of ids){const L=line(id);if(L)copy.fishing.catalog[id]={cost:L.c||1,star:L.ids.indexOf(id)+1}}return copy}
  function syncMembers(){for(const p of v().roster){if(p.place!=='farm')continue;const m=s.collection.find(m=>m.id===p.key);if(m){m.level=p.level;m.xp=p.xp;m.xpSchema=2}}}
  const fail=message=>{throw Error(message)};
  function commit(action,data={}){
-  init();const backup={v:clone(v()),gold:s.gold,collection:clone(s.collection),shiny:clone(s.shinyProgress||{}),discovered:clone(s.discovered||[]),log:clone(s.captureLog||[])};let result={};const f=v().fishing;
+  init();const backup={v:clone(v()),gold:s.gold,collection:clone(s.collection),shiny:s.shinyProgress===undefined?undefined:clone(s.shinyProgress),discovered:clone(s.discovered||[]),log:clone(s.captureLog||[])};let result={};const f=v().fishing;
   try{
    switch(action){
     case 'cancelFish':f.activeCast=null;break;
@@ -20,7 +20,9 @@ window.createIdleVillageService=function(ctx){
     case 'rename':{const h=v().houses.find(h=>h.id===data.id),name=String(data.name||'').trim().slice(0,40);if(!h||!name)fail('Informe um nome para a casa.');h.name=name;break}
     case 'assign':{const m=s.collection.find(m=>m.id===data.key);if(!m||ctx.busy?.(m)||!P.assign(v(),data.key,data.id))fail('Parceiro indisponível ou casa cheia.');break}
     case 'return':{const p=v().roster.find(p=>p.key===data.key&&p.place==='farm');if(!p)fail('Parceiro não encontrado nesta casa.');p.place='pc';delete p.houseId;break}
-    case 'buyDeeds':if(!v().questClaimed||!P.buy(v(),data.count))fail('Ouro insuficiente ou sorteio já em andamento.');break;
+    case 'buyDeeds':if(!v().questClaimed||!P.buy(v(),data.count,Math.random,data.currency||'gold'))fail('Recurso insuficiente ou sorteio já em andamento.');break;
+    case 'weeklyHouse':if(!v().questClaimed||!P.claimWeekly(v()))fail('Complete 100 vitórias nesta semana ou confira se já recolheu.');break;
+    case 'fuseDeeds':{const deed=P.fuse(v(),data.ids);if(!deed)fail('Selecione cinco escrituras guardadas, livres e da mesma qualidade: Comum ou Incomum.');result.deed=deed;break}
     case 'settleDeeds':{const results=P.settle(v());if(results.length){v().lastRoll=results;for(const d of results)v().history.unshift({...d,action:'Escritura guardada',time:new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})});v().history=v().history.slice(0,30)}result.results=results;break}
     case 'install':if(!P.install(v(),data.id))fail('Limite de quatro casas ou escritura indisponível.');break;
     case 'pack':if(!P.pack(v(),data.id))fail('Casa não encontrada.');break;
@@ -48,10 +50,11 @@ window.createIdleVillageService=function(ctx){
    // Property operations use the same wallet as the rest of Idle.
    if(['buyDeeds','dispose'].includes(action))s.gold=v().gold;
    if(!Number.isFinite(s.gold)||s.gold<0)fail('Saldo inválido.');syncMembers();refreshRoster();ctx.save();return {ok:true,...result,state:snapshot()};
-  }catch(error){s.village=backup.v;s.gold=backup.gold;s.collection=backup.collection;s.shinyProgress=backup.shiny;s.discovered=backup.discovered;s.captureLog=backup.log;return {ok:false,reason:error.message,state:snapshot()}}
+  }catch(error){s.village=backup.v;s.gold=backup.gold;s.collection=backup.collection;if(backup.shiny===undefined)delete s.shinyProgress;else s.shinyProgress=backup.shiny;s.discovered=backup.discovered;s.captureLog=backup.log;return {ok:false,reason:error.message,state:snapshot()}}
  }
  function fishXP(amount){const f=v().fishing;f.lastXP=amount;f.fishingXP+=amount;while(f.fishingLevel<200&&f.fishingXP>=60+(f.fishingLevel-1)*12){f.fishingXP-=60+(f.fishingLevel-1)*12;f.fishingLevel++}if(f.fishingLevel===200)f.fishingXP=0}
  function reward(amount){init();if(!Number.isFinite(amount)||amount<=0)return;P.reward(v(),'hunt-'+Date.now()+'-'+(++serial),amount);if(v().huntReceipts.length>2048)v().huntReceipts=v().huntReceipts.slice(-2048);syncMembers();ctx.save()}
  function action(request,name,data){if(typeof request!=='string')return {ok:false,reason:'Requisição inválida.'};if(replies.has(request))return replies.get(request);const reply=name==='sync'?{ok:true,state:snapshot()}:commit(name,data);replies.set(request,reply);if(replies.size>128)replies.delete(replies.keys().next().value);return reply}
- return {snapshot,action,reward};
+ function event(fn){init();const backup=clone(v());try{const count=fn(v());ctx.save();return count}catch(e){s.village=backup;throw e}}
+ return {snapshot,action,reward,victory:()=>event(v=>P.victory(v)),boss:key=>event(v=>P.boss(v,key))};
 };
