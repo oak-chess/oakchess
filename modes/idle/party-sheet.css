@@ -114,3 +114,5 @@ body.idle-native-mode #idle-party .ip-analysis-link{background:transparent!impor
 #idle-party .ip-analysis-comparison[open]{padding-bottom:10px}
 body.idle-native-mode #idle-party[data-view=detail]>.ip-footer{padding:8px 20px;min-height:42px}
 @media(max-width:700px){body.idle-native-mode #idle-party[data-view=detail]{max-width:calc(100% - 16px)!important;max-height:calc(100% - 20px)!important}#idle-party .ip-analysis-overview,#idle-party .ip-analysis-lower,#idle-party .ip-analysis-profile{grid-template-columns:1fr}#idle-party .ip-analysis-traits{grid-template-columns:1fr}#idle-party[data-view=detail] .ip-sheet-identity{flex-wrap:wrap;gap:8px}body.idle-native-mode #idle-party[data-view=detail] .ip-tabs>.ip-button{min-width:0;flex:1;padding:7px 8px!important;font-size:10px}#idle-party .ip-analysis-modifiers>div:last-child{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+.ip-xp-pace{margin:6px 0;color:#81d8ff;font-size:12px;font-variant-numeric:tabular-nums}

@@ -23,3 +23,5 @@ body.idle-native-mode #stage #idle-world[data-family=profile]{border-color:#1714
 body.idle-native-mode #stage #idle-world[data-family=profile] .itp-activity{background:linear-gradient(120deg,#332336,#201c2b)!important;border:1px solid #70415e!important;border-radius:9px!important;box-shadow:inset 0 1px #ffffff08!important}
 body.idle-native-mode #stage #idle-world[data-family=profile] .itp-activity:hover{background:linear-gradient(120deg,#563149,#312036)!important;border-color:#e47ea3!important}
 body.idle-native-mode #stage #idle-world[data-family=profile] .itp-regions button{background:#27202f!important;border-radius:8px!important}
+
+.itp-xp-pace{grid-column:1/-1;margin:4px 0 0;color:#81d8ff;font-size:12px;font-variant-numeric:tabular-nums}

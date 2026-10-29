@@ -12,7 +12,7 @@ if(!state.world){state.area=state.area===2?1:0;state.captureResearch=Array(8).fi
 state.items=state.items||[];state.area=Math.max(0,Math.min(areas.length-1,Number(state.area)||0));state.schemaVersion=5;state.trainerLevel=state.trainerLevel||1;state.trainerXp=state.trainerXp||0;state.team.forEach(m=>{m.xp=m.xp||0;m.candy=m.candy||0});
 window.IDLE_HUNT_LOCATION?.restore(state);window.IDLE_XP.migrate(state);
 const capacity=()=>Math.min(6,2+state.trainerLevel);
-function gainXp(m,amount){window.IDLE_XP.add(m,amount)}
+function gainXp(m,amount){const before=m.level;window.IDLE_XP.add(m,amount);if(m.level>before&&G.phase==='combat'){const u=B.units.find(u=>u.side===0&&u._idleMember===m.id&&u.alive);if(u){u.hp=u.maxHp;updateCUEl(u)}}}
 function trainerXp(amount){window.IDLE_XP.trainer(state,amount)}
 function closeWindows(){megaUI?.close();gachaUI?.close();wikiUI?.close();safariUI?.close();eventUI?.close();automationUI?.close();pcUI?.close();fieldNotes?.close();shopUI?.close();screenUI?.close();systems?.close();hunts?.close();partyUI?.close();closeBag();for(const id of ['idle-roster-panel','idle-recruit-panel','idle-training','idle-map','idle-offline-panel'])$id(id).hidden=true}
 function openTraining(){partyUI.open(state.team[selected]?.id,'summary')}
