@@ -3,6 +3,7 @@ window.createIdleTutorial=function(ctx){
  const s=ctx.state;s.tutorial={version:1,index:0,visited:[],introduced:false,complete:false,...s.tutorial};const t=s.tutorial;t.version=2;
  const chapters=[
  ['Boas-vindas à Jornada Idle','Sou o Professor Carvalho! Vou ajudar você a preparar a equipe e explorar este modo.', ['A equipe luta automaticamente depois que você inicia a caçada.','Você escolhe parceiros, formação, captura, suprimentos e objetivos.','O guia pode ser interrompido e retomado pelo meu botão, ao lado do treinador.'],null,null],
+ ['Vila, pesca e casas','Há um novo acesso próprio à Vila na barra inferior.', ['O Centro continua disponível no botão Centro. Na Vila, Seu Elias oferece varas e pesca; Dona Rosa cuida das casas.','A primeira casa vem de conhecer os dois moradores. Treinam apenas Pokémon disponíveis do PC, reservados enquanto estiverem na casa.','Na pesca, Magikarp é a primeira espécie. O balde permite proteger, vender e enviar capturas ao PC. Consulte a Wiki para níveis, varas e porcentagens de treino.'],null,'#rv-village-launch'],
  ['Conheça a tela','Cada canto da tela tem uma função.', ['À esquerda ficam seu nível, parceiros em campo e sinergias.','Embaixo ficam os menus da equipe, exploração e Centro Pokémon.','À direita ficam loja, automação, registros e recompensas; o quadro pequeno mostra os suprimentos selecionados.'],null,'.is-navigation'],
  ['Prepare sua equipe','Antes de explorar, organize quem vai lutar e quem fica no banco.', ['Arraste os parceiros entre as casas da arena e as vagas do banco.','O limite em campo cresce com o treinador até seis parceiros; o banco tem nove vagas.','Mudanças estruturais de equipe interrompem a caçada para preparar a formação.'],'party','.is-team'],
  ['Formação e sinergias','A posição e os tipos da equipe fazem diferença.', ['Distribua os parceiros para evitar concentrar a equipe em ataques de área.','As sinergias mostram quantos parceiros contribuem e os patamares do bônus.','O quadro de sinergias pode ser arrastado pelo cabeçalho, minimizado pela seta e reposicionado com ↺.'],null,'.is-synergies'],
@@ -42,7 +43,7 @@ window.createIdleTutorial=function(ctx){
  function rectangle(e){const r=e.getBoundingClientRect(),base=root.parentElement.getBoundingClientRect(),scale=base.width/root.parentElement.offsetWidth;return{x:(r.left-base.left)/scale-7,y:(r.top-base.top)/scale-7,w:r.width/scale+14,h:r.height/scale+14}}
  function interactive(){return tip===chapters[t.index][2].length-1&&!!chapters[t.index][3]}
  function layout(){
-  if(root.hidden)return;const c=chapters[t.index],opened=visible(panels[c[3]]);if(interactive()&&opened&&!actionDone){actionDone=true;updateHint()}
+  if(root.hidden)return;root.parentElement.scrollLeft=0;const c=chapters[t.index],opened=visible(panels[c[3]]);if(interactive()&&opened&&!actionDone){actionDone=true;updateHint()}
   const target=interactive()&&opened?opened:visible(c[4]);ring.hidden=!target;
   let hole='none';if(target){const r=rectangle(target),w=root.offsetWidth,h=root.offsetHeight;ring.style.cssText='left:'+r.x+'px;top:'+r.y+'px;width:'+r.w+'px;height:'+r.h+'px';hole='path(evenodd,"M0 0H'+w+'V'+h+'H0Z M'+r.x+' '+r.y+'h'+r.w+'v'+r.h+'h'+(-r.w)+'Z")';dialog.dataset.position=r.y+r.h/2>h*.5?'top':'bottom'}else dialog.dataset.position='bottom';
   dim.style.clipPath=hole;block.style.clipPath=interactive()?hole:'none';

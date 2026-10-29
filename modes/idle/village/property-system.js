@@ -1,0 +1,23 @@
+(function(root){
+ const rates=[.0025,.005,.0075,.01,.015,.03],slots=[2,3,4,5,6,7],weights=[50,30,15,4,.8,.2],price=5000,maxHouses=4;
+ const sellPrices=[400,700,1200,2000,3000,4000],salvage=[{wood:3,stone:2,parts:0},{wood:5,stone:3,parts:0},{wood:7,stone:5,parts:1},{wood:10,stone:7,parts:3},{wood:15,stone:10,parts:5},{wood:20,stone:15,parts:8}];
+ const upgrades=[{wood:12,stone:8,parts:1},{wood:24,stone:16,parts:3},{wood:40,stone:28,parts:5}],decorations={flowers:{name:'Jardim de flores',cost:{wood:8,stone:4,parts:0}},stones:{name:'Caminho de pedra',cost:{wood:2,stone:8,parts:0}}};
+ function init(s){s.houses??=[];s.deeds??=[];s.propertySerial??=0;s.huntXpTotal??=0;s.huntReceipts??=[];s.construction??={wood:0,stone:0,parts:0}}
+ const effectiveRate=h=>rates[h.tier]*(1+.1*(h.trainingLevel||0));
+ function dispose(s,id,mode){init(s);const i=s.deeds.findIndex(d=>d.id===id);if(i<0||s.deeds[i].locked||!['sell','recycle'].includes(mode))return false;const d=s.deeds[i];s.deeds.splice(i,1);if(mode==='sell')s.gold+=sellPrices[d.tier];else for(const key of ['wood','stone','parts'])s.construction[key]+=salvage[d.tier][key];return true}
+ const affordable=(s,cost)=>Object.keys(cost).every(k=>Number.isFinite(s.construction[k])&&s.construction[k]>=cost[k]);
+ function spend(s,cost){if(!affordable(s,cost))return false;for(const key of Object.keys(cost))s.construction[key]-=cost[key];return true}
+ function upgrade(s,id,expected){init(s);const h=s.houses.find(h=>h.id===id);if(!h||(h.trainingLevel||0)!==expected||expected<0||expected>=3||!spend(s,upgrades[expected]))return false;h.trainingLevel=expected+1;return true}
+ function decorate(s,id,key){init(s);if(!Object.hasOwn(decorations,key))return false;const h=s.houses.find(h=>h.id===id),recipe=decorations[key];if(!h||(h.decorOwned||[]).includes(key)||!spend(s,recipe.cost))return false;h.decorOwned??=[];h.decorEnabled??=[];h.decorOwned.push(key);h.decorEnabled.push(key);return true}
+ function deed(s,tier,name){return {id:'property-'+(++s.propertySerial),tier,name:name||'',created:s.propertySerial}}
+ function install(s,id){init(s);if(s.houses.length>=maxHouses)return null;const i=s.deeds.findIndex(d=>d.id===id);if(i<0)return null;const house=s.deeds.splice(i,1)[0];s.houses.push(house);s.activeHouseId=house.id;s.tier=house.tier;return house}
+ function start(s){init(s);if(s.houses.length||s.questClaimed)return null;const d=deed(s,0);s.deeds.push(d);const house=install(s,d.id);s.questClaimed=true;return house}
+ function pick(random){let n=random()*100;for(let i=0;i<weights.length;i++){n-=weights[i];if(n<0)return i}return weights.length-1}
+ function buy(s,count,random=Math.random){init(s);if(s.rolling||![1,5,10].includes(count)||s.gold<count*price)return false;const results=Array.from({length:count},()=>deed(s,pick(random)));s.gold-=count*price;s.rolling={results,elapsed:0,lastFrame:-1};return true}
+ function settle(s){const batch=s.rolling;if(!batch)return [];s.rolling=null;for(const d of batch.results)if(!s.deeds.some(x=>x.id===d.id)&&!s.houses.some(x=>x.id===d.id))s.deeds.push(d);return batch.results}
+ function assign(s,key,houseId){const p=s.roster.find(p=>p.key===key),h=s.houses.find(h=>h.id===houseId);if(!p||!h||p.place!=='pc'||s.roster.filter(p=>p.houseId===houseId&&p.place==='farm').length>=slots[h.tier])return false;p.place='farm';p.houseId=houseId;return true}
+ function pack(s,id){const i=s.houses.findIndex(h=>h.id===id);if(i<0)return false;for(const p of s.roster.filter(p=>p.houseId===id)){p.place='pc';delete p.houseId}const h=s.houses.splice(i,1)[0];s.deeds.push(h);s.activeHouseId=s.houses[0]?.id||null;s.tier=s.houses[0]?.tier??null;return true}
+ const need=level=>50*(level*level-3*level+4);
+ function reward(s,receipt,amount){init(s);if(typeof receipt!=='string'||!Number.isFinite(amount)||amount<=0||s.huntReceipts.includes(receipt))return 0;s.huntReceipts.push(receipt);s.huntXpTotal+=amount;let awarded=0;for(const house of s.houses){const members=s.roster.filter(p=>p.place==='farm'&&p.houseId===house.id);if(!members.length)continue;const portion=amount*effectiveRate(house)/members.length;house.receivedXp=(house.receivedXp||0)+amount*effectiveRate(house);for(const p of members){const carry=(p.trainingCarry||0)+portion,gain=Math.floor(carry+1e-9);p.trainingCarry=Math.max(0,carry-gain);p.xp=(p.xp||0)+gain;p.trained=(p.trained||0)+gain;awarded+=gain;while(p.xp>=need(p.level)){p.xp-=need(p.level);p.level++}}}return awarded}
+ const api={sellPrices,salvage,upgrades,decorations,effectiveRate,dispose,affordable,upgrade,decorate,rates,slots,weights,price,maxHouses,init,install,start,buy,settle,assign,pack,reward,need};if(typeof module!=='undefined')module.exports=api;else root.RURAL_PROPERTIES=api;
+})(typeof window==='undefined'?globalThis:window);

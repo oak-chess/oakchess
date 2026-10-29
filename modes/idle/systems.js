@@ -21,7 +21,7 @@ function reward(r){if(r.unlock)w.unlocks[r.unlock]=true;if(r.gold)s.gold+=r.gold
 function once(key,fn){if(w.claims[key])return false;w.claims[key]=true;fn();return true}
 function addPartner(name,source){const L=lines.find(l=>l.names.includes(name));if(!L)return;const key=L.names[0],existing=all().find(m=>m.name===key);if(existing){existing.candy=(existing.candy||0)+2;return}const m=normalize({name:key,level:1,star:1,xp:0,candy:0,items:[]});s.collection.push(m);s.discovered=Array.from(new Set([...s.discovered,key]));life.record(name);album('Novo parceiro: '+key+' · '+source)}
 function gain(m,xp){ctx.gainXp(m,xp)}
-function busy(m){return w.tasks.some(t=>t.member===m.id)||life.busy(m)}
+function busy(m){return s.village?.roster?.some(p=>p.key===m.id&&p.place==='farm')||w.tasks.some(t=>t.member===m.id)||life.busy(m)}
 function region(){return D.regions[s.area]}
 function weather(){if(s.area>=16&&(s.hunts?.kind==='frost'||w.activity==='hunt:frost'))return 'Granizo';return D.weather[(Math.floor(Date.now()/1800000)+s.area)%D.weather.length]}
 function daytime(){return w.timeMode==='auto'?(new Date().getHours()>=6&&new Date().getHours()<18?'day':'night'):w.timeMode}
