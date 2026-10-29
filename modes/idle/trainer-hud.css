@@ -9,3 +9,7 @@ body.idle-native-mode #stage .is-trainer .idle-wallet{display:block;margin-top:4
 @media(prefers-reduced-motion:reduce){body.idle-native-mode #stage button.is-trainer{transition:none}}
 
 body.idle-native-mode #stage .is-trainer .is-trainer-xp-gain{bottom:18px;color:#ffdf91;text-shadow:0 1px 2px #000,0 0 7px #f4a64ca0;background:#2a1c30ed}
+
+/* Visible XP percentage beside the compact progress bar. */
+body.idle-native-mode #stage .is-trainer-progress{position:relative;margin-right:48px}
+body.idle-native-mode #stage .is-trainer-progress::after{content:attr(data-xp);position:absolute;left:calc(100% + 5px);top:50%;transform:translateY(-50%);width:44px;white-space:nowrap;color:#bce5ff;font:700 8px/1.2 "Trebuchet MS",sans-serif;font-variant-numeric:tabular-nums}
