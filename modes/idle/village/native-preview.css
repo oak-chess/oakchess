@@ -47,3 +47,6 @@ body.idle-native-mode .ic-dialogue-copy p{color:#f6e6ef}
 body.idle-native-mode .ic-dialogue-actions button{background:#d72e56;border-color:#ff83a4;color:#fff0f6;border-radius:4px;box-shadow:inset 0 1px #ffffff1f,inset 0 -2px #0004}
 body.idle-native-mode .ic-dialogue-actions button+button{background:#6f2945;border-color:#b75878;color:#fff0f6}
 body.idle-native-mode .ic-dialogue-actions button:focus-visible{outline-color:#ffd364}
+
+/* Keep panoramic atmosphere aligned beyond the fixed-width NPC layer. */
+#idle-center-scene.rv-native-layer{overflow:visible}
