@@ -10,7 +10,7 @@ Após cinco vitórias de exploração, a missão do Professor Carvalho entrega u
 Nível 350, IVs perfeitos, P5, atributos da forma Mega adaptados ao combate nativo. Uma entrada custa um token e exige confirmação. Validação da equipe vem antes da cobrança. Treino gratuito, sem quaisquer recompensas. Recarregar/abandonar interrompe o desafio e não devolve o token. Não altera rota ou progresso de caçadas. Saúde segue as regras existentes de desafio.
 
 ## Recompensas
-Vitória paga: 3–5 fragmentos da espécie, +5 na primeira vitória paga, chance independente de 5% da pedra inteira. Derrota/treino: zero. Fabricação custa 40 fragmentos, permanente e específica; pedras repetidas não são consumidas nem liberam múltiplas Megas simultâneas. Não há venda de tokens/pedras nesta versão.
+Vitória paga: 3–5 fragmentos da espécie, +5 na primeira vitória paga, chance independente de 5% da pedra inteira. Derrota/treino: zero. Fabricação custa 100 fragmentos (específicos da pedra, completados por universais de caçadas; consumir específicos primeiro), permanente e específica; pedras repetidas não são consumidas nem liberam múltiplas Megas simultâneas. Não há venda de tokens/pedras nesta versão. Consulte CRAFT-PLAN.md para a oficina do Carvalho e o drop universal de 0,5% por vitória comum.
 
 ## Parceiro
 Pedra-Chave + pedra específica + forma final compatível. Slot exclusivo, separado dos equipamentos; um único parceiro designado por vez, selecionado no laboratório Mega ou por atalho na ficha. Transformação no início do combate, encerra junto do combate, sem modificar o membro salvo. Identidade, nível, genes, favorito/cadeado e itens preservados. Compatibilidade revalidada em cada luta. Forma normal durante preparação. Shiny continua shiny.

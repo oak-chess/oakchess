@@ -29,11 +29,18 @@ window.createIdleCenterScene=function(ctx){
  const btn=(text,fn,cls)=>{const e=el('button',text,cls);e.type='button';e.onclick=fn;return e};
  const nativePaint=paintArena;
  paintArena=function(g,part='all'){if(root&&!root.hidden)return paintCenter(g,part);return nativePaint(g,part)};
+ function centerLayout(){
+  if(!root)return {scale:1,x:0,y:0};
+  if(root.classList.contains('rv-native-layer')){root.style.removeProperty('transform');return {scale:1,x:0,y:0}}
+  const width=Math.max(W,document.getElementById('stage').clientWidth),scale=width/W,x=(W-width)/2,y=(H-H*scale)*.35;
+  root.style.transformOrigin='0 0';root.style.setProperty('transform','translate('+x+'px,'+y+'px) scale('+scale+')','important');
+  return {scale,x,y};
+ }
  function paintCenter(g,part){
   g.save();g.imageSmoothingEnabled=false;
   if(part!=='arena'){g.fillStyle='#25323a';g.fillRect(-640,-300,2560,1400)}
   if(part!=='scene'){
-   if(interior.complete&&interior.naturalWidth)g.drawImage(interior,0,0,W,H);
+   const layout=centerLayout();if(interior.complete&&interior.naturalWidth)g.drawImage(interior,layout.x,layout.y,W*layout.scale,H*layout.scale);
    else {g.fillStyle='#e2dfcc';g.fillRect(0,0,W,H)}
   }
   g.restore();
@@ -51,7 +58,8 @@ window.createIdleCenterScene=function(ctx){
  }
  function close(){clearEvolution();if(!root||root.hidden)return;dismissDialogue();ctx.closePanels();root.hidden=true;layer.hidden=true;document.body.classList.remove('idle-center-view');cancelAnimationFrame(staffFrame);staffFrame=0;repaintArena();const action=document.getElementById('in-auto-label');if(action)action.textContent=ctx.isRunning()?'PAUSAR':'EXPLORAR';if(!ctx.isRunning()){s.world.location='field';ctx.save()}focus?.focus()}
  function open(){if(root&&!root.hidden){close();return}focus=document.activeElement;ctx.closePanels();if(!ctx.isRunning()){s.world.location='center';ctx.save()}root.hidden=false;layer.hidden=false;document.body.classList.add('idle-center-view');last='';repaintArena();refresh();if(!staffFrame)staffFrame=requestAnimationFrame(animateStaff)}
- function refresh(){if(!root||root.hidden)return;const action=document.getElementById('in-auto-label');if(action)action.textContent='VOLTAR À CAÇADA';const members=s.team.filter(m=>m.pos),key=JSON.stringify(members.map(m=>[m.id,m.pos,m.star,m.level,m.shiny]));if(key===last)return;last=key;team.replaceChildren();members.forEach((m,i)=>{const L=ctx.lines.find(l=>l.names[0]===m.name);if(!L)return;const p=m.pos.z==='b'?hexXY(m.pos.r,m.pos.c):benchXY(m.pos.i??i),b=btn('',()=>ctx.party(m.id),'ic-partner'),img=staffSprite(L.ids[m.star-1],L.names[m.star-1],m.shiny===true);b.style.left=p.x+'px';b.style.top=p.y+'px';b.title=L.names[m.star-1]+' · Nv. '+m.level;b.setAttribute('aria-label','Abrir ficha de '+L.names[m.star-1]);b.append(img,el('b',(m.shiny?'✦ ':'')+L.names[m.star-1]),el('small','Nv. '+m.level+' · PS '+Math.round((ctx.health(m.id)??m.condition??1)*100)+'%'));team.append(b)})}
+ function refresh(){if(!root||root.hidden)return;centerLayout();const action=document.getElementById('in-auto-label');if(action)action.textContent='VOLTAR À CAÇADA';team.replaceChildren();last='';}
+
  function mount(stage){
   layer=el('div',undefined,'ic-arena-services');root=layer;root.id='idle-center-scene';root.hidden=true;root.setAttribute('aria-label','Estações da arena do Centro Pokémon');document.getElementById('arenaView').append(layer);const A=arGeo();
   const services=[
@@ -60,7 +68,7 @@ window.createIdleCenterScene=function(ctx){
    ['shop','Suprimentos','mart_employee',ctx.shop,1085,172,'Atendente da loja · comprar suprimentos e vender itens'],
    ['evolution','Evolução',242,ctx.evolution,245,400,'Blissey · apoio à evolução'],
    ['tasks','Tarefas','bill',ctx.tasks,1130,392,'Responsável pelas tarefas · consultar atividades da reserva'],
-   ['mega','Mega Evolução','oak',ctx.mega,240,540,'Professor Carvalho · pesquisa Mega, fragmentos e Mega Pedras'],['nursery','Incubadora','daycare_lady',ctx.nursery,1168,279,'Cuidadora do Day Care · incubação e cuidados com os ovos'],['gacha','Gachapon','worker',ctx.gacha,1170,510,'Técnico do gachapon · ovos de Kanto, Johto e Hoenn']
+   ['mega','Professor Carvalho','oak',ctx.mega,240,540,'Professor Carvalho · pesquisa Mega, fragmentos e Mega Pedras'],['nursery','Incubadora','daycare_lady',ctx.nursery,1168,279,'Cuidadora do Day Care · incubação e cuidados com os ovos'],['gacha','Gachapon','worker',ctx.gacha,1170,510,'Técnico do gachapon · ovos de Kanto, Johto e Hoenn']
   ];
   for(const [id,label,sprite,fn,x,y,description]of services){
    const b=btn('',fn,'ic-station ic-station-'+id);b.title=description;b.setAttribute('aria-label',label+' · '+description);
@@ -71,7 +79,7 @@ window.createIdleCenterScene=function(ctx){
   }
   const nurseryHelper=btn('',ctx.nursery,'ic-center-assistant');nurseryHelper.title='Happiny · ajudante da incubadora';nurseryHelper.setAttribute('aria-label',nurseryHelper.title);nurseryHelper.style.left='1220px';nurseryHelper.style.top='280px';nurseryHelper.append(staffSprite(440,'Happiny'));layer.append(nurseryHelper);
   const assistant=btn('',talkToNurse,'ic-center-assistant');assistant.title='Chansey · auxiliar da enfermaria';assistant.setAttribute('aria-label',assistant.title);assistant.style.left='687px';assistant.style.top='163px';assistant.append(staffSprite(113,'Chansey'));layer.append(assistant);
-  team=el('div',undefined,'ic-floor-team');layer.append(team);
+  team=el('div',undefined,'ic-floor-team');layer.append(team);window.addEventListener('resize',()=>requestAnimationFrame(()=>{if(root&&!root.hidden){centerLayout();repaintArena()}}));
   dialogue=el('aside',undefined,'ic-dialogue');dialogue.hidden=true;dialogue.setAttribute('role','dialog');dialogue.setAttribute('aria-label','Conversa com a enfermeira');const portrait=el('span',undefined,'ic-dialogue-portrait');portrait.setAttribute('aria-hidden','true');const copy=el('div',undefined,'ic-dialogue-copy');dialogueText=el('p');dialogueText.setAttribute('aria-live','polite');dialogueActions=el('div',undefined,'ic-dialogue-actions');copy.append(el('b','Enfermeira'),dialogueText,dialogueActions);dialogue.append(portrait,copy);stage.append(dialogue);
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!root.hidden&&!document.querySelector('.idle-window:not([hidden])')){e.preventDefault();e.stopImmediatePropagation();if(!dialogue.hidden)dismissDialogue();else close()}},true);
  }

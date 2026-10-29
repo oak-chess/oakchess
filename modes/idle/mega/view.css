@@ -30,3 +30,9 @@ body.idle-native-mode #idle-mega{position:absolute;z-index:192;top:50%;left:50%;
 #idle-mega .im-catalog-tools button[aria-pressed=true]{background:#c82c62;border-color:#ff94ba}
 #idle-mega .im-catalog-tools small{color:#dec1d2;font-size:10px}
 #idle-mega .im-bosses{max-height:470px}
+
+#idle-mega [hidden]{display:none!important}#idle-mega[data-mode=craft] .im-mechanic{display:none}#idle-mega .im-craft-confirm{padding:10px;border:1px solid #b75878;border-radius:5px;margin-top:8px}#idle-mega .im-craft-confirm button{margin-right:6px}
+
+#idle-mega[data-mode=craft] .im-tokens::before{content:'◆';border-radius:5px;border-color:#9ec9ff;background:#35435e;color:#c7e5ff;box-shadow:none}
+
+#idle-mega[data-mode=craft] .im-tokens::before{content:'';width:24px;height:24px;border:0;border-radius:0;background:transparent url('../assets/menu-icons/mega-fragment.svg') center/contain no-repeat;vertical-align:middle;image-rendering:pixelated;box-shadow:none}

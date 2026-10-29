@@ -61,3 +61,7 @@ body.idle-center-view .is-hunt{top:10px;left:calc(50% + 400px);width:190px;min-h
 .ic-evolution-effect[data-reduced=true] *{animation:none!important}
 .ic-evolution-effect[data-reduced=true] .ic-evolution-particles{display:none}
 @media(prefers-reduced-motion:reduce){.ic-evolution-effect *{animation:none!important}.ic-evolution-particles{display:none}}
+
+/* Arena actors belong to the field, never to the Center interior. */
+body.idle-center-view :is(#idleTrainerCanvas,#idle-arena-trainer,.tg.center){display:none!important;visibility:hidden!important;pointer-events:none!important}
+body.idle-center-view #idle-center-scene .ic-floor-team{display:none!important}
