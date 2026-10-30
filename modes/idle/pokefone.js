@@ -1,6 +1,4 @@
 /* Pokéfone applications read the live Idle save and delegate actions to existing services. */
-/* Kept here so the phone remains self-contained even on cached game shells. */
-if(!window.IDLE_ACTIVITY&&document.readyState==='loading')document.write('<script src="modes/idle/activity.js?v=2"><\\/script><script src="modes/idle/activity-ui.js?v=2"><\\/script><script src="modes/idle/i18n-catalog.js?v=2"><\\/script><script src="modes/idle/i18n-overrides.js?v=2"><\\/script><script src="modes/idle/i18n.js?v=2"><\\/script><link rel="stylesheet" href="modes/idle/activity.css?v=2">');
 window.createIdlePhone=function(ctx){
  const s=ctx.state;s.pokefone=s.pokefone||{};const prefs=s.pokefone;let page='home',contact=null,albumFilter='all';
  const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n},btn=(text,fn)=>{const n=el('button',text,'pf-button');n.type='button';n.onclick=()=>{ctx.click?.();fn()};return n},img=(file)=>{const n=el('img');n.src='assets/pokeapi/sprites/items/'+file+'.png';n.alt='';return n},fmt=n=>Math.max(0,Number(n)||0).toLocaleString('pt-BR'),card=(title,text)=>{const n=el('section',undefined,'pf-card');n.append(el('h3',title));if(text)n.append(el('p',text));return n},go=key=>ctx.open(key),refresh=()=>ctx.refresh(),all=()=>[...s.team,...s.collection];
