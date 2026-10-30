@@ -31,7 +31,7 @@ window.IDLE_TUTORIAL_DATA=(()=>{
    step('Abra Evolução, escolha um Pokémon e veja o que falta: nível, pedra, amizade, item ou outra condição da espécie. As pedras servem às evoluções que pedem aquele item.','evolution','.is-navigation [data-menu=evolution]'),
    step('Confirme a evolução no Centro, fora da caçada. Pokémon guardados no PC também podem evoluir. O painel dá lugar à animação; nível, IVs e proteções são preservados.','evolution','.is-navigation [data-menu=evolution]')]),
   topic('inventory','Cuide dos recursos',[
-   step('A Mochila separa equipamentos, suprimentos, evolução e materiais. Fragmentos de Escritura e Fragmentos Mega têm seus próprios ícones e atalhos para fabricação.','bag','.is-navigation [data-menu=bag]'),
+   step('O Pokéfone reúne seus aplicativos. Abra Inventário para consultar os itens que possui; PokéNav encontra caçadas, e Avisos reúne ovos prontos, tarefas e capturas especiais.','bag','.is-navigation [data-menu=bag]'),
    step('Na Loja, digite a quantidade que quer comprar ou vender. Em Vender loot, a venda automática transforma novos drops comuns em ouro. Ela não vende seus fragmentos especiais.','shop','.is-quick [aria-label=Loja]')]),
   topic('journey','Avance na Jornada',[
    step('Na Jornada, confira o ginásio atual, os requisitos e a equipe do líder. Vencer o ginásio concede a insígnia e libera o próximo destino. As ondas das caçadas ficam salvas.','journey','.is-navigation [data-menu=journey]'),

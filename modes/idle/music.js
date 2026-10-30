@@ -19,6 +19,7 @@ window.createIdleMusic=function(ctx){
  const regional=inHoenn();
  if(document.querySelector('#idle-shop:not([hidden])'))return regional?hoenn('shop'):'idle-shop';
  if(ctx.center())return regional?hoenn('center'):'idle-center';
+ const station=ctx.state.pokefone?.station;if(station&&station!=='auto'&&Object.hasOwn(window.IDLE_MUSIC_LOOPS||{},station))return station;
  const track=habitat[ctx.state.hunts?.kind]||'meadow';
  return regional?hoenn(track==='ice'?'cave':track):'idle-'+track}
  function sync(force=false){const selected=key();if(force||selected!==lastKey){lastKey=selected;SND.music(ctx.combat()?'battle':'plan')}}
