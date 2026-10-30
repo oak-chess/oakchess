@@ -1,0 +1,23 @@
+/* Prepare Unova without mutating the playable roster or any save. */
+const fs=require('fs'),vm=require('vm'),path=require('path'),crypto=require('crypto');
+const out='modes/idle/unova',source=path.join(out,'source');
+const csv=file=>{const [header,...lines]=fs.readFileSync(path.join(source,file),'utf8').trim().split(/\r?\n/);const keys=header.split(',');return lines.map(line=>Object.fromEntries(line.split(',').map((v,i)=>[keys[i],v])))};
+const box={window:{}};for(const file of ['catalog','learnsets','moves'])vm.runInNewContext(fs.readFileSync('assets/dex/'+file+'.js','utf8'),box);
+const W=box.window,existing=new Map(W.DEX_EXPANSION.map(s=>[s.id,s]));
+const names=new Map(csv('pokemon_species_names.csv').filter(s=>+s.local_language_id===9).map(s=>[+s.pokemon_species_id,s.name]));
+const typeNames=['','normal','fighting','flying','poison','ground','rock','bug','ghost','steel','fire','water','grass','electric','psychic','ice','dragon','dark','fairy'];
+const types=new Map();for(const r of csv('pokemon_types.csv')){const id=+r.pokemon_id;if(!types.has(id))types.set(id,[]);types.get(id)[+r.slot-1]=typeNames[+r.type_id]}
+const rows=csv('pokemon_species.csv').filter(s=>+s.generation_id===5),evolutions=csv('pokemon_evolution.csv');
+const moveRows=csv('pokemon_moves.csv'),fallbackLearnsets={};
+for(const s of rows){const entries=moveRows.filter(m=>m.pokemon_id===s.id),version=Math.max(...entries.map(m=>+m.version_group_id));fallbackLearnsets[+s.id]={version,source:'PokeAPI CSV; latest available version group',moves:entries.filter(m=>+m.version_group_id===version).map(m=>[+m.move_id,+m.pokemon_move_method_id,+m.level])}}
+const tracker=JSON.parse(fs.readFileSync(path.join(source,'sprite-tracker.json'),'utf8'));
+const list=rows.map(s=>{const id=+s.id,forms=existing.get(id)?.forms||[],entry=tracker[String(id).padStart(4,'0')],normal=Object.keys(entry?.sprite_files||{}),shiny=Object.keys(entry?.subgroups?.['0000']?.subgroups?.['0001']?.sprite_files||{});return {id,name:names.get(id),types:types.get(id),from:+s.evolves_from_species_id||null,chain:+s.evolution_chain_id,legendary:s.is_legendary==='1',mythical:s.is_mythical==='1',captureRate:+s.capture_rate,genderRate:+s.gender_rate,hatchCycles:+s.hatch_counter,referenceEvolutions:evolutions.filter(e=>+e.evolved_species_id===id),learnset:W.DEX_LEARNSETS[id]||fallbackLearnsets[id],sprites:{catalogForms:forms.map(f=>({path:f.path,shiny:f.shiny,animations:f.animations,credit:f.credit})),normalAnimations:normal,shinyAnimations:shiny,normalReady:normal.includes('Walk')&&normal.includes('Idle'),shinyReady:shiny.includes('Walk')&&shiny.includes('Idle')}}});
+for(const s of list){if(!s.name||!s.types?.length||!s.learnset?.moves.length)throw Error('Incomplete species '+s.id)}
+const missing=list.filter(s=>!s.sprites.normalReady),missingShiny=list.filter(s=>!s.sprites.shinyReady);
+const manifest=JSON.parse(fs.readFileSync(path.join(source,'manifest.json'),'utf8'));manifest.sha256=Object.fromEntries(['pokemon_species.csv','pokemon_species_names.csv','pokemon_types.csv','pokemon_evolution.csv'].map(f=>[f,crypto.createHash('sha256').update(fs.readFileSync(path.join(source,f))).digest('hex')]));
+manifest.sha256['pokemon_moves.csv']=crypto.createHash('sha256').update(fs.readFileSync(path.join(source,'pokemon_moves.csv'))).digest('hex');
+fs.writeFileSync(path.join(source,'manifest.json'),JSON.stringify(manifest,null,2)+'\n');
+fs.writeFileSync(path.join(out,'catalog.json'),JSON.stringify(list,null,2)+'\n');
+fs.writeFileSync(path.join(out,'species.js'),'/* Prepared catalog only; not loaded by the game yet. */\nwindow.IDLE_UNOVA_SPECIES='+JSON.stringify(Object.fromEntries(list.map(s=>[s.id,s.name])))+';\n');
+const report={species:list.length,ordinary:list.filter(s=>!s.legendary&&!s.mythical).length,eventSpecies:list.filter(s=>s.legendary||s.mythical).map(s=>({id:s.id,name:s.name})),missingNormalAnimation:missing.map(s=>({id:s.id,name:s.name})),missingShinyAnimation:missingShiny.map(s=>({id:s.id,name:s.name})),specialEvolutions:list.filter(s=>s.referenceEvolutions.some(e=>e.evolution_trigger_id!=='1'||e.minimum_happiness||e.gender_id||e.time_of_day||e.party_species_id||e.trade_species_id)).map(s=>({id:s.id,name:s.name,rules:s.referenceEvolutions})),integrationEnabled:fs.readFileSync('modes/idle/index.html','utf8').includes('modes/idle/unova/runtime.js')};
+fs.writeFileSync(path.join(out,'AUDIT.json'),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify({species:report.species,ordinary:report.ordinary,events:report.eventSpecies.length,missingNormal:missing.length,missingShiny:missingShiny.length,integrationEnabled:fs.readFileSync('modes/idle/index.html','utf8').includes('modes/idle/unova/runtime.js')}));

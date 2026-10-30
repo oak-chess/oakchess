@@ -1,7 +1,7 @@
 /* Category markers for the Idle arena units; evolution stars stay unchanged. */
 (()=>{
- const legendary=new Set([144,145,146,150,243,244,245,249,250,377,378,379,380,381,382,383,384,480,481,482,483,484,485,486,487,488]);
- const mythical=new Set([151,251,385,386,489,490,491,492,493]);
+ const legendary=new Set([144,145,146,150,243,244,245,249,250,377,378,379,380,381,382,383,384,480,481,482,483,484,485,486,487,488,638,639,640,641,642,643,644,645,646]);
+ const mythical=new Set([151,251,385,386,489,490,491,492,493,494,647,648,649]);
  const category=id=>mythical.has(id)?'mythical':legendary.has(id)?'legendary':null;
  const css=document.createElement('style');css.textContent=`
  .unit .stars.special-crystal-marker{display:flex;align-items:center;justify-content:center;min-width:11px;height:13px;font-size:0;letter-spacing:0;overflow:visible}

@@ -1,0 +1,12 @@
+const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict'),box={window:{}};
+vm.runInNewContext(fs.readFileSync('modes/idle/unova/destinations.js','utf8'),box);
+const list=JSON.parse(fs.readFileSync('modes/idle/unova/catalog.json','utf8')),byId=new Map(list.map(s=>[s.id,s])),destinations=box.window.IDLE_UNOVA_DESTINATIONS,events=box.window.IDLE_UNOVA_EVENTS;
+assert.equal(destinations.length,8);const assigned=new Set();
+destinations.forEach((r,index)=>{assert.equal(r.habitats.length,3);assert(r.design&&r.types.length&&r.foes.length);for(const trainer of r.trainers)assert(fs.existsSync('assets/showdown/trainers/'+trainer+'.png'),'Missing leader '+trainer);assert(fs.existsSync('assets/pokeapi/sprites/badges/'+(index+33)+'.png'));for(const id of r.foes)assert(byId.has(id));for(const h of r.habitats){assert(h.ids.length>=3);for(const id of h.ids){assert(byId.has(id));assert(!byId.get(id).legendary&&!byId.get(id).mythical);assert(!assigned.has(id),'Repeated wild species '+id);assigned.add(id)}}});
+assert.equal(assigned.size,143);for(const s of list)if(!s.legendary&&!s.mythical)assert(assigned.has(s.id));
+assert.equal(events.length,13);assert.equal(new Set(events.map(e=>e.id)).size,13);for(const e of events){assert(byId.get(e.id).legendary||byId.get(e.id).mythical);assert.equal(e.level,300);assert.equal(e.perfect,true);assert(e.design&&e.unlock.unovaBadges>=1&&e.unlock.unovaBadges<=8)}
+const support=JSON.parse(fs.readFileSync('modes/idle/unova/SUPPORT-SOURCES.json','utf8'));assert.equal(support.length,1426);for(const asset of support){assert(!asset.error);const bytes=fs.readFileSync(asset.path),header=bytes.subarray(0,4).toString('hex');assert(['47494638','89504e47','4f676753'].includes(header),'Invalid support asset '+asset.path)}
+// The gacha uses static portraits, independently of available animated sheets.
+for(let id=1;id<=649;id++)assert.equal(fs.readFileSync('assets/pokeapi/sprites/pokemon/'+id+'.png').subarray(0,4).toString('hex'),'89504e47','Missing catalog portrait '+id);
+for(let id=494;id<=649;id++)for(const directory of ['','shiny/','back/','back/shiny/'])assert.equal(fs.readFileSync('assets/pokeapi/sprites/pokemon/'+directory+id+'.png').subarray(0,4).toString('hex'),'89504e47','Missing Unova static variant '+directory+id);
+console.log('Passed: 8 gyms/24 habitats, 143 ordinary species without duplication, 13 gated events, 1426 support files, all 649 catalog portraits and all 624 Unova static variants.');
