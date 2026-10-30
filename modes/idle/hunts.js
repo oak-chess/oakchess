@@ -18,7 +18,7 @@ const healItem=()=>window.IDLE_ITEMS.healing[q.supplies.healItem]||window.IDLE_I
 const reviveItem=()=>window.IDLE_ITEMS.reviving[q.supplies.reviveItem]||window.IDLE_ITEMS.reviving.revives;
 function healingRatio(m){return healItem().hp===Infinity?1:healItem().hp/Math.max(1,ctx.maxHp(m))}
 function potionsToFull(m,condition=m.condition){const ratio=Math.max(0,Math.min(1,condition)),step=healingRatio(m);return step>0?Math.max(0,Math.ceil((1-ratio)/step-1e-9)):0}
-function spendSupply(key,count){const info=window.IDLE_ITEMS.healing[key]||window.IDLE_ITEMS.reviving[key];q.supplies[key]-=count;session().supplyCost=(session().supplyCost||0)+info.price*count;session()[window.IDLE_ITEMS.healing[key]?'potions':'revives']+=count}
+function spendSupply(key,count){window.IDLE_ACTIVITY?.consume(s,window.IDLE_ITEMS.healing[key]?'potions':'revives',count,(window.IDLE_ITEMS.healing[key]||window.IDLE_ITEMS.reviving[key]).price);const info=window.IDLE_ITEMS.healing[key]||window.IDLE_ITEMS.reviving[key];q.supplies[key]-=count;session().supplyCost=(session().supplyCost||0)+info.price*count;session()[window.IDLE_ITEMS.healing[key]?'potions':'revives']+=count}
 const h=(tag,text,cls)=>{const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e};
 function btn(label,fn,disabled=false){const b=h('button',label,'ip-button');b.type='button';b.disabled=disabled;b.onclick=fn;return b}
 const key=()=>s.area+':'+q.kind;
@@ -56,13 +56,13 @@ function onDefeat(u,units){if(u._idleRewarded)return;u._idleRewarded=true;ctx.de
  const xp=Math.max(1,Math.round((10*u.L.c+4*(u._idleLevel||level()))*current().xp*ctx.objective().xp));
  const coins=Math.round((2+u.L.c+s.area)*current().gold*ctx.objective().gold);
  ctx.trainerXp(xp);for(const ally of units.filter(x=>x.side===0&&x.alive)){const m=s.team.find(m=>m.id===ally._idleMember);if(m)ctx.gainXp(m,xp)}
- s.gold+=coins;st.xp+=xp;st.coins+=coins;st.defeated++;totals.xp+=xp;totals.coins+=coins;totals.defeated++;
+ window.IDLE_ACTIVITY?.for(s)?.count('defeated');s.gold+=coins;st.xp+=xp;st.coins+=coins;st.defeated++;totals.xp+=xp;totals.coins+=coins;totals.defeated++;
  const drops=window.IDLE_DROPS.roll(u.L,u.star||1);for(const drop of drops){const value=drop.count*lootTypes[drop.key].price;if(q.autoSellLoot){s.gold+=value;totals.coins+=value;st.autoSoldLoot=(st.autoSoldLoot||0)+value}else q.loot[drop.key]=(q.loot[drop.key]||0)+drop.count;st.loot+=value}q.dropLog=q.dropLog||[];if(drops.length){q.dropLog.unshift({name:u.L.names[(u.star||1)-1],drops,autoSold:!!q.autoSellLoot,at:Date.now()});q.dropLog=q.dropLog.slice(0,20)}
  const stone=window.IDLE_DROPS.rollStone(u.L,u.star||1);if(stone){s.world.stones[stone.key]=(s.world.stones[stone.key]||0)+1;q.dropLog.unshift({name:u.L.names[(u.star||1)-1],stone:stone.key,at:Date.now()});q.dropLog=q.dropLog.slice(0,20);ctx.rareDrop?.(window.IDLE_WORLD_DATA.stones[stone.key]||stone.key)}
 
  q.lastKill={name:u.L.names[(u.star||1)-1]||u.L.names[0],xp,at:Date.now()};
 }
-function result(units,win){const st=session();const previousWave=q.wave;st.battles++;if(win)st.wins++;
+function result(units,win){window.IDLE_ACTIVITY?.battle(s,win);const st=session();const previousWave=q.wave;st.battles++;if(win)st.wins++;
  for(const u of units.filter(u=>u.side===1&&!u.alive))onDefeat(u,units);
  for(const u of units.filter(u=>u.side===0)){const m=s.team.find(m=>m.id===u._idleMember);if(m){normalize(m);m.condition=u.alive?Math.max(.01,u.hp/u.maxHp):0}}
  if(win){q.waves[key()+':'+q.wave]=(q.waves[key()+':'+q.wave]||0)+1;if(st.seconds>=10)q.lastSafe={area:s.area,rate:Math.min(120,Math.floor(st.xp/st.seconds*3600)),members:s.team.filter(m=>m.pos?.z==='b'&&m.condition>0).map(m=>m.id)}}

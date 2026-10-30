@@ -34,7 +34,7 @@ window.createIdleCapture = function ({state, lines, sprite, save, changed, notif
   state.capture.enabled=state.capture.enabled!==false;state.captureShiny.enabled=state.capture.enabled;
   for(const config of [state.capture,state.captureShiny]){config.mode='all';config.reserve=0}
   const attemptedUnits=new WeakSet();
-  function record(name,result,offline=false,details={}){const event={name,result,offline,time:Date.now(),...details};state.captureLog.unshift(event);state.captureLog=state.captureLog.slice(0,200);return event}
+  function record(name,result,offline=false,details={}){const event={name,result,offline,time:Date.now(),...details};state.captureLog.unshift(event);state.captureLog=state.captureLog.slice(0,200);window.IDLE_ACTIVITY?.captureLater(state,event);return event}
   function convertsToCandy(name,genes){return !!(owned(name)&&!genes?.shiny&&!autoProtect(genes||{})&&(state.capture.duplicates==='candies'||state.capture.duplicates==='weak-candies'&&(genes?.potency||1)<=2))}
   function forcePC(name,offline=false){return !!(offline||state.capture.bankLocked||state.capture.duplicates==='pc'&&owned(name))}
   function availableSlot(){const occupied=new Set(state.team.filter(m=>m.pos?.z==='n').map(m=>m.pos.i));for(let i=0;i<9;i++)if(!occupied.has(i))return i;return -1}
@@ -55,7 +55,7 @@ window.createIdleCapture = function ({state, lines, sprite, save, changed, notif
     return name+' capturado!'+(member.pos?' Foi para o banco.':' Foi para o PC do Centro Pokémon, sem ocupar a arena.');
   }
   function attempt(entry,offline=false){
-    const name=entry.speciesName||entry.line.names[0],isShiny=entry.genes?.shiny===true,settings=isShiny?state.captureShiny:state.capture,chosen=budget(settings)>0?settings.ball:null,config={...settings,ball:chosen||settings.ball},history={speciesId:entry.line.ids[Math.max(0,entry.line.names.indexOf(name))],shiny:entry.genes?.shiny===true,area:state.area,hunt:state.hunts?.kind,wave:state.hunts?.wave,potency:entry.genes?.potency??null,ivTotal:entry.genes?.ivs?window.IDLE_INDIVIDUALS.total(entry.genes):null};
+    const name=entry.speciesName||entry.line.names[0],isShiny=entry.genes?.shiny===true,settings=isShiny?state.captureShiny:state.capture,chosen=budget(settings)>0?settings.ball:null,config={...settings,ball:chosen||settings.ball},history={level:entry.level,encounterKey:entry.genes?.activityEncounterId,speciesId:entry.line.ids[Math.max(0,entry.line.names.indexOf(name))],shiny:entry.genes?.shiny===true,area:state.area,hunt:state.hunts?.kind,wave:state.hunts?.wave,potency:entry.genes?.potency??null,ivTotal:entry.genes?.ivs?window.IDLE_INDIVIDUALS.total(entry.genes):null};
     if(!state.discovered.includes(name))state.discovered.push(name);
     if(!state.capture.enabled)return null;
     if(state.capture.targetSpecies&&name!==state.capture.targetSpecies&&!(isShiny&&state.capture.targetAnyShiny)){record(name,'Fora do foco de captura · nenhuma bola usada',offline,{...history,status:'skipped',attempted:false});return null}
@@ -76,7 +76,7 @@ window.createIdleCapture = function ({state, lines, sprite, save, changed, notif
     state.encounterGenes=chosen.map(e=>window.IDLE_INDIVIDUALS.roll(e.line));return chosen.map(e=>e.speciesName||e.line.names[0]);
   }
   function registerEncounter(){
-    for(const [i,name]of (state.encounter||[]).entries()){const L=lines.find(l=>l.names.includes(name));if(!L||L.boss)continue;state.encounterGenes=state.encounterGenes||[];const genes=state.encounterGenes[i]||(state.encounterGenes[i]=window.IDLE_INDIVIDUALS.roll(L));const counted=genes.shinyEncounterCounted;window.IDLE_SHINY.register(state,genes,L);if(!counted&&genes.shiny)window.dispatchEvent(new CustomEvent('idle-shiny-notice',{detail:{kind:'encounter',name,sprite:window.IDLE_SHINY.sprite(sprite(L.ids[Math.max(0,L.names.indexOf(name))]),true)}}));}
+    for(const [i,name]of (state.encounter||[]).entries()){const L=lines.find(l=>l.names.includes(name));if(!L||L.boss)continue;state.encounterGenes=state.encounterGenes||[];const genes=state.encounterGenes[i]||(state.encounterGenes[i]=window.IDLE_INDIVIDUALS.roll(L));const counted=genes.shinyEncounterCounted;window.IDLE_SHINY.register(state,genes,L,L.ids[Math.max(0,L.names.indexOf(name))]);if(!counted&&genes.shiny)window.dispatchEvent(new CustomEvent('idle-shiny-notice',{detail:{kind:'encounter',name,sprite:window.IDLE_SHINY.sprite(sprite(L.ids[Math.max(0,L.names.indexOf(name))]),true)}}));}
   }
   function defeated(unit,targetPoint){
     if(!unit||unit.side!==1||unit.alive||attemptedUnits.has(unit))return null;attemptedUnits.add(unit);
