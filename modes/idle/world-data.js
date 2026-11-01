@@ -13,13 +13,13 @@ window.IDLE_WORLD_DATA={
  quests:[
   {id:'first-path',title:'Primeiros passos',detail:'Vença 5 encontros.',metric:'wins',need:5,reward:{gold:40,balls:10},npc:'Prof. Carvalho'},
   {id:'field-study',title:'Pesquisa de campo',detail:'Descubra 8 espécies.',metric:'seen',need:8,reward:{gold:40,materials:3,field:'rod'},npc:'Pescador de Viridian'},
-  {id:'first-badge',title:'O desafio de Pewter',detail:'Conquiste uma insígnia.',metric:'badges',need:1,reward:{gold:80,field:'bike',eggs:1},npc:'Brock'},
+{id:'first-badge',title:'O desafio de Pewter',detail:'Conquiste uma insígnia.',metric:'badges',need:1,reward:{gold:80,field:'bike',materials:5},npc:'Brock'},
   {id:'evolve',title:'Crescer juntos',detail:'Evolua um parceiro.',metric:'evolutions',need:1,reward:{materials:5,stone:1},npc:'Enfermeira Joy'},
   {id:'rescue',title:'Um pedido de ajuda',detail:'Conclua um resgate Rocket.',metric:'rescues',need:1,reward:{field:'scope',gold:70},npc:'Sr. Fuji'},
-  {id:'friends',title:'Uma amizade duradoura',detail:'Alcance 60 de amizade com um parceiro.',metric:'friendship',need:60,reward:{gold:60,eggs:1},npc:'Moradora de Pallet'},
+  {id:'friends',title:'Uma amizade duradoura',detail:'Alcance 60 de amizade com um parceiro.',metric:'friendship',need:60,reward:{gold:60,materials:5},npc:'Moradora de Pallet'},
   {id:'reserve',title:'Uma equipe, muitos talentos',detail:'Conclua 3 tarefas da reserva.',metric:'tasks',need:3,reward:{gold:80,materials:5},npc:'Centro de conservação'},
   {id:'grass-team',title:'Estratégia em campo',detail:'Vença 3 encontros usando um parceiro de Planta.',metric:'grassWins',need:3,reward:{gold:45,materials:3},npc:'Treinadora de Viridian'},
-  {id:'league',title:'Rumo à Liga',detail:'Conquiste as 8 insígnias.',metric:'badges',need:8,reward:{gold:300,eggs:2},npc:'Liga Pokémon'}
+  {id:'league',title:'Rumo à Liga',detail:'Conquiste as 8 insígnias.',metric:'badges',need:8,reward:{gold:300,materials:10},npc:'Liga Pokémon'}
  ],
  tasks:{research:{name:'Pesquisa de rastros',seconds:180,reward:'3 materiais e 2 doces'},training:{name:'Treino da reserva',seconds:180,reward:'24 XP e amizade'},materials:{name:'Coleta na caverna',seconds:240,reward:'5 materiais e chance de fóssil'},conservation:{name:'Centro de conservação',seconds:300,reward:'4 materiais e 2 doces'}},
  objective:{balanced:{name:'Equilibrado',gold:1,xp:1,materials:1},xp:{name:'Treinamento',gold:.7,xp:1.6,materials:.7},capture:{name:'Busca de espécies',gold:.8,xp:.8,materials:1},materials:{name:'Coleta de materiais',gold:.8,xp:.8,materials:2}},

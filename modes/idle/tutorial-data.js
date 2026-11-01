@@ -43,7 +43,7 @@ window.IDLE_TUTORIAL_DATA=(()=>{
    step('Abra Fendas Mega e recolha Pesquisa Mega quando cumprir a missão inicial. Você recebe a Pedra-Chave e tokens. Escolha um boss e confirme o custo; treino permite experimentar sem recompensa.','mega','#idle-mega-portal'),
    step('Com 100 fragmentos, fabrique uma Mega Pedra no Professor Carvalho. Use os específicos da pedra e complete com universais. Equipe um parceiro compatível: a transformação vale durante a batalha.','craft','.is-navigation [data-menu=center]')]),
   topic('eggs','Incube seus ovos',[
-   step('A incubadora tem áreas separadas para ovos comuns e do Gachapon. Escolha um ovo da reserva e coloque numa vaga: são duas comuns e cinco do Gachapon.','nursery','.is-navigation [data-menu=center]'),
+   step('Novos ovos vêm apenas do Gachapon ou do berçário. As incubadoras são separadas: duas vagas para ovos do berçário e antigos, cinco para os do Gachapon. Escolha um ovo da reserva para incubar.','nursery','.is-navigation [data-menu=center]'),
    step('Vitórias fazem a incubação avançar. Quando o ovo estiver pronto, choque para revelar o Pokémon. O berçário tem regras próprias de compatibilidade e herança, mostradas antes de iniciar.','nursery','.is-navigation [data-menu=center]')]),
   topic('gacha','Conheça o Gachapon',[
    step('No Centro, escolha uma região liberada e a quantidade de ovos. Cada tentativa custa '+window.IDLE_GACHA_DATA.price.toLocaleString('pt-BR')+' ouro; 5x e 10x fazem sorteios independentes. Consulte as chances antes de comprar.','gacha','.is-navigation [data-menu=center]'),

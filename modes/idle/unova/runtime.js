@@ -26,10 +26,10 @@ for(const e of window.IDLE_UNOVA_EVENTS){
 }
 window.IDLE_UNOVA_EVENT_GROUPS=groups;window.IDLE_UNOVA_EVENT_LEVELS=levels;window.IDLE_UNOVA_EVENT_META=meta;window.IDLE_UNOVA_EVENT_REQUIREMENTS=requirements;
 for(const [id,title,need,reward]of [
- ['unova-arrival','Pesquisa de Unova',1,{gold:2500,eggs:1}],
+['unova-arrival','Pesquisa de Unova',1,{gold:2500,materials:5}],
  ['unova-swords','O juramento dos espadachins',8,{unlock:'unova-swords',materials:35}],
  ['unova-melody','A melodia de Castelia',8,{unlock:'unova-melody',gold:2500}],
  ['unova-plasma','Os arquivos do laboratório P2',8,{unlock:'unova-plasma',materials:50}],
- ['unova-league','Conquista de Unova',8,{gold:7500,eggs:3,materials:75}]
+ ['unova-league','Conquista de Unova',8,{gold:7500,materials:90}]
  ])D.quests.push({id,title,detail:'Conquiste '+need+' insígnia(s) de Unova.',metric:'unovaBadges',need,reward,npc:'Prof. Juniper'});
 })();

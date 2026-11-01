@@ -26,5 +26,5 @@
  35:{friendship:90},39:{friendship:90},178:{level:25},182:{item:'sun'},192:{item:'sun'},186:{trade:true,item:'kingsRock'},196:{friendship:90,day:true},197:{friendship:90,night:true},199:{trade:true,item:'kingsRock'},233:{trade:true,item:'upgrade'},124:{level:30},126:{level:30},247:{level:30},248:{level:55}
  });
  // Overrides for shared final species only apply to their baby branches in systems.js.
- D.quests.push({id:'johto-arrival',title:'Uma nova jornada',detail:'Conquiste a primeira insígnia de Johto.',metric:'johtoBadges',need:1,reward:{gold:500,eggs:1},npc:'Prof. Elm'}, {id:'johto-league',title:'Campeão de Johto',detail:'Conquiste as oito insígnias de Johto.',metric:'johtoBadges',need:8,reward:{gold:2000,eggs:3,materials:30},npc:'Liga de Johto'});
+D.quests.push({id:'johto-arrival',title:'Uma nova jornada',detail:'Conquiste a primeira insígnia de Johto.',metric:'johtoBadges',need:1,reward:{gold:500,materials:5},npc:'Prof. Elm'}, {id:'johto-league',title:'Campeão de Johto',detail:'Conquiste as oito insígnias de Johto.',metric:'johtoBadges',need:8,reward:{gold:2000,materials:45},npc:'Liga de Johto'});
 })();

@@ -21,11 +21,11 @@ for(const [i,row]of rows.entries()){
 }
 Object.assign(window.IDLE_EVOLUTIONS,{253:{level:16},254:{level:36},256:{level:16},257:{level:36},259:{level:16},260:{level:36},266:{level:7},268:{level:7},183:{friendship:90},202:{friendship:90},292:{bonus:true},301:{item:'moon'},367:{trade:true,item:'tooth'},368:{trade:true,item:'scale'}});
 D.quests.push(
- {id:'hoenn-arrival',title:'Pesquisa de Hoenn',detail:'Conquiste a primeira insígnia de Hoenn.',metric:'hoennBadges',need:1,reward:{gold:800,materials:15,eggs:1},npc:'Prof. Birch'},
+{id:'hoenn-arrival',title:'Pesquisa de Hoenn',detail:'Conquiste a primeira insígnia de Hoenn.',metric:'hoennBadges',need:1,reward:{gold:800,materials:20},npc:'Prof. Birch'},
  {id:'hoenn-ruins',title:'O segredo das ruínas',detail:'Após Norman, tenha Relicanth e Wailord na equipe ou no PC. Os parceiros não são consumidos.',metric:'hoennRuinsReady',need:1,reward:{unlock:'hoennRegis',gold:500},npc:'Pesquisador das ruínas'},
  {id:'hoenn-wish',title:'Um desejo entre as estrelas',detail:'Conquiste as oito insígnias de Hoenn para investigar Jirachi.',metric:'hoennBadges',need:8,reward:{unlock:'hoennJirachi',gold:1000},npc:'Observatório de Mossdeep'},
  {id:'hoenn-birth',title:'O mistério da ilha distante',detail:'Conquiste as oito insígnias de Hoenn para investigar Deoxys.',metric:'hoennBadges',need:8,reward:{unlock:'hoennDeoxys',gold:1000},npc:'Centro Espacial'},
- {id:'hoenn-league',title:'Conquista de Hoenn',detail:'Conquiste as oito insígnias de Hoenn.',metric:'hoennBadges',need:8,reward:{gold:3000,materials:40,eggs:3},npc:'Liga de Hoenn'}
+ {id:'hoenn-league',title:'Conquista de Hoenn',detail:'Conquiste as oito insígnias de Hoenn.',metric:'hoennBadges',need:8,reward:{gold:3000,materials:55},npc:'Liga de Hoenn'}
 );
 window.IDLE_HOENN_EVENTS=[{names:['Regirock','Regice','Registeel'],unlock:'hoennRegis',requirement:'Concluir O segredo das ruínas'},{names:['Latias','Latios'],badge:21,requirement:'Conquistar a insígnia de Winona'},{names:['Groudon','Kyogre'],badge:23,requirement:'Conquistar a insígnia de Juan'},{names:['Rayquaza'],badge:23,requirement:'Vencer Groudon e Kyogre nos eventos',afterWeather:true},{names:['Jirachi'],unlock:'hoennJirachi',requirement:'Concluir Um desejo entre as estrelas'},{names:['Deoxys'],unlock:'hoennDeoxys',requirement:'Concluir O mistério da ilha distante'}];
 window.IDLE_HOENN_EVENT_LEVELS={Regirock:40,Regice:40,Registeel:40,Latias:50,Latios:40,Groudon:70,Kyogre:70,Rayquaza:70,Jirachi:5,Deoxys:30};
