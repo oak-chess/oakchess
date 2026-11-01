@@ -6,7 +6,7 @@ const start=async()=>{await p.locator('#combatbtn').click();await p.waitForFunct
 const finish=async()=>{await p.evaluate(()=>{B.on=false;B.over=true;B.done=true;B.winner=0;demoNext()});await p.waitForFunction(()=>G.phase==='plan');await p.evaluate(()=>carryCtx.pause())};
 const sequence=[];
 for(let i=0;i<5;i++){
- await start();const result=await p.evaluate(i=>{const u=B.units.find(u=>u.side===0);if(i>0&&u.mana!==23)throw Error('Energy was reset: '+u.mana);const expected=u.moves[i%4].id;if(u.moves[u.mi%u.moves.length].id!==expected)throw Error('Wrong next move');u.target=B.units.find(u=>u.side===1&&u.alive);u.mana=u.maxMana;const name=u.moves[u.mi%u.moves.length].n,before=u.mi;cast(u);if(u.mi!==before+1)throw Error('Native cast did not advance');u.mana=23;return name},i);sequence.push(result);await finish();
+ await start();const result=await p.evaluate(i=>{const u=B.units.find(u=>u.side===0);if(i>0&&u.mana!==23)throw Error('Energy was reset: '+u.mana);const saved=carryCtx.state.team[0].combatCarry;for(const [key,left]of Object.entries(saved?.cooldowns||{}))if(Math.abs((u.moveReadyAt?.[key]||0)-left)>.001)throw Error('Cooldown was reset');u.target=B.units.find(u=>u.side===1&&u.alive);u.target.r=u.r-1;u.target.c=u.c;u.mana=u.maxMana;B.t=Math.max(B.t,...Object.values(u.moveReadyAt||{}))+.01;u.lock=0;u.moving=false;u.stun=0;u.skillReadyAt=0;u.castingUntil=0;u.basicAnimationUntil=0;u.skillToken=null;const choice=IDLE_TACTICS.choose(u,idleTacticalEnv());if(!choice)throw Error('No useful available move');const name=choice.move.n,before=u.mi;cast(u);if(u.lastMoveKey!==IDLE_TACTICS.key(choice.move))throw Error('Decision mismatch');if(u.mi!==before+1)throw Error('Native cast did not advance');u.mana=23;return name},i);sequence.push(result);await finish();
  const saved=await p.evaluate(()=>carryCtx.state.team[0].combatCarry);assert.equal(saved.mana,23);assert.equal(saved.owner,'carry-partner');
  if(i===1){
   const before=JSON.stringify(saved);await p.reload();await p.waitForFunction(()=>window.carrySystems);assert.equal(JSON.stringify(await p.evaluate(()=>carryCtx.state.team[0].combatCarry)),before);
@@ -14,7 +14,7 @@ for(let i=0;i<5;i++){
   assert.equal(await p.evaluate(()=>B.units.find(u=>u.side===0).mi),0);await p.evaluate(()=>{G.paused=true;const u=B.units.find(u=>u.side===0);u.mi=3;u.mana=u.maxMana*2});await finish();assert.equal(JSON.stringify(await p.evaluate(()=>carryCtx.state.team[0].combatCarry)),before);
  }
 }
-assert.deepEqual(sequence,['Hidrobomba','Canhão de Flash','Jato de Água','Surf','Hidrobomba']);
+assert.equal(sequence.length,5);assert(sequence.every(Boolean));
 // A short, normal encounter must retain energy even without casting.
 await start();const natural=await p.evaluate(()=>{const u=B.units.find(u=>u.side===0);const before=u.mana;u.mana=31;return {before,next:u.moves[u.mi%u.moves.length].id}});assert.equal(natural.before,23);await finish();assert.equal(await p.evaluate(()=>carryCtx.state.team[0].combatCarry.mana),31);
 await start();await p.evaluate(()=>{const u=B.units.find(u=>u.side===0);u.mi=2;u.mana=42});await p.reload();await p.waitForFunction(()=>window.carrySystems);assert.equal(await p.evaluate(()=>carryCtx.state.team[0].combatCarry.mana),42);await start();assert.equal(await p.evaluate(()=>B.units.find(u=>u.side===0).mi),2);assert.equal(await p.evaluate(()=>B.units.find(u=>u.side===0).mana),42);await p.evaluate(()=>carryCtx.pause());

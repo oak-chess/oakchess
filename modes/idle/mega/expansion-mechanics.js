@@ -16,7 +16,7 @@ window.IDLE_MEGA_EXPANSION_MECHANIC=function(key,boss,allies,target){
  if(s.kind==='sunfire')setArenaField('fire',target.r,target.c,1,3,boss);
  for(const u of affected){
   if(s.shieldBreak)u.shield=Math.max(0,(u.shield||0)-u.maxHp*s.shieldBreak);
-  for(let i=0;i<(s.hits||1)&&u.alive;i++)if(s.damage)hurt(boss,u,u.maxHp*s.damage,physical?'phys':'spec',{spell:true});
+  for(let i=0;i<(s.hits||1)&&u.alive;i++)if(s.damage)hurt(boss,u,u.maxHp*s.damage,physical?'phys':'spec',{spell:true,mechanic:true});
   if(!u.alive)continue;
   if(s.mana)u.mana=Math.max(0,u.mana-s.mana);
   if(s.slow)applyStatus(u,'slow',s.slow,boss);

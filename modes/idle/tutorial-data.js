@@ -7,7 +7,8 @@ window.IDLE_TUTORIAL_DATA=(()=>{
    step('Os cartões abaixo mostram os Pokémon em campo. Verde é vida; azul é experiência. Os números de XP sobem ao ganhar experiência, e o novo nível aparece ao subir.','party','.is-team')]),
   topic('team','Prepare a equipe',[
    step('Na preparação, arraste os Pokémon entre o tabuleiro e o banco. O limite em campo cresce com o treinador até seis parceiros; o banco tem nove vagas.',null,'.is-team'),
-   step('Distribua a equipe pelo tabuleiro e confira as sinergias de tipos. Clique em um cartão para ver golpes e atributos. Você pode minimizar o quadro de sinergias pela seta.','party','.is-synergies')]),
+   step('Distribua a equipe pelo tabuleiro e confira as sinergias de tipos. Clique em um cartão para ver golpes e atributos. Você pode minimizar o quadro de sinergias pela seta.','party','.is-synergies'),
+   step('Sua equipe e os adversários escolhem os golpes conforme dano, tipos, energia e recargas. Confira Fraquezas e resistências na ficha: mudar a formação pode ajudar mais que subir níveis.','party','.is-navigation [data-menu=pokemon]')]),
   topic('hunt','Escolha onde explorar',[
    step('Abra Caçadas, selecione uma área e confira seus níveis e habitantes. Para procurar uma espécie em outras regiões, digite o nome dela na busca.','hunts','.is-navigation [data-menu=hunts]'),
    step('Cada caçada tem dez ondas; três vitórias liberam a seguinte. Configure a continuidade na Automação. Quando terminar o guia, use EXPLORAR para começar; o mesmo botão pausa a caçada.','expedition','#combatbtn')]),

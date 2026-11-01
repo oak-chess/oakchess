@@ -5368,7 +5368,7 @@ function unitTip(x){
   if(window.IDLE_TOOLTIP){
    const moves=(live?x.moves:movesFor(L,star,true)).slice(0,moveCount);
    const brief=text=>{const node=document.createElement('div');node.innerHTML=String(text||'');const plain=(node.textContent||'').replace(/\s+/g,' ').trim();const first=plain.split(/(?<=[.!?])\s+(?=[A-ZÀ-Ú])/)[0];return esc(first.length>190?first.slice(0,187).replace(/\s+\S*$/,'')+'…':first)};
-   return `<div class="ut idle-tip-compact"><small class="idle-tip-context">${esc(context)}</small><div class="uh"><div class="um" style="--tc:${tc}"><img src="${x.shiny?shinyUrl(sprStatic(L.ids[star-1])):sprStatic(L.ids[star-1])}" alt=""></div><div class="uhc"><h4>${esc(L.names[star-1])}${x.shiny?' ✨':''}</h4><div class="tys">${member?`<span class="rl">Nv. ${member.level}</span>`:''}${tys.map(t=>`<span class="ty" style="--c:${TYPES[t].c}">${tyIcon(t)} ${TYPES[t].n}</span>`).join('')}</div></div></div>${member?`<div class="idle-tip-quality"><span data-quality="${member.potency}">${esc(ind.powerLabel(member))}</span><span>IV ${ind.total(member)} / 186</span><span>${esc(ind.nature(member).id)}</span></div>`:''}<div class="bars"><div class="bar hp ${hpPct<30?'lo':''}"><i style="width:${hpPct}%"></i><span>PS</span><b>${live?hpNow+'/'+hpMax:hpMax}</b></div></div><div class="sts"><div><i>Ataque</i><b>${atk}</b></div><div><i>Poder</i><b>${sp}</b></div><div><i>Defesa</i><b>${ar}</b></div><div><i>Resistência</i><b>${mr}</b></div><div><i>Vel. ataque</i><b>${as.replace('.',',')}</b></div><div><i>Alcance</i><b>${bs.range}</b></div></div><div class="idle-tip-passive"><div><span>Passiva · </span><b>${esc(passiveInfo.n)}</b></div><p>${brief(passiveInfo.d)}</p></div><div class="idle-tip-moves">${moves.map(m=>`<div style="--move-color:${TYPES[m.t].c}"><b>${tyIcon(m.t)} ${esc(m.n)}</b><p>${brief(moveText(L,star,m))}</p></div>`).join('')}</div>${member?'<small class="idle-tip-hint">Clique no Pokémon para abrir a ficha completa</small>':''}</div>`;
+   return `<div class="ut idle-tip-compact"><small class="idle-tip-context">${esc(context)}</small><div class="uh"><div class="um" style="--tc:${tc}"><img src="${x.shiny?shinyUrl(sprStatic(L.ids[star-1])):sprStatic(L.ids[star-1])}" alt=""></div><div class="uhc"><h4>${esc(L.names[star-1])}${x.shiny?' ✨':''}</h4><div class="tys">${member?`<span class="rl">Nv. ${member.level}</span>`:''}${tys.map(t=>`<span class="ty" style="--c:${TYPES[t].c}">${tyIcon(t)} ${TYPES[t].n}</span>`).join('')}</div></div></div>${member?`<div class="idle-tip-quality"><span data-quality="${member.potency}">${esc(ind.powerLabel(member))}</span><span>IV ${ind.total(member)} / 186</span><span>${esc(ind.nature(member).id)}</span></div>`:''}<div class="bars"><div class="bar hp ${hpPct<30?'lo':''}"><i style="width:${hpPct}%"></i><span>PS</span><b>${live?hpNow+'/'+hpMax:hpMax}</b></div></div><div class="sts"><div><i>Ataque</i><b>${atk}</b></div><div><i>Poder</i><b>${sp}</b></div><div><i>Defesa</i><b>${ar}</b></div><div><i>Resistência</i><b>${mr}</b></div><div><i>Vel. ataque</i><b>${as.replace('.',',')}</b></div><div><i>Alcance</i><b>${bs.range}</b></div></div><div class="idle-tip-passive"><div><span>Passiva · </span><b>${esc(passiveInfo.n)}</b></div><p>${brief(passiveInfo.d)}</p></div><div class="idle-tip-moves">${moves.map(m=>`<div style="--move-color:${TYPES[m.t].c}"><b>${tyIcon(m.t)} ${esc(m.n)}</b><p>${brief(moveText(L,star,m))}</p></div>`).join('')}</div>${window.IDLE_TYPE_VIEW?IDLE_TYPE_VIEW.create(tys,TYPES,Object.fromEntries(Object.keys(TYPES).map(t=>[t,SPR+'types/generation-ix/scarlet-violet/small/'+TID[t]+'.png'])),true).outerHTML:''}${member?'<small class="idle-tip-hint">Clique no Pokémon para abrir a ficha completa</small>':''}</div>`;
   }
   return`<div class="ut"><div class="idle-tip-eyebrow">${context}</div><div class="uh"><div class="um" style="--tc:${tc}"><img src="${x.shiny?shinyUrl(sprFront(L.ids[star-1])):sprFront(L.ids[star-1])}" onerror="this.onerror=null;this.src='${x.shiny?shinyUrl(sprStatic(L.ids[star-1])):sprStatic(L.ids[star-1])}'" alt=""><b class="uc"><i class="coin" style="width:11px;height:11px"></i>${L.c}</b></div>
    <div class="uhc"><h4>${L.names[star-1]}<span class="ustars st${star}">${'★'.repeat(star)}</span>${x.shiny?'<span class="ushiny">✨</span>':''}</h4><div class="tys">${role?`<span class="rl">${role}</span>`:''}${tys.map(t=>`<span class="ty" style="--c:${TYPES[t].c}">${tyIcon(t)} ${TYPES[t].n}</span>`).join('')}</div></div></div>
@@ -5513,6 +5513,7 @@ function advancePath(u,t,maxSteps){
       if(d<startD&&(!best||d<best.d||d===best.d&&path.length>best.path.length))best={d,path};q.push({r,c,path})}}
   return best&&best.path}
 function dashAdvance(u,t,style){
+ const motionType=({"teleport":"psychic","shadow":"ghost","fireDash":"fire","bladeDash":"grass","burrow":"ground","waterRush":"water","electricDash":"electric","dive":"flying","iceSlide":"ice","stampede":"normal","quakeCharge":"ground","guardianRush":"normal","airSwoop":"flying","kickRush":"fighting","punchRush":"fighting","bodySlam":"normal","hornRush":"normal","waterLunge":"water","shellTorpedo":"water","supportHop":"normal","flameDive":"fire","wingFeint":"flying","doubleDash":"normal","powerRush":"normal","stingDash":"bug","sandBurrow":"ground","fireGallop":"fire","dragonDive":"dragon","frostDive":"ice","vineSling":"grass"})[style]||'normal';
   const maxSteps=['quakeCharge','guardianRush','kickRush','punchRush','bodySlam','hornRush','waterLunge','shellTorpedo','supportHop','flameDive','wingFeint','powerRush','dragonDive','frostDive','vineSling'].includes(style)?2:3,path=advancePath(u,t,maxSteps);if(!path?.length)return false;const from={x:u.x,y:u.y,r:u.r,c:u.c},end=path[path.length-1],p=hexXY(end[0],end[1]);
   window.HEX_ATTACKS?.path(u,path,style.includes('fire')||style==='flameDive'?'fire':style==='iceSlide'||style==='frostDive'?'ice':style==='electricDash'?'electric':style.startsWith('water')?'water':style==='vineSling'?'grass':u.types[0],.52*path.length);
   B.occ.delete(u.r*10+u.c);u.r=end[0];u.c=end[1];B.occ.set(u.r*10+u.c,u);u.ox=from.x;u.oy=from.y;u.tx=p.x;u.ty=p.y;u._dashPoints=[{x:from.x,y:from.y},...path.map(([r,c])=>{const q=hexXY(r,c);return{x:q.x,y:q.y}})];u.moveDur=.52*path.length;u.moveT=u.moveDur;u.moving=true;
@@ -5534,49 +5535,49 @@ function dashAdvance(u,t,style){
     else if(style==='fireGallop') {FX.impact('fire',q.x,q.y-8,.5);setArenaField('fire',r,c,.42,1.65,u)}
     else if(style==='powerRush')FX.impact('fighting',q.x,q.y-8,.45)
     else if(style==='vineSling')FX.impact('grass',q.x,q.y-8,.45)}
-  if(style==='bladeDash'){for(const e of B.units)if(e.alive&&e.side!==u.side&&path.some(([r,c])=>hdist(r,c,e.r,e.c)<=1)){hurt(u,e,u.atk*.24,'phys',{spell:true});FX.text(e.x,e.y-56,'Corte!','#dbf27a',11)}}
+  if(style==='bladeDash'){for(const e of B.units)if(e.alive&&e.side!==u.side&&path.some(([r,c])=>hdist(r,c,e.r,e.c)<=1)){hurt(u,e,u.atk*.24,'phys',{spell:true,type:motionType});FX.text(e.x,e.y-56,'Corte!','#dbf27a',11)}}
   if(style==='burrow'||style==='dive'){const kind=style==='burrow'?'ground':'rock';setArenaField(kind,end[0],end[1],1,style==='dive'?1.7:2.1,u);FX.impact(kind,p.x,p.y-8,1.1);
     if(style==='dive'){FX.shake(2);for(const e of B.units)if(e.alive&&e.side!==u.side&&hdist(end[0],end[1],e.r,e.c)<=1)applyStatus(e,'stun',.45,u)}}
   if(style==='flameDive'){
     setArenaField('fire',end[0],end[1],1,2,u);FX.impact('fire',p.x,p.y-8,1.1);FX.shake(2);
-    for(const e of B.units)if(e.alive&&e.side!==u.side&&hdist(end[0],end[1],e.r,e.c)<=1){hurt(u,e,u.atk*.14,'spec',{spell:true});applyStatus(e,'burn',2.2,u,.018)}
+    for(const e of B.units)if(e.alive&&e.side!==u.side&&hdist(end[0],end[1],e.r,e.c)<=1){if(hurt(u,e,u.atk*.14,'spec',{spell:true,type:motionType})>0)applyStatus(e,'burn',2.2,u,.018)}
   }
   if(style==='fireGallop'){
     setArenaField('fire',end[0],end[1],1,2.1,u);FX.impact('fire',p.x,p.y-8,1);for(const e of B.units)if(e.alive&&e.side!==u.side&&hdist(end[0],end[1],e.r,e.c)<=1)applyStatus(e,'burn',1.8,u,.015);
   }
   if(style==='stingDash'){
-    FX.impact('bug',p.x,p.y-8,.9);for(const e of B.units)if(e.alive&&e.side!==u.side&&path.some(([r,c])=>hdist(r,c,e.r,e.c)<=1)){hurt(u,e,u.atk*.14,'phys',{spell:true});applyStatus(e,'poison',2,u,.014)}
+    FX.impact('bug',p.x,p.y-8,.9);for(const e of B.units)if(e.alive&&e.side!==u.side&&path.some(([r,c])=>hdist(r,c,e.r,e.c)<=1)){if(hurt(u,e,u.atk*.14,'phys',{spell:true,type:motionType})>0)applyStatus(e,'poison',2,u,.014)}
   }
   if(style==='sandBurrow'){
     setArenaField('ground',end[0],end[1],1,1.8,u);FX.impact('ground',p.x,p.y-8,1);FX.shake(1.5);
   }
   if(style==='powerRush'){
-    FX.impact('fighting',p.x,p.y-8,1);for(const e of B.units)if(e.alive&&e.side!==u.side&&hdist(end[0],end[1],e.r,e.c)<=1){hurt(u,e,u.atk*.22,'phys',{spell:true});applyStatus(e,'stun',.32,u)}
+    FX.impact('fighting',p.x,p.y-8,1);for(const e of B.units)if(e.alive&&e.side!==u.side&&hdist(end[0],end[1],e.r,e.c)<=1){if(hurt(u,e,u.atk*.22,'phys',{spell:true,type:motionType})>0)applyStatus(e,'stun',.32,u)}
   }
   if(style==='dragonDive'){
-    FX.impact('dragon',p.x,p.y-8,1.1);FX.shake(2);for(const e of B.units)if(e.alive&&e.side!==u.side&&hdist(end[0],end[1],e.r,e.c)<=1){hurt(u,e,u.atk*.2,'spec',{spell:true});applyStatus(e,'stun',.32,u)}
+    FX.impact('dragon',p.x,p.y-8,1.1);FX.shake(2);for(const e of B.units)if(e.alive&&e.side!==u.side&&hdist(end[0],end[1],e.r,e.c)<=1){if(hurt(u,e,u.atk*.2,'spec',{spell:true,type:motionType})>0)applyStatus(e,'stun',.32,u)}
   }
   if(style==='frostDive'){
-    setArenaField('ice',end[0],end[1],1,2.2,u);FX.impact('ice',p.x,p.y-8,1.1);for(const e of B.units)if(e.alive&&e.side!==u.side&&hdist(end[0],end[1],e.r,e.c)<=1){hurt(u,e,u.atk*.12,'spec',{spell:true});applyStatus(e,'slow',1.2,u)}
+    setArenaField('ice',end[0],end[1],1,2.2,u);FX.impact('ice',p.x,p.y-8,1.1);for(const e of B.units)if(e.alive&&e.side!==u.side&&hdist(end[0],end[1],e.r,e.c)<=1){if(hurt(u,e,u.atk*.12,'spec',{spell:true,type:motionType})>0)applyStatus(e,'slow',1.2,u)}
   }
   if(style==='vineSling'){
     setArenaField('grass',end[0],end[1],1,2.2,u);FX.impact('grass',p.x,p.y-8,1);
-    for(const e of B.units)if(e.alive&&e.side!==u.side&&hdist(end[0],end[1],e.r,e.c)<=1){hurt(u,e,u.atk*.12,'phys',{spell:true});applyStatus(e,'slow',1,u)}
+    for(const e of B.units)if(e.alive&&e.side!==u.side&&hdist(end[0],end[1],e.r,e.c)<=1){if(hurt(u,e,u.atk*.12,'phys',{spell:true,type:motionType})>0)applyStatus(e,'slow',1,u)}
   }
   if(style==='stampede'||style==='quakeCharge'||style==='guardianRush'){
     const radius=1,kind=style==='quakeCharge'?'rock':'ground';setArenaField(kind,end[0],end[1],radius,style==='quakeCharge'?2:1.3,u);FX.impact(kind,p.x,p.y-8,style==='quakeCharge'?1.15:.9);
     if(style==='quakeCharge')FX.shake(3);
     for(const e of B.units)if(e.alive&&e.side!==u.side&&hdist(end[0],end[1],e.r,e.c)<=radius){
-      if(style==='stampede'){applyStatus(e,'stun',.3,u);hurt(u,e,u.atk*.12,'phys',{spell:true})}
-      else if(style==='quakeCharge'){applyStatus(e,'stun',.5,u);hurt(u,e,u.atk*.16,'phys',{spell:true})}
-      else {applyStatus(e,'stun',.25,u);hurt(u,e,u.atk*.08,'phys',{spell:true})}
+      if(style==='stampede'){applyStatus(e,'stun',.3,u);hurt(u,e,u.atk*.12,'phys',{spell:true,type:motionType})}
+      else if(style==='quakeCharge'){applyStatus(e,'stun',.5,u);hurt(u,e,u.atk*.16,'phys',{spell:true,type:motionType})}
+      else {applyStatus(e,'stun',.25,u);hurt(u,e,u.atk*.08,'phys',{spell:true,type:motionType})}
     }
     if(style==='guardianRush'){u.shield+=u.maxHp*.08;u.shieldT=Math.max(u.shieldT,2.5);FX.shieldFx(u.x,cyOf(u));FX.text(u.x,u.y-58,'Proteção Parental!','#9de8ff',11)}
   }
   if(style==='airSwoop'||style==='kickRush'||style==='punchRush'){
     FX.impact(style==='airSwoop'?'flying':'fighting',p.x,p.y-8,style==='airSwoop'?1:.85);
     for(const e of B.units)if(e.alive&&e.side!==u.side&&hdist(end[0],end[1],e.r,e.c)<=1){
-      hurt(u,e,u.atk*(style==='airSwoop' ? .12 : style==='kickRush' ? .18 : .24),'phys',{spell:true});
+      hurt(u,e,u.atk*(style==='airSwoop' ? .12 : style==='kickRush' ? .18 : .24),'phys',{spell:true,type:motionType});
       if(style==='kickRush')applyStatus(e,'stun',.28,u);
     }
   }
@@ -5590,13 +5591,13 @@ function dashAdvance(u,t,style){
     const slam=style==='bodySlam';setArenaField(slam?'ground':'rock',end[0],end[1],slam?1:.42,slam?1.6:1,u);FX.impact(slam?'ground':'rock',p.x,p.y-8,slam?1.15:.9);
     if(slam)FX.shake(2);
     for(const e of B.units)if(e.alive&&e.side!==u.side&&hdist(end[0],end[1],e.r,e.c)<=1){
-      hurt(u,e,u.atk*(slam ? .22 : .20),'phys',{spell:true});applyStatus(e,slam?'stun':'slow',slam ? .42 : 1,u);
+      if(hurt(u,e,u.atk*(slam ? .22 : .20),'phys',{spell:true,type:motionType})>0)applyStatus(e,slam?'stun':'slow',slam ? .42 : 1,u);
     }
   }
   if(style==='waterLunge'||style==='shellTorpedo'){
     const water=style==='waterLunge',kind=water?'water':'rock';setArenaField(kind,end[0],end[1],water?1:.42,water?1.7:1.4,u);FX.impact(kind,p.x,p.y-8,1);
     for(const e of B.units)if(e.alive&&e.side!==u.side&&hdist(end[0],end[1],e.r,e.c)<=1){
-      hurt(u,e,u.atk*(water ? .15 : .18),'phys',{spell:true});applyStatus(e,'slow',water ? .65 : .85,u);
+      if(hurt(u,e,u.atk*(water ? .15 : .18),'phys',{spell:true,type:motionType})>0)applyStatus(e,'slow',water ? .65 : .85,u);
     }
   }
   if(style==='supportHop'){
@@ -5605,9 +5606,7 @@ function dashAdvance(u,t,style){
     if(protectedAllies.length)FX.text(u.x,u.y-58,'Passo Cuidador!','#ffa9dc',11);
   }
   faceTo(u,t);return true}
-function useMobility(u,t,style){if(style==='teleport'||style==='shadow')return blinkBehind(u,t,style);return dashAdvance(u,t,style)}
-
-/* ---------- dano / cura / status ---------- */
+function useMobility(u,t,style){if(style==='teleport'||style==='shadow')return blinkBehind(u,t,style);return dashAdvance(u,t,style)}/* ---------- dano / cura / status ---------- */
 function healUnit(u,a,quiet,source){if(!u.alive)return;a*= (1+(u.healBoost||0))*(u.healBlockT>0?.7:1);const b=u.hp;u.hp=Math.min(u.maxHp,u.hp+a);const healed=Math.max(0,u.hp-b);u._healed=(u._healed||0)+healed;const healer=source||u;healer._healingDone=(healer._healingDone||0)+healed;if(!quiet&&u.hp-b>=8&&CFG.dmgnum!=='off')FX.text(u.x,u.y-52,'+'+Math.round(u.hp-b),'#7dff9a',15)}
 function applyStatus(e,st,d,src,v){
   if(!e.alive)return;
@@ -5660,21 +5659,24 @@ function stepArenaFields(dt){
 }
 const dmgNumOk=o=>{const m=CFG.dmgnum||'all';return m==='all'||(m==='big'&&!!(o.crit||o.spell))||(m==='crit'&&!!o.crit)};
 function triggerPassiveField(u,key,life){const kind=u.L?.passive?.[key];window.REACTIVE_PREVIEWS?.pulse(u,kind||'rock');if(kind)setArenaField(kind,u.r,u.c,1,life||1.8,u)}
+function idleTacticalEnv(){return {units:B.units,time:B.t,sudden:B.sudden,distance:(a,b)=>hdist(a.r,a.c,b.r,b.c),passiveAmp,recipe,inBeam:(u,t,e)=>{const x1=u.x,y1=cyOf(u),dx=t.x-x1,dy=cyOf(t)-y1,L=Math.hypot(dx,dy)||1;return distSeg(e.x,cyOf(e),x1,y1,x1+dx/L*HW*8,y1+dy/L*HW*8)<=HW*.55}}}
+function idleEffectivenessNotice(t,factor){if(factor===1||B.t<(t._elementNoticeAt||0))return;t._elementNoticeAt=B.t+1.4;FX.text(t.x,t.y-86,factor===0?'Imune':factor>1?'Super eficaz':'Pouco eficaz',factor===0?'#d7d6ee':factor>1?'#ffe475':'#abc6da',12)}
 function hurt(src,t,raw,kind,o){
-  o=o||{};if(!t.alive)return 0;if(window.OAK_IDLE_MODE&&window.IDLE_HOENN_RULES&&!IDLE_HOENN_RULES.canDamage(t,src,kind,o))return 0;
+  o=o||{};if(!t.alive)return 0;const tactical=window.OAK_IDLE_MODE&&window.IDLE_TACTICS;if(tactical&&tactical.factor(src,t,kind,o)===0){idleEffectivenessNotice(t,0);return 0}if(window.OAK_IDLE_MODE&&window.IDLE_HOENN_RULES&&!IDLE_HOENN_RULES.canDamage(t,src,kind,o))return 0;
   if(o.basic&&(t.dodge>0||t.evade>0)&&Math.random()<t.dodge+(t.evade||0)){FX.text(t.x,t.y-52,'Esquivou!','#fff',13);return 0}
-  let d=raw;
-  if(o.basic&&t.basicGuard)d*=1-t.basicGuard;
-  if(o.spell&&t.spellGuard)d*=1-t.spellGuard;
-  if(src&&src.antiHeal&&o.basic&&t.shield>0)d*=1.5;
+  let d=tactical?IDLE_TACTICS.mitigate(src,t,raw,kind,o,B.sudden):raw;
+  if(!tactical&&o.basic&&t.basicGuard)d*=1-t.basicGuard;
+  if(!tactical&&o.spell&&t.spellGuard)d*=1-t.spellGuard;
+  if(!tactical&&src&&src.antiHeal&&o.basic&&t.shield>0)d*=1.5;
   if(src&&((o.basic&&src.basicShred)||(o.spell&&src.spellShred))){t.shred=Math.max(t.shred||0,.18);t.shredT=4}
   if(src&&src.antiHeal&&o.basic)t.healBlockT=4;
-  if(!o.dot&&t.L?.passive?.id==='granitehide'&&!t.passiveUsed){d*=.75;t.passiveUsed=true;triggerPassiveField(t,'onHitField',1.8);FX.text(t.x,t.y-66,'Couraça Granítica!','#d6e5ff',12)}
-  if(!o.dot&&t.L?.passive?.id==='sturdy'&&!t.passiveUsed){d*=.70;t.passiveUsed=true;triggerPassiveField(t,'onHitField',1.8);FX.text(t.x,t.y-66,'Robustez!','#d6e5ff',12)}
-  if(t.L?.passive?.id==='friendguard')d*=.92;
-  if(kind!=='true'){const ar=(kind==='phys'?t.armor:t.mr)*(t.shred?1-t.shred:1);d*=100/(100+Math.max(0,ar))}
-  d*=(1-t.dr)*(1+B.sudden);d=Math.max(1,d);
+  if(!o.dot&&t.L?.passive?.id==='granitehide'&&!t.passiveUsed){if(!tactical)d*=.75;t.passiveUsed=true;triggerPassiveField(t,'onHitField',1.8);FX.text(t.x,t.y-66,'Couraça Granítica!','#d6e5ff',12)}
+  if(!o.dot&&t.L?.passive?.id==='sturdy'&&!t.passiveUsed){if(!tactical)d*=.70;t.passiveUsed=true;triggerPassiveField(t,'onHitField',1.8);FX.text(t.x,t.y-66,'Robustez!','#d6e5ff',12)}
+  if(!tactical&&t.L?.passive?.id==='friendguard')d*=.92;
+  if(!tactical&&kind!=='true'){const ar=(kind==='phys'?t.armor:t.mr)*(t.shred?1-t.shred:1);d*=100/(100+Math.max(0,ar))}
+  if(!tactical){d*=(1-t.dr)*(1+B.sudden);d=Math.max(1,d)}
   if(src&&src.bossCap&&!o.dot)d=Math.min(d,t.maxHp*src.bossCap); /* boss nunca tira mais que X% do PS máx num golpe só */
+  if(tactical&&!o.basic&&!o.dot&&kind!=='true'&&o.type)idleEffectivenessNotice(t,tactical.effectiveness(o.type,t.types));
   const full=d;let absorbed=0;if(t.shield>0){const a=Math.min(t.shield,d);t.shield-=a;d-=a;absorbed=a;t._shieldAbsorbed=(t._shieldAbsorbed||0)+a}
   const effective=Math.min(Math.max(0,t.hp),d)+absorbed;t._reportTaken=(t._reportTaken||0)+effective;if(src&&src!==t)src._reportDamage=(src._reportDamage||0)+effective;
   t.hp-=d;t._taken=(t._taken||0)+full;if(src&&src!==t)src._dealt=(src._dealt||0)+full;
@@ -5716,6 +5718,7 @@ function strike(u,t){
   if(!t.alive){return}
   const crit=Math.random()<u.crit,d=u.atk*(1+u.buffAtk)*(crit?u.critDmg:1)*(1+u.dmgAmp+passiveAmp(u,t));
   const ty=u.types[0],basicDamage=hurt(u,t,d,'phys',{basic:true,crit,type:ty});
+  if(!window.OAK_IDLE_MODE||basicDamage>0){
   window.PASSIVE_MOVES?.onBasic(u,t,basicDamage);
   if(!window.PASSIVE_MOVES?.handles(u)){
   if(u.L.passive.id==='kindling'&&t.alive&&++u.passiveHits%3===0){applyStatus(t,'burn',3,u,.025);FX.fx('embers',t.x,cyOf(t),'fire',.75);FX.text(t.x,t.y-66,'Brasa Crescente!','#ffb347',12)}
@@ -5727,10 +5730,13 @@ function strike(u,t){
   }
   if(u.L.passive.id==='quickstep'&&++u.passiveHits%4===0){u.buffAS=Math.max(u.buffAS,.20);u.buffT=Math.max(u.buffT,2.5);FX.buffFx(u.x,cyOf(u),'flying');FX.text(u.x,u.y-58,'Passos Ligeiros!','#d9f4ff',11)}
   FX.impact(ty,t.x,cyOf(t),crit?1.1:.55);SND.hit(ty,crit?1:.55);if(crit)FX.shake(2);
+  }
   u.mana=Math.min(manaCapacity(u),u.mana+u.manaAtk);
+  if(!window.OAK_IDLE_MODE||basicDamage>0){
   if(u.burnV>0&&u.types.includes('fire'))applyStatus(t,'burn',4,u,u.burnV);
   if(u.freezeCh>0&&u.types.includes('ice')&&Math.random()<u.freezeCh)applyStatus(t,'freeze',1.5,u);
   if(u.shredV>0&&u.types.includes('poison')){t.shred=Math.max(t.shred,u.shredV);t.shredT=3}
+  }
   if(u.lifeOrb){u.hp=Math.max(1,u.hp-u.maxHp*.02)}
 }
 
@@ -5922,16 +5928,20 @@ function castMotion(u,t,mv,col,rc){const k=mv.k,dx=t&&t.x<u.x?-1:1,gl=`brightnes
    case'dive':dur=800;kf=[{transform:'translateY(0) scale(1,1)',opacity:1},{transform:'translateY(26px) scale(1,.6)',opacity:.2,offset:.4},{transform:'translateY(26px) scale(1,.6)',opacity:.2,offset:.6},{transform:'translateY(0) scale(1,1)',opacity:1}];break;
    default:kf=[{transform:'translateY(0) scale(1,1)',filter:n},{transform:'translateY(0) scale(1.18,.82)',offset:.2},{transform:'translateY(-26px) scale(.92,1.12)',filter:gl,offset:.5},{transform:'translateY(0) scale(1.1,.9)',offset:.75},{transform:'translateY(0) scale(1,1)',filter:n}]}
   anim(u.spr,groundedAttackFrames(u,kf),{duration:D_(dur)})}
-function cast(u){
+function cast(u,decision){
   if(window.SKILL_RHYTHM&&!SKILL_RHYTHM.ready(u))return;
   if(window.OAK_IDLE_MODE&&window.IDLE_HOENN_RULES&&!IDLE_HOENN_RULES.beforeAction(u,B.t))return;
-  const mv={...u.moves[u.mi++%u.moves.length],_variant:u.mi},t=u.target;
+  const tactical=window.OAK_IDLE_MODE&&window.IDLE_TACTICS,choice=tactical?(decision||IDLE_TACTICS.choose(u,idleTacticalEnv())):null;
+  if(tactical&&!choice)return false;
+  const index=choice?choice.index:u.mi%u.moves.length;
+  if(choice?.target&&choice.target!==u.target){u.target=choice.target;u.tacticalTargetAt=B.t}
+  u.mi++;const mv={...u.moves[index],_variant:u.mi},t=u.target;u.lastMoveKey=window.IDLE_TACTICS?.key(mv);u.lastMoveIndex=index;
   if(window.SKILL_RHYTHM)SKILL_RHYTHM.begin(u,mv);else{u.mana=Math.max(0,u.mana-u.maxMana);u.lock=.6}
   if(u.castRefund)u.mana=Math.min(manaCapacity(u),u.mana+u.maxMana*u.castRefund);
   u.atkCd=Math.max(u.atkCd,.35);
   if(window.OAK_IDLE_MODE&&mv.emerald==='SKETCH'){
     const available=(t?.moves||[]).filter(move=>move.emerald!=='SKETCH');
-    const original=t?.moves?.[Math.max(0,(t.mi||1)-1)%Math.max(1,t.moves.length)];
+    const original=t?.moves?.[t.lastMoveIndex??Math.max(0,(t.mi||1)-1)%Math.max(1,t.moves.length)];
     const copied=original?.emerald!=='SKETCH'?original:available[0];
     if(copied){u.moves=[{...copied}];u.mi=0;FX.text(u.x,u.y-72,'Esboço: '+copied.n+'!','#ead7f5',16)}else FX.text(u.x,u.y-72,'Esboço falhou','#d8bfd8',15);
     SND.cast('normal');return;
@@ -5960,7 +5970,7 @@ function cast(u){
   if(u.L.passive.id==='toxicCloud'&&mv.t==='poison'&&t)schedule(.25,()=>setArenaField('poison',t.r,t.c,1,2.8,u));
   if(t&&((mv.t==='electric'&&['chain','storm'].includes(mv.k))||(mv.t==='grass'&&mv.k==='storm')))schedule(.28,()=>setArenaField(mv.t,t.r,t.c,1,2.6,u));
   const deal=(e,dm,pw)=>{if(!e.alive)return 0;const crit=Math.random()<u.crit*.5;const d=hurt(u,e,dm*(crit?1.3:1),kind,{spell:true,crit,type:mv.t});if(d>0)window.ARENA_INTERACTIONS?.hit(u,e,mv);if(d>0&&mv.st&&e.alive&&(mv.statusChance==null||Math.random()<mv.statusChance))applyStatus(e,mv.st,mv.d,u);
-    if(u.L.passive.id==='haunt'&&e.alive)applyStatus(e,'slow',.55,u);
+    if(d>0&&u.L.passive.id==='haunt'&&e.alive)applyStatus(e,'slow',.55,u);
     if(!window.EMERALD_MOVES?.hit(mv,e.x,cyOf(e),pw||1,{x:u.x,y:cyOf(u)})){visual.impact(mv.t,e.x,cyOf(e),pw||1);if(rc.hit)visual.fx(rc.hit,e.x,cyOf(e),mv.t,Math.max(.55,Math.min(1.2,pw||1)))}return d};
   const preview=window.HEX_ATTACKS?.prepare(u,t,mv,rc),projectileOptions={...rc.proj,move:{...rc.proj.move,r:mv.r,p:mv.p,_variant:mv._variant},castToken:u.skillToken,preview};
   const shot=(e,spd,sz,cb)=>visual.shoot(u.x,cyOf(u),e,mv.t,rc.spd||spd,(rc.sz||1)*sz,cb,projectileOptions);
@@ -5969,7 +5979,7 @@ function cast(u){
    case'splash':break;
    case'teleport':schedule(.2,()=>{if(u.alive&&t?.alive)useMobility(u,t,'teleport')});break;
    case'transform':if(t?.moves?.length)schedule(.2,()=>{if(!u.alive||!t.alive)return;u.moves=t.moves.filter(m=>m.k!=='transform').map(m=>({...m}));if(!u.moves.length)u.moves=[{id:165,n:'Luta',emerald:'STRUGGLE',t:'normal',k:'rush',p:.8,damageClass:'phys'}];u.mi=0});break;
-   case'debuff':schedule(.25,()=>{if(t?.alive){applyStatus(t,mv.st,mv.d,u);window.EMERALD_MOVES?.hit(mv,t.x,cyOf(t),1)}});break;
+   case'debuff':schedule(.25,()=>{if(t?.alive&&(!window.OAK_IDLE_MODE||!window.IDLE_TACTICS||IDLE_TACTICS.effectiveness(mv.t,t.types)>0)){applyStatus(t,mv.st,mv.d,u);window.EMERALD_MOVES?.hit(mv,t.x,cyOf(t),1)}});break;
    case'bolt':schedule(.25,()=>shot(t,620,1.7,()=>{deal(t,S,1.4);SND.hit(mv.t,1.4);visual.shake(2)}));break;
    case'blast':schedule(.3,()=>shot(t,560,1.8,()=>{const cx=t.x,cy=cyOf(t),tr=t.r,tc=t.c;visual.aoe(mv.t,cx,cy,R*HW*.9+12);if(rc.area)visual.fx(rc.area,cx,cy,mv.t,R*.8);SND.hit(mv.t,1.6);
       B.units.forEach(e=>{if(e.alive&&e.side!==u.side&&hdist(tr,tc,e.r,e.c)<=R)deal(e,S,.9)})}));break;
@@ -6017,9 +6027,10 @@ function tickUnit(u,dt){
   if(!u.target||!u.target.alive)u.target=nearest(u);
   const t=u.target;if(!t)return;
   const d=hdist(u.r,u.c,t.r,t.c);
+  if(window.OAK_IDLE_MODE&&window.IDLE_TACTICS&&u.mana>=u.maxMana&&(!window.SKILL_RHYTHM||SKILL_RHYTHM.ready(u))&&B.t>=(u._tacticalThinkAt||0)){u._tacticalThinkAt=B.t+.2;const choice=IDLE_TACTICS.choose(u,idleTacticalEnv());if(choice){cast(u,choice);return}}
   if(d<=u.range){
     faceTo(u,t);
-    if(u.mana>=u.maxMana&&(!window.SKILL_RHYTHM||SKILL_RHYTHM.ready(u))){cast(u);return}
+    if((!window.OAK_IDLE_MODE||!window.IDLE_TACTICS)&&u.mana>=u.maxMana&&(!window.SKILL_RHYTHM||SKILL_RHYTHM.ready(u))){cast(u);return}
     if(u.mana>=u.maxMana&&B.t<(u.basicAnimationUntil||0))return;
     if(u.atkCd<=0)attack(u,t)
   }else{const nt=nearest(u);if(nt&&nt!==t&&hdist(u.r,u.c,nt.r,nt.c)<d)u.target=nt;moveToward(u,u.target)}
@@ -6037,6 +6048,7 @@ function stepBattle(dt){
   if(a&&!b&&B.mew){mewReveal();return}
   if(!a||!b||B.t-B.zero>80){
     B.over=true;B.endT=B.t+(DEMO.on?3:1.7);
+    if(window.OAK_IDLE_MODE&&window.IDLE_TACTICS&&a&&b){B.impasse=true;B.winner=-1;window.AUTO_BATTLE?.stop();banner('TEMPO ESGOTADO','Sem vencedor. Reorganize a equipe antes de tentar novamente.','#cbbbea');return}
     if(a&&!b)B.winner=0;else if(b&&!a)B.winner=1;else{const f=s=>B.units.filter(u=>u.side===s).reduce((x,u)=>x+(u.alive?u.hp:0),0);B.winner=f(0)>f(1)?0:1}
     const win=B.winner===0;if(!win&&!DEMO.on)window.AUTO_BATTLE?.stop();DEMO.on||banner(win?'VITÓRIA!':'DERROTA',win?'Seus Pokémon venceram a rodada':'Os adversários venceram',win?'#ffe36a':'#ff7a7a');
     win?SND.win():SND.lose();
@@ -9317,7 +9329,11 @@ body #tip .ut .usec.its{padding-top:4px}
 <script src="assets/move-fx/emerald-instruments.js"></script>
 <script src="assets/move-fx/emerald-backgrounds.js"></script>
 <script src="assets/move-presentation.js"></script>
-<script src="assets/skill-rhythm.js"></script>
+<link rel="stylesheet" href="modes/idle/combat/tactics.css?v=compact-2">
+<script src="modes/idle/combat/type-chart.js?v=1"></script>
+<script src="modes/idle/combat/tactics.js?v=1"></script>
+<script src="modes/idle/combat/type-view.js?v=compact-2"></script>
+<script src="assets/skill-rhythm.js?v=idle-tactics-1"></script>
 <script src="assets/arena-fields.js?v=approved-interactions-2"></script>
 <link rel="stylesheet" href="assets/arena-interactions.css?v=1">
 <script src="assets/arena-interactions.js?v=exact-moves-3"></script>
@@ -9332,7 +9348,7 @@ body #tip .ut .usec.its{padding-top:4px}
 <script src="assets/live-battle.js"></script>
 <script src="assets/dex-move-preview.js?v=warm-7"></script>
 <script src="assets/passive-roster.js"></script>
-<script src="assets/passive-moves.js?v=species-description-6"></script>
+<script src="assets/passive-moves.js?v=tactics-1-species-description-6"></script>
 <script src="assets/mystery-events.js"></script>
 <link rel="stylesheet" href="assets/ui-sprites.css">
 <link rel="stylesheet" href="assets/badge-case.css">
@@ -9429,7 +9445,7 @@ body #tip .ut .usec.its{padding-top:4px}
 <script src="assets/rocket-dialogue.js?v=2"></script>
 <script src="assets/rocket-operation.js?v=18"></script>
 <script src="modes/idle/playable-moves.js?v=20261101-nursery-phone-1"></script>
-<script src="assets/illustrated-arenas.js?v=shared-1"></script><script src="modes/idle/items-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/capture-rates.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/shiny.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/individuals.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/progression.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/world-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/region-hunts.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/hunt-location.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/evolution-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/johto-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/hoenn-species.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/hoenn-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/sinnoh/species.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/sinnoh/evolutions.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/sinnoh/data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/sinnoh/rules.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/unova/metadata.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/unova/species.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/unova/evolutions.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/unova/moves.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/unova/pmd-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/unova/bounds-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/unova/destinations.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/unova/runtime.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/continents.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/hoenn-rules.js?v=20261101-nursery-phone-1"></script><link rel="stylesheet" href="modes/idle/life.css?v=20261101-nursery-phone-1"><script src="modes/idle/breeding-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/life.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/life-ui.js?v=20261101-nursery-phone-1"></script><link rel="stylesheet" href="modes/idle/challenges.css?v=20261101-nursery-phone-1"><script src="modes/idle/challenges.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/gacha.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/gacha/eggs.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/gacha/template.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/gacha/mixer.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/gacha/sound.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/gacha/view.js?v=20261101-nursery-phone-1"></script><link rel="stylesheet" href="modes/idle/gacha/view.css?v=20261101-nursery-phone-1"><link rel="stylesheet" href="modes/idle/gacha/integration.css?v=20261101-nursery-phone-1"><script src="modes/idle/sinnoh/pmd-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/sinnoh/bounds-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/mega/pmd-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/mega/bounds-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/mega/padventures-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/mega/moves.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/mega/model.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/mega/expansion-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/mega/expansion-mechanics.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/mega/portal.js?v=20261101-nursery-phone-1"></script><link rel="stylesheet" href="modes/idle/mega/portal.css?v=20261101-nursery-phone-1"><script src="modes/idle/mega/view.js?v=20261101-nursery-phone-1"></script><link rel="stylesheet" href="modes/idle/mega/view.css?v=20261101-nursery-phone-1"><link rel="stylesheet" href="modes/idle/trainer-tablet.css?v=20261101-nursery-phone-1"><script src="modes/idle/trainer-tablet.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/systems.js?v=phone-collections-1"></script><script src="modes/idle/field-notes.js?v=20261101-nursery-phone-1"></script><link rel="stylesheet" href="modes/idle/shiny-notice.css?v=20261101-nursery-phone-1"><script src="modes/idle/shiny-notice.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/capture-fx.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/capture.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/drops-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/hunt-areas.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/capture-history.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/hunts.js?v=20261101-nursery-phone-1"></script><link rel="stylesheet" href="modes/idle/safari.css?v=20261101-nursery-phone-1"><script src="modes/idle/safari.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/safari-ui.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/pc.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/move-slots.js?v=20261101-nursery-phone-1"></script>
+<script src="assets/illustrated-arenas.js?v=shared-1"></script><script src="modes/idle/items-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/capture-rates.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/shiny.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/individuals.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/progression.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/world-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/region-hunts.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/hunt-location.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/evolution-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/johto-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/hoenn-species.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/hoenn-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/sinnoh/species.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/sinnoh/evolutions.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/sinnoh/data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/sinnoh/rules.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/unova/metadata.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/unova/species.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/unova/evolutions.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/unova/moves.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/unova/pmd-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/unova/bounds-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/unova/destinations.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/unova/runtime.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/continents.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/hoenn-rules.js?v=tactics-1"></script><link rel="stylesheet" href="modes/idle/life.css?v=20261101-nursery-phone-1"><script src="modes/idle/breeding-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/life.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/life-ui.js?v=20261101-nursery-phone-1"></script><link rel="stylesheet" href="modes/idle/challenges.css?v=20261101-nursery-phone-1"><script src="modes/idle/challenges.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/gacha.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/gacha/eggs.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/gacha/template.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/gacha/mixer.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/gacha/sound.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/gacha/view.js?v=20261101-nursery-phone-1"></script><link rel="stylesheet" href="modes/idle/gacha/view.css?v=20261101-nursery-phone-1"><link rel="stylesheet" href="modes/idle/gacha/integration.css?v=20261101-nursery-phone-1"><script src="modes/idle/sinnoh/pmd-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/sinnoh/bounds-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/mega/pmd-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/mega/bounds-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/mega/padventures-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/mega/moves.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/mega/model.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/mega/expansion-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/mega/expansion-mechanics.js?v=tactics-1"></script><script src="modes/idle/mega/portal.js?v=20261101-nursery-phone-1"></script><link rel="stylesheet" href="modes/idle/mega/portal.css?v=20261101-nursery-phone-1"><script src="modes/idle/mega/view.js?v=20261101-nursery-phone-1"></script><link rel="stylesheet" href="modes/idle/mega/view.css?v=20261101-nursery-phone-1"><link rel="stylesheet" href="modes/idle/trainer-tablet.css?v=20261101-nursery-phone-1"><script src="modes/idle/trainer-tablet.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/systems.js?v=tactics-1"></script><script src="modes/idle/field-notes.js?v=20261101-nursery-phone-1"></script><link rel="stylesheet" href="modes/idle/shiny-notice.css?v=20261101-nursery-phone-1"><script src="modes/idle/shiny-notice.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/capture-fx.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/capture.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/drops-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/hunt-areas.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/capture-history.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/hunts.js?v=20261101-nursery-phone-1"></script><link rel="stylesheet" href="modes/idle/safari.css?v=20261101-nursery-phone-1"><script src="modes/idle/safari.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/safari-ui.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/pc.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/move-slots.js?v=20261101-nursery-phone-1"></script>
 <script src="modes/idle/activity.js?v=20261101-nursery-phone-1"></script>
 <script src="modes/idle/activity-ui.js?v=20261101-nursery-phone-1"></script>
 <script src="modes/idle/i18n-catalog.js?v=20261101-nursery-phone-1"></script>
@@ -9437,8 +9453,8 @@ body #tip .ut .usec.its{padding-top:4px}
 <script src="modes/idle/i18n.js?v=20261101-nursery-phone-1"></script>
 <script src="modes/idle/phone-collections.js?v=1"></script>
 <script src="modes/idle/pokefone.js?v=chat-counter-1"></script>
-<script src="modes/idle/party.js?v=collections-1"></script>
-<script src="modes/idle/shop.js?v=20261101-nursery-phone-1"></script><link rel="stylesheet" href="modes/idle/trainer-hud.css?v=20261101-nursery-phone-1"><link rel="stylesheet" href="modes/idle/team-hud.css?v=20261101-nursery-phone-1"><link rel="stylesheet" href="modes/idle/level-fx.css?v=20261101-nursery-phone-1"><script src="modes/idle/level-fx.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/screen.js?v=20261101-nursery-phone-1"></script><link rel="stylesheet" href="modes/idle/automation.css?v=20261101-nursery-phone-1"><script src="modes/idle/automation.js?v=20261101-nursery-phone-1"></script><link rel="stylesheet" href="modes/idle/center-scene.css?v=20261101-nursery-phone-1"><script src="modes/idle/center-scene.js?v=20261101-nursery-phone-1"></script><link rel="stylesheet" href="modes/idle/trainer.css?v=20261101-nursery-phone-1"><script src="modes/idle/trainer.js?v=20261101-nursery-phone-1"></script><link rel="stylesheet" href="modes/idle/tutorial.css?v=20261101-nursery-phone-1"><link rel="stylesheet" href="modes/idle/wiki.css?v=20261101-nursery-phone-1"><script src="modes/idle/wiki-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/wiki.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/tutorial-data.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/tutorial.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/music-loops.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/music.js?v=20261101-nursery-phone-1"></script><link rel="stylesheet" href="modes/idle/events.css?v=20261101-nursery-phone-1"><script src="modes/idle/legendary-access.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/events.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/regional-arenas.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/special-crystals.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/regional-art.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/legend-decoration-layouts.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/legend-decorations.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/sinnoh/arenas.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/unova/arenas.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/mega/arenas.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/arena-seal.js?v=20261101-nursery-phone-1"></script><link rel="stylesheet" href="modes/idle/rocket-theme.css?v=20261101-nursery-phone-1"><script src="modes/idle/combat-continuity.js?v=20261101-nursery-phone-1"></script><link rel="stylesheet" href="modes/idle/village/native-preview.css?v=20261101-nursery-phone-1"><script src="modes/idle/village/activity-audio.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/village/partner-wander.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/village/property-system.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/fishing/bucket-economy.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/village/service.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/village/ambience.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/village/scene.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/unova/activate-moves.js?v=20261101-nursery-phone-1"></script>
-<script src="modes/idle/idle.js?v=phone-collections-1"></script>
+<script src="modes/idle/party.js?v=element-groups-1"></script>
+<script src="modes/idle/shop.js?v=20261101-nursery-phone-1"></script><link rel="stylesheet" href="modes/idle/trainer-hud.css?v=20261101-nursery-phone-1"><link rel="stylesheet" href="modes/idle/team-hud.css?v=20261101-nursery-phone-1"><link rel="stylesheet" href="modes/idle/level-fx.css?v=20261101-nursery-phone-1"><script src="modes/idle/level-fx.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/screen.js?v=20261101-nursery-phone-1"></script><link rel="stylesheet" href="modes/idle/automation.css?v=20261101-nursery-phone-1"><script src="modes/idle/automation.js?v=20261101-nursery-phone-1"></script><link rel="stylesheet" href="modes/idle/center-scene.css?v=20261101-nursery-phone-1"><script src="modes/idle/center-scene.js?v=20261101-nursery-phone-1"></script><link rel="stylesheet" href="modes/idle/trainer.css?v=20261101-nursery-phone-1"><script src="modes/idle/trainer.js?v=20261101-nursery-phone-1"></script><link rel="stylesheet" href="modes/idle/tutorial.css?v=20261101-nursery-phone-1"><link rel="stylesheet" href="modes/idle/wiki.css?v=20261101-nursery-phone-1"><script src="modes/idle/wiki-data.js?v=tactics-1"></script><script src="modes/idle/wiki.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/tutorial-data.js?v=tactics-1"></script><script src="modes/idle/tutorial.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/music-loops.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/music.js?v=20261101-nursery-phone-1"></script><link rel="stylesheet" href="modes/idle/events.css?v=20261101-nursery-phone-1"><script src="modes/idle/legendary-access.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/events.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/regional-arenas.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/special-crystals.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/regional-art.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/legend-decoration-layouts.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/legend-decorations.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/sinnoh/arenas.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/unova/arenas.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/mega/arenas.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/arena-seal.js?v=20261101-nursery-phone-1"></script><link rel="stylesheet" href="modes/idle/rocket-theme.css?v=20261101-nursery-phone-1"><script src="modes/idle/combat-continuity.js?v=tactics-1"></script><link rel="stylesheet" href="modes/idle/village/native-preview.css?v=20261101-nursery-phone-1"><script src="modes/idle/village/activity-audio.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/village/partner-wander.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/village/property-system.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/fishing/bucket-economy.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/village/service.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/village/ambience.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/village/scene.js?v=20261101-nursery-phone-1"></script><script src="modes/idle/unova/activate-moves.js?v=20261101-nursery-phone-1"></script>
+<script src="modes/idle/idle.js?v=tactics-1"></script>
 <link rel="stylesheet" href="modes/idle/inventory-phone.css?v=20261101-nursery-phone-1">
 <link rel="stylesheet" href="modes/idle/activity.css?v=20261101-nursery-phone-1"><link rel="stylesheet" href="modes/idle/phone-approved.css?v=chat-counter-1"><link rel="stylesheet" href="modes/idle/pokechat.css?v=messenger-1"><link rel="stylesheet" href="modes/idle/phone-orientation.css?v=1"><link rel="stylesheet" href="modes/idle/phone-collections.css?v=1"></body></html>

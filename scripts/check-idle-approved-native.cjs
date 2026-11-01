@@ -14,8 +14,9 @@ const result=await p.evaluate(async()=>{
  try{for(const key of IDLE_MOVE_EFFECTS.keys){
   const spec=IDLE_APPROVED_EFFECTS[key],mv=modes[key]||{emerald:key,n:key,t:'water',k:spec.mode==='self'?'heal':spec.mode==='area'?'burst':'bolt',p:1};
   B.ev=[];EMERALD_MOVES.clear();draws.length=0;u.moves=[mv];u.mi=0;u.skillToken=null;u.castCd=0;u.lock=0;u.atkCd=0;u.mana=u.maxMana*2;u.alive=true;t.alive=true;t.hp=t.maxHp=1e9;
-  // Keep native cast selection, mana debit, schedule and damage; bypass only the readiness gate between samples.
-  const ready=SKILL_RHYTHM.ready;SKILL_RHYTHM.ready=()=>true;try{cast(u)}finally{SKILL_RHYTHM.ready=ready}
+  // This visual regression forces the sole sample move; AI ranking is tested separately.
+  // Keep the native energy debit, schedule, damage and presentation adapters.
+  const ready=SKILL_RHYTHM.ready;SKILL_RHYTHM.ready=()=>true;try{cast(u,{index:0,target:t})}finally{SKILL_RHYTHM.ready=ready}
   for(let i=0;i<8&&B.ev.length;i++){const ev=B.ev.splice(0);for(const e of ev)e.fn()}
   EMERALD_MOVES.update(.1);EMERALD_MOVES.draw(g);
   // Projectile callbacks run at arrival during gameplay. Exercise the actual native impact adapter here too.

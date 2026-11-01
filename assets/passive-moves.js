@@ -83,9 +83,9 @@
      SND.hit(p.type,.35);return;
     }
     const before=victim._reportTaken||0;
-    hurt(u,victim,raw,p.kind||'spec',{spell:true,passive:true});
+    hurt(u,victim,raw,p.kind||'spec',{spell:true,passive:true,type:p.type});
     const dealt=Math.max(0,(victim._reportTaken||0)-before);
-    if(victim.alive&&p.status)applyStatus(victim,p.status,p.duration,u,p.value);
+    if((!window.OAK_IDLE_MODE||dealt>0)&&victim.alive&&p.status)applyStatus(victim,p.status,p.duration,u,p.value);
     if(p.drain&&dealt>0){healUnit(u,dealt*p.drain,false,u);FX.healFx(u.x,cyOf(u))}
     if(!window.EMERALD_MOVES?.hit(move,victim.x,cyOf(victim),.75))FX.impact(p.type,victim.x,cyOf(victim),.75);
     SND.hit(p.type,.55);

@@ -1,9 +1,11 @@
 /* One active cast at a time; spare mana is kept for a later cast. */
 (()=>{
  const timings={bolt:.75,blast:.9,burst:.75,beam:.95,drain:.8,rush:.75,multi:1.05,chain:.95,storm:1.5,heal:.8,field:.85,barrage:1.3,meteor:1.55,buff:.8,barrier:.8};
+ function tacticalTooltip(u,m,live){const total=window.IDLE_TACTICS.cooldown(m,u),left=live?window.IDLE_TACTICS.remaining(u,m,B.t):0,shared=live?Math.max(0,(u.skillReadyAt||0)-B.t,(u.castingUntil||0)-B.t,(u.basicAnimationUntil||0)-B.t):0;let text='Recarga individual: '+total.toFixed(1).replace('.',',')+'s',state='idle';if(live){if(u.lastMoveKey===IDLE_TACTICS.key(m)&&B.t<(u.castingUntil||0)){text='Em uso';state='casting'}else if(left>0){text='Recarga: '+left.toFixed(1).replace('.',',')+'s';state='cooldown'}else if(shared>0||u.skillToken?.pending>0){text='Aguarda o lançamento anterior';state='cooldown'}else if(u.mana<u.maxMana){text='Faltam '+Math.ceil(u.maxMana-u.mana)+' de energia';state='mana'}else{text='Disponível · escolha automática';state='ready'}}return '<div class="skill-live-clock '+state+'"><span>'+text+'</span><i><b style="width:'+Math.round((1-Math.min(1,left/total))*100)+'%"></b></i></div>'}
  window.SKILL_RHYTHM={
   duration(move){return (timings[move.k]||.85)+.4},
   tooltip(u,move,index,live){
+   const tactical=window.OAK_IDLE_MODE&&window.IDLE_TACTICS;if(tactical)return tacticalTooltip(u,move,live);
    const total=this.duration(move),format=n=>n.toFixed(1).replace('.',',')+'s';
    let label='Intervalo mínimo: '+format(total),progress=1,state='idle';
    if(live&&u.alive){
@@ -22,7 +24,7 @@
   },
   ready(u){return B.t>=(u.skillReadyAt||0)&&B.t>=(u.castingUntil||0)&&B.t>=(u.basicAnimationUntil||0)&&!(u.skillToken?.pending>0)},
   begin(u,mv){
-   const life=timings[mv.k]||.85;
+   const life=timings[mv.k]||.85;if(window.OAK_IDLE_MODE)window.IDLE_TACTICS?.commit(u,mv,B.t);
    u.mana=Math.max(0,u.mana-u.maxMana);u.castingUntil=B.t+life;u.skillReadyAt=u.castingUntil+.4;
    u.lock=Math.max(u.lock||0,life);u.skillToken={owner:u,pending:0,units:B.units};
    return u.skillToken;

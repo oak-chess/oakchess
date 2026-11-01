@@ -15,7 +15,7 @@ window.IDLE_HOENN_RULES=(()=>{'use strict';
   u.idleForm=next;if(u.el&&next!==old)window.IDLE_HOENN_FORM_CHANGE?.(u);clamp(u);return next;
  }
  function beforeAction(u,time){if(u.id!==287&&u.id!==289)return true;if((u._truantUntil||0)>time)return false;u._truantUntil=time+2/Math.max(.2,u.as*(1+(u.buffAS||0)));return true}
- function canDamage(target,source,kind,options={}){if(target.id!==292||options.indirect||options.dot&&kind==='true')return true;const type=options.type||source?.types?.[0];return ['fire','flying','rock','ghost','dark'].includes(type)}
+ function canDamage(target,source,kind,options={}){if(target.id!==292||options.indirect||options.dot&&kind==='true')return true;if(window.IDLE_TACTICS)return window.IDLE_TACTICS.factor(source,target,kind,options)>0;const type=options.type||source?.types?.[0];return ['fire','flying','rock','ghost','dark'].includes(type)}
  function gift(s,m,rule,normalize){if(m.name!=='Nincada'||m.star!==1||rule.targetId!==291||m.shedinjaGiftDone)return null;m.shedinjaGiftDone=true;if(s.collection.length>=300||(s.balls||0)<1)return null;
   const gift=normalize({...m,id:null,name:'Shedinja',star:1,origin:'Nincada',items:[],pos:undefined,ivs:{...m.ivs},candy:0,condition:1,energy:100,shedinjaGiftDone:true});s.balls--;s.collection.push(gift);s.discovered=Array.from(new Set([...s.discovered,'Shedinja']));return gift;
  }
