@@ -131,3 +131,7 @@ body.idle-native-mode #idle-inventory .pf-system-panel.pf-lock-screen .pf-lock-p
 #idle-inventory .pf-app-icon[data-app=languages]{--atlas-x:75.24916943521595%;--atlas-y:65.10560146923783%}
 #idle-inventory .pf-app-icon[data-app=wiki]{--atlas-x:88.20598006644518%;--atlas-y:65.10560146923783%}
 #idle-inventory .pf-app-icon[data-app=settings]{--atlas-x:89.70099667774086%;--atlas-y:93.38842975206612%}
+
+/* The chat icon contains no baked-in notification count. */
+body.idle-native-mode #idle-inventory[data-theme] .pf-app-icon[data-app=chat]{background:url("assets/phone/chat-clean.svg") center/cover!important}
+#idle-inventory [data-phone-app=chat]>.pf-badge{right:calc((100% - var(--pf-icon-size))/2 - 7px)!important;top:-5px!important;z-index:3;pointer-events:none}
