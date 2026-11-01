@@ -83,3 +83,13 @@ body.idle-native-mode.idle-team-device #stage .is-card-health>span{z-index:1;pad
 body.idle-native-mode.idle-team-device #stage .is-card-xp-track{top:69%;height:13px}
 body.idle-native-mode.idle-team-device #stage .is-card-xp-track::after{top:0;padding:1px 3px;color:#fff;text-shadow:0 1px 2px #000,0 0 3px #000}
 body.idle-native-mode.idle-team-device #stage :is(.is-card-hp-track,.is-card-xp-track) i{opacity:.5}
+/* Shiny light stays on the bezel and sprite bay, away from the live telemetry. */
+body.idle-native-mode.idle-team-device #stage .is-team .is-team-card[data-shiny=true]{box-shadow:0 0 0 1px #ffe7a4,0 0 9px #ffd45a70,0 3px 8px #0008!important;animation:idle-shiny-card-glow 3.4s ease-in-out infinite}
+body.idle-native-mode.idle-team-device #stage .is-team-card[data-shiny=true]::after{content:'';position:absolute;inset:0;z-index:3;pointer-events:none;border-radius:inherit;background:linear-gradient(110deg,transparent 32%,#fff5c533 46%,#fff9dc66 50%,#fff5c522 54%,transparent 68%) -200% 0/250% 100% no-repeat;animation:idle-shiny-card-sheen 5.5s ease-in-out infinite}
+body.idle-native-mode.idle-team-device #stage .is-team-card[data-shiny=true]>.is-shiny-card-sparks{position:absolute;left:9%;top:12%;width:19%;height:72%;z-index:4;pointer-events:none;color:#fff4b6}
+.is-shiny-card-sparks i{position:absolute;width:7px;height:7px;background:currentColor;clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);filter:drop-shadow(0 0 3px #ffd659);animation:idle-shiny-card-spark 3s ease-in-out infinite}
+.is-shiny-card-sparks i:nth-child(1){left:0;top:10%}.is-shiny-card-sparks i:nth-child(2){right:0;top:45%;animation-delay:-1s;width:5px;height:5px}.is-shiny-card-sparks i:nth-child(3){left:23%;bottom:0;animation-delay:-2s;width:6px;height:6px}
+@keyframes idle-shiny-card-glow{0%,100%{filter:drop-shadow(0 0 1px #ffd45a35)}50%{filter:drop-shadow(0 0 4px #ffe37d80)}}
+@keyframes idle-shiny-card-sheen{0%,60%{background-position:200% 0}90%,100%{background-position:-100% 0}}
+@keyframes idle-shiny-card-spark{0%,65%,100%{opacity:0;transform:scale(.3) rotate(0)}78%{opacity:1;transform:scale(1.2) rotate(30deg)}90%{opacity:.5;transform:scale(.7) rotate(60deg)}}
+@media(prefers-reduced-motion:reduce){body.idle-native-mode.idle-team-device #stage .is-team .is-team-card[data-shiny=true]{animation:none}body.idle-native-mode.idle-team-device #stage .is-team-card[data-shiny=true]::after{display:none}.is-shiny-card-sparks i{animation:none;opacity:.8}}
