@@ -38,7 +38,7 @@ window.IDLE_TUTORIAL_DATA=(()=>{
    step('Na Jornada, confira o ginásio atual, os requisitos e a equipe do líder. Vencer o ginásio concede a insígnia e libera o próximo destino. As ondas das caçadas ficam salvas.','journey','.is-navigation [data-menu=journey]'),
    step('Recolha as missões concluídas. Consulte os habitantes e drops na Pokédex para planejar capturas. O tablet do treinador mostra as insígnias separadas por região.','dex','#collectionPokedex')]),
   topic('events','Enfrente os eventos',[
-   step('Clique no evento no topo para abrir o catálogo. Escolha um lendário ou mítico desbloqueado e confira os requisitos. As tentativas recarregam com o tempo; treino é gratuito e não entrega recompensas.','events','#idle-legendary-event'),
+   step('Clique no evento no topo e revele um adversário aleatório no Portal misterioso. A descoberta fica salva; a tentativa é consumida ao entrar na batalha. O treino é gratuito e não entrega recompensas.','events','#idle-legendary-event'),
    step('Vencer eventos lendários e míticos concede Bronze Boss Token para as Fendas Mega. Esses combates não usam a captura automática das caçadas; a Equipe Rocket possui sua própria invasão.','events',null)]),
   topic('mega','Desbloqueie Mega Evoluções',[
    step('Abra Fendas Mega e recolha Pesquisa Mega quando cumprir a missão inicial. Você recebe a Pedra-Chave e tokens. Escolha um boss e confirme o custo; treino permite experimentar sem recompensa.','mega','#idle-mega-portal'),
