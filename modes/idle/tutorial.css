@@ -15,3 +15,37 @@ body.idle-native-mode #stage>#idle-oak-tutorial{position:absolute!important;inse
 #idle-oak-tutorial button:focus-visible,#idle-oak-tutorial select:focus-visible{outline:2px solid #ffd483;outline-offset:3px}
 body.idle-native-mode #collectionShortcuts #idleTutorialLaunch{display:inline-flex!important;position:static!important;align-items:center;justify-content:center;flex:none;width:32px!important;height:32px!important;min-width:32px!important;min-height:32px!important;margin:0!important;padding:0!important;background:transparent!important;border:0!important;overflow:hidden;cursor:pointer}#idleTutorialLaunch>span{display:block;width:24px;height:32px;background:url('../../assets/trainer-profile/sprites/oak_normal.png') no-repeat 0 0 / auto 48px;image-rendering:pixelated}
 @media(max-width:650px){#idle-oak-tutorial .ioc-dialog{padding-left:95px}#idle-oak-tutorial .ioc-portrait{left:9px;width:70px}#idle-oak-tutorial .ioc-choices{grid-template-columns:1fr}#idle-oak-tutorial .ioc-choice{padding:8px}#idle-oak-tutorial .ioc-choice b{font-size:12px}#idle-oak-tutorial .ioc-footer{left:95px}#idle-oak-tutorial .ioc-speech{font-size:13px}}
+
+/* Oak's current guide: a compact navigation terminal with a clear reading area. */
+#idle-oak-tutorial .ioc-dialog{border:1px solid #5b9cb5;border-radius:16px;background:linear-gradient(125deg,#142e3e,#111a29 75%);box-shadow:inset 0 1px #b7edff35,0 0 0 3px #08121cda,0 10px 28px #0008;padding:20px 22px 89px 116px;min-height:205px;cursor:default}
+#idle-oak-tutorial .ioc-dialog::after{content:'';position:absolute;left:15px;right:15px;bottom:5px;height:3px;border-radius:3px;background:linear-gradient(90deg,#5ce4ef var(--guide-progress,0%),#1c3c4b var(--guide-progress,0%));pointer-events:none}
+#idle-oak-tutorial[data-view=choice] .ioc-dialog::after{background:linear-gradient(90deg,#4ddceb,transparent 75%,#ed4a77)}
+#idle-oak-tutorial .ioc-name{color:#a7effa;background:#152b3b;border-color:#4d8da7;letter-spacing:1.1px}
+#idle-oak-tutorial .ioc-step-title{color:#fbe0a0;font-size:18px}
+#idle-oak-tutorial .ioc-speech{font-size:14px;line-height:1.65;cursor:pointer}
+#idle-oak-tutorial .ioc-typed{color:#e3f0f7}
+#idle-oak-tutorial .ioc-portrait{left:15px;width:82px;background:radial-gradient(ellipse,#50cfe926,transparent 70%)}
+#idle-oak-tutorial .ioc-footer{left:116px;gap:7px;bottom:14px}
+#idle-oak-tutorial .ioc-footer button,#idle-oak-tutorial .ioc-stop{border:1px solid #43687e;background:linear-gradient(#27465b,#182c3d);color:#e2f6ff;border-radius:8px}
+#idle-oak-tutorial .ioc-footer button:hover:not(:disabled),#idle-oak-tutorial .ioc-stop:hover{background:#294f65;border-color:#6cdded}
+#idle-oak-tutorial .ioc-footer .ioc-next{background:linear-gradient(#d63c61,#962b4b);border-color:#ee7593}
+#idle-oak-tutorial .ioc-footer .ioc-action{background:linear-gradient(#24556a,#153b4e);color:#acfbff;border-color:#468da6}
+#idle-oak-tutorial .ioc-counter,#idle-oak-tutorial .ioc-hint{color:#9ebfce}
+#idle-oak-tutorial .ioc-choice{background:linear-gradient(140deg,#203f52,#162b3b);border-color:#4c788e;border-radius:10px;padding:12px}
+#idle-oak-tutorial .ioc-choice small,#idle-oak-tutorial .ioc-choice-note{color:#b0cbd7}
+#idle-oak-tutorial .ioc-choice:first-of-type{background:linear-gradient(135deg,#893650,#422338);border-color:#c66182}
+#idle-oak-tutorial .ioc-choice:hover{background:#29536a;border-color:#7fe0ef}
+#idle-oak-tutorial .ioc-topics{left:116px;width:calc(100% - 138px);background:#102b3b;border-color:#5cb4cb;color:#e4f7ff}
+@media(max-width:650px){#idle-oak-tutorial .ioc-dialog{padding-left:92px;padding-bottom:115px}#idle-oak-tutorial .ioc-footer{left:92px}#idle-oak-tutorial .ioc-topics{left:92px;width:calc(100% - 114px);bottom:112px}#idle-oak-tutorial .ioc-dialog[data-position=center]{max-height:calc(100% - 60px);overflow-y:auto;padding-bottom:20px}}
+
+/* Same raised keys and interaction states as the Wiki terminal. */
+body.idle-native-mode #stage #idle-oak-tutorial button{border:1px solid #456479!important;border-bottom-color:#223b4c!important;border-radius:7px!important;background:linear-gradient(#2b4253,#1a2c3b)!important;color:#e1edf6!important;box-shadow:inset 0 1px #c4edff1c,0 2px 3px #0005!important;transition:background .15s,border-color .15s,transform .1s}
+body.idle-native-mode #stage #idle-oak-tutorial button:hover:not(:disabled){background:linear-gradient(#37586b,#243d50)!important;border-color:#81c4dc!important;color:#fff!important}
+body.idle-native-mode #stage #idle-oak-tutorial button:active:not(:disabled){transform:translateY(1px);box-shadow:inset 0 2px 4px #0005!important}
+body.idle-native-mode #stage #idle-oak-tutorial button:disabled{opacity:.45;cursor:not-allowed}
+body.idle-native-mode #stage #idle-oak-tutorial .ioc-choice:first-of-type,body.idle-native-mode #stage #idle-oak-tutorial .ioc-next{border-color:#4bbed9!important;background:linear-gradient(100deg,#16445b,#172b3b)!important;box-shadow:inset 3px 0 #64e7ff,0 0 8px #1cbbdf15!important;color:#e9fbff!important}
+#idle-oak-tutorial .ioc-choice{position:relative;padding:11px 28px 11px 12px;text-align:left}
+#idle-oak-tutorial .ioc-choice::after{content:'›';position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:21px;color:#80d9ed}
+#idle-oak-tutorial .ioc-choice b{font-size:12px}#idle-oak-tutorial .ioc-choice small{font-size:10px}
+body.idle-native-mode.idle-tutorial-open #tip{display:none!important;pointer-events:none!important}
+@media(prefers-reduced-motion:reduce){body.idle-native-mode #stage #idle-oak-tutorial button{transition:none}}
