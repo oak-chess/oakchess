@@ -153,7 +153,7 @@ const movingCanopy=document.createElement('canvas');movingCanopy.width=180;movin
  const brush=movingCanopy.getContext('2d');
  for(let i=0;i<23;i++){const x=30+random(i+6)*120,y=25+random(i+51)*55,r=15+random(i+8)*16,g=brush.createRadialGradient(x-r*.3,y-r*.3,0,x,y,r);g.addColorStop(0,i%2?'#7fa84e':'#5c9846');g.addColorStop(1,'#254f2d');brush.fillStyle=g;brush.beginPath();brush.ellipse(x,y,r,r*.7,0,0,Math.PI*2);brush.fill()}
 }
-let nextBirdsong=3;
+let nextBirdsong=3,visualElapsed=0,audioElapsed=0,lastAudioMode='';
 function birdsong(){
  if(time<nextBirdsong)return;nextBirdsong=time+7+random(Math.floor(time))*8;
  if(!audio||!sound||paused||document.hidden||!config.life)return;
@@ -207,13 +207,14 @@ return{
   }
  },
  tick(dt,state){
-  const active=state.active;effects.style.display=active?'block':'none';
-  ambientAudio(active&&!state.paused&&!state.mute&&!document.hidden,state.sfx);
+  const active=state.active,display=active?'block':'none';if(effects.style.display!==display)effects.style.display=display;
+  audioElapsed+=dt;const audioMode=[active,state.paused,state.mute,document.hidden,state.sfx].join(':');if(audioMode!==lastAudioMode||audioElapsed>=.5){lastAudioMode=audioMode;audioElapsed=0;ambientAudio(active&&!state.paused&&!state.mute&&!document.hidden,state.sfx)}
   if(!active)return false;
   angled=state.angled;paused=state.paused;config.quality=state.quality;
   if(!paused)time+=dt;
   gridSoftness+=((state.combat?1:0)-gridSoftness)*(1-Math.exp(-dt*5));
   const grid=Math.round(gridSoftness*10),dirty=grid!==lastGrid;lastGrid=grid;
+  visualElapsed+=dt;if(visualElapsed<(window.IDLE_PANEL_OPEN ? .1 : 1/30))return dirty;visualElapsed=0;
   c=effects.getContext('2d');c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,2560,800);c.setTransform(1,0,0,1,640,0);mode='scene';
   if(!document.hidden){forestLife();atmosphere()}
   return dirty;
