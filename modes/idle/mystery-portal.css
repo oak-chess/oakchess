@@ -38,3 +38,6 @@ body.idle-native-mode #stage #idle-events .imp-header-actions{display:flex;align
 body.idle-native-mode #stage #idle-events .imp-header-actions>button{position:static!important;inset:auto!important;transform:none!important;flex:none;min-height:30px;box-sizing:border-box;margin:0!important;white-space:nowrap;line-height:1.2}
 body.idle-native-mode #stage #idle-events .imp-header-actions>.imp-back{width:auto!important;min-width:0;max-width:none;height:30px!important;padding:0 12px!important;font-size:11px!important}
 body.idle-native-mode #stage #idle-events .imp-header-actions>button:last-child{width:30px!important;height:30px!important;padding:0!important}
+
+/* Keep animated pixels isolated; avoid blurring the entire energy layer. */
+.imp-lights{contain:strict}.is-revealing .imp-lights{filter:none}
