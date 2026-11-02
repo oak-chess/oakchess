@@ -12,7 +12,7 @@ window.IDLE_TUTORIAL_DATA=(()=>{
    step('Sua equipe e os adversários escolhem os golpes conforme dano, tipos, energia e recargas. Confira Fraquezas e resistências na ficha: mudar a formação pode ajudar mais que subir níveis.','party','.is-navigation [data-menu=pokemon]')]),
   topic('hunt','Escolha onde explorar',[
    step('Abra Caçadas, selecione uma área e confira seus níveis e habitantes. Para procurar uma espécie em outras regiões, digite o nome dela na busca.','hunts','.is-navigation [data-menu=hunts]'),
-   step('Cada caçada tem dez ondas; três vitórias liberam a seguinte. Configure a continuidade na Automação. Quando terminar o guia, use EXPLORAR para começar; o mesmo botão pausa a caçada.','expedition','#combatbtn')]),
+   step('Cada caçada tem dez ondas; três vitórias liberam a seguinte. As ondas sobem 5 níveis, exceto na região inicial. Recuar permite treinar antes de avançar. Configure a continuidade na Automação. Quando terminar o guia, use EXPLORAR para começar; o mesmo botão pausa a caçada.','expedition','#combatbtn')]),
   topic('capture','Configure as capturas',[
    step('Na Automação, ligue Captura automática e escolha as bolas para Pokémon normais e shiny. A tentativa acontece nos selvagens elegíveis derrotados. Sem a bola escolhida, nenhuma outra é consumida.','capture','.is-quick [aria-label=Automação]'),
    step('Em Focar captura, escolha um habitante da caçada atual para economizar bolas. A opção de capturar também shiny de outras espécies é separada.','capture','.is-quick [aria-label=Automação]'),
