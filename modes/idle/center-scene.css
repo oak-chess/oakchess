@@ -65,3 +65,12 @@ body.idle-center-view .is-hunt{top:10px;left:calc(50% + 400px);width:190px;min-h
 /* Arena actors belong to the field, never to the Center interior. */
 body.idle-center-view :is(#idleTrainerCanvas,#idle-arena-trainer,.tg.center){display:none!important;visibility:hidden!important;pointer-events:none!important}
 body.idle-center-view #idle-center-scene .ic-floor-team{display:none!important}
+
+/* Alternate both luminous silhouettes before revealing the evolved partner. */
+.ic-evolution-effect:not([data-revealed=true]) .ic-evolution-before{opacity:1;animation:none}
+.ic-evolution-effect:not([data-revealed=true]) .ic-evolution-after{opacity:0;animation:none}
+.ic-evolution-effect[data-transforming=true]:not([data-revealed=true]):not([data-reduced=true]) .ic-evolution-before{animation:ic-form-before 3.2s linear both;filter:brightness(0) invert(1) drop-shadow(0 0 18px #a9ecff)}
+.ic-evolution-effect[data-transforming=true]:not([data-revealed=true]):not([data-reduced=true]) .ic-evolution-after{animation:ic-form-after 3.2s linear both;filter:brightness(0) invert(1) drop-shadow(0 0 20px #e3c7ff)}
+@keyframes ic-form-before{0%,12%,28%,42%,54%,64%,72%,79%,85%,90%,94%{opacity:1;transform:translate(-50%,-50%) scale(1)}20%,36%,48%,59%,68%,76%,82%,88%,92%,97%,100%{opacity:0;transform:translate(-50%,-50%) scale(.87)}}
+@keyframes ic-form-after{0%,12%,28%,42%,54%,64%,72%,79%,85%,90%,94%{opacity:0;transform:translate(-50%,-50%) scale(.87)}20%,36%,48%,59%,68%,76%,82%,88%,92%,97%,100%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}}
+@media(prefers-reduced-motion:reduce){.ic-evolution-effect[data-transforming=true] .ic-evolution-before,.ic-evolution-effect[data-transforming=true] .ic-evolution-after{animation:none!important}}

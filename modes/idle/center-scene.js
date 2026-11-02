@@ -13,7 +13,8 @@ window.createIdleCenterScene=function(ctx){
   const particles=el('div',undefined,'ic-evolution-particles');particles.setAttribute('aria-hidden','true');for(let i=0;i<16;i++){const spark=el('i');spark.style.setProperty('--angle',i*22.5+'deg');particles.append(spark)}sprites.append(particles);
   copy.append(caption,title,sprites,el('p','Nível, IVs, potência e identidade preservados.'));fx.append(copy);stage.append(fx);SND.evolve();
   const reveal=()=>{if(evolutionEffect!==fx)return;fx.dataset.revealed='true';title.textContent=event.fromName+' evoluiu para '+event.toName+'!';SND.cry(event.toId,1);SND.star();evolutionTimer=setTimeout(clearEvolution,reduced?1800:2400)};
-  evolutionTimer=setTimeout(reveal,reduced?150:2000);
+  // Start the transformation only once both forms can actually be drawn.
+  Promise.all([...sprites.querySelectorAll('img')].map(img=>img.decode().catch(()=>{}))).then(()=>{if(evolutionEffect!==fx)return;fx.dataset.transforming='true';evolutionTimer=setTimeout(reveal,reduced?150:3200)});
  }
 
  const interior=new Image();interior.src='modes/idle/assets/center/interior-pixel-v2.png';interior.onload=()=>{if(root&&!root.hidden)repaintArena()};
