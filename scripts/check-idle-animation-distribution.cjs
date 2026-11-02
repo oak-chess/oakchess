@@ -1,0 +1,12 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict');
+const box={window:{}};vm.createContext(box);for(const f of ['assets/playable-moves.js','modes/idle/playable-moves.js','modes/idle/unova/moves.js','modes/idle/unova/activate-moves.js','assets/dex/catalog.js','assets/dex/learnsets.js','assets/dex/moves.js'])vm.runInContext(fs.readFileSync(f,'utf8'),box);
+const w=box.window,before=JSON.parse(JSON.stringify(w.PLAYABLE_MOVES)),species=new Map(w.DEX_EXPANSION.map(s=>[s.id,s])),learn=w.DEX_LEARNSETS;
+for(const s of JSON.parse(fs.readFileSync('modes/idle/unova/catalog.json','utf8'))){species.set(s.id,s);learn[s.id]=s.learnset}
+vm.runInContext(fs.readFileSync('modes/idle/animated-loadouts.js','utf8'),box);
+const children=new Set([...species.values()].filter(s=>s.from).map(s=>s.from)),after=w.PLAYABLE_MOVES,report=JSON.parse(fs.readFileSync('docs/IDLE-ANIMATION-DISTRIBUTION.json','utf8')),ids=new Set(Object.values(after).flat().map(m=>m.id)),catalog=new Map(w.DEX_MOVE_CATALOG.map(m=>[m.id,m]));
+assert.equal(Object.keys(after).length,649);
+for(const [id,list]of Object.entries(after)){assert(list.length<=4);assert.equal(new Set(list.map(m=>m.id)).size,list.length);assert.deepEqual(JSON.parse(JSON.stringify(list.slice(0,2))),before[id].slice(0,2));if(children.has(+id))assert.deepEqual(JSON.parse(JSON.stringify(list)),before[id]);for(const m of list)assert(Number.isFinite(m.p))}
+for(const ms of Object.values(before))for(const m of ms)assert(ids.has(m.id),'Previous move removed globally '+m.id);
+for(const row of report.report.filter(r=>r.status==='assigned')){const m=after[row.species][row.slot-1],definition=catalog.get(m.id);assert.equal(m.id,row.id);assert(learn[row.species].moves.some(r=>r[0]===m.id),'Illegal association');assert.equal(m.t,definition.type);if(definition.category==='Status')assert(['buff','barrier','debuff'].includes(m.k));if(m.k==='debuff')assert.equal(m.p,0)}
+assert(after[9].some(m=>m.emerald==='HYDRO_CANNON'));assert(after[105].some(m=>m.emerald==='BONEMERANG'));assert(after[224].some(m=>m.emerald==='OCTAZOOKA'));assert(after[250].some(m=>m.emerald==='SACRED_FIRE'));assert(!after[7].slice(0,2).some(m=>m.emerald==='SURF'));
+assert.equal(report.summary.newMoves,40);console.log('PASS 649 species, 40 legal additions, four-slot limit, first two and growing forms unchanged, all previously used moves preserved, status moves remain non-damaging');
