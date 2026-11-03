@@ -4,8 +4,8 @@
 - A partir de Cerulean, cada onda soma cinco níveis: a onda 10 fica 45 níveis acima da primeira.
 - As áreas regulares seguintes começam pelo menos 50 níveis acima da anterior.
 - Cerulean: 12–57, 62–107, 112–157. Misty: nível 162. Vermilion começa no 167.
-- Cada ginásio fica cinco níveis acima do final das áreas regulares; o próximo destino começa cinco níveis acima do ginásio.
-- A Fronteira sem fim permanece opcional, ajustável e fora da sequência obrigatória.
+- Cada ginásio fica cinco níveis acima do final das áreas regulares; o próximo destino começa pelo menos cinco níveis acima do ginásio.
+- A Fronteira sem fim permanece opcional e ajustável. O próximo destino começa acima de sua faixa inicial exibida, evitando quedas de nível entre regiões. Ajustes manuais sem limite da Fronteira não alteram a progressão do mundo.
 - A mesma função calcula os inimigos, suas escalas de atributos, a lista de habitantes, os cartões e as prévias.
 - Chefes regionais ficam cinco níveis acima da onda final de sua caçada. Os multiplicadores próprios dos chefes permanecem.
 - XP já depende do nível real derrotado. Coins recebem um fator moderado pela raiz da razão nível atual/nível inicial; os bônus das faixas de dificuldade permanecem.
